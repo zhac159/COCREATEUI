@@ -47,12 +47,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="account"
         options={{
-          title: "two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "account",
+          tabBarIcon: ({ color }) => <TabBarIcon name="eye" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/loginpage" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome

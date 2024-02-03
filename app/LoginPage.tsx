@@ -1,23 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Text, View } from "@/components/Themed";
 import LoginForm from "@/components/LoginPage/LoginForm";
 
 const LoginPage = () => {
-
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modaddl</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <LoginForm />
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.title}>WeCreate</Text>
+        <View
+          style={styles.separator}
+          lightColor="#eee"
+          darkColor="rgba(255,255,255,0.1)"
+        />
+        <LoginForm />
+        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

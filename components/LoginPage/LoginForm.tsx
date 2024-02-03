@@ -1,36 +1,62 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Box, Button, FormControl, FormLabel, Input, FormErrorMessage } from "@chakra-ui/react";
-import {UserLoginDTO  } from './../../httpClient';
+import React from "react";
+import { useMutation } from "react-query";
+import { View } from "react-native";
+import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
+import { Button, TextInput, Text } from "react-native-paper";
+import { useSetCurrentUser } from "../RecoilStates/profileState";
+import { usePostApiLogin } from "@/common/api/endpoints/cocreateApi";
+import { UserLoginDTO } from "@/common/api/model";
+
 
 
 function LoginForm() {
+  const navigation = useNavigation();
+  const setCurrentUser = useSetCurrentUser();
 
+  const { register, setValue, handleSubmit } = useForm<UserLoginDTO>();
 
-
-  const {  handleSubmit } = useForm<UserLoginDTO>();
+  const { data, mutate, isLoading } = usePostApiLogin();
 
   const onSubmit = (data: UserLoginDTO) => {
     console.log(data);
+    mutate({ data });
   };
 
-
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)} p={5} shadow="md" borderWidth={1}>
-      <FormControl >
-        <FormLabel htmlFor="username">Username</FormLabel>
-        <Input name="username" />
-      </FormControl>
-
-      <FormControl mt={4} >
-        <FormLabel htmlFor="password">Password</FormLabel>
-        <Input type="password" name="password" />
-      </FormControl>
-
-      <Button mt={4} colorScheme="teal"  type="submit">
+    <View>
+      <Text>Username:</Text>
+      <TextInput
+        autoCapitalize="none"
+        style={{
+          height: 40,
+          borderColor: "gray",
+          borderWidth: 1,
+          width: 200,
+        }}
+        onChangeText={(text) => setValue("username", text)}
+      />
+      <Text>Password:</Text>
+      <TextInput
+        secureTextEntry
+        style={{
+          height: 40,
+          borderColor: "gray",
+          borderWidth: 1,
+          width: 200,
+        }}
+        onChangeText={(text) => setValue("password", text)}
+      />
+      <Button
+        role="button"
+        loading={isLoading}
+        onPress={handleSubmit(onSubmit)}
+        style={{ paddingTop: 20 }}
+      >
         Submit
       </Button>
-    </Box>
+    </View>
   );
 }
 
