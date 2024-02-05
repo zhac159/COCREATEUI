@@ -4,7 +4,13 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { AssetType } from './assetType';
 
 export type PostApiAssetBody = {
+  'Asset.AssetType'?: AssetType;
+  'Asset.Cost'?: number;
+  'Asset.Description'?: string;
+  'Asset.Name'?: string;
+  'Asset.Order'?: number;
   MediaFile?: Blob;
 };

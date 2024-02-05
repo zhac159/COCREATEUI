@@ -4,6 +4,7 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { SkillGroupType } from './skillGroupType';
 import type { SkillType } from './skillType';
 import type { User } from './user';
 
@@ -11,6 +12,7 @@ export interface Skill {
   description?: string | null;
   id?: number;
   level?: number;
+  skillGroupType?: SkillGroupType;
   skillType?: SkillType;
   user?: User;
   userId?: number;

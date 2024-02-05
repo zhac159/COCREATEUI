@@ -17,16 +17,17 @@ import type {
   UseQueryResult
 } from 'react-query'
 import type {
-  AssetUpdateDTO,
+  AssetDTO,
   LoginResponseDTO,
   PortofolioContentDTO,
   PostApiAssetBody,
-  PostApiAssetParams,
   PostApiPortofolioContentBody,
   PutApiAssetBody,
   PutApiAssetParams,
   PutApiPortofolioContentBody,
   PutApiPortofolioContentParams,
+  SkillDTO,
+  SkillUpdateDTO,
   UserCreateDTO,
   UserDTO,
   UserLoginDTO,
@@ -40,15 +41,13 @@ import { customFormData } from '../mutator/custom-form-data';
 
 export const postApiAsset = (
     postApiAssetBody: PostApiAssetBody,
-    params?: PostApiAssetParams,
  ) => {
       
       const formData = customFormData(postApiAssetBody)
-      return customInstance<void>(
+      return customInstance<AssetDTO>(
       {url: `/api/Asset`, method: 'POST',
       headers: {'Content-Type': 'multipart/form-data', },
-       data: formData,
-        params
+       data: formData
     },
       );
     }
@@ -56,17 +55,17 @@ export const postApiAsset = (
 
 
 export const getPostApiAssetMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody;params?: PostApiAssetParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody;params?: PostApiAssetParams}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAsset>>, {data: PostApiAssetBody;params?: PostApiAssetParams}> = (props) => {
-          const {data,params} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAsset>>, {data: PostApiAssetBody}> = (props) => {
+          const {data} = props ?? {};
 
-          return  postApiAsset(data,params,)
+          return  postApiAsset(data,)
         }
 
         
@@ -79,7 +78,7 @@ export const getPostApiAssetMutationOptions = <TError = ErrorType<unknown>,
     export type PostApiAssetMutationError = ErrorType<unknown>
 
     export const usePostApiAsset = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody;params?: PostApiAssetParams}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody}, TContext>, }
 ) => {
 
       const mutationOptions = getPostApiAssetMutationOptions(options);
@@ -93,7 +92,7 @@ export const putApiAsset = (
  ) => {
       
       const formData = customFormData(putApiAssetBody)
-      return customInstance<void>(
+      return customInstance<AssetDTO>(
       {url: `/api/Asset`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },
        data: formData,
@@ -141,7 +140,7 @@ export const deleteApiAssetId = (
  ) => {
       
       
-      return customInstance<void>(
+      return customInstance<Boolean>(
       {url: `/api/Asset/${id}`, method: 'DELETE'
     },
       );
@@ -177,53 +176,6 @@ export const getDeleteApiAssetIdMutationOptions = <TError = ErrorType<unknown>,
 ) => {
 
       const mutationOptions = getDeleteApiAssetIdMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-export const putApiAssetDasdsa = (
-    assetUpdateDTO: AssetUpdateDTO,
- ) => {
-      
-      const formData = customFormData(assetUpdateDTO)
-      return customInstance<void>(
-      {url: `/api/Asset/dasdsa`, method: 'PUT',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData
-    },
-      );
-    }
-  
-
-
-export const getPutApiAssetDasdsaMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAssetDasdsa>>, TError,{data: AssetUpdateDTO}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiAssetDasdsa>>, TError,{data: AssetUpdateDTO}, TContext> => {
- const {mutation: mutationOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAssetDasdsa>>, {data: AssetUpdateDTO}> = (props) => {
-          const {data} = props ?? {};
-
-          return  putApiAssetDasdsa(data,)
-        }
-
-        
-
-
-   return  { mutationFn, ...mutationOptions }}
-
-    export type PutApiAssetDasdsaMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAssetDasdsa>>>
-    export type PutApiAssetDasdsaMutationBody = AssetUpdateDTO
-    export type PutApiAssetDasdsaMutationError = ErrorType<unknown>
-
-    export const usePutApiAssetDasdsa = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAssetDasdsa>>, TError,{data: AssetUpdateDTO}, TContext>, }
-) => {
-
-      const mutationOptions = getPutApiAssetDasdsaMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -329,7 +281,7 @@ export const postApiPortofolioContent = (
       const formData = customFormData(postApiPortofolioContentBody)
       return customInstance<PortofolioContentDTO>(
       {url: `/api/PortofolioContent`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data'},
+      headers: {'Content-Type': 'multipart/form-data', },
        data: formData
     },
       );
@@ -375,7 +327,7 @@ export const putApiPortofolioContent = (
  ) => {
       
       const formData = customFormData(putApiPortofolioContentBody)
-      return customInstance<void>(
+      return customInstance<PortofolioContentDTO>(
       {url: `/api/PortofolioContent`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },
        data: formData,
@@ -423,7 +375,7 @@ export const deleteApiPortofolioContentId = (
  ) => {
       
       
-      return customInstance<void>(
+      return customInstance<Boolean>(
       {url: `/api/PortofolioContent/${id}`, method: 'DELETE'
     },
       );
@@ -562,6 +514,53 @@ export const getPutApiUserMutationOptions = <TError = ErrorType<unknown>,
 ) => {
 
       const mutationOptions = getPutApiUserMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const putApiUserSkills = (
+    skillUpdateDTO: SkillUpdateDTO[],
+ ) => {
+      
+      
+      return customInstance<SkillDTO>(
+      {url: `/api/User/skills`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: skillUpdateDTO
+    },
+      );
+    }
+  
+
+
+export const getPutApiUserSkillsMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiUserSkills>>, TError,{data: SkillUpdateDTO[]}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiUserSkills>>, TError,{data: SkillUpdateDTO[]}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiUserSkills>>, {data: SkillUpdateDTO[]}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiUserSkills(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiUserSkillsMutationResult = NonNullable<Awaited<ReturnType<typeof putApiUserSkills>>>
+    export type PutApiUserSkillsMutationBody = SkillUpdateDTO[]
+    export type PutApiUserSkillsMutationError = ErrorType<unknown>
+
+    export const usePutApiUserSkills = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiUserSkills>>, TError,{data: SkillUpdateDTO[]}, TContext>, }
+) => {
+
+      const mutationOptions = getPutApiUserSkillsMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

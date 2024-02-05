@@ -1,5 +1,11 @@
 import { PortofolioContentDTO, UserDTO } from "@/common/api/model";
-import { DefaultValue, atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  DefaultValue,
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { selector } from "recoil";
 
 export const currentUserState = atom<UserDTO | undefined>({
@@ -44,21 +50,6 @@ export const portfolioContentsSelector = selector<
     }
   },
 });
-export const skillsSelector = selector({
-  key: "skillsSelector",
-  get: ({ get }) => {
-    const user = get(currentUserState);
-    return user?.skills;
-  },
-});
-
-export const assetsSelector = selector({
-  key: "assetsSelector",
-  get: ({ get }) => {
-    const user = get(currentUserState);
-    return user?.assets;
-  },
-});
 
 export const usePortfolioContents = () =>
   useRecoilValue(portfolioContentsSelector);
@@ -68,3 +59,41 @@ export const useSetPortfolioContents = () =>
 
 export const usePortfolioContentsState = () =>
   useRecoilState(portfolioContentsSelector);
+
+export const skillsSelector = selector({
+  key: "skillsSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.skills;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        skills: newValue instanceof DefaultValue ? [] : newValue,
+      });
+    }
+  },
+});
+
+export const useSkills = () => useRecoilValue(skillsSelector);
+export const useSetSkills = () => useSetRecoilState(skillsSelector);
+export const useSkillsState = () => useRecoilState(skillsSelector);
+
+export const assetsSelector = selector({
+  key: "assetsSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.assets;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        assets: newValue instanceof DefaultValue ? [] : newValue,
+      });
+    }
+  },
+});

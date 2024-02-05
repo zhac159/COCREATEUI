@@ -7,8 +7,10 @@
 
 export * from './asset';
 export * from './assetDTO';
+export * from './assetDTOAPIResponse';
 export * from './assetType';
 export * from './assetUpdateDTO';
+export * from './booleanAPIResponse';
 export * from './fileType';
 export * from './loginResponseDTO';
 export * from './loginResponseDTOAPIResponse';
@@ -25,6 +27,8 @@ export * from './putApiPortofolioContentParams';
 export * from './review';
 export * from './skill';
 export * from './skillDTO';
+export * from './skillDTOAPIResponse';
+export * from './skillGroupType';
 export * from './skillType';
 export * from './skillUpdateDTO';
 export * from './user';

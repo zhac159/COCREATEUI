@@ -4,11 +4,13 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { SkillGroupType } from './skillGroupType';
 import type { SkillType } from './skillType';
 
 export interface SkillDTO {
   description?: string | null;
   id?: number;
   level?: number;
+  skillGroupType?: SkillGroupType;
   skillType?: SkillType;
 }

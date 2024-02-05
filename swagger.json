@@ -10,56 +10,29 @@
         "tags": [
           "Asset"
         ],
-        "parameters": [
-          {
-            "name": "Asset.Name",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Asset.Description",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Asset.AssetType",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "$ref": "#/components/schemas/AssetType"
-            }
-          },
-          {
-            "name": "Asset.Order",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Asset.Cost",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "Asset.Name": {
+                    "type": "string"
+                  },
+                  "Asset.Description": {
+                    "type": "string"
+                  },
+                  "Asset.AssetType": {
+                    "$ref": "#/components/schemas/AssetType"
+                  },
+                  "Asset.Order": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Asset.Cost": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
                   "MediaFile": {
                     "type": "string",
                     "format": "binary"
@@ -67,6 +40,21 @@
                 }
               },
               "encoding": {
+                "Asset.Name": {
+                  "style": "form"
+                },
+                "Asset.Description": {
+                  "style": "form"
+                },
+                "Asset.AssetType": {
+                  "style": "form"
+                },
+                "Asset.Order": {
+                  "style": "form"
+                },
+                "Asset.Cost": {
+                  "style": "form"
+                },
                 "MediaFile": {
                   "style": "form"
                 }
@@ -76,7 +64,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -159,7 +164,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -183,28 +205,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Asset/dasdsa": {
-      "put": {
-        "tags": [
-          "Asset"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/AssetUpdateDTO"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       }
@@ -448,7 +466,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -472,7 +507,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -565,6 +617,63 @@
           }
         }
       }
+    },
+    "/api/User/skills": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkillUpdateDTO"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkillUpdateDTO"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkillUpdateDTO"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -648,6 +757,22 @@
         },
         "additionalProperties": false
       },
+      "AssetDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AssetDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AssetType": {
         "enum": [
           0,
@@ -657,32 +782,17 @@
         "type": "integer",
         "format": "int32"
       },
-      "AssetUpdateDTO": {
+      "BooleanAPIResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+          "success": {
+            "type": "boolean"
           },
-          "name": {
+          "data": {
+            "type": "boolean"
+          },
+          "error": {
             "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetType": {
-            "$ref": "#/components/schemas/AssetType"
-          },
-          "order": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "cost": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -855,6 +965,9 @@
           "skillType": {
             "$ref": "#/components/schemas/SkillType"
           },
+          "skillGroupType": {
+            "$ref": "#/components/schemas/SkillGroupType"
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -883,6 +996,9 @@
           "skillType": {
             "$ref": "#/components/schemas/SkillType"
           },
+          "skillGroupType": {
+            "$ref": "#/components/schemas/SkillGroupType"
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -893,6 +1009,34 @@
           }
         },
         "additionalProperties": false
+      },
+      "SkillDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SkillDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SkillGroupType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "SkillType": {
         "enum": [
@@ -911,7 +1055,8 @@
           12,
           13,
           14,
-          15
+          15,
+          16
         ],
         "type": "integer",
         "format": "int32"
@@ -926,6 +1071,9 @@
           },
           "skillType": {
             "$ref": "#/components/schemas/SkillType"
+          },
+          "skillGroupType": {
+            "$ref": "#/components/schemas/SkillGroupType"
           },
           "description": {
             "type": "string",
