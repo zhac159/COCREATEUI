@@ -1,36 +1,65 @@
 import { StyleSheet, ScrollView, Image } from "react-native";
-import { Card } from "react-native-paper";
-
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
+import { Card, Text } from "react-native-paper";
+import { View } from "@/components/Themed";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
-import { useMutation } from "react-query";
+import PortofolioContent from "@/components/Account/PortofolioContents/PortofolioContents";
 
-export default function TabTwoScreen() {
+export default function Account() {
   const currentUser = useCurrentUserValue();
 
-
-
-  if (!currentUser || !currentUser.portofolioContents) {
+  if (!currentUser || !currentUser.assets) {
     return null;
   }
-  // const imageLinks = currentUser.portofolioContents.map((content) => {
-  //   if (content.uri) {
-  //     return content.uri;
-  //   }
-  // });
 
+  const imageLinks2 = currentUser.assets.map((content) => {
+    if (content.uri) {
+      return content.uri;
+    }
+  });
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{currentUser!.username}</Text>
-{/* {   imageLinks &&   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {imageLinks.map((link, index) => (
-          <Card key={index} style={styles.card}>
-            <Card.Cover source={{ uri: link }} />
-          </Card>
-        ))}
-      </ScrollView>} */}
+      <Text
+        style={{
+          ...styles.title,
+          fontSize: 50,
+          fontWeight: "bold",
+          paddingBottom: 20,
+        }}
+      >
+        {currentUser.coins}
+      </Text>
+      <Text
+        style={{
+          ...styles.title,
+          fontSize: 50,
+          fontWeight: "bold",
+          paddingBottom: 20,
+        }}
+      >
+        {currentUser.username}
+      </Text>
+      <Text
+        style={{
+          ...styles.title,
+          fontSize: 50,
+          fontWeight: "bold",
+          paddingBottom: 20,
+        }}
+      >
+        {currentUser.aboutYou}
+      </Text>
+      <Text style={styles.title}>{"assets"}</Text>
+      {imageLinks2 && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {imageLinks2.map((link, index) => (
+            <Card key={index} style={styles.card}>
+              <Card.Cover source={{ uri: link }} />
+            </Card>
+          ))}
+        </ScrollView>
+      )}
+      <PortofolioContent />
       <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );

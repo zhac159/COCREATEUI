@@ -1,35 +1,49 @@
-import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import Axios, { AxiosError, AxiosRequestConfig } from "axios";
+import * as SecureStore from 'expo-secure-store';
 
-export const AXIOS_INSTANCE = Axios.create({ baseURL: 'https://cocreateapi.azurewebsites.net' });
+// export const AXIOS_INSTANCE = Axios.create({
+//   baseURL: "https://cocreateapi.azurewebsites.net",
+// });
 
-AXIOS_INSTANCE.interceptors.request.use((request) => {
-  console.log('Starting Request', JSON.stringify(request, null, 2));
+export const AXIOS_INSTANCE = Axios.create({
+  baseURL: "http://192.168.1.92:5000",
+});
+
+AXIOS_INSTANCE.interceptors.request.use(async (request) => {
+  console.log("Starting Request", JSON.stringify(request, null, 2));
+  
+  // Get the token from SecureStore
+  const token = await SecureStore.getItemAsync('userToken');
+  
+  // If the token exists, add it to the Authorization header
+  if (token) {
+    request.headers.Authorization = `Bearer ${token}`;
+  }
+  
   return request;
 });
 
-
 export interface ApiResponse<T> {
-  Success: boolean;
-  Data: T | null;
-  Error: string | null;
+  success: boolean;
+  data: T | null;
+  error: string | null;
 }
-
-
 
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
   const source = Axios.CancelToken.source();
   const promise = AXIOS_INSTANCE({ ...config }).then(
     ({ data }: { data: ApiResponse<T> }) => {
-      if (!data.Success) {
-        throw new Error(data.Error || 'Unknown error');
+      console.log("Response", JSON.stringify(data, null, 2));
+      if (!data.success) {
+        throw new Error(data.error || "Unknown error");
       }
-      return data.Data as T;
-    },
+      return data.data as T;
+    }
   );
 
   // @ts-ignore
   promise.cancel = () => {
-    source.cancel('Query was cancelled by Vue Query');
+    source.cancel("Query was cancelled by Vue Query");
   };
 
   return promise;

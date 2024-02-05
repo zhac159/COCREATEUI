@@ -13,6 +13,10 @@ export default defineConfig({
           path: "./common/api/mutator/custom-instance.ts",
           name: "customInstance",
         },
+        formData: {
+          path: './common/api/mutator/custom-form-data.ts',
+          name: 'customFormData',
+        },
         operations: {
           cocreateApi: {
             query: {

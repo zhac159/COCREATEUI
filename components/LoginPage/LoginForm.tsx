@@ -8,16 +8,31 @@ import { Button, TextInput, Text } from "react-native-paper";
 import { useSetCurrentUser } from "../RecoilStates/profileState";
 import { usePostApiLogin } from "@/common/api/endpoints/cocreateApi";
 import { UserLoginDTO } from "@/common/api/model";
+import * as SecureStore from "expo-secure-store";
 
 
-
-function LoginForm() {
-  const navigation = useNavigation();
+const LoginForm = () => {
   const setCurrentUser = useSetCurrentUser();
 
-  const { register, setValue, handleSubmit } = useForm<UserLoginDTO>();
+  const { setValue, handleSubmit } = useForm<UserLoginDTO>();
 
-  const { data, mutate, isLoading } = usePostApiLogin();
+  const { data, mutate, isLoading } = usePostApiLogin(
+    {
+      mutation:
+      {
+        onSuccess: (data) => {
+          setCurrentUser(data.user);
+          const token = data.token;
+          if (!token) {
+            return;
+          }
+          SecureStore.setItemAsync('userToken', token);
+          router.replace("/account");
+        },
+      },
+      }
+    );
+  
 
   const onSubmit = (data: UserLoginDTO) => {
     console.log(data);

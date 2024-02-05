@@ -1,18 +1,17 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={15} {...props} />;
 }
 
 export default function TabLayout() {
@@ -22,24 +21,32 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: useClientOnlyValue(false, true),
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="account"
         options={{
-          title: "Tab cocreate",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerTitle: "",
+          tabBarIcon: ({ color }) => <TabBarIcon name="eye" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/loginpage" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "rgba(100, 100, 100, 0.5)",
+                      borderRadius: 30,
+                      padding: 10,
+                      width: 50,
+                      height: 50,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: 30,
+                      marginRight: 10,
+                    }}
+                  >
+                    <FontAwesome name="cog" size={25} color="white" />
+                  </TouchableOpacity>
                 )}
               </Pressable>
             </Link>
@@ -47,12 +54,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="account"
+        name="work"
         options={{
-          title: "account",
-          tabBarIcon: ({ color }) => <TabBarIcon name="eye" color={color} />,
+          title: "Tab cocreate",
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <Link href="/loginpage" asChild>
+            <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome

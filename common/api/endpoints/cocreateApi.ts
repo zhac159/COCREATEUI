@@ -34,6 +34,7 @@ import type {
 } from '../model'
 import { customInstance } from '../mutator/custom-instance';
 import type { ErrorType } from '../mutator/custom-instance';
+import { customFormData } from '../mutator/custom-form-data';
 
 
 
@@ -42,11 +43,7 @@ export const postApiAsset = (
     params?: PostApiAssetParams,
  ) => {
       
-      const formData = new FormData();
-if(postApiAssetBody.MediaFile !== undefined) {
- formData.append('MediaFile', postApiAssetBody.MediaFile)
- }
-
+      const formData = customFormData(postApiAssetBody)
       return customInstance<void>(
       {url: `/api/Asset`, method: 'POST',
       headers: {'Content-Type': 'multipart/form-data', },
@@ -95,11 +92,7 @@ export const putApiAsset = (
     params?: PutApiAssetParams,
  ) => {
       
-      const formData = new FormData();
-if(putApiAssetBody.MediaFile !== undefined) {
- formData.append('MediaFile', putApiAssetBody.MediaFile)
- }
-
+      const formData = customFormData(putApiAssetBody)
       return customInstance<void>(
       {url: `/api/Asset`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },
@@ -192,26 +185,7 @@ export const putApiAssetDasdsa = (
     assetUpdateDTO: AssetUpdateDTO,
  ) => {
       
-      const formData = new FormData();
-if(assetUpdateDTO.id !== undefined) {
- formData.append('id', assetUpdateDTO.id.toString())
- }
-if(assetUpdateDTO.name !== undefined && assetUpdateDTO.name !== null) {
- formData.append('name', assetUpdateDTO.name)
- }
-if(assetUpdateDTO.description !== undefined && assetUpdateDTO.description !== null) {
- formData.append('description', assetUpdateDTO.description)
- }
-if(assetUpdateDTO.assetType !== undefined) {
- formData.append('assetType', assetUpdateDTO.assetType.toString())
- }
-if(assetUpdateDTO.order !== undefined && assetUpdateDTO.order !== null) {
- formData.append('order', assetUpdateDTO.order.toString())
- }
-if(assetUpdateDTO.cost !== undefined && assetUpdateDTO.cost !== null) {
- formData.append('cost', assetUpdateDTO.cost.toString())
- }
-
+      const formData = customFormData(assetUpdateDTO)
       return customInstance<void>(
       {url: `/api/Asset/dasdsa`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },
@@ -352,26 +326,10 @@ export const postApiPortofolioContent = (
     postApiPortofolioContentBody: PostApiPortofolioContentBody,
  ) => {
       
-      const formData = new FormData();
-if(postApiPortofolioContentBody['PortofolioContent.Description'] !== undefined) {
- formData.append('PortofolioContent.Description', postApiPortofolioContentBody['PortofolioContent.Description'])
- }
-if(postApiPortofolioContentBody['PortofolioContent.Name'] !== undefined) {
- formData.append('PortofolioContent.Name', postApiPortofolioContentBody['PortofolioContent.Name'])
- }
-if(postApiPortofolioContentBody['PortofolioContent.FileType'] !== undefined) {
- formData.append('PortofolioContent.FileType', postApiPortofolioContentBody['PortofolioContent.FileType'].toString())
- }
-if(postApiPortofolioContentBody['PortofolioContent.Order'] !== undefined) {
- formData.append('PortofolioContent.Order', postApiPortofolioContentBody['PortofolioContent.Order'].toString())
- }
-if(postApiPortofolioContentBody.MediaFile !== undefined) {
- formData.append('MediaFile', postApiPortofolioContentBody.MediaFile)
- }
-
+      const formData = customFormData(postApiPortofolioContentBody)
       return customInstance<PortofolioContentDTO>(
       {url: `/api/PortofolioContent`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
+      headers: {'Content-Type': 'multipart/form-data'},
        data: formData
     },
       );
@@ -416,11 +374,7 @@ export const putApiPortofolioContent = (
     params?: PutApiPortofolioContentParams,
  ) => {
       
-      const formData = new FormData();
-if(putApiPortofolioContentBody.MediaFile !== undefined) {
- formData.append('MediaFile', putApiPortofolioContentBody.MediaFile)
- }
-
+      const formData = customFormData(putApiPortofolioContentBody)
       return customInstance<void>(
       {url: `/api/PortofolioContent`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },

@@ -1,14 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
-import { Text, View } from '@/components/Themed';
+import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
-export default function ModalScreen() {
+import { Text, View } from '@/components/Themed';
+import NewPortofolioContentModal from '@/components/Account/PortofolioContents/NewPortofolioContentModal';
+
+export default function PotofolioModal() {
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <NewPortofolioContentModal />
     </View>
+    </TouchableWithoutFeedback>
   );
 }
 
