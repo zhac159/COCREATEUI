@@ -1,6 +1,5 @@
 import { useSkillsState } from "@/components/RecoilStates/profileState";
 import { Button, Divider, Text } from "react-native-paper";
-import { getRestOfSkills } from "./Skill";
 import { ScrollView, View } from "react-native";
 import { flatten, groupBy, map } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
@@ -8,6 +7,7 @@ import SkillsList from "./SkillsList";
 import SkillsAddMenu from "./SkillsAddMenu";
 import { SkillDTO, SkillUpdateDTO } from "@/common/api/model";
 import { usePutApiUserSkills } from "@/common/api/endpoints/cocreateApi";
+import { getRestOfSkills } from "./skillHelper";
 
 const SkillsTab = () => {
   const [skills, setSkills] = useSkillsState();

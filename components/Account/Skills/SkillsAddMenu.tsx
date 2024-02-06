@@ -1,8 +1,9 @@
 import { SkillDTO } from "@/common/api/model";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
-import Skill, { SkillGroups, getRestOfSkills } from "./Skill";
+import Skill from "./Skill";
 import React, { FC, useState } from "react";
+import { SkillGroups } from "./skillHelper";
 
 type SkillsAddMenuProps = {
   restOfTheSkills: SkillDTO[];
@@ -34,7 +35,7 @@ const SkillsAddMenu: FC<SkillsAddMenuProps> = ({ restOfTheSkills, show, selectSk
                 backgroundColor:
                   skillGroupType ===
                   SkillGroups[skillGroup as keyof typeof SkillGroups]
-                    ? "blue"
+                    ? "lightgreen"
                     : "white",
               }}
             >

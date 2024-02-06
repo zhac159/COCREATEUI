@@ -12,8 +12,34 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
+import { useSkills } from "@/components/RecoilStates/profileState";
+import { getSkillGroupColor } from "@/components/Account/Skills/skillHelper";
 
 const AccountComponent = () => {
+
+  const skills = useSkills();
+
+  var colors = [];
+
+  if(!skills) {
+    colors = ["#FF0000", "#00FF00", "#0000FF"];
+  }
+  else {
+    colors = [...new Set(skills.map(skill => skill.skillGroupType === undefined ? "#000000":getSkillGroupColor(skill.skillGroupType)))];
+  }
+
+  colors.filter((color) => color !== "#000000");
+
+  if (colors.length === 0) {
+    colors = ["#000000", "#000000"];
+  }
+
+  if (colors.length === 1) {
+    colors = [colors[0], colors[0]];
+  }
+
+  console.log(colors);
+
   const animatedValue = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.loop(
@@ -33,12 +59,8 @@ const AccountComponent = () => {
   }, []);
 
   const colorInterpolation = animatedValue.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [
-      "rgba(0, 128, 0, 1)",
-      "rgba(0, 0, 255, 1)",
-      "rgba(173, 216, 230, 1)",
-    ],
+    inputRange:  colors.map((_, index) => index / (colors.length - 1)),
+    outputRange: colors,
   });
 
   return (
@@ -51,7 +73,7 @@ const AccountComponent = () => {
           bottom: 0,
           left: 0,
           right: 0,
-          height: "42%",
+          height: "100%",
           width: "100%",
         },
       ]}
@@ -98,18 +120,27 @@ export default function TabLayout() {
 
   return (
     <>
-      <AccountComponent  />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white", zIndex: 0 }}>
+      <AccountComponent />
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "transparent", zIndex: 0 }}
+      >
+        <LinearGradient
+          colors={["transparent", "white"]}
+          style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.42 }}
+        />
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
             headerShown: true,
             headerStyle: {
               height: 50,
-              backgroundColor: "white",
+              backgroundColor: "transparent",
               shadowOpacity: 0,
             },
           }}
+          sceneContainerStyle={{ backgroundColor: "transparent" }}
         >
           <Tabs.Screen
             name="account"

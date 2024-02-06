@@ -88,14 +88,14 @@ export default function Account() {
     fifth: FifthRoute,
   });
 
-
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "transparent" }}>
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
+            backgroundColor: "transparent",
           }}
         >
           <View
@@ -125,6 +125,7 @@ export default function Account() {
               ...styles.title,
               fontSize: 100,
               fontFamily: "Arial",
+              backgroundColor: "transparent",
             }}
           >
             {currentUser.username}
@@ -135,6 +136,7 @@ export default function Account() {
               alignItems: "center",
               marginTop: -8,
               paddingBottom: 40,
+              backgroundColor: "transparent",
             }}
           >
             <Text
@@ -159,6 +161,8 @@ export default function Account() {
             paddingBottom: 15,
             paddingTop: 15,
             width: "100%",
+            backgroundColor: "transparent",
+
           }}
         >
           <Button
@@ -245,6 +249,7 @@ export default function Account() {
           onIndexChange={setIndex}
           initialLayout={initialLayout}
           renderTabBar={() => null}
+          style={{ backgroundColor: "transparent" }}
         />
       </View>
       {/* <AccountComponent /> */}
@@ -266,6 +271,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     alignContent: "center",
+    
   },
   gradient: {
     position: "absolute",

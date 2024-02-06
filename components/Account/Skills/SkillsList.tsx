@@ -37,7 +37,6 @@ const SkillsList: FC<SkillsListProps> = ({ skills, editMode, deselectSkill }) =>
         marginTop: 10,
         gap: 10,
         height: "auto",
-        alignItems: joinedSkills.length === 1 ? "flex-start" : "center",
       }}
     />
   );
