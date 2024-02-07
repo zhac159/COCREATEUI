@@ -97,3 +97,7 @@ export const assetsSelector = selector({
     }
   },
 });
+
+export const useAssets = () => useRecoilValue(assetsSelector);
+export const useSetAssets = () => useSetRecoilState(assetsSelector);
+export const useAssetsState = () => useRecoilState(assetsSelector);

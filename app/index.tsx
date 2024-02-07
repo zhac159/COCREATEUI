@@ -7,19 +7,39 @@ import {
 } from "react-native";
 import { Text, View } from "@/components/Themed";
 import LoginForm from "@/components/LoginPage/LoginForm";
+import RegisterForm from "@/components/LoginPage/RegisterForm";
+import { useState } from "react";
+import { Button } from "react-native-paper";
 
 const LoginPage = () => {
+  const [form, setForm] = useState("login");
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Text style={styles.title}>WeCreate</Text>
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.1)"
-        />
-        <LoginForm />
-        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+        {form === "login" ? <LoginForm /> : <RegisterForm />}
+        <View style={{ flexDirection: "row" }}>
+          <Button
+            mode="contained"
+            onPress={() => setForm("login")}
+            color={form === "login" ? "blue" : "grey"}
+            style={{
+              marginRight: 10,
+              backgroundColor: form === "login" ? "blue" : "grey",
+            }}
+          >
+            Login
+          </Button>
+          <Button
+            mode="contained"
+            onPress={() => setForm("register")}
+            style={{
+              backgroundColor: form === "register" ? "blue" : "grey",
+            }}
+          >
+            Register
+          </Button>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

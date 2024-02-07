@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
 import NewPortofolioContentModal from '@/components/Account/PortofolioContents/NewPortofolioContentModal';

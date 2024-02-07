@@ -13,7 +13,6 @@ type SkillsListProps = {
 };
 
 const SkillsList: FC<SkillsListProps> = ({ skills, editMode, deselectSkill }) => {
-  if (!skills || skills.length === 0) return <Text>No skills</Text>;
 
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const joinedSkills = flatten(groupedSkills);

@@ -12,6 +12,5 @@ export interface AssetDTO {
   description?: string | null;
   id?: number;
   name?: string | null;
-  order?: number;
-  uri?: string | null;
+  uris?: string[] | null;
 }

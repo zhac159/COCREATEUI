@@ -6,5 +6,5 @@
  */
 
 export type PutApiAssetBody = {
-  MediaFile?: Blob;
+  MediaFiles?: Blob[];
 };

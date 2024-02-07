@@ -7,7 +7,6 @@
 
 export interface UserCreateDTO {
   email?: string | null;
-  location?: string | null;
   password?: string | null;
   username?: string | null;
 }

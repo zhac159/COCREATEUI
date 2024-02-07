@@ -11,6 +11,5 @@ export type PostApiAssetBody = {
   'Asset.Cost'?: number;
   'Asset.Description'?: string;
   'Asset.Name'?: string;
-  'Asset.Order'?: number;
-  MediaFile?: Blob;
+  MediaFiles?: Blob[];
 };

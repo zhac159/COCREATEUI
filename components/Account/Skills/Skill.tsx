@@ -103,6 +103,7 @@ const Skill: FC<SkillProps> = ({
                   padding: 5,
                 }}
                 onPress={handlePress}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
                 <MaterialCommunityIcons
                   name="minus-thick"

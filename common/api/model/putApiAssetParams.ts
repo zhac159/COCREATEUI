@@ -11,6 +11,6 @@ export type PutApiAssetParams = {
 'AssetUpdateDTO.Name'?: string;
 'AssetUpdateDTO.Description'?: string;
 'AssetUpdateDTO.AssetType'?: AssetType;
-'AssetUpdateDTO.Order'?: number;
 'AssetUpdateDTO.Cost'?: number;
+'AssetUpdateDTO.FileSrcs'?: string[];
 };

@@ -11,11 +11,10 @@ export interface Asset {
   assetType?: AssetType;
   cost?: number;
   description?: string | null;
-  fileSrc?: string | null;
+  fileSrcs?: string[] | null;
   id?: number;
   name?: string | null;
-  order?: number;
-  uri?: string | null;
+  uris?: string[] | null;
   user?: User;
   userId?: number;
 }

@@ -4,18 +4,18 @@ import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useSetCurrentUser } from "../RecoilStates/profileState";
-import { usePostApiLogin } from "@/common/api/endpoints/cocreateApi";
-import { UserLoginDTO } from "@/common/api/model";
+import { usePostApiLogin, usePostApiLoginRegister } from "@/common/api/endpoints/cocreateApi";
+import { UserCreateDTO, UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const setCurrentUser = useSetCurrentUser();
 
-  const { setValue, handleSubmit } = useForm<UserLoginDTO>();
+  const { setValue, handleSubmit } = useForm<UserCreateDTO>();
 
-  const { mutate, isLoading, error } = usePostApiLogin({
+  const { mutate, isLoading, error } = usePostApiLoginRegister({
     mutation: {
-      onSuccess: (data) => {
+  onSuccess: (data) => {
         setCurrentUser(data.user);
         const token = data.token;
         if (!token) {
@@ -30,8 +30,7 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: UserLoginDTO) => {
-    console.log(data);
+  const onSubmit = (data: UserCreateDTO) => {
     mutate({ data });
   };
 
@@ -48,6 +47,17 @@ const LoginForm = () => {
         }}
         onChangeText={(text) => setValue("username", text)}
       />
+      <Text>Email:</Text>
+      <TextInput
+        autoCapitalize="none"
+        style={{
+          height: 40,
+          borderColor: "gray",
+          borderWidth: 1,
+          width: 200,
+        }}
+        onChangeText={(text) => setValue("email", text)}
+      />
       <Text>Password:</Text>
       <TextInput
         secureTextEntry
@@ -59,8 +69,8 @@ const LoginForm = () => {
         }}
         onChangeText={(text) => setValue("password", text)}
       />
-      {error && error.code === "404" && (
-        <Text>Username or password is wrong</Text>
+      {error && error.code === "409" && (
+        <Text>User with this username or email already exists</Text>
       )}
       <Button
         role="button"
@@ -74,4 +84,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

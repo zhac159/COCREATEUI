@@ -1,9 +1,4 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -11,6 +6,8 @@ import { useEffect } from "react";
 import { useColorScheme } from "@/components/useColorScheme";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Provider } from "react-native-paper";
+import { LightTheme } from "@/components/Themes/theme";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -48,17 +45,19 @@ function RootLayoutNav() {
   const queryClient = new QueryClient();
 
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-          <Stack.Screen
-            name="portofolioModal"
-            options={{ presentation: "modal" }}
-          />
-        </Stack>
-      </QueryClientProvider>
-    </RecoilRoot>
+    <Provider theme={LightTheme}>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+            <Stack.Screen
+              name="portofolioModal"
+              options={{ presentation: "modal" }}
+            />
+          </Stack>
+        </QueryClientProvider>
+      </RecoilRoot>
+    </Provider>
   );
 }

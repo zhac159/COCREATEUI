@@ -1,48 +1,18 @@
-import { StyleSheet, ScrollView, Animated, Dimensions } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { StyleSheet, Animated, Dimensions } from "react-native";
 import { View } from "@/components/Themed";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useEffect, useRef, useState } from "react";
 import SkillsTab from "@/components/Account/Skills/SkillsTab";
+import AccountMainInfo from "@/components/Account/AccountMainInfo";
+import TabButtons from "@/components/Account/TabButtons";
+import AssetTab from "@/components/Account/Assets/AssetTab";
 
-const SecondRoute = () => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(animatedValue, {
-          toValue: 1,
-          duration: 30000,
-          useNativeDriver: false,
-        }),
-        Animated.timing(animatedValue, {
-          toValue: 0,
-          duration: 30000,
-          useNativeDriver: false,
-        }),
-      ])
-    ).start();
-  }, []);
-
-  const colorInterpolation = animatedValue.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [
-      "rgba(0, 128, 0, 1)",
-      "rgba(0, 0, 255, 1)",
-      "rgba(173, 216, 230, 1)",
-    ],
-  });
-
-  return (
-    <View style={[styles.scene, { backgroundColor: "red" }]}>
-      <Animated.View
-        style={{ ...styles.gradient, backgroundColor: colorInterpolation }}
-      />
-    </View>
-  );
-};
+const SecondRoute = () => (
+  <View style={[styles.scene]}>
+    <AssetTab />
+  </View>
+);
 
 const FirstRoute = () => (
   <View style={[styles.scene]}>
@@ -67,11 +37,7 @@ const initialLayout = { width: Dimensions.get("window").width };
 export default function Account() {
   const currentUser = useCurrentUserValue();
 
-  if (!currentUser || !currentUser.assets) {
-    return null;
-  }
-
-  const [index, setIndex] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [routes] = useState([
     { key: "first", title: "First" },
     { key: "second", title: "Second" },
@@ -88,171 +54,34 @@ export default function Account() {
     fifth: FifthRoute,
   });
 
+  const buttonNames = ["Skills", "Assets", "Portofolio", "About", "Feedback"];
+
+  if (!currentUser) {
+    return null;
+  }
+
   return (
     <>
       <View style={{ flex: 1, backgroundColor: "transparent" }}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "transparent",
-          }}
-        >
-          <View
-            style={{
-              borderColor: "black",
-              borderRightWidth: 25,
-              borderLeftWidth: 25,
-              borderTopWidth: 3,
-              borderBottomWidth: 3,
-              borderRadius: 30,
-              backgroundColor: "black",
-            }}
-          >
-            <Text
-              style={{
-                ...styles.title,
-                fontSize: 30,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              {currentUser.coins}
-            </Text>
-          </View>
-          <Text
-            style={{
-              ...styles.title,
-              fontSize: 100,
-              fontFamily: "Arial",
-              backgroundColor: "transparent",
-            }}
-          >
-            {currentUser.username}
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: -8,
-              paddingBottom: 40,
-              backgroundColor: "transparent",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 30,
-                marginRight: 5,
-              }}
-            >
-              {currentUser.rating}
-            </Text>
-            <FontAwesome name="star" size={20} color="black" />
-          </View>
-        </View>
-        <View
-          style={{
-            borderTopWidth: 1,
-            borderBottomWidth: 1,
-            borderColor: "black",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            padding: 10,
-            paddingBottom: 15,
-            paddingTop: 15,
-            width: "100%",
-            backgroundColor: "transparent",
-
-          }}
-        >
-          <Button
-            onPress={() => {
-              setIndex(0);
-            }}
-            style={{
-              backgroundColor: index == 0 ? "blue" : "transparent",
-            }}
-          >
-            <Text
-              style={{
-                color: index == 0 ? "white" : "black",
-                fontWeight: "bold",
-              }}
-            >
-              {"Skills"}
-            </Text>
-          </Button>
-          <Button
-            onPress={() => {
-              setIndex(1);
-            }}
-            style={{ backgroundColor: index == 1 ? "blue" : "transparent" }}
-          >
-            <Text
-              style={{
-                color: index == 1 ? "white" : "black",
-                fontWeight: "bold",
-              }}
-            >
-              {"Assets"}
-            </Text>
-          </Button>
-          <Button
-            onPress={() => {
-              setIndex(2);
-            }}
-            style={{ backgroundColor: index == 2 ? "blue" : "transparent" }}
-          >
-            <Text
-              style={{
-                color: index == 2 ? "white" : "black",
-                fontWeight: "bold",
-              }}
-            >
-              {"Portofolio"}
-            </Text>
-          </Button>
-          <Button
-            onPress={() => {
-              setIndex(3);
-            }}
-            style={{ backgroundColor: index == 3 ? "blue" : "transparent" }}
-          >
-            <Text
-              style={{
-                color: index == 3 ? "white" : "black",
-                fontWeight: "bold",
-              }}
-            >
-              {"About"}
-            </Text>
-          </Button>
-          <Button
-            onPress={() => {
-              setIndex(4);
-            }}
-            style={{ backgroundColor: index == 4 ? "blue" : "transparent" }}
-          >
-            <Text
-              style={{
-                color: index == 4 ? "white" : "black",
-                fontWeight: "bold",
-              }}
-            >
-              {"Feedback"}
-            </Text>
-          </Button>
-        </View>
+        <AccountMainInfo
+          coins={currentUser.coins || 0}
+          username={currentUser.username || "username"}
+          rating={currentUser.rating || 0}
+        />
+        <TabButtons
+          tabs={buttonNames}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
         <TabView
-          navigationState={{ index, routes }}
+          navigationState={{ index: selectedTab, routes }}
           renderScene={renderScene}
-          onIndexChange={setIndex}
+          onIndexChange={setSelectedTab}
           initialLayout={initialLayout}
           renderTabBar={() => null}
           style={{ backgroundColor: "transparent" }}
         />
       </View>
-      {/* <AccountComponent /> */}
     </>
   );
 }
@@ -271,7 +100,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     alignContent: "center",
-    
   },
   gradient: {
     position: "absolute",
@@ -290,8 +118,8 @@ const styles = StyleSheet.create({
 {
   /* <Text
         style={{
-          ...styles.title,
-          fontSize: 50,
+            ...styles.title,
+            fontSize: 50,
           fontWeight: "bold",
           paddingBottom: 20,
         }}

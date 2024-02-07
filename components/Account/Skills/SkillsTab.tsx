@@ -24,7 +24,9 @@ const SkillsTab = () => {
 
   const deselectSkill = (skillDTO: SkillDTO) => {
     setSkills((prevSkills) =>
-      prevSkills ? prevSkills.filter((skill) => skill.skillType !== skillDTO.skillType) : []
+      prevSkills
+        ? prevSkills.filter((skill) => skill.skillType !== skillDTO.skillType)
+        : []
     );
     setRestOfTheSkills((prevRestOfSkills) => [...prevRestOfSkills, skillDTO]);
   };
@@ -35,8 +37,6 @@ const SkillsTab = () => {
     );
     setSkills((prevSkills) => (prevSkills ? [...prevSkills, skillDTO] : []));
   };
-
-  if (!skills || skills.length === 0) return <Text>No skills</Text>;
 
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const joinedSkills = flatten(groupedSkills);
@@ -50,9 +50,19 @@ const SkillsTab = () => {
       skillType: skillDTO.skillType,
     };
   };
-  
+
+  useEffect(() => {
+    if (!editMode && (!skills || skills.length === 0)) {
+      setEditMode(true);
+    }
+  }, [skills]);
+
   return (
-    <ScrollView style={{ height: "100%", width: "100%" }}>
+    <ScrollView
+      style={{ height: "100%", width: "100%" }}
+      pointerEvents="box-none"
+      canCancelContentTouches={false}
+    >
       <View
         style={{
           height: "100%",
@@ -60,7 +70,9 @@ const SkillsTab = () => {
         }}
       >
         <View style={{ flex: 1, width: "100%", flexGrow: 1, flexWrap: "wrap" }}>
-          <View style={{ width: "100%", flexWrap: "wrap", flex: 1, marginTop: 25 }}>
+          <View
+            style={{ width: "100%", flexWrap: "wrap", flex: 1, marginTop: 25 }}
+          >
             <SkillsList
               skills={joinedSkills}
               editMode={editMode}
@@ -79,6 +91,7 @@ const SkillsTab = () => {
               show={editMode}
               selectSkill={selectSkill}
             />
+
             {editMode && (
               <Divider
                 style={{
@@ -101,9 +114,9 @@ const SkillsTab = () => {
               onPress={() => {
                 setEditMode(!editMode);
 
-                if (editMode) {
+                if (editMode && skills) {
                   mutate({
-                    data: skills.map(mapSkillDTOToSkillUpdateDTO)
+                    data: skills.map(mapSkillDTOToSkillUpdateDTO),
                   });
                 }
               }}
