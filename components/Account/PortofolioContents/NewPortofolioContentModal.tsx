@@ -51,11 +51,12 @@ const PortofolioContentModal = () => {
   };
 
   return (
-<>
-     {isLoading ? (
-      <ActivityIndicator size="large" color="#0000ff" />
-    ) : (
-      <><Controller
+    <>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
@@ -63,55 +64,69 @@ const PortofolioContentModal = () => {
                 style={styles.TextInput}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
-                value={value} />
+                value={value}
+              />
             )}
             name="PortofolioContent.Description"
-            rules={{ required: true }} /><Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  label="Name"
-                  style={styles.TextInput}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value} />
-              )}
-              name="PortofolioContent.Name"
-              rules={{ required: true }} /><Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  label="FileType"
-                  style={styles.TextInput}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value} />
-              )}
-              name="PortofolioContent.FileType"
-              rules={{ required: true }} /><Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  label="Order"
-                  style={styles.TextInput}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                  keyboardType="numeric" />
-              )}
-              name="PortofolioContent.Order"
-              rules={{ required: true }} /><Controller
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Button onPress={() => handleChoosePhoto(onChange)}>
-                  Choose Photo
-                </Button>
-              )}
-              name="MediaFile" /><Button mode="contained" onPress={handleSubmit(onSubmit)}>
-              Submit
-            </Button></>
-    )}
-      
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Name"
+                style={styles.TextInput}
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+              />
+            )}
+            name="PortofolioContent.Name"
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="FileType"
+                style={styles.TextInput}
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+              />
+            )}
+            name="PortofolioContent.FileType"
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                label="Order"
+                style={styles.TextInput}
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+                keyboardType="numeric"
+              />
+            )}
+            name="PortofolioContent.Order"
+            rules={{ required: true }}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Button onPress={() => handleChoosePhoto(onChange)}>
+                Choose Photo
+              </Button>
+            )}
+            name="MediaFile"
+          />
+          <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            Submit
+          </Button>
+        </>
+      )}
     </>
   );
 };

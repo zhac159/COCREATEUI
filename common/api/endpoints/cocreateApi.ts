@@ -30,6 +30,8 @@ import type {
   SkillUpdateDTO,
   UserCreateDTO,
   UserDTO,
+  UserLocationDTO,
+  UserLocationUpdateDTO,
   UserLoginDTO,
   UserUpdateDTO
 } from '../model'
@@ -561,6 +563,53 @@ export const getPutApiUserSkillsMutationOptions = <TError = ErrorType<unknown>,
 ) => {
 
       const mutationOptions = getPutApiUserSkillsMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const putApiUserLocation = (
+    userLocationUpdateDTO: UserLocationUpdateDTO,
+ ) => {
+      
+      
+      return customInstance<UserLocationDTO>(
+      {url: `/api/User/location`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: userLocationUpdateDTO
+    },
+      );
+    }
+  
+
+
+export const getPutApiUserLocationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiUserLocation>>, TError,{data: UserLocationUpdateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiUserLocation>>, TError,{data: UserLocationUpdateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiUserLocation>>, {data: UserLocationUpdateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiUserLocation(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiUserLocationMutationResult = NonNullable<Awaited<ReturnType<typeof putApiUserLocation>>>
+    export type PutApiUserLocationMutationBody = UserLocationUpdateDTO
+    export type PutApiUserLocationMutationError = ErrorType<unknown>
+
+    export const usePutApiUserLocation = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiUserLocation>>, TError,{data: UserLocationUpdateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPutApiUserLocationMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

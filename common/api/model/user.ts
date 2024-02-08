@@ -11,11 +11,13 @@ import type { Skill } from './skill';
 
 export interface User {
   aboutYou?: string | null;
+  address?: string | null;
   assets?: Asset[] | null;
   bannerPictureSrc?: string | null;
   coins?: number;
   email?: string | null;
-  location?: string | null;
+  latitude?: number;
+  longitude?: number;
   password?: string | null;
   portofolioContents?: PortofolioContent[] | null;
   profilePictureSrc?: string | null;

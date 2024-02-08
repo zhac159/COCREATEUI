@@ -67,6 +67,7 @@ export default function Account() {
           coins={currentUser.coins || 0}
           username={currentUser.username || "username"}
           rating={currentUser.rating || 0}
+          address={currentUser.address || "address"}
         />
         <TabButtons
           tabs={buttonNames}
@@ -77,6 +78,7 @@ export default function Account() {
           navigationState={{ index: selectedTab, routes }}
           renderScene={renderScene}
           onIndexChange={setSelectedTab}
+          swipeEnabled={false} 
           initialLayout={initialLayout}
           renderTabBar={() => null}
           style={{ backgroundColor: "transparent" }}
@@ -110,34 +112,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// const imageLinks2 = currentUser.assets.map((content) => {
-//   if (content.uri) {
-//     return content.uri;
-//   }
-// });
-{
-  /* <Text
-        style={{
-            ...styles.title,
-            fontSize: 50,
-          fontWeight: "bold",
-          paddingBottom: 20,
-        }}
-      >
-        {currentUser.aboutYou}
-      </Text> */
-}
-{
-  /* <Text style={styles.title}>{"assets"}</Text>
-      {imageLinks2 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {imageLinks2.map((link, index) => (
-            <Card key={index} style={styles.card}>
-              <Card.Cover source={{ uri: link }} />
-            </Card>
-          ))}
-        </ScrollView>
-      )}
-      <PortofolioContent />
-      <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */
-}

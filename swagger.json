@@ -1,1348 +1,1448 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-      "title": "CoCreateAPI",
-      "version": "v1"
-  },
-  "paths": {
-      "/api/Asset": {
-          "post": {
-              "tags": [
-                  "Asset"
-              ],
-              "requestBody": {
-                  "content": {
-                      "multipart/form-data": {
-                          "schema": {
-                              "type": "object",
-                              "properties": {
-                                  "Asset.Name": {
-                                      "type": "string"
-                                  },
-                                  "Asset.Description": {
-                                      "type": "string"
-                                  },
-                                  "Asset.AssetType": {
-                                      "$ref": "#/components/schemas/AssetType"
-                                  },
-                                  "Asset.Cost": {
-                                      "type": "integer",
-                                      "format": "int32"
-                                  },
-                                  "MediaFiles": {
-                                      "type": "array",
-                                      "items": {
-                                          "type": "string",
-                                          "format": "binary"
-                                      }
-                                  }
-                              }
-                          },
-                          "encoding": {
-                              "Asset.Name": {
-                                  "style": "form"
-                              },
-                              "Asset.Description": {
-                                  "style": "form"
-                              },
-                              "Asset.AssetType": {
-                                  "style": "form"
-                              },
-                              "Asset.Cost": {
-                                  "style": "form"
-                              },
-                              "MediaFiles": {
-                                  "style": "form"
-                              }
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          },
-          "put": {
-              "tags": [
-                  "Asset"
-              ],
-              "parameters": [
-                  {
-                      "name": "AssetUpdateDTO.Id",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  },
-                  {
-                      "name": "AssetUpdateDTO.Name",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "string"
-                      }
-                  },
-                  {
-                      "name": "AssetUpdateDTO.Description",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "string"
-                      }
-                  },
-                  {
-                      "name": "AssetUpdateDTO.AssetType",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "$ref": "#/components/schemas/AssetType"
-                      }
-                  },
-                  {
-                      "name": "AssetUpdateDTO.Cost",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  },
-                  {
-                      "name": "AssetUpdateDTO.FileSrcs",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "array",
-                          "items": {
-                              "type": "string"
-                          }
-                      }
-                  }
-              ],
-              "requestBody": {
-                  "content": {
-                      "multipart/form-data": {
-                          "schema": {
-                              "type": "object",
-                              "properties": {
-                                  "MediaFiles": {
-                                      "type": "array",
-                                      "items": {
-                                          "type": "string",
-                                          "format": "binary"
-                                      }
-                                  }
-                              }
-                          },
-                          "encoding": {
-                              "MediaFiles": {
-                                  "style": "form"
-                              }
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/AssetDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/Asset/{id}": {
-          "delete": {
-              "tags": [
-                  "Asset"
-              ],
-              "parameters": [
-                  {
-                      "name": "id",
-                      "in": "path",
-                      "required": true,
-                      "style": "simple",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/Login": {
-          "post": {
-              "tags": [
-                  "Login"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserLoginDTO"
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserLoginDTO"
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserLoginDTO"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/Login/register": {
-          "post": {
-              "tags": [
-                  "Login"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserCreateDTO"
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserCreateDTO"
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserCreateDTO"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/PortofolioContent": {
-          "post": {
-              "tags": [
-                  "PortofolioContent"
-              ],
-              "requestBody": {
-                  "content": {
-                      "multipart/form-data": {
-                          "schema": {
-                              "type": "object",
-                              "properties": {
-                                  "PortofolioContent.Description": {
-                                      "type": "string"
-                                  },
-                                  "PortofolioContent.Name": {
-                                      "type": "string"
-                                  },
-                                  "PortofolioContent.FileType": {
-                                      "$ref": "#/components/schemas/FileType"
-                                  },
-                                  "PortofolioContent.Order": {
-                                      "type": "integer",
-                                      "format": "int32"
-                                  },
-                                  "MediaFile": {
-                                      "type": "string",
-                                      "format": "binary"
-                                  }
-                              }
-                          },
-                          "encoding": {
-                              "PortofolioContent.Description": {
-                                  "style": "form"
-                              },
-                              "PortofolioContent.Name": {
-                                  "style": "form"
-                              },
-                              "PortofolioContent.FileType": {
-                                  "style": "form"
-                              },
-                              "PortofolioContent.Order": {
-                                  "style": "form"
-                              },
-                              "MediaFile": {
-                                  "style": "form"
-                              }
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          },
-          "put": {
-              "tags": [
-                  "PortofolioContent"
-              ],
-              "parameters": [
-                  {
-                      "name": "PortofolioContentUpdateDTO.Id",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  },
-                  {
-                      "name": "PortofolioContentUpdateDTO.Description",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "string"
-                      }
-                  },
-                  {
-                      "name": "PortofolioContentUpdateDTO.Name",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "string"
-                      }
-                  },
-                  {
-                      "name": "PortofolioContentUpdateDTO.FileType",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "$ref": "#/components/schemas/FileType"
-                      }
-                  },
-                  {
-                      "name": "PortofolioContentUpdateDTO.Order",
-                      "in": "query",
-                      "style": "form",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  }
-              ],
-              "requestBody": {
-                  "content": {
-                      "multipart/form-data": {
-                          "schema": {
-                              "type": "object",
-                              "properties": {
-                                  "MediaFile": {
-                                      "type": "string",
-                                      "format": "binary"
-                                  }
-                              }
-                          },
-                          "encoding": {
-                              "MediaFile": {
-                                  "style": "form"
-                              }
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/PortofolioContent/{id}": {
-          "delete": {
-              "tags": [
-                  "PortofolioContent"
-              ],
-              "parameters": [
-                  {
-                      "name": "id",
-                      "in": "path",
-                      "required": true,
-                      "style": "simple",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/User/{userId}": {
-          "get": {
-              "tags": [
-                  "User"
-              ],
-              "parameters": [
-                  {
-                      "name": "userId",
-                      "in": "path",
-                      "required": true,
-                      "style": "simple",
-                      "schema": {
-                          "type": "integer",
-                          "format": "int32"
-                      }
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/UserDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/UserDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/UserDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/User": {
-          "put": {
-              "tags": [
-                  "User"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserUpdateDTO"
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserUpdateDTO"
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UserUpdateDTO"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/UserDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/UserDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/UserDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      },
-      "/api/User/skills": {
-          "put": {
-              "tags": [
-                  "User"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "type": "array",
-                              "items": {
-                                  "$ref": "#/components/schemas/SkillUpdateDTO"
-                              }
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "type": "array",
-                              "items": {
-                                  "$ref": "#/components/schemas/SkillUpdateDTO"
-                              }
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "type": "array",
-                              "items": {
-                                  "$ref": "#/components/schemas/SkillUpdateDTO"
-                              }
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "200": {
-                      "description": "Success",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/SkillDTOAPIResponse"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/SkillDTOAPIResponse"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/SkillDTOAPIResponse"
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-      }
-  },
-  "components": {
-      "schemas": {
-          "Asset": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "name": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "assetType": {
-                      "$ref": "#/components/schemas/AssetType"
-                  },
-                  "fileSrcs": {
-                      "type": "array",
-                      "items": {
-                          "type": "string"
-                      },
-                      "nullable": true
-                  },
-                  "cost": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "userId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "user": {
-                      "$ref": "#/components/schemas/User"
-                  },
-                  "uris": {
-                      "type": "array",
-                      "items": {
-                          "type": "string",
-                          "format": "uri"
-                      },
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "AssetDTO": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "name": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "assetType": {
-                      "$ref": "#/components/schemas/AssetType"
-                  },
-                  "cost": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "uris": {
-                      "type": "array",
-                      "items": {
-                          "type": "string",
-                          "format": "uri"
-                      },
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "AssetDTOAPIResponse": {
-              "type": "object",
-              "properties": {
-                  "success": {
-                      "type": "boolean"
-                  },
-                  "data": {
-                      "$ref": "#/components/schemas/AssetDTO"
-                  },
-                  "error": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "AssetType": {
-              "enum": [
-                  0,
-                  1,
-                  2,
-                  3,
-                  4
-              ],
-              "type": "integer",
-              "format": "int32"
-          },
-          "BooleanAPIResponse": {
-              "type": "object",
-              "properties": {
-                  "success": {
-                      "type": "boolean"
-                  },
-                  "data": {
-                      "type": "boolean"
-                  },
-                  "error": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "FileType": {
-              "enum": [
-                  0,
-                  1,
-                  2
-              ],
-              "type": "integer",
-              "format": "int32"
-          },
-          "LoginResponseDTO": {
-              "type": "object",
-              "properties": {
-                  "token": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "user": {
-                      "$ref": "#/components/schemas/UserDTO"
-                  }
-              },
-              "additionalProperties": false
-          },
-          "LoginResponseDTOAPIResponse": {
-              "type": "object",
-              "properties": {
-                  "success": {
-                      "type": "boolean"
-                  },
-                  "data": {
-                      "$ref": "#/components/schemas/LoginResponseDTO"
-                  },
-                  "error": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "PortofolioContent": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "name": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "fileSrc": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "fileType": {
-                      "$ref": "#/components/schemas/FileType"
-                  },
-                  "order": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "userId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "user": {
-                      "$ref": "#/components/schemas/User"
-                  },
-                  "uri": {
-                      "type": "string",
-                      "format": "uri",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "PortofolioContentDTO": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "name": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "fileType": {
-                      "$ref": "#/components/schemas/FileType"
-                  },
-                  "order": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "uri": {
-                      "type": "string",
-                      "format": "uri",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "PortofolioContentDTOAPIResponse": {
-              "type": "object",
-              "properties": {
-                  "success": {
-                      "type": "boolean"
-                  },
-                  "data": {
-                      "$ref": "#/components/schemas/PortofolioContentDTO"
-                  },
-                  "error": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "Review": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "rating": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "reviewerUserId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "reviewerUser": {
-                      "$ref": "#/components/schemas/User"
-                  },
-                  "reviewedUserId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "reviewedUser": {
-                      "$ref": "#/components/schemas/User"
-                  }
-              },
-              "additionalProperties": false
-          },
-          "Skill": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "skillType": {
-                      "$ref": "#/components/schemas/SkillType"
-                  },
-                  "skillGroupType": {
-                      "$ref": "#/components/schemas/SkillGroupType"
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "level": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "userId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "user": {
-                      "$ref": "#/components/schemas/User"
-                  }
-              },
-              "additionalProperties": false
-          },
-          "SkillDTO": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "skillType": {
-                      "$ref": "#/components/schemas/SkillType"
-                  },
-                  "skillGroupType": {
-                      "$ref": "#/components/schemas/SkillGroupType"
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "level": {
-                      "type": "integer",
-                      "format": "int32"
-                  }
-              },
-              "additionalProperties": false
-          },
-          "SkillDTOAPIResponse": {
-              "type": "object",
-              "properties": {
-                  "success": {
-                      "type": "boolean"
-                  },
-                  "data": {
-                      "$ref": "#/components/schemas/SkillDTO"
-                  },
-                  "error": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "SkillGroupType": {
-              "enum": [
-                  0,
-                  1,
-                  2,
-                  3,
-                  4,
-                  5
-              ],
-              "type": "integer",
-              "format": "int32"
-          },
-          "SkillType": {
-              "enum": [
-                  0,
-                  1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12,
-                  13,
-                  14,
-                  15,
-                  16
-              ],
-              "type": "integer",
-              "format": "int32"
-          },
-          "SkillUpdateDTO": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "integer",
-                      "format": "int32",
-                      "nullable": true
-                  },
-                  "skillType": {
-                      "$ref": "#/components/schemas/SkillType"
-                  },
-                  "skillGroupType": {
-                      "$ref": "#/components/schemas/SkillGroupType"
-                  },
-                  "description": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "level": {
-                      "type": "integer",
-                      "format": "int32"
-                  }
-              },
-              "additionalProperties": false
-          },
-          "User": {
-              "type": "object",
-              "properties": {
-                  "userId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "username": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "password": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "email": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "location": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "rating": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "totalReviews": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "aboutYou": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "coins": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "profilePictureSrc": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "bannerPictureSrc": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "skills": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/Skill"
-                      },
-                      "nullable": true
-                  },
-                  "portofolioContents": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/PortofolioContent"
-                      },
-                      "nullable": true
-                  },
-                  "reviewsGiven": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/Review"
-                      },
-                      "nullable": true
-                  },
-                  "reviewsReceived": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/Review"
-                      },
-                      "nullable": true
-                  },
-                  "assets": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/Asset"
-                      },
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "UserCreateDTO": {
-              "type": "object",
-              "properties": {
-                  "username": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "password": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "email": {
-                      "type": "string",
-                      "format": "email",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "UserDTO": {
-              "type": "object",
-              "properties": {
-                  "userId": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "username": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "email": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "location": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "aboutYou": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "coins": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "rating": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "totalReviews": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "profilePictureSrc": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "bannerPictureSrc": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "skills": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/SkillDTO"
-                      },
-                      "nullable": true
-                  },
-                  "portofolioContents": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/PortofolioContentDTO"
-                      },
-                      "nullable": true
-                  },
-                  "reviewsGiven": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/Review"
-                      },
-                      "nullable": true
-                  },
-                  "reviewsReceived": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/Review"
-                      },
-                      "nullable": true
-                  },
-                  "assets": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/AssetDTO"
-                      },
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "UserDTOAPIResponse": {
-              "type": "object",
-              "properties": {
-                  "success": {
-                      "type": "boolean"
-                  },
-                  "data": {
-                      "$ref": "#/components/schemas/UserDTO"
-                  },
-                  "error": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "UserLoginDTO": {
-              "type": "object",
-              "properties": {
-                  "username": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "password": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          },
-          "UserUpdateDTO": {
-              "type": "object",
-              "properties": {
-                  "username": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "email": {
-                      "type": "string",
-                      "format": "email",
-                      "nullable": true
-                  },
-                  "aboutYou": {
-                      "type": "string",
-                      "nullable": true
-                  },
-                  "skills": {
-                      "type": "array",
-                      "items": {
-                          "$ref": "#/components/schemas/SkillUpdateDTO"
-                      },
-                      "nullable": true
-                  }
-              },
-              "additionalProperties": false
-          }
-      },
-      "securitySchemes": {
-          "Bearer": {
-              "type": "http",
-              "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-              "scheme": "bearer"
-          }
-      }
-  },
-  "security": [
-      {
-          "Bearer": []
-      }
-  ]
+    "openapi": "3.0.1",
+    "info": {
+        "title": "CoCreateAPI",
+        "version": "v1"
+    },
+    "paths": {
+        "/api/Asset": {
+            "post": {
+                "tags": [
+                    "Asset"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "Asset.Name": {
+                                        "type": "string"
+                                    },
+                                    "Asset.Description": {
+                                        "type": "string"
+                                    },
+                                    "Asset.AssetType": {
+                                        "$ref": "#/components/schemas/AssetType"
+                                    },
+                                    "Asset.Cost": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "MediaFiles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "Asset.Name": {
+                                    "style": "form"
+                                },
+                                "Asset.Description": {
+                                    "style": "form"
+                                },
+                                "Asset.AssetType": {
+                                    "style": "form"
+                                },
+                                "Asset.Cost": {
+                                    "style": "form"
+                                },
+                                "MediaFiles": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Asset"
+                ],
+                "parameters": [
+                    {
+                        "name": "AssetUpdateDTO.Id",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "AssetUpdateDTO.Name",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "AssetUpdateDTO.Description",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "AssetUpdateDTO.AssetType",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "$ref": "#/components/schemas/AssetType"
+                        }
+                    },
+                    {
+                        "name": "AssetUpdateDTO.Cost",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "AssetUpdateDTO.FileSrcs",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "MediaFiles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "MediaFiles": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssetDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Asset/{id}": {
+            "delete": {
+                "tags": [
+                    "Asset"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLoginDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLoginDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLoginDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Login/register": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/PortofolioContent": {
+            "post": {
+                "tags": [
+                    "PortofolioContent"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "PortofolioContent.Description": {
+                                        "type": "string"
+                                    },
+                                    "PortofolioContent.Name": {
+                                        "type": "string"
+                                    },
+                                    "PortofolioContent.FileType": {
+                                        "$ref": "#/components/schemas/FileType"
+                                    },
+                                    "PortofolioContent.Order": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "MediaFile": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "PortofolioContent.Description": {
+                                    "style": "form"
+                                },
+                                "PortofolioContent.Name": {
+                                    "style": "form"
+                                },
+                                "PortofolioContent.FileType": {
+                                    "style": "form"
+                                },
+                                "PortofolioContent.Order": {
+                                    "style": "form"
+                                },
+                                "MediaFile": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "PortofolioContent"
+                ],
+                "parameters": [
+                    {
+                        "name": "PortofolioContentUpdateDTO.Id",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "PortofolioContentUpdateDTO.Description",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PortofolioContentUpdateDTO.Name",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PortofolioContentUpdateDTO.FileType",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "$ref": "#/components/schemas/FileType"
+                        }
+                    },
+                    {
+                        "name": "PortofolioContentUpdateDTO.Order",
+                        "in": "query",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "MediaFile": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "MediaFile": {
+                                    "style": "form"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/PortofolioContent/{id}": {
+            "delete": {
+                "tags": [
+                    "PortofolioContent"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/User/{userId}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/User": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/User/skills": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/SkillUpdateDTO"
+                                }
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/SkillUpdateDTO"
+                                }
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/SkillUpdateDTO"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SkillDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SkillDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SkillDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/User/location": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLocationUpdateDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLocationUpdateDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLocationUpdateDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserLocationDTOAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserLocationDTOAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserLocationDTOAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Asset": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "assetType": {
+                        "$ref": "#/components/schemas/AssetType"
+                    },
+                    "fileSrcs": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "cost": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "uris": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "AssetDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "assetType": {
+                        "$ref": "#/components/schemas/AssetType"
+                    },
+                    "cost": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "uris": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "AssetDTOAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetDTO"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "AssetType": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "BooleanAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "type": "boolean"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FileType": {
+                "enum": [
+                    0,
+                    1,
+                    2
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "LoginResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserDTO"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LoginResponseDTOAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/LoginResponseDTO"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContent": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "fileSrc": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "fileType": {
+                        "$ref": "#/components/schemas/FileType"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "uri": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContentDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "fileType": {
+                        "$ref": "#/components/schemas/FileType"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "uri": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContentDTOAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PortofolioContentDTO"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Review": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "rating": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "reviewerUserId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "reviewerUser": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "reviewedUserId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "reviewedUser": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "Skill": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
+                    },
+                    "skillGroupType": {
+                        "$ref": "#/components/schemas/SkillGroupType"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "level": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
+                    },
+                    "skillGroupType": {
+                        "$ref": "#/components/schemas/SkillGroupType"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "level": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillDTOAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/SkillDTO"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillGroupType": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "SkillType": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "SkillUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
+                    },
+                    "skillGroupType": {
+                        "$ref": "#/components/schemas/SkillGroupType"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "level": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "username": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "rating": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalReviews": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "aboutYou": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "coins": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "profilePictureSrc": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "bannerPictureSrc": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "skills": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Skill"
+                        },
+                        "nullable": true
+                    },
+                    "portofolioContents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PortofolioContent"
+                        },
+                        "nullable": true
+                    },
+                    "reviewsGiven": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        },
+                        "nullable": true
+                    },
+                    "reviewsReceived": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        },
+                        "nullable": true
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Asset"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserCreateDTO": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserDTO": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "username": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "aboutYou": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "coins": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "rating": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalReviews": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "profilePictureSrc": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "bannerPictureSrc": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "skills": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillDTO"
+                        },
+                        "nullable": true
+                    },
+                    "portofolioContents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PortofolioContentDTO"
+                        },
+                        "nullable": true
+                    },
+                    "reviewsGiven": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        },
+                        "nullable": true
+                    },
+                    "reviewsReceived": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Review"
+                        },
+                        "nullable": true
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetDTO"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserDTOAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/UserDTO"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserLocationDTO": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserLocationDTOAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/UserLocationDTO"
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserLocationUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "longitude": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "address": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserLoginDTO": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "nullable": true
+                    },
+                    "aboutYou": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "skills": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillUpdateDTO"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "Bearer": []
+        }
+    ]
 }

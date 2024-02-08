@@ -7,8 +7,17 @@ import {
   Surface,
   Text,
 } from "react-native-paper";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { Image } from "expo-image";
+import React from "react";
+import ImageViewer from "react-native-image-zoom-viewer";
+import { CacheManager } from "react-native-expo-image-cache";
+import {
+  TapGestureHandler,
+  State,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 
 type AssetProps = {
   asset: AssetDTO;
@@ -18,47 +27,82 @@ const Asset: React.FC<AssetProps> = ({ asset }) => {
   const [visible, setVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [cachedImages, setCachedImages] = useState<string[]>([]);
 
   const handlePress = (index: number) => {
     setVisible(true);
     setSelectedImageIndex(index);
   };
 
+  useEffect(() => {
+    const cacheImages = async () => {
+      const paths = await Promise.all(
+        asset.uris?.map(async (uri) => {
+          const path = await CacheManager.get(uri, {}).getPath();
+          return path || "";
+        }) || []
+      );
+      setCachedImages(paths);
+    };
+
+    cacheImages();
+  }, [asset.uris]);
+
+  const images = cachedImages.map((url) => ({ url }));
+
   return (
-    <>
+    <GestureHandlerRootView style={styles.gestureHandlerRootView}>
       <View style={styles.container}>
         <Text style={styles.title}>{asset.name}</Text>
         {asset.uris && asset.uris.length > 0 && (
-          <TouchableOpacity
-            onPress={() => handlePress(0)}
-            style={{ flex: 1, flexGrow: 1 }}
+          <TapGestureHandler
+            onHandlerStateChange={({ nativeEvent }) => {
+              if (nativeEvent.state === State.END) {
+                handlePress(0);
+              }
+            }}
           >
-            <Image source={{ uri: asset.uris[0] }} style={styles.mainImage} />
-          </TouchableOpacity>
+            <Image
+              source={{
+                uri: cachedImages[0],
+              }}
+              style={styles.smallImage}
+            />
+          </TapGestureHandler>
         )}
         <View style={styles.descriptionContainer}>
           <View style={styles.imageContainer}>
             {asset.uris && asset.uris.length > 1 && (
-              <TouchableOpacity
-                onPress={() => handlePress(1)}
-                style={{ flex: 1, flexGrow: 1 }}
+              <TapGestureHandler
+                onHandlerStateChange={({ nativeEvent }) => {
+                  if (nativeEvent.state === State.END) {
+                    handlePress(1);
+                  }
+                }}
               >
                 <Image
-                  source={{ uri: asset.uris[1] }}
+                  source={{
+                    uri: cachedImages[1],
+                  }}
                   style={styles.smallImage}
                 />
-              </TouchableOpacity>
+              </TapGestureHandler>
             )}
             {asset.uris && asset.uris.length > 2 && (
-              <TouchableOpacity
-                onPress={() => handlePress(2)}
-                style={{ flex: 1, flexGrow: 1 }}
+              <TapGestureHandler
+                onHandlerStateChange={({ nativeEvent }) => {
+                  if (nativeEvent.state === State.END) {
+                    handlePress(2);
+                  }
+                }}
               >
                 <Image
-                  source={{ uri: asset.uris[2] }}
-                  style={styles.smallerImage}
+                  source={{
+                    uri: cachedImages[2],
+                  }}
+                  style={styles.smallImage}
                 />
-              </TouchableOpacity>
+              </TapGestureHandler>
             )}
           </View>
           <Text style={styles.description}>{asset.name}</Text>
@@ -79,23 +123,26 @@ const Asset: React.FC<AssetProps> = ({ asset }) => {
                   style={styles.loadingIndicator}
                 />
               )}
-              <Image
-                source={{ uri: asset.uris[selectedImageIndex] }}
-                style={styles.zoomedImage}
-                onLoadStart={() => setIsLoading(true)}
-                onLoadEnd={() => setIsLoading(false)}
+              <ImageViewer
+                imageUrls={images}
+                index={selectedImageIndex}
+                enablePreload
+                loadingRender={() => <ActivityIndicator />}
               />
             </Surface>
           )}
         </Modal>
       </Portal>
-    </>
+    </GestureHandlerRootView>
   );
 };
 
 export default Asset;
 
 const styles = StyleSheet.create({
+  gestureHandlerRootView: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     flexDirection: "column",
@@ -104,7 +151,7 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "black",
     borderRadius: 15,
-    marginTop: 30,
+    marginTop: 10,
     padding: 10,
     marginBottom: 10,
   },

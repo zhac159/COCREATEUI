@@ -1,23 +1,21 @@
 import { FC } from "react";
-import { StyleSheet, ScrollView, Animated, Dimensions } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
 import { View } from "@/components/Themed";
-import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { useEffect, useRef, useState } from "react";
-import SkillsTab from "@/components/Account/Skills/SkillsTab";
 
 type AccountMainInfoProps = {
   coins: number;
   username: string;
   rating: number;
+  address?: string;
 };
 
 const AccountMainInfo: FC<AccountMainInfoProps> = ({
   coins,
   username,
   rating,
+  address,
 }) => {
   return (
     <View

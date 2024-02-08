@@ -16,7 +16,7 @@ export const currentUserState = atom<UserDTO | undefined>({
     bannerPictureSrc: null,
     coins: 0,
     email: "testsssse3mrail@gmail.com",
-    location: "string",
+    address: null,
     portofolioContents: [],
     profilePictureSrc: null,
     rating: 0,
@@ -101,3 +101,25 @@ export const assetsSelector = selector({
 export const useAssets = () => useRecoilValue(assetsSelector);
 export const useSetAssets = () => useSetRecoilState(assetsSelector);
 export const useAssetsState = () => useRecoilState(assetsSelector);
+
+
+export const addressSelector = selector({
+  key: "addressSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.address;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        address: newValue instanceof DefaultValue ? null : newValue,
+      });
+    }
+  },
+});
+
+export const useAddress = () => useRecoilValue(addressSelector);
+export const useSetAddress = () => useSetRecoilState(addressSelector);
+export const useAddressState = () => useRecoilState(addressSelector);

@@ -11,11 +11,11 @@ import type { SkillDTO } from './skillDTO';
 
 export interface UserDTO {
   aboutYou?: string | null;
+  address?: string | null;
   assets?: AssetDTO[] | null;
   bannerPictureSrc?: string | null;
   coins?: number;
   email?: string | null;
-  location?: string | null;
   portofolioContents?: PortofolioContentDTO[] | null;
   profilePictureSrc?: string | null;
   rating?: number;

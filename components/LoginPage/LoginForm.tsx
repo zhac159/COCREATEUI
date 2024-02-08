@@ -22,6 +22,12 @@ const LoginForm = () => {
           return;
         }
         SecureStore.setItemAsync("userToken", token);
+
+        if (data.user?.address == null) {
+          router.replace("/locationForm");
+          return;
+        }
+        
         router.replace("/account");
       },
       onError: (error) => {

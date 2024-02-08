@@ -35,5 +35,8 @@ export * from './user';
 export * from './userCreateDTO';
 export * from './userDTO';
 export * from './userDTOAPIResponse';
+export * from './userLocationDTO';
+export * from './userLocationDTOAPIResponse';
+export * from './userLocationUpdateDTO';
 export * from './userLoginDTO';
 export * from './userUpdateDTO';

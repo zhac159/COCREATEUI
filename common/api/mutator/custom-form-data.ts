@@ -10,6 +10,15 @@ export const customFormData = (
         type: "image/jpeg",
         name: "image.jpg",
       } as any);
+    }
+    else if (key === 'MediaFiles' && Array.isArray(body[key])) {
+      body[key].forEach((file : string) => {
+        formData.append("MediaFiles", {
+          uri: file,
+          type: "image/jpeg",
+          name: `image.jpg`,
+        } as any);
+      });
     } else if (typeof body[key] === 'object') {
       Object.keys(body[key]).forEach(subKey => {
         formData.append(`${key}.${subKey}`, body[key][subKey]);
@@ -21,5 +30,3 @@ export const customFormData = (
 
   return formData;
 };
-
-export default customFormData;

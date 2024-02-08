@@ -12,10 +12,8 @@ export const AXIOS_INSTANCE = Axios.create({
 AXIOS_INSTANCE.interceptors.request.use(async (request) => {
   console.log("Starting Request", JSON.stringify(request, null, 2));
 
-  // Get the token from SecureStore
   const token = await SecureStore.getItemAsync("userToken");
 
-  // If the token exists, add it to the Authorization header
   if (token) {
     request.headers.Authorization = `Bearer ${token}`;
   }
