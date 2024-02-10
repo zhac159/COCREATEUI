@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Text, View } from "@/components/Themed";
+import { View } from "@/components/Themed";
 import LoginForm from "@/components/LoginPage/LoginForm";
 import RegisterForm from "@/components/LoginPage/RegisterForm";
 import { useState } from "react";
@@ -22,7 +22,6 @@ const LoginPage = () => {
           <Button
             mode="contained"
             onPress={() => setForm("login")}
-            color={form === "login" ? "blue" : "grey"}
             style={{
               marginRight: 10,
               backgroundColor: form === "login" ? "blue" : "grey",
@@ -50,15 +49,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
 });
 

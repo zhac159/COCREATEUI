@@ -62,19 +62,18 @@ export default function Account() {
 
   return (
     <>
-      <View style={{ flex: 1, backgroundColor: "transparent" }}>
+      <View style={{flex: 1,  backgroundColor: "transparent" }}>
         <AccountMainInfo
           coins={currentUser.coins || 0}
           username={currentUser.username || "username"}
           rating={currentUser.rating || 0}
-          address={currentUser.address || "address"}
         />
         <TabButtons
           tabs={buttonNames}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
-        <TabView
+        {/* <TabView
           navigationState={{ index: selectedTab, routes }}
           renderScene={renderScene}
           onIndexChange={setSelectedTab}
@@ -82,7 +81,7 @@ export default function Account() {
           initialLayout={initialLayout}
           renderTabBar={() => null}
           style={{ backgroundColor: "transparent" }}
-        />
+        /> */}
       </View>
     </>
   );

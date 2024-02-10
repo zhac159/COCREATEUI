@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-native-paper";
 import { LightTheme } from "@/components/Themes/theme";
 
+
 export { ErrorBoundary } from "expo-router";
 
 export const unstable_settings = {

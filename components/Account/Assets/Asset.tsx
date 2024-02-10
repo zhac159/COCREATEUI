@@ -18,6 +18,7 @@ import {
   State,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
+import { BlurView } from "expo-blur";
 
 type AssetProps = {
   asset: AssetDTO;
@@ -52,61 +53,70 @@ const Asset: React.FC<AssetProps> = ({ asset }) => {
 
   return (
     <GestureHandlerRootView style={styles.gestureHandlerRootView}>
-      <View style={styles.container}>
-        <Text style={styles.title}>{asset.name}</Text>
-        {asset.uris && asset.uris.length > 0 && (
-          <TapGestureHandler
-            onHandlerStateChange={({ nativeEvent }) => {
-              if (nativeEvent.state === State.END) {
-                handlePress(0);
-              }
-            }}
-          >
-            <Image
-              source={{
-                uri: cachedImages[0],
+      <View
+        style={{
+          flex: 1,
+          width: "65%",
+          borderRadius: 15,
+          overflow: "hidden",
+        }}
+      >
+        <BlurView style={styles.container} intensity={100} experimentalBlurMethod="dimezisBlurView" >
+          <Text style={styles.title}>{asset.name}</Text>
+          {asset.uris && asset.uris.length > 0 && (
+            <TapGestureHandler
+              onHandlerStateChange={({ nativeEvent }) => {
+                if (nativeEvent.state === State.END) {
+                  handlePress(0);
+                }
               }}
-              style={styles.smallImage}
-            />
-          </TapGestureHandler>
-        )}
-        <View style={styles.descriptionContainer}>
-          <View style={styles.imageContainer}>
-            {asset.uris && asset.uris.length > 1 && (
-              <TapGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                  if (nativeEvent.state === State.END) {
-                    handlePress(1);
-                  }
+            >
+              <Image
+                source={{
+                  uri: cachedImages[0],
                 }}
-              >
-                <Image
-                  source={{
-                    uri: cachedImages[1],
+                style={styles.smallImage}
+              />
+            </TapGestureHandler>
+          )}
+          <View style={styles.descriptionContainer}>
+            <View style={styles.imageContainer}>
+              {asset.uris && asset.uris.length > 1 && (
+                <TapGestureHandler
+                  onHandlerStateChange={({ nativeEvent }) => {
+                    if (nativeEvent.state === State.END) {
+                      handlePress(1);
+                    }
                   }}
-                  style={styles.smallImage}
-                />
-              </TapGestureHandler>
-            )}
-            {asset.uris && asset.uris.length > 2 && (
-              <TapGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                  if (nativeEvent.state === State.END) {
-                    handlePress(2);
-                  }
-                }}
-              >
-                <Image
-                  source={{
-                    uri: cachedImages[2],
+                >
+                  <Image
+                    source={{
+                      uri: cachedImages[1],
+                    }}
+                    style={styles.smallImage}
+                  />
+                </TapGestureHandler>
+              )}
+              {asset.uris && asset.uris.length > 2 && (
+                <TapGestureHandler
+                  onHandlerStateChange={({ nativeEvent }) => {
+                    if (nativeEvent.state === State.END) {
+                      handlePress(2);
+                    }
                   }}
-                  style={styles.smallImage}
-                />
-              </TapGestureHandler>
-            )}
+                >
+                  <Image
+                    source={{
+                      uri: cachedImages[2],
+                    }}
+                    style={styles.smallImage}
+                  />
+                </TapGestureHandler>
+              )}
+            </View>
+            <Text style={styles.description}>{asset.name}</Text>
           </View>
-          <Text style={styles.description}>{asset.name}</Text>
-        </View>
+        </BlurView>
       </View>
       <Portal>
         <Modal
@@ -147,13 +157,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
-    width: "65%",
+    width: "100%",
     height: "100%",
     backgroundColor: "black",
     borderRadius: 15,
-    marginTop: 10,
     padding: 10,
-    marginBottom: 10,
   },
   mainImage: {
     width: "100%",
@@ -182,14 +190,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexShrink: 1,
     flexGrow: 1,
-    backgroundColor: "black",
+    backgroundColor: "transparent",
     borderRadius: 12,
   },
   smallerImage: {
     flex: 1,
     flexShrink: 1,
     flexGrow: 1,
-    backgroundColor: "black",
+    backgroundColor: "transparent",
     borderRadius: 12,
   },
   title: {
@@ -201,7 +209,7 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "transparent",
     flexDirection: "column",
     gap: 3,
   },
