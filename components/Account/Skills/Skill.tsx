@@ -59,9 +59,9 @@ const Skill: FC<SkillProps> = ({
         iterationCount="infinite"
         animation={editMode ? WiggleAnimation : undefined}
       >
-        <Shadow distance={8}>
           <View
             style={{
+              backgroundColor: "white",
               flexDirection: "row",
               alignItems: "center",
               borderRadius: 25,
@@ -113,7 +113,6 @@ const Skill: FC<SkillProps> = ({
               </TouchableOpacity>
             )}
           </View>
-        </Shadow>
       </Animatable.View>
     </TouchableOpacity>
   );

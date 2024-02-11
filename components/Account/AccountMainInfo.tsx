@@ -20,21 +20,44 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.coins, backgroundColor: theme.colors.orange }}>
+      <View
+        style={{
+          ...styles.coins,
+          backgroundColor: theme.colors.white,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 3,
+            height: 4,
+          },
+          shadowOpacity: 0.5,
+          elevation: 5,
+        }}
+      >
+        <View
+          style={{
+            position: "absolute",
+            // backgroundColor: theme.colors.orange,
+            // top: 20,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            borderRadius: 25.5,
+          }}
+        ></View>
         <FontAwesome
           name="bolt"
-          style={{ fontSize: 15, color: theme.colors.white, fontWeight: "900"}}
-
+          style={{ fontSize: 15, color: theme.colors.black, fontWeight: "900" }}
         />
         <Text
           style={{
-            ...theme.customFonts.primary.coins,
+            ...theme.customFonts.primary.large,
             letterSpacing: 1.7,
-            color: theme.colors.white,
+            fontSize: 30,
+            color: theme.colors.black,
             textAlign: "center",
           }}
         >
-          {coins}
+          {"500"}
         </Text>
       </View>
       <View style={styles.nameRatingContainer}>
@@ -82,6 +105,9 @@ const styles = StyleSheet.create({
     right: "5.8%",
     gap: 5,
     top: "2%",
+    borderWidth: 3,
+    borderColor: "black",
+    overflow: "visible",
   },
   nameRatingContainer: {
     backgroundColor: "transparent",

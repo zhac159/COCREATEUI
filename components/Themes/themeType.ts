@@ -32,11 +32,6 @@ interface CustomTheme extends Theme {
         fontWeight: FontWeight;
         fontSize: number;
       };
-      coins: {
-        fontFamily: string;
-        fontWeight: FontWeight;
-        fontSize: number;
-      };
     };
     secondary: {
       small: {

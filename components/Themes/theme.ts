@@ -14,38 +14,33 @@ export const LightTheme: CustomTheme = {
     primary: {
       small: {
         fontFamily: "Helvetica Neue",
-        fontWeight: "300",
+        fontWeight: "500",
         fontSize: 15,
       },
       medium: {
         fontFamily: "Helvetica Neue",
-        fontWeight: "500",
+        fontWeight: "700",
         fontSize: 17,
       },
       large: {
         fontFamily: "Helvetica Neue",
-        fontWeight: "700",
-        fontSize: 45,
-      },
-      coins : {
-        fontFamily: "Helvetica Neue",
         fontWeight: "900",
-        fontSize: 30,
+        fontSize: 45,
       }
     },
     secondary: {
       small: {
-        fontFamily: "Libre Caslon Text",
+        fontFamily: "LibreCaslonText",
         fontWeight: "500",
         fontSize: 15,
       },
       medium: {
-        fontFamily: "Libre Caslon Text",
+        fontFamily: "LibreCaslonText",
         fontWeight: "500",
         fontSize: 17,
       },
       large: {
-        fontFamily: "Libre Caslon Text",
+        fontFamily: "LibreCaslonText",
         fontWeight: "400",
         fontSize: 45,
       },

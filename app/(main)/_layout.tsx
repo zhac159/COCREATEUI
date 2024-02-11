@@ -24,8 +24,8 @@ export default function TabLayout() {
       <LinearGradient
         colors={["transparent", "white"]}
         style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.42 }}
+        start={{ x: 0, y: 0.9 }}
+        end={{ x: 0, y: 1 }}
       />
       <Tabs
         screenOptions={{

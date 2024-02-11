@@ -28,9 +28,6 @@ const FourthRoute = () => (
   <View style={[styles.scene, { backgroundColor: "blue" }]} />
 );
 
-const FifthRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "yellow" }]} />
-);
 
 const initialLayout = { width: Dimensions.get("window").width };
 
@@ -43,7 +40,6 @@ export default function Account() {
     { key: "second", title: "Second" },
     { key: "third", title: "Third" },
     { key: "fourth", title: "Fourth" },
-    { key: "fifth", title: "Fifth" },
   ]);
 
   const renderScene = SceneMap({
@@ -51,10 +47,9 @@ export default function Account() {
     second: SecondRoute,
     third: ThirdRoute,
     fourth: FourthRoute,
-    fifth: FifthRoute,
   });
 
-  const buttonNames = ["Skills", "Assets", "Portofolio", "About", "Feedback"];
+  const buttonNames = ["Skills", "Assets", "Portofolio", "Experience"];
 
   if (!currentUser) {
     return null;
@@ -73,7 +68,7 @@ export default function Account() {
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
-        {/* <TabView
+        <TabView
           navigationState={{ index: selectedTab, routes }}
           renderScene={renderScene}
           onIndexChange={setSelectedTab}
@@ -81,7 +76,7 @@ export default function Account() {
           initialLayout={initialLayout}
           renderTabBar={() => null}
           style={{ backgroundColor: "transparent" }}
-        /> */}
+        />
       </View>
     </>
   );
@@ -101,6 +96,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     alignContent: "center",
+    backgroundColor: "transparent",
   },
   gradient: {
     position: "absolute",
