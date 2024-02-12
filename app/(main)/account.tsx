@@ -72,7 +72,9 @@ export default function Account() {
           navigationState={{ index: selectedTab, routes }}
           renderScene={renderScene}
           onIndexChange={setSelectedTab}
+          animationEnabled={false}
           swipeEnabled={false} 
+          onSwipeStart={() => {console.log("swipe start")}}
           initialLayout={initialLayout}
           renderTabBar={() => null}
           style={{ backgroundColor: "transparent" }}

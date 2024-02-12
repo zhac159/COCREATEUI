@@ -3,7 +3,6 @@ import { Button, IconButton, Text } from "react-native-paper";
 import { View } from "@/components/Themed";
 import { useTheme } from "../Themes/theme";
 import { StyleSheet } from "react-native";
-import { th } from "@faker-js/faker";
 
 type TabButtonsProps = {
   tabs: string[];

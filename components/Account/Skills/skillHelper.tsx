@@ -1,4 +1,9 @@
-import { SkillDTO, SkillGroupType, SkillType } from "@/common/api/model";
+import {
+  SkillDTO,
+  SkillGroupType,
+  SkillType,
+  SkillUpdateDTO,
+} from "@/common/api/model";
 
 export enum SkillGroups {
   Filmmaking,
@@ -50,24 +55,24 @@ export const skillGroupMap = {
 };
 
 const skillsToStringMapping: { [index: number]: string } = {
-    [Skills.Programming]: "Programming",
-    [Skills.Management]: "Management",
-    [Skills.Acting]: "Acting",
-    [Skills.Painting]: "Painting",
-    [Skills.Writing]: "Writing",
-    [Skills.Singing]: "Singing",
-    [Skills.Dancing]: "Dancing",
-    [Skills.Drawing]: "Drawing",
-    [Skills.Photography]: "Photography",
-    [Skills.Directing]: "Directing",
-    [Skills.Producing]: "Producing",
-    [Skills.Editing]: "Editing",
-    [Skills.Cinematography]: "Cinematography",
-    [Skills.SoundEngineering]: "Sound Engineering",
-    [Skills.SoundDesign]: "Sound Design",
-    [Skills.SoundEditing]: "Sound Editing",
-    [Skills.GameDesign]: "Game Design",
-  };
+  [Skills.Programming]: "Programming",
+  [Skills.Management]: "Management",
+  [Skills.Acting]: "Acting",
+  [Skills.Painting]: "Painting",
+  [Skills.Writing]: "Writing",
+  [Skills.Singing]: "Singing",
+  [Skills.Dancing]: "Dancing",
+  [Skills.Drawing]: "Drawing",
+  [Skills.Photography]: "Photography",
+  [Skills.Directing]: "Directing",
+  [Skills.Producing]: "Producing",
+  [Skills.Editing]: "Editing",
+  [Skills.Cinematography]: "Cinematography",
+  [Skills.SoundEngineering]: "Sound Engineering",
+  [Skills.SoundDesign]: "Sound Design",
+  [Skills.SoundEditing]: "Sound Editing",
+  [Skills.GameDesign]: "Game Design",
+};
 
 export enum IconNames {
   Programming = "language-javascript",
@@ -154,8 +159,8 @@ export const getSkillGroupName = (value: SkillGroupType): string => {
 };
 
 export const getSkill = (value: SkillType): string => {
-    return skillsToStringMapping[value] || "";
-  };
+  return skillsToStringMapping[value] || "";
+};
 
 export const getRestOfSkills = (skillsDTO: SkillDTO[]): SkillDTO[] => {
   const allSkills = Object.values(Skills).filter(
@@ -176,8 +181,20 @@ export const getRestOfSkills = (skillsDTO: SkillDTO[]): SkillDTO[] => {
         level: undefined,
         skillGroupType: skillGroupMap[skill],
         skillType: skill,
-      } as SkillDTO)
+      }) as SkillDTO
   );
 
   return restOfSkillsDTO;
+};
+
+export const mapSkillDTOToSkillUpdateDTO = (
+  skillDTO: SkillDTO
+): SkillUpdateDTO => {
+  return {
+    description: skillDTO.description,
+    id: skillDTO.id,
+    level: skillDTO.level,
+    skillGroupType: skillDTO.skillGroupType,
+    skillType: skillDTO.skillType,
+  };
 };

@@ -1,43 +1,50 @@
 import { SkillDTO } from "@/common/api/model";
-import { flatten, groupBy, map } from "lodash";
+import { chunk, flatten, groupBy, map } from "lodash";
 import { FC } from "react";
-import { FlatList, View } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 import { Text } from "react-native-paper";
 import Skill from "./Skill";
 
 type SkillsListProps = {
   skills: SkillDTO[];
   editMode: boolean;
-  deselectSkill: (skillDTO: SkillDTO) => void
-
+  deselectSkill: (skillDTO: SkillDTO) => void;
 };
 
-const SkillsList: FC<SkillsListProps> = ({ skills, editMode, deselectSkill }) => {
-
+const SkillsList: FC<SkillsListProps> = ({
+  skills,
+  editMode,
+  deselectSkill,
+}) => {
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const joinedSkills = flatten(groupedSkills);
+  const skillChunks = chunk(joinedSkills, 2);
 
   return (
-    <FlatList
-      data={joinedSkills}
-      renderItem={({ item: skill }) => (
-        <View style={{ width: "47.5%", margin: "1.25%" }}>
-          <Skill skill={skill} editMode={editMode} deselectSkill={deselectSkill}/>
-        </View>
-      )}
-      scrollEnabled={false}
-      keyExtractor={(_, index) => index.toString()}
-      numColumns={2}
+    <View
       style={{
-        alignSelf: joinedSkills.length === 1  ?  "auto":"center",
         width: "100%",
+        flexDirection: "column",
+        gap: 20,
       }}
-      contentContainerStyle={{
-        marginTop: 10,
-        gap: 10,
-        height: "auto",
-      }}
-    />
+    >
+      {skillChunks.map((skillChunk, index) => (
+        <View
+          key={index}
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
+          {skillChunk.map((skill) => (
+            <View key={skill.id} style={{ width: "48%" }}>
+              <Skill
+                skill={skill}
+                editMode={editMode}
+                deselectSkill={deselectSkill}
+              />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
   );
 };
 

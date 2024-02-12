@@ -71,17 +71,17 @@ const BackgroundColourAnimation = () => {
             height: 1000,
             position: "absolute",
             top: -500,
-            left: -200,
+            left: -220,
           }}
         />
         <Animated.Image
           source={require("../../assets/images/cyan.png")}
           style={{
-            width: 700,
-            height: 1000,
+            width: 800,
+            height: 1100,
             position: "absolute",
             top: -500,
-            right: -220,
+            right: -300,
           }}
         />
       </Animated.View>

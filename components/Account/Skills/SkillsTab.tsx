@@ -1,13 +1,15 @@
 import { useSkillsState } from "@/components/RecoilStates/profileState";
-import { Button, Divider, Text } from "react-native-paper";
-import { ScrollView, View } from "react-native";
+import { Button, Divider, IconButton, Text } from "react-native-paper";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { flatten, groupBy, map } from "lodash";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SkillsList from "./SkillsList";
 import SkillsAddMenu from "./SkillsAddMenu";
-import { SkillDTO, SkillUpdateDTO } from "@/common/api/model";
+import { SkillDTO } from "@/common/api/model";
 import { usePutApiUserSkills } from "@/common/api/endpoints/cocreateApi";
-import { getRestOfSkills } from "./skillHelper";
+import { getRestOfSkills, mapSkillDTOToSkillUpdateDTO } from "./skillHelper";
+import { useTheme } from "@/components/Themes/theme";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 const SkillsTab = () => {
   const [skills, setSkills] = useSkillsState();
@@ -15,6 +17,8 @@ const SkillsTab = () => {
   const [editMode, setEditMode] = useState(false);
 
   const { mutate } = usePutApiUserSkills();
+
+  const theme = useTheme();
 
   const [restOfTheSkills, setRestOfTheSkills] = useState<SkillDTO[]>([]);
 
@@ -41,14 +45,14 @@ const SkillsTab = () => {
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const joinedSkills = flatten(groupedSkills);
 
-  const mapSkillDTOToSkillUpdateDTO = (skillDTO: SkillDTO): SkillUpdateDTO => {
-    return {
-      description: skillDTO.description,
-      id: skillDTO.id,
-      level: skillDTO.level,
-      skillGroupType: skillDTO.skillGroupType,
-      skillType: skillDTO.skillType,
-    };
+  const handleSubmit = () => {
+    setEditMode(!editMode);
+
+    if (editMode && skills) {
+      mutate({
+        data: skills.map(mapSkillDTOToSkillUpdateDTO),
+      });
+    }
   };
 
   useEffect(() => {
@@ -62,73 +66,113 @@ const SkillsTab = () => {
       style={{ height: "100%", width: "100%" }}
       pointerEvents="box-none"
     >
-      <View
-        style={{
-          height: "100%",
-          width: "100%",
-        }}
-      >
-        <View style={{ flex: 1, width: "100%", flexGrow: 1, flexWrap: "wrap" }}>
-          <View
-            style={{ width: "100%", flexWrap: "wrap", flex: 1, marginTop: 25 }}
-          >
-            <SkillsList
-              skills={joinedSkills}
-              editMode={editMode}
-              deselectSkill={deselectSkill}
-            />
-            <Divider
-              style={{
-                width: "100%",
-                marginTop: 30,
-                borderWidth: 0.5,
-                borderColor: "black",
-              }}
-            />
-            <SkillsAddMenu
-              restOfTheSkills={restOfTheSkills}
-              show={editMode}
-              selectSkill={selectSkill}
-            />
-
-            {editMode && (
-              <Divider
+      <View style={styles.container}>
+        <View
+          style={styles.buttonsContainer}
+        >
+          {!editMode ? (
+            <>
+              <IconButton
+                icon={() => (
+                  <FontAwesome6 name="pen" size={18} color="white" solid />
+                )}
+                size={26}
+                onPress={() => {
+                  setEditMode(!editMode);
+                }}
                 style={{
-                  width: "100%",
-                  marginTop: 30,
-                  borderWidth: 0.5,
-                  borderColor: "black",
+                  backgroundColor: theme.colors.primary,
+                  margin: 0,
+                  padding: 0
                 }}
               />
-            )}
-            <Button
-              mode="contained"
-              style={{
-                marginTop: 20,
-                width: 120,
-                borderRadius: 20,
-                backgroundColor: editMode ? "blue" : "black", // changes color based on editMode
-                alignSelf: "center",
-              }}
-              onPress={() => {
-                setEditMode(!editMode);
-
-                if (editMode && skills) {
-                  mutate({
-                    data: skills.map(mapSkillDTOToSkillUpdateDTO),
-                  });
-                }
-              }}
-            >
-              <Text style={{ color: "white" }}>
-                {editMode ? "Save" : "Edit Skills"}
-              </Text>
-            </Button>
-          </View>
+              <IconButton
+                icon={() => (
+                  <FontAwesome6 name="play" size={18} color="white" solid />
+                )}
+                size={26}
+                onPress={() => {
+                  console.log("Pressed");
+                }}
+                style={{
+                  backgroundColor: theme.colors.black,
+                  margin: 0,
+                  padding: 0
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <Button
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  paddingHorizontal: "1%",
+                  paddingVertical: "2%",
+                }}
+                onPress={handleSubmit}
+              >
+                <Text
+                  style={{
+                    ...theme.customFonts.primary.medium,
+                    color: theme.colors.white,
+                  }}
+                >
+                  {"Done"}
+                </Text>
+              </Button>
+            </>
+          )}
         </View>
+        <SkillsList
+          skills={joinedSkills}
+          editMode={editMode}
+          deselectSkill={deselectSkill}
+        />
+        <SkillsAddMenu
+          restOfTheSkills={restOfTheSkills}
+          show={editMode}
+          selectSkill={selectSkill}
+        />
       </View>
     </ScrollView>
   );
 };
 
 export default SkillsTab;
+
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    width: "100%",
+    flex: 1,
+    flexGrow: 1,
+    paddingTop: "2.3%",
+    paddingHorizontal: "3%",
+  },
+  buttonsContainer: {
+    alignSelf: "flex-end",
+    flexDirection: "row",
+    marginTop: "2.5%",
+    paddingBottom: "8%",
+    gap: 16
+  },
+  card: {
+    width: 200,
+    margin: 10,
+    height: 200,
+  },
+  scene: {
+    flex: 1,
+    flexGrow: 1,
+    alignItems: "center",
+    alignContent: "center",
+    backgroundColor: "transparent",
+  },
+  gradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+});

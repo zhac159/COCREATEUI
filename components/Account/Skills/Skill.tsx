@@ -1,13 +1,14 @@
 import { SkillDTO, SkillGroupType, SkillType } from "@/common/api/model";
 import { FC, useRef } from "react";
 import { Text } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
 import Tags from "react-native-tags";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { getSkill, getSkillGroupColor, getSkillIcon } from "./skillHelper";
 import * as Animatable from "react-native-animatable";
+import { useTheme } from "@/components/Themes/theme";
 
 type SkillProps = {
   skill: SkillDTO;
@@ -49,6 +50,8 @@ const Skill: FC<SkillProps> = ({
     },
   };
 
+  const theme = useTheme();
+
   return (
     <TouchableOpacity
       disabled={!selectSkill}
@@ -59,60 +62,69 @@ const Skill: FC<SkillProps> = ({
         iterationCount="infinite"
         animation={editMode ? WiggleAnimation : undefined}
       >
+        <View
+          style={{
+            backgroundColor: "white",
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: 14,
+            gap: 11,
+            paddingHorizontal: 15,
+            paddingVertical: 11,
+            width: "100%",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            elevation: 5,
+            shadowOpacity: 0.25,
+            position: "relative",
+          }}
+        >
           <View
             style={{
-              backgroundColor: "white",
-              flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 25,
-              padding: 16,
-              margin: 5,
-              width: 190,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              position: "relative",
+              backgroundColor: "blue",
+              borderRadius: 50,
+              padding: 11,
             }}
           >
-            <View
+            <FontAwesome6
+              name="camera"
+              size={17}
+              color={theme.colors.white}
+              solid
+            />
+          </View>
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+              fontSize: 13,
+            }}
+          >
+            {name}
+          </Text>
+          {editMode && (
+            <TouchableOpacity
               style={{
-                backgroundColor: color,
-                borderRadius: 90,
+                position: "absolute",
+                top: -8,
+                right: -8,
+                backgroundColor: "red",
+                borderRadius: 50,
                 padding: 5,
-                alignItems: "center",
               }}
+              onPress={handlePress}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
               <MaterialCommunityIcons
-                name={icon as any}
-                size={30}
+                name="minus-thick"
+                size={15}
                 color="white"
               />
-            </View>
-            <Text style={{ color: "black", marginLeft: 12 }}>{name}</Text>
-            {editMode && (
-              <TouchableOpacity
-                style={{
-                  position: "absolute",
-                  top: -8,
-                  right: -8,
-                  backgroundColor: "red",
-                  borderRadius: 50,
-                  padding: 5,
-                }}
-                onPress={handlePress}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              >
-                <MaterialCommunityIcons
-                  name="minus-thick"
-                  size={15}
-                  color="white"
-                />
-              </TouchableOpacity>
-            )}
-          </View>
+            </TouchableOpacity>
+          )}
+        </View>
       </Animatable.View>
     </TouchableOpacity>
   );

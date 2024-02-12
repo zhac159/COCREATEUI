@@ -4,6 +4,7 @@ import { Text } from "react-native-paper";
 import { View } from "@/components/Themed";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTheme } from "../Themes/theme";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 type AccountMainInfoProps = {
   coins: number;
@@ -24,33 +25,18 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
         style={{
           ...styles.coins,
           backgroundColor: theme.colors.white,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 3,
-            height: 4,
-          },
-          shadowOpacity: 0.5,
-          elevation: 5,
         }}
       >
-        <View
-          style={{
-            position: "absolute",
-            // backgroundColor: theme.colors.orange,
-            // top: 20,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderRadius: 25.5,
-          }}
-        ></View>
-        <FontAwesome
+        <FontAwesome6
           name="bolt"
-          style={{ fontSize: 15, color: theme.colors.black, fontWeight: "900" }}
+          size={15}
+          color={theme.colors.black}
+          regular={true}
         />
         <Text
           style={{
             ...theme.customFonts.primary.large,
+            fontWeight: "900",
             letterSpacing: 1.7,
             fontSize: 30,
             color: theme.colors.black,
@@ -68,17 +54,16 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
         >
           {"AbithaMaha"}
         </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "transparent",
-          }}
-        >
+        <View style={styles.ratingContainer}>
           <Text style={{ ...theme.customFonts.primary.large, fontSize: 23 }}>
             {"4.8"}
           </Text>
-          <FontAwesome name="star" size={20} color="black" />
+          <FontAwesome6
+            name="star"
+            size={13}
+            color={theme.colors.black}
+            solid
+          />
         </View>
       </View>
     </View>
@@ -108,11 +93,24 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "black",
     overflow: "visible",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 3,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    elevation: 5,
   },
   nameRatingContainer: {
     backgroundColor: "transparent",
     alignSelf: "flex-start",
     left: "6.5%",
     top: "15.4%",
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    gap: 2,
   },
 });
