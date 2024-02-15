@@ -1,7 +1,8 @@
-import { PortofolioContentDTO, UserDTO } from "@/common/api/model";
+import { AssetDTO, PortofolioContentDTO, UserDTO } from "@/common/api/model";
 import {
   DefaultValue,
   atom,
+  selectorFamily,
   useRecoilState,
   useRecoilValue,
   useSetRecoilState,
@@ -29,7 +30,7 @@ export const currentUserState = atom<UserDTO | undefined>({
   },
 });
 
-export const useSetCurrentUser = () => useSetRecoilState(currentUserState);
+export const useSetCurrentUserState = () => useSetRecoilState(currentUserState);
 export const useCurrentUserValue = () => useRecoilValue(currentUserState);
 
 export const portfolioContentsSelector = selector<
@@ -51,10 +52,10 @@ export const portfolioContentsSelector = selector<
   },
 });
 
-export const usePortfolioContents = () =>
+export const usePortfolioContentsValue = () =>
   useRecoilValue(portfolioContentsSelector);
 
-export const useSetPortfolioContents = () =>
+export const useSetPortfolioContentsState = () =>
   useSetRecoilState(portfolioContentsSelector);
 
 export const usePortfolioContentsState = () =>
@@ -77,8 +78,8 @@ export const skillsSelector = selector({
   },
 });
 
-export const useSkills = () => useRecoilValue(skillsSelector);
-export const useSetSkills = () => useSetRecoilState(skillsSelector);
+export const useSkillsValue = () => useRecoilValue(skillsSelector);
+export const useSetSkillsState = () => useSetRecoilState(skillsSelector);
 export const useSkillsState = () => useRecoilState(skillsSelector);
 
 export const assetsSelector = selector({
@@ -98,10 +99,41 @@ export const assetsSelector = selector({
   },
 });
 
-export const useAssets = () => useRecoilValue(assetsSelector);
-export const useSetAssets = () => useSetRecoilState(assetsSelector);
+export const useAssetsValue = () => useRecoilValue(assetsSelector);
+export const useSetAssetsState = () => useSetRecoilState(assetsSelector);
 export const useAssetsState = () => useRecoilState(assetsSelector);
 
+export const assetByIdSelector = selectorFamily({
+  key: 'assetByIdSelector',
+  get: (id) => ({ get }) => {
+    const user = get(currentUserState);
+    if (user && user.assets) {
+
+      console.log(user.assets);
+    
+    return user?.assets.find(asset => asset.id === id);
+    }
+    else return null;
+  },
+  set: (id) => ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user && user.assets) {
+      const newAssets = user.assets.map(asset =>
+        asset.id === id && !(newValue instanceof DefaultValue)
+          ? newValue
+          : asset
+      );
+      set(currentUserState, {
+        ...user,
+        assets: newAssets.filter((asset): asset is AssetDTO => asset !== null && asset !== undefined),
+      });
+    }
+  },
+});
+
+export const useAssetByIdValue = (id: number) => useRecoilValue(assetByIdSelector(id));
+export const useSetAssetByIdState = (id: number) => useSetRecoilState(assetByIdSelector(id));
+export const useAssetByIdState = (id: number) => useRecoilState(assetByIdSelector(id));
 
 export const addressSelector = selector({
   key: "addressSelector",
@@ -120,6 +152,6 @@ export const addressSelector = selector({
   },
 });
 
-export const useAddress = () => useRecoilValue(addressSelector);
-export const useSetAddress = () => useSetRecoilState(addressSelector);
+export const useAddressValue = () => useRecoilValue(addressSelector);
+export const useSetAddressState = () => useSetRecoilState(addressSelector);
 export const useAddressState = () => useRecoilState(addressSelector);

@@ -1,5 +1,5 @@
 import { useDeleteApiPortofolioContentId } from "@/common/api/endpoints/cocreateApi";
-import { usePortfolioContents, usePortfolioContentsState } from "@/components/RecoilStates/profileState";
+import { usePortfolioContentsValue, usePortfolioContentsState } from "@/components/RecoilStates/profileState";
 import { router } from "expo-router";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { Card, Text } from "react-native-paper";
@@ -7,7 +7,7 @@ import { Card, Text } from "react-native-paper";
 const PortofolioContent = () => {
   const [portofolioContents, setPortfolioContents] = usePortfolioContentsState();
 
-  const { mutate, isLoading } = useDeleteApiPortofolioContentId(
+  const { mutate } = useDeleteApiPortofolioContentId(
     {
       mutation: {
         onSuccess: (data, variables) => {

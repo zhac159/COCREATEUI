@@ -8,7 +8,8 @@ import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-native-paper";
 import { LightTheme } from "@/components/Themes/theme";
-
+import MediaViewerPortal from "@/components/MediaViewer/MediaViewerPortal";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -49,6 +50,8 @@ function RootLayoutNav() {
     <Provider theme={LightTheme}>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{flex: 1}} >
+
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: "modal" }} />
@@ -61,6 +64,8 @@ function RootLayoutNav() {
               options={{ presentation: "modal" }}
             />
           </Stack>
+          <MediaViewerPortal />
+        </GestureHandlerRootView>
         </QueryClientProvider>
       </RecoilRoot>
     </Provider>

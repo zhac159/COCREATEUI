@@ -1,6 +1,6 @@
 export enum AssetType {
   Camera,
-  FilmingLocation,
+  Location,
   Props,
   Lights,
   Microphones,

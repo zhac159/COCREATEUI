@@ -1,5 +1,5 @@
 import { usePutApiUserLocation } from "@/common/api/endpoints/cocreateApi";
-import { useSetAddress } from "@/components/RecoilStates/profileState";
+import { useSetAddressState } from "@/components/RecoilStates/profileState";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -13,7 +13,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { ProgressBar } from "react-native-paper";
 
 export default function LocationForm() {
-  const setAddress = useSetAddress();
+  const setAddress = useSetAddressState();
 
   const { mutate, isLoading } = usePutApiUserLocation({
     mutation: {

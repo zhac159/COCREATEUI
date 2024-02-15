@@ -1,238 +1,226 @@
-import { AssetDTO } from "@/common/api/model";
+import {
+  AssetDTO,
+  AssetUpdateDTO,
+  PostApiAssetBody,
+  PutApiAssetBody,
+} from "@/common/api/model";
 import { View } from "@/components/Themed";
-import {
-  ActivityIndicator,
-  Modal,
-  Portal,
-  Surface,
-  Text,
-} from "react-native-paper";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
-import { Image } from "expo-image";
+import { Button, Text } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import React from "react";
-import ImageViewer from "react-native-image-zoom-viewer";
-import { CacheManager } from "react-native-expo-image-cache";
+import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
+import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
+import Media from "@/components/MediaViewer/Media";
+import { useTheme } from "@/components/Themes/theme";
 import {
-  TapGestureHandler,
-  State,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
-import { BlurView } from "expo-blur";
+  usePostApiAsset,
+  usePutApiAsset,
+} from "@/common/api/endpoints/cocreateApi";
+import * as ImagePicker from "expo-image-picker";
+import { useSetAssetsState } from "@/components/RecoilStates/profileState";
+import { SetterOrUpdater } from "recoil";
+
+const updatePhoto = async (
+  index: number,
+  setUpdatedUris: Dispatch<SetStateAction<string[]>>
+) => {
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
+  });
+
+  setUpdatedUris((old) => {
+    const newUris = [...old];
+    if (!result.canceled) {
+      newUris[index] = result.assets[0].uri;
+    }
+    return newUris;
+  });
+};
 
 type AssetProps = {
   asset: AssetDTO;
+  editMode?: boolean;
+  update: boolean;
+  setUpdate: Dispatch<SetStateAction<boolean>>;
 };
 
-const Asset: React.FC<AssetProps> = ({ asset }) => {
-  const [visible, setVisible] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [cachedImages, setCachedImages] = useState<string[]>([]);
+const Asset: React.FC<AssetProps> = ({
+  asset,
+  editMode = false,
+  update,
+  setUpdate,
+}) => {
+  const cacheImages = useCacheImages();
+  const setMediaViewer = useSetMediaViewerState();
+  const theme = useTheme();
+  const [cachedUris, setCachedUris] = useState<string[]>([]);
+  const setAssets = useSetAssetsState();
+
+  const [updatedUris, setUpdatedUris] = useState<string[]>([]);
+
+  const { mutate: updateAsset } = usePutApiAsset({
+    mutation: {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    },
+  });
 
   const handlePress = (index: number) => {
-    setVisible(true);
-    setSelectedImageIndex(index);
+    if (editMode) {
+      updatePhoto(index, setUpdatedUris);
+      return;
+    }
+    setMediaViewer((state) => ({
+      ...state,
+      visible: true,
+      selectedImageIndex: index,
+      uris: cachedUris,
+    }));
   };
 
   useEffect(() => {
-    const cacheImages = async () => {
-      const paths = await Promise.all(
-        asset.uris?.map(async (uri) => {
-          const path = await CacheManager.get(uri, {}).getPath();
-          return path || "";
-        }) || []
-      );
-      setCachedImages(paths);
+    const fetchCachedUris = async () => {
+      const result = await cacheImages(asset.uris || []);
+      setCachedUris(result);
     };
 
-    cacheImages();
-  }, [asset.uris]);
+    fetchCachedUris();
+  }, [asset.uris, cacheImages]);
 
-  const images = cachedImages.map((url) => ({ url }));
+  // useEffect(() => {
+  //   setUpdate(false);
+  // }, [update]);
 
   return (
-    <GestureHandlerRootView style={styles.gestureHandlerRootView}>
-      <View
-        style={{
-          flex: 1,
-          width: "65%",
-          borderRadius: 15,
-          overflow: "hidden",
+    <View style={{ ...styles.container, backgroundColor: theme.colors.white }}>
+      <Button
+        onPress={() => {
+          const updatedFileSrc = asset.uris
+            ? asset.uris.map((src, index) =>
+                updatedUris[index] !== undefined
+                  ? "placeholder"
+                  : src.split("/").pop() || "default"
+              )
+            : [];
+
+          const updateAssetData: PutApiAssetBody = {
+            "AssetUpdateDTO.AssetType": asset.assetType,
+            "AssetUpdateDTO.Cost": asset.cost,
+            "AssetUpdateDTO.Description": "asset.descridsasption" || "",
+            "AssetUpdateDTO.FileSrcs": updatedFileSrc,
+            "AssetUpdateDTO.Id": asset.id,
+            "AssetUpdateDTO.Name": asset.name || "",
+            "MediaFiles": updatedUris.filter(
+              (uri) => uri !== undefined
+            ) as unknown as Blob[],
+          };
+
+          updateAsset({
+            data: updateAssetData,
+          });
         }}
       >
-        <BlurView style={styles.container} intensity={100} experimentalBlurMethod="dimezisBlurView" >
-          <Text style={styles.title}>{asset.name}</Text>
-          {asset.uris && asset.uris.length > 0 && (
-            <TapGestureHandler
-              onHandlerStateChange={({ nativeEvent }) => {
-                if (nativeEvent.state === State.END) {
-                  handlePress(0);
-                }
-              }}
-            >
-              <Image
-                source={{
-                  uri: cachedImages[0],
-                }}
-                style={styles.smallImage}
-              />
-            </TapGestureHandler>
-          )}
-          <View style={styles.descriptionContainer}>
-            <View style={styles.imageContainer}>
-              {asset.uris && asset.uris.length > 1 && (
-                <TapGestureHandler
-                  onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state === State.END) {
-                      handlePress(1);
-                    }
-                  }}
-                >
-                  <Image
-                    source={{
-                      uri: cachedImages[1],
-                    }}
-                    style={styles.smallImage}
-                  />
-                </TapGestureHandler>
-              )}
-              {asset.uris && asset.uris.length > 2 && (
-                <TapGestureHandler
-                  onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state === State.END) {
-                      handlePress(2);
-                    }
-                  }}
-                >
-                  <Image
-                    source={{
-                      uri: cachedImages[2],
-                    }}
-                    style={styles.smallImage}
-                  />
-                </TapGestureHandler>
-              )}
-            </View>
-            <Text style={styles.description}>{asset.name}</Text>
-          </View>
-        </BlurView>
+        dsa
+      </Button>
+      <Media
+        onPress={() => handlePress(0)}
+        uri={updatedUris[0] || cachedUris[0]}
+        style={styles.mainImage}
+        editMode={editMode}
+      />
+      <View style={styles.smallImagesContainer}>
+        <Media
+          onPress={() => handlePress(1)}
+          uri={updatedUris[1] || cachedUris[1]}
+          style={styles.smallImage}
+          editMode={editMode}
+        />
+        <Media
+          onPress={() => handlePress(2)}
+          uri={updatedUris[2] || cachedUris[2]}
+          style={styles.smallerImage}
+          editMode={editMode}
+        />
       </View>
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={() => setVisible(!visible)}
-          contentContainerStyle={styles.modal}
+      <View
+        style={{
+          backgroundColor: "transparent",
+          height: "100%",
+        }}
+      >
+        <Text
+          style={{
+            ...styles.title,
+            ...theme.customFonts.primary.medium,
+            fontSize: 16,
+            color: theme.colors.black,
+          }}
         >
-          {asset && asset.uris && (
-            <Surface style={styles.surface}>
-              {isLoading && (
-                <ActivityIndicator
-                  size="large"
-                  color="#0000ff"
-                  style={styles.loadingIndicator}
-                />
-              )}
-              <ImageViewer
-                imageUrls={images}
-                index={selectedImageIndex}
-                enablePreload
-                loadingRender={() => <ActivityIndicator />}
-              />
-            </Surface>
-          )}
-        </Modal>
-      </Portal>
-    </GestureHandlerRootView>
+          {asset.name}
+        </Text>
+        <Text
+          style={{
+            ...theme.customFonts.primary.small,
+            fontSize: 12,
+            color: theme.colors.black,
+          }}
+        >
+          {asset.description}
+        </Text>
+      </View>
+    </View>
   );
 };
 
 export default Asset;
 
 const styles = StyleSheet.create({
-  gestureHandlerRootView: {
-    flex: 1,
-  },
   container: {
-    flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
-    width: "100%",
+    width: "65%",
     height: "100%",
-    backgroundColor: "black",
-    borderRadius: 15,
+    borderRadius: 14,
     padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 5,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   mainImage: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "transparent",
-    borderRadius: 12,
+    borderRadius: 7,
+    height: "40%",
   },
-  loadingIndicator: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageContainer: {
+  smallImagesContainer: {
     flexDirection: "row",
     backgroundColor: "transparent",
-    height: "40%",
-    marginTop: 10,
-    gap: 3,
+    height: "30%",
+    marginTop: 4,
+    gap: 4,
   },
   smallImage: {
-    flex: 1,
-    flexShrink: 1,
-    flexGrow: 1,
-    backgroundColor: "transparent",
-    borderRadius: 12,
+    width: "53%",
+    height: "100%",
+    borderRadius: 7,
   },
   smallerImage: {
-    flex: 1,
-    flexShrink: 1,
-    flexGrow: 1,
-    backgroundColor: "transparent",
-    borderRadius: 12,
+    height: "100%",
+    width: "45%",
+    borderRadius: 7,
   },
   title: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 18,
-    marginLeft: 20,
     paddingBottom: 5,
-  },
-  descriptionContainer: {
-    flex: 1,
-    backgroundColor: "transparent",
-    flexDirection: "column",
-    gap: 3,
-  },
-  description: {
-    color: "white",
-    fontSize: 10,
-  },
-  modal: {
-    backgroundColor: "white",
-    padding: 20,
-    height: "60%",
-    justifyContent: "center",
-    zIndex: 100,
-  },
-  surface: {
-    height: "100%",
-    width: "100%",
-    flex: 1,
-    elevation: 1,
-    flexGrow: 1,
-  },
-  zoomedImage: {
-    width: "100%",
-    height: "100%",
+    marginTop: "5%",
   },
 });

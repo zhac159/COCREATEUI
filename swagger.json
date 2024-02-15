@@ -85,67 +85,35 @@
                 "tags": [
                     "Asset"
                 ],
-                "parameters": [
-                    {
-                        "name": "AssetUpdateDTO.Id",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    },
-                    {
-                        "name": "AssetUpdateDTO.Name",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "AssetUpdateDTO.Description",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "AssetUpdateDTO.AssetType",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "$ref": "#/components/schemas/AssetType"
-                        }
-                    },
-                    {
-                        "name": "AssetUpdateDTO.Cost",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    },
-                    {
-                        "name": "AssetUpdateDTO.FileSrcs",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
+                                    "AssetUpdateDTO.Id": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "AssetUpdateDTO.Name": {
+                                        "type": "string"
+                                    },
+                                    "AssetUpdateDTO.Description": {
+                                        "type": "string"
+                                    },
+                                    "AssetUpdateDTO.AssetType": {
+                                        "$ref": "#/components/schemas/AssetType"
+                                    },
+                                    "AssetUpdateDTO.Cost": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "AssetUpdateDTO.FileSrcs": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
                                     "MediaFiles": {
                                         "type": "array",
                                         "items": {
@@ -156,6 +124,24 @@
                                 }
                             },
                             "encoding": {
+                                "AssetUpdateDTO.Id": {
+                                    "style": "form"
+                                },
+                                "AssetUpdateDTO.Name": {
+                                    "style": "form"
+                                },
+                                "AssetUpdateDTO.Description": {
+                                    "style": "form"
+                                },
+                                "AssetUpdateDTO.AssetType": {
+                                    "style": "form"
+                                },
+                                "AssetUpdateDTO.Cost": {
+                                    "style": "form"
+                                },
+                                "AssetUpdateDTO.FileSrcs": {
+                                    "style": "form"
+                                },
                                 "MediaFiles": {
                                     "style": "form"
                                 }
@@ -497,56 +483,29 @@
                 "tags": [
                     "PortofolioContent"
                 ],
-                "parameters": [
-                    {
-                        "name": "PortofolioContentUpdateDTO.Id",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    },
-                    {
-                        "name": "PortofolioContentUpdateDTO.Description",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "PortofolioContentUpdateDTO.Name",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "PortofolioContentUpdateDTO.FileType",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "$ref": "#/components/schemas/FileType"
-                        }
-                    },
-                    {
-                        "name": "PortofolioContentUpdateDTO.Order",
-                        "in": "query",
-                        "style": "form",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
+                                    "PortofolioContentUpdateDTO.Id": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "PortofolioContentUpdateDTO.Description": {
+                                        "type": "string"
+                                    },
+                                    "PortofolioContentUpdateDTO.Name": {
+                                        "type": "string"
+                                    },
+                                    "PortofolioContentUpdateDTO.FileType": {
+                                        "$ref": "#/components/schemas/FileType"
+                                    },
+                                    "PortofolioContentUpdateDTO.Order": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
                                     "MediaFile": {
                                         "type": "string",
                                         "format": "binary"
@@ -554,6 +513,21 @@
                                 }
                             },
                             "encoding": {
+                                "PortofolioContentUpdateDTO.Id": {
+                                    "style": "form"
+                                },
+                                "PortofolioContentUpdateDTO.Description": {
+                                    "style": "form"
+                                },
+                                "PortofolioContentUpdateDTO.Name": {
+                                    "style": "form"
+                                },
+                                "PortofolioContentUpdateDTO.FileType": {
+                                    "style": "form"
+                                },
+                                "PortofolioContentUpdateDTO.Order": {
+                                    "style": "form"
+                                },
                                 "MediaFile": {
                                     "style": "form"
                                 }

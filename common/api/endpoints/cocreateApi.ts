@@ -31,9 +31,7 @@ import type {
   ProjectRoleDTO,
   ProjectWithMatchingRoleDTO,
   PutApiAssetBody,
-  PutApiAssetParams,
   PutApiPortofolioContentBody,
-  PutApiPortofolioContentParams,
   SkillDTO,
   SkillUpdateDTO,
   UserCreateDTO,
@@ -99,15 +97,13 @@ export const getPostApiAssetMutationOptions = <TError = ErrorType<unknown>,
     
 export const putApiAsset = (
     putApiAssetBody: PutApiAssetBody,
-    params?: PutApiAssetParams,
  ) => {
       
       const formData = customFormData(putApiAssetBody)
       return customInstance<AssetDTO>(
       {url: `/api/Asset`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },
-       data: formData,
-        params
+       data: formData
     },
       );
     }
@@ -115,17 +111,17 @@ export const putApiAsset = (
 
 
 export const getPutApiAssetMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody;params?: PutApiAssetParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody;params?: PutApiAssetParams}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAsset>>, {data: PutApiAssetBody;params?: PutApiAssetParams}> = (props) => {
-          const {data,params} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAsset>>, {data: PutApiAssetBody}> = (props) => {
+          const {data} = props ?? {};
 
-          return  putApiAsset(data,params,)
+          return  putApiAsset(data,)
         }
 
         
@@ -138,7 +134,7 @@ export const getPutApiAssetMutationOptions = <TError = ErrorType<unknown>,
     export type PutApiAssetMutationError = ErrorType<unknown>
 
     export const usePutApiAsset = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody;params?: PutApiAssetParams}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody}, TContext>, }
 ) => {
 
       const mutationOptions = getPutApiAssetMutationOptions(options);
@@ -428,15 +424,13 @@ export const getPostApiPortofolioContentMutationOptions = <TError = ErrorType<un
     
 export const putApiPortofolioContent = (
     putApiPortofolioContentBody: PutApiPortofolioContentBody,
-    params?: PutApiPortofolioContentParams,
  ) => {
       
       const formData = customFormData(putApiPortofolioContentBody)
       return customInstance<PortofolioContentDTO>(
       {url: `/api/PortofolioContent`, method: 'PUT',
       headers: {'Content-Type': 'multipart/form-data', },
-       data: formData,
-        params
+       data: formData
     },
       );
     }
@@ -444,17 +438,17 @@ export const putApiPortofolioContent = (
 
 
 export const getPutApiPortofolioContentMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody;params?: PutApiPortofolioContentParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody;params?: PutApiPortofolioContentParams}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPortofolioContent>>, {data: PutApiPortofolioContentBody;params?: PutApiPortofolioContentParams}> = (props) => {
-          const {data,params} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPortofolioContent>>, {data: PutApiPortofolioContentBody}> = (props) => {
+          const {data} = props ?? {};
 
-          return  putApiPortofolioContent(data,params,)
+          return  putApiPortofolioContent(data,)
         }
 
         
@@ -467,7 +461,7 @@ export const getPutApiPortofolioContentMutationOptions = <TError = ErrorType<unk
     export type PutApiPortofolioContentMutationError = ErrorType<unknown>
 
     export const usePutApiPortofolioContent = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody;params?: PutApiPortofolioContentParams}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody}, TContext>, }
 ) => {
 
       const mutationOptions = getPutApiPortofolioContentMutationOptions(options);
@@ -872,7 +866,7 @@ export const postApiUserMatchingProjects = (
  ) => {
       
       
-      return customInstance<ProjectWithMatchingRoleDTO[]>(
+      return customInstance<ProjectWithMatchingRoleDTO>(
       {url: `/api/User/matching-projects`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: userGetMatchingProjectRolesDTO

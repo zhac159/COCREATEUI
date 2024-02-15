@@ -5,13 +5,13 @@ import { ActivityIndicator, Button, TextInput } from "react-native-paper";
 import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi";
 import * as ImagePicker from "expo-image-picker";
 import { StyleSheet } from "react-native";
-import { useSetPortfolioContents } from "@/components/RecoilStates/profileState";
+import { useSetPortfolioContentsState } from "@/components/RecoilStates/profileState";
 import { router } from "expo-router";
 
 const PortofolioContentModal = () => {
   const { control, handleSubmit } = useForm<PostApiPortofolioContentBody>();
 
-  const setPortfolioContents = useSetPortfolioContents();
+  const setPortfolioContents = useSetPortfolioContentsState();
 
   const { mutate, isLoading } = usePostApiPortofolioContent({
     mutation: {

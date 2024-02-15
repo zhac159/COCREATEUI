@@ -1,8 +1,7 @@
 import { SkillDTO } from "@/common/api/model";
 import { chunk, flatten, groupBy, map } from "lodash";
 import { FC } from "react";
-import { Dimensions, FlatList, View } from "react-native";
-import { Text } from "react-native-paper";
+import {  View } from "react-native";
 import Skill from "./Skill";
 
 type SkillsListProps = {

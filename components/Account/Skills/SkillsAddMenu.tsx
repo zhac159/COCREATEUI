@@ -1,5 +1,5 @@
 import { SkillDTO } from "@/common/api/model";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import Skill from "./Skill";
 import React, { FC, useState } from "react";
@@ -29,61 +29,68 @@ const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between",
+        width: "100%",
         top: "10%",
+        justifyContent: "space-between",
       }}
     >
-      <View>
+      <View
+        style={{
+          width: "50%",
+        }}
+      >
         {Object.keys(SkillGroups)
-          .filter((key) => isNaN(Number(key))) // Filter out the numbers
+          .filter((key) => isNaN(Number(key)))
           .map((skillGroup, index) => (
-            <Button
-              key={index}
-              onPress={() =>
-                setSkillGroupType(
-                  SkillGroups[skillGroup as keyof typeof SkillGroups]
-                )
-              }
-              style={{
-                backgroundColor:
-                  skillGroupType ===
-                  SkillGroups[skillGroup as keyof typeof SkillGroups]
-                    ? theme.colors.primary
-                    : "transparent",
-                marginTop: 10,
-                alignContent: "flex-start",
-                justifyContent: "flex-start",
-              }}
-              labelStyle={{
-                ...theme.customFonts.primary.medium,
-                color:
-                  skillGroupType ===
-                  SkillGroups[skillGroup as keyof typeof SkillGroups]
-                    ? theme.colors.white
-                    : theme.colors.black,
-                textAlign: "left",
-                alignSelf: "flex-start",
-                justifyContent: "flex-start",
-                marginBottom: 0,
-                marginTop: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                paddingVertical: 5,
-              }}
-            >
-              {skillGroup}
-            </Button>
+            <View key={index + "skill-types"} style={{ alignSelf: "flex-start" }}>
+              <TouchableOpacity
+                onPress={() =>
+                  setSkillGroupType(
+                    SkillGroups[skillGroup as keyof typeof SkillGroups]
+                  )
+                }
+                style={{
+                  backgroundColor:
+                    skillGroupType ===
+                    SkillGroups[skillGroup as keyof typeof SkillGroups]
+                      ? theme.colors.primary
+                      : "transparent",
+                  marginTop: 10,
+                  paddingHorizontal: 11,
+                  paddingVertical: 5,
+                  borderRadius: 20,
+                }}
+              >
+                <Text
+                  style={{
+                    ...theme.customFonts.primary.medium,
+                    color:
+                      skillGroupType ===
+                      SkillGroups[skillGroup as keyof typeof SkillGroups]
+                        ? theme.colors.white
+                        : theme.colors.black,
+                  }}
+                >
+                  {skillGroup}
+                </Text>
+              </TouchableOpacity>
+            </View>
           ))}
       </View>
-      <View style={{ paddingRight: 20 }}>
+      <View
+        style={{
+          width: "48%",
+        }}
+      >
         {restOfTheSkills.map((skill, index) =>
           skill.skillGroupType == skillGroupType ? (
-            <Skill
-              skill={skill}
-              editMode={false}
-              selectSkill={selectSkill}
-              key={skill.id}
-            />
+            <View key={index + "-add-skill-list"} style={{ width: "100%", paddingBottom: "5%" }}>
+              <Skill
+                skill={skill}
+                editMode={false}
+                selectSkill={selectSkill}
+              />
+            </View>
           ) : null
         )}
       </View>

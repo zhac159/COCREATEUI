@@ -2,35 +2,41 @@ import { FC } from "react";
 import { Button, IconButton, Text } from "react-native-paper";
 import { View } from "@/components/Themed";
 import { useTheme } from "../Themes/theme";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Touchable, TouchableOpacity } from "react-native";
+import { BlurView } from "expo-blur";
 
 type TabButtonsProps = {
   tabs: string[];
   selectedTab: number;
   setSelectedTab: (inx: number) => void;
+  isSticky: boolean;
 };
 
 const TabButtons: FC<TabButtonsProps> = ({
   tabs,
   selectedTab,
   setSelectedTab,
+  isSticky,
 }) => {
   const theme = useTheme();
 
   return (
-    <View
-      style={styles.container}
+    <BlurView
+      style={{...styles.container, paddingTop: isSticky ? 55 : 55}}
+      intensity={isSticky ? 100 : 0}
     >
       {tabs.map((name, idx) => (
-        <Button
+        <TouchableOpacity
           key={idx}
           onPress={() => {
             setSelectedTab(idx);
           }}
           style={{
-            backgroundColor: selectedTab == idx ? theme.colors.black : "",
-            opacity: 0.7
+            backgroundColor: selectedTab == idx ? theme.colors.black : "transparent",
+            opacity: 0.7,
+            borderRadius: 20,
           }}
+          hitSlop={{ bottom: 20, top: 20 }}
         >
           <Text
             style={{
@@ -41,7 +47,7 @@ const TabButtons: FC<TabButtonsProps> = ({
           >
             {name}
           </Text>
-        </Button>
+        </TouchableOpacity>
       ))}
       <View
         style={{
@@ -60,7 +66,7 @@ const TabButtons: FC<TabButtonsProps> = ({
         style={styles.icon}
         iconColor={theme.colors.black}
       />
-    </View>
+    </BlurView>
   );
 };
 
@@ -75,7 +81,6 @@ const styles = StyleSheet.create({
     paddingBottom: 22,
     paddingRight: 16,
     paddingLeft: 18,
-    paddingTop: 5,
     width: "100%",
     backgroundColor: "transparent",
   },

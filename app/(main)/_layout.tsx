@@ -24,14 +24,13 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-          headerShown: true,
           tabBarStyle: {
             backgroundColor: "transparent",
             padding: 0,
             margin: 0,
           },
           headerStyle: {
-            height: 50,
+            height:  0,
             backgroundColor: "transparent",
             shadowOpacity: 0,
           },

@@ -1,11 +1,9 @@
-import { SkillDTO, SkillGroupType, SkillType } from "@/common/api/model";
-import { FC, useRef } from "react";
+import { SkillDTO } from "@/common/api/model";
+import { FC } from "react";
 import { Text } from "react-native-paper";
 import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
-import Tags from "react-native-tags";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { Shadow } from "react-native-shadow-2";
 import { getSkill, getSkillGroupColor, getSkillIcon } from "./skillHelper";
 import * as Animatable from "react-native-animatable";
 import { useTheme } from "@/components/Themes/theme";
@@ -62,32 +60,9 @@ const Skill: FC<SkillProps> = ({
         iterationCount="infinite"
         animation={editMode ? WiggleAnimation : undefined}
       >
-        <View
-          style={{
-            backgroundColor: "white",
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: 14,
-            gap: 11,
-            paddingHorizontal: 15,
-            paddingVertical: 11,
-            width: "100%",
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            elevation: 5,
-            shadowOpacity: 0.25,
-            position: "relative",
-          }}
-        >
+        <View style={styles.skillContainer}>
           <View
-            style={{
-              backgroundColor: "blue",
-              borderRadius: 50,
-              padding: 11,
-            }}
+            style={styles.skillIcon}
           >
             <FontAwesome6
               name="camera"
@@ -106,14 +81,7 @@ const Skill: FC<SkillProps> = ({
           </Text>
           {editMode && (
             <TouchableOpacity
-              style={{
-                position: "absolute",
-                top: -8,
-                right: -8,
-                backgroundColor: "red",
-                borderRadius: 50,
-                padding: 5,
-              }}
+              style={styles.deleteIconButton}
               onPress={handlePress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
@@ -131,3 +99,38 @@ const Skill: FC<SkillProps> = ({
 };
 
 export default Skill;
+
+const styles = StyleSheet.create({
+  skillContainer: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 14,
+    gap: 11,
+    paddingHorizontal: 15,
+    paddingVertical: 11,
+    width: "100%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 5,
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    position: "relative",
+  },
+  skillIcon: {
+    backgroundColor: "blue",
+    borderRadius: 50,
+    padding: 11,
+  },
+  deleteIconButton: {
+    position: "absolute",
+    top: -8,
+    right: -8,
+    backgroundColor: "red",
+    borderRadius: 50,
+    padding: 5,
+  }
+});

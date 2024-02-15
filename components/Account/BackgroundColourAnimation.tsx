@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet } from "react-native";
-import { useSkills } from "@/components/RecoilStates/profileState";
+import { useSkillsValue } from "@/components/RecoilStates/profileState";
 import { getSkillGroupColor } from "@/components/Account/Skills/skillHelper";
 import { Animated, Image, Easing } from "react-native";
 import { BlurView } from "expo-blur";
 
 const BackgroundColourAnimation = () => {
-  const skills = useSkills();
+  const skills = useSkillsValue();
 
   var colors = [];
 
@@ -91,7 +91,7 @@ const BackgroundColourAnimation = () => {
           width: "100%",
           position: "absolute",
           backgroundColor: "white",
-          opacity: 0.3,
+          opacity: 0.3
         }}
       ></BlurView>
     </Animated.View>

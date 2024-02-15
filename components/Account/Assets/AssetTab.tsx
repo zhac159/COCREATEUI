@@ -1,96 +1,69 @@
-import { Dimensions, ScrollView, View } from "react-native";
-import React, { useEffect } from "react";
+import { Dimensions, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import Asset from "./Asset";
-import { Button, IconButton, Text } from "react-native-paper";
-import { useAssetsState } from "@/components/RecoilStates/profileState";
+import { useAssetsValue, useAssetsState } from "@/components/RecoilStates/profileState";
 import Carousel from "react-native-snap-carousel";
-import { useNavigation, useRouter, useLocalSearchParams } from "expo-router";
-import { AssetType } from "./assetHelper";
 import { AssetDTO } from "@/common/api/model";
+import TabHeaderButtons from "../Common/TabHeaderButtons";
+import AssetTypeSelector from "./AssetTypeSelector";
+import { IconButton } from "react-native-paper";
+import { router } from "expo-router";
+import { set } from "lodash";
 
 const AssetTab = () => {
-  const [assets, setAssets] = useAssetsState();
-  const [assetType, setAssetType] = React.useState(1);
+  const assets = useAssetsValue();
+
+  // console.log(assets);
+
+  const [assetType, setAssetType] = React.useState(0);
   const [filteredAssets, setFilteredAssets] = React.useState<AssetDTO[]>(
     assets || []
   );
-  const router = useRouter();
-  useEffect(() => {
-    setFilteredAssets(assets || []);
-  }, [assets]);
+  const [editMode, setEditMode] = useState(false);
 
-  console.log("filteredAssets", assetType);
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => {
+    var newFilteredAssets = (assets || []).filter(
+      (asset) => asset.assetType === assetType
+    );
+    setFilteredAssets(newFilteredAssets);
+  }, [assetType]);
+
+
   return (
-    <ScrollView
-      style={{ height: "100%", width: "100%" }}
-      contentContainerStyle={{
-        flex: 1,
-        flexDirection: "column",
-        flexGrow: 1,
-        height: "100%",
-      }}
-    >
-      <IconButton
-        icon="plus-circle"
-        iconColor="white"
-        style={{
-          marginRight: 15,
-          alignSelf: "flex-end",
-          backgroundColor: "blue",
-        }}
-        size={17}
-        onPress={() => {
-          router.push({
-            pathname: "/assetModal",
-            params: { assetType: assetType.toString() },
-          });
-        }}
+    <>
+      <TabHeaderButtons
+        editMode={editMode}
+        setEditMode={setEditMode}
+        onDone={() => setUpdate(true)}
       />
-      <View style={{ flex: 1, flexDirection: "row", flexGrow: 1 }}>
-        <View style={{ paddingLeft: 20, paddingTop: 20 }}>
-          {Object.keys(AssetType)
-            .filter((key) => isNaN(Number(key))) // Filter out the numbers
-            .map((skillGroup, index) => (
-              <Button
-                key={index}
-                onPressIn={() => {
-                  console.log("index", index);
-                  setAssetType(index);
-                  var newFilteredAssets = (assets || []).filter(
-                    (asset) => asset.assetType === index
-                  );
-                  setFilteredAssets(newFilteredAssets);
-                }}
-                style={{
-                  backgroundColor:
-                    assetType ===
-                    AssetType[skillGroup as keyof typeof AssetType]
-                      ? "lightgreen"
-                      : "white",
-                }}
-              >
-                {skillGroup}
-              </Button>
-            ))}
-        </View>
+      <View style={{ flexDirection: "row", height: "100%" }}>
+        <AssetTypeSelector assetType={assetType} setAssetType={setAssetType} />
         <Carousel
           layout={"default"}
           key={JSON.stringify(filteredAssets)}
           useScrollView={true}
+          scrollEnabled={!editMode}
           shouldOptimizeUpdates={true}
           data={filteredAssets}
-          style={{ flex: 1 }}
-          inactiveSlideShift={5}
-          slideStyle={{ flex: 1 }}
-          containerCustomStyle={{ flex: 1, paddingRight: 130 }}
-          sliderWidth={Dimensions.get("window").width}
-          itemWidth={350}
+          containerCustomStyle={{
+            flex: 1,
+            height: "100%",
+            width: "100%",
+            paddingLeft: 11,
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}
+          sliderWidth={Dimensions.get("window").width / 2}
+          itemWidth={Dimensions.get("window").width / 1.09}
           vertical={false}
-          renderItem={({ item }) => item && <Asset asset={item} />}
+          renderItem={({ item }) => item && <Asset asset={item} editMode={editMode} update={update} setUpdate={setUpdate} />}
         />
       </View>
-    </ScrollView>
+    </>
   );
 };
 
 export default AssetTab;
+

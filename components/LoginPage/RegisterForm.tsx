@@ -3,13 +3,13 @@ import { View } from "react-native";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 import { Button, TextInput, Text } from "react-native-paper";
-import { useSetCurrentUser } from "../RecoilStates/profileState";
+import { useSetCurrentUserState } from "../RecoilStates/profileState";
 import { usePostApiLogin, usePostApiLoginRegister } from "@/common/api/endpoints/cocreateApi";
 import { UserCreateDTO, UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
 
 const RegisterForm = () => {
-  const setCurrentUser = useSetCurrentUser();
+  const setCurrentUser = useSetCurrentUserState();
 
   const { setValue, handleSubmit } = useForm<UserCreateDTO>();
 

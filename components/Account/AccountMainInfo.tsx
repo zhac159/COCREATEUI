@@ -1,10 +1,11 @@
 import { FC } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { View } from "@/components/Themed";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTheme } from "../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 
 type AccountMainInfoProps = {
   coins: number;
@@ -36,7 +37,7 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
         <Text
           style={{
             ...theme.customFonts.primary.large,
-            fontWeight: "900",
+            fontWeight: "bold",
             letterSpacing: 1.7,
             fontSize: 30,
             color: theme.colors.black,
@@ -45,6 +46,30 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
         >
           {"500"}
         </Text>
+      </View>
+      <View
+        style={{
+          ...styles.shadowCoins,
+          position: "absolute",
+          zIndex: -1,
+          top: "5.5%",
+          right: "2.2%",
+          overflow: "hidden",
+          backgroundColor: "transparent",
+        }}
+      >
+        <BlurView
+        intensity={100}
+          style={{
+            backgroundColor: theme.colors.black,
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            opacity: 0.7,
+            padding: 0,
+            margin: 0,
+          }}
+        />
       </View>
       <View style={styles.nameRatingContainer}>
         <Text
@@ -76,11 +101,12 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "transparent",
-    height: "26.8%",
+    marginTop: 55,
+    height:  Dimensions.get('window').height * 0.21,
+    marginBottom: -55,
   },
   coins: {
     borderRadius: 25.5,
-    backgroundColor: "orange",
     width: "24%",
     height: "21.7%",
     alignItems: "center",
@@ -93,13 +119,19 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "black",
     overflow: "visible",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 3,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    elevation: 5,
+  },
+  shadowCoins: {
+    borderRadius: 25.5,
+    width: "24%",
+    height: "21.7%",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    justifyContent: "center",
+    flexDirection: "row",
+    right: "5.8%",
+    gap: 5,
+    top: "2%",
+    overflow: "visible",
   },
   nameRatingContainer: {
     backgroundColor: "transparent",

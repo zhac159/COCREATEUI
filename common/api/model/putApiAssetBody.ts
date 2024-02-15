@@ -4,7 +4,14 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { AssetType } from './assetType';
 
 export type PutApiAssetBody = {
+  'AssetUpdateDTO.AssetType'?: AssetType;
+  'AssetUpdateDTO.Cost'?: number;
+  'AssetUpdateDTO.Description'?: string;
+  'AssetUpdateDTO.FileSrcs'?: string[];
+  'AssetUpdateDTO.Id'?: number;
+  'AssetUpdateDTO.Name'?: string;
   MediaFiles?: Blob[];
 };
