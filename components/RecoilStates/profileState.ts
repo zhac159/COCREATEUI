@@ -108,8 +108,6 @@ export const assetByIdSelector = selectorFamily({
   get: (id) => ({ get }) => {
     const user = get(currentUserState);
     if (user && user.assets) {
-
-      console.log(user.assets);
     
     return user?.assets.find(asset => asset.id === id);
     }

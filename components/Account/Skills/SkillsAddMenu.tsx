@@ -20,7 +20,7 @@ const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
   if (!show) return null;
 
   const [skillGroupType, setSkillGroupType] = useState<SkillGroups>(
-    SkillGroups.Fashion
+    SkillGroups.Filmmaking
   );
 
   const theme = useTheme();

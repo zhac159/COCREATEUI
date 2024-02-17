@@ -5,3 +5,4 @@ export enum AssetType {
   Lights,
   Microphones,
 }
+

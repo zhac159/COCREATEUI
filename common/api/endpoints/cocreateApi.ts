@@ -17,20 +17,22 @@ import type {
   UseQueryResult
 } from 'react-query'
 import type {
+  AssetCreateDTO,
   AssetDTO,
+  AssetUpdateDTO,
   EnquiryConfirmDTO,
   EnquiryCreateDTO,
   EnquiryDTO,
   LoginResponseDTO,
   PortofolioContentDTO,
-  PostApiAssetBody,
   PostApiPortofolioContentBody,
   PostApiProjectBody,
   PostApiProjectRoleBody,
+  PrepareUploadDTO,
+  PrepareUploadResponseDTO,
   ProjectDTO,
   ProjectRoleDTO,
   ProjectWithMatchingRoleDTO,
-  PutApiAssetBody,
   PutApiPortofolioContentBody,
   SkillDTO,
   SkillUpdateDTO,
@@ -49,14 +51,14 @@ import { customFormData } from '../mutator/custom-form-data';
 
 
 export const postApiAsset = (
-    postApiAssetBody: PostApiAssetBody,
+    assetCreateDTO: AssetCreateDTO,
  ) => {
       
-      const formData = customFormData(postApiAssetBody)
+      
       return customInstance<AssetDTO>(
       {url: `/api/Asset`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData
+      headers: {'Content-Type': 'application/json', },
+      data: assetCreateDTO
     },
       );
     }
@@ -64,14 +66,14 @@ export const postApiAsset = (
 
 
 export const getPostApiAssetMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: AssetCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: AssetCreateDTO}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAsset>>, {data: PostApiAssetBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAsset>>, {data: AssetCreateDTO}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiAsset(data,)
@@ -83,11 +85,11 @@ export const getPostApiAssetMutationOptions = <TError = ErrorType<unknown>,
    return  { mutationFn, ...mutationOptions }}
 
     export type PostApiAssetMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAsset>>>
-    export type PostApiAssetMutationBody = PostApiAssetBody
+    export type PostApiAssetMutationBody = AssetCreateDTO
     export type PostApiAssetMutationError = ErrorType<unknown>
 
     export const usePostApiAsset = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: PostApiAssetBody}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAsset>>, TError,{data: AssetCreateDTO}, TContext>, }
 ) => {
 
       const mutationOptions = getPostApiAssetMutationOptions(options);
@@ -96,14 +98,14 @@ export const getPostApiAssetMutationOptions = <TError = ErrorType<unknown>,
     }
     
 export const putApiAsset = (
-    putApiAssetBody: PutApiAssetBody,
+    assetUpdateDTO: AssetUpdateDTO,
  ) => {
       
-      const formData = customFormData(putApiAssetBody)
+      
       return customInstance<AssetDTO>(
       {url: `/api/Asset`, method: 'PUT',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData
+      headers: {'Content-Type': 'application/json', },
+      data: assetUpdateDTO
     },
       );
     }
@@ -111,14 +113,14 @@ export const putApiAsset = (
 
 
 export const getPutApiAssetMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: AssetUpdateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: AssetUpdateDTO}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAsset>>, {data: PutApiAssetBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiAsset>>, {data: AssetUpdateDTO}> = (props) => {
           const {data} = props ?? {};
 
           return  putApiAsset(data,)
@@ -130,59 +132,14 @@ export const getPutApiAssetMutationOptions = <TError = ErrorType<unknown>,
    return  { mutationFn, ...mutationOptions }}
 
     export type PutApiAssetMutationResult = NonNullable<Awaited<ReturnType<typeof putApiAsset>>>
-    export type PutApiAssetMutationBody = PutApiAssetBody
+    export type PutApiAssetMutationBody = AssetUpdateDTO
     export type PutApiAssetMutationError = ErrorType<unknown>
 
     export const usePutApiAsset = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: PutApiAssetBody}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiAsset>>, TError,{data: AssetUpdateDTO}, TContext>, }
 ) => {
 
       const mutationOptions = getPutApiAssetMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-export const deleteApiAssetId = (
-    id: number,
- ) => {
-      
-      
-      return customInstance<Boolean>(
-      {url: `/api/Asset/${id}`, method: 'DELETE'
-    },
-      );
-    }
-  
-
-
-export const getDeleteApiAssetIdMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAssetId>>, TError,{id: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof deleteApiAssetId>>, TError,{id: number}, TContext> => {
- const {mutation: mutationOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiAssetId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteApiAssetId(id,)
-        }
-
-        
-
-
-   return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteApiAssetIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiAssetId>>>
-    
-    export type DeleteApiAssetIdMutationError = ErrorType<unknown>
-
-    export const useDeleteApiAssetId = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAssetId>>, TError,{id: number}, TContext>, }
-) => {
-
-      const mutationOptions = getDeleteApiAssetIdMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -510,6 +467,53 @@ export const getDeleteApiPortofolioContentIdMutationOptions = <TError = ErrorTyp
 ) => {
 
       const mutationOptions = getDeleteApiPortofolioContentIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiPrepare = (
+    prepareUploadDTO: PrepareUploadDTO[],
+ ) => {
+      
+      
+      return customInstance<PrepareUploadResponseDTO>(
+      {url: `/api/Prepare`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: prepareUploadDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiPrepareMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPrepare>>, TError,{data: PrepareUploadDTO[]}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiPrepare>>, TError,{data: PrepareUploadDTO[]}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiPrepare>>, {data: PrepareUploadDTO[]}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiPrepare(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiPrepareMutationResult = NonNullable<Awaited<ReturnType<typeof postApiPrepare>>>
+    export type PostApiPrepareMutationBody = PrepareUploadDTO[]
+    export type PostApiPrepareMutationError = ErrorType<unknown>
+
+    export const usePostApiPrepare = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPrepare>>, TError,{data: PrepareUploadDTO[]}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiPrepareMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

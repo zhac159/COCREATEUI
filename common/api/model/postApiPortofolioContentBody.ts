@@ -4,12 +4,10 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { FileType } from './fileType';
 
 export type PostApiPortofolioContentBody = {
   MediaFile?: Blob;
   'PortofolioContent.Description'?: string;
-  'PortofolioContent.FileType'?: FileType;
   'PortofolioContent.Name'?: string;
   'PortofolioContent.Order'?: number;
 };

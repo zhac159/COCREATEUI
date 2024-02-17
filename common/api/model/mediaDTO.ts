@@ -4,11 +4,10 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { MediaType } from './mediaType';
 
-export interface PortofolioContentDTO {
-  description?: string | null;
+export interface MediaDTO {
   id?: number;
-  name?: string | null;
-  order?: number;
+  mediaType?: MediaType;
   uri?: string | null;
 }

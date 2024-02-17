@@ -1,19 +1,14 @@
 import { Dimensions, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import Asset from "./Asset";
-import { useAssetsValue, useAssetsState } from "@/components/RecoilStates/profileState";
+import { useAssetsValue } from "@/components/RecoilStates/profileState";
 import Carousel from "react-native-snap-carousel";
 import { AssetDTO } from "@/common/api/model";
 import TabHeaderButtons from "../Common/TabHeaderButtons";
 import AssetTypeSelector from "./AssetTypeSelector";
-import { IconButton } from "react-native-paper";
-import { router } from "expo-router";
-import { set } from "lodash";
 
 const AssetTab = () => {
   const assets = useAssetsValue();
-
-  // console.log(assets);
 
   const [assetType, setAssetType] = React.useState(0);
   const [filteredAssets, setFilteredAssets] = React.useState<AssetDTO[]>(
@@ -21,7 +16,9 @@ const AssetTab = () => {
   );
   const [editMode, setEditMode] = useState(false);
 
-  const [update, setUpdate] = useState(false);
+  const [handleUpdate, setHandleUpdate] = useState();
+
+  const [update, setUpdate] = useState<(() => void)>(() => null);
 
   useEffect(() => {
     var newFilteredAssets = (assets || []).filter(
@@ -30,13 +27,12 @@ const AssetTab = () => {
     setFilteredAssets(newFilteredAssets);
   }, [assetType]);
 
-
   return (
     <>
       <TabHeaderButtons
         editMode={editMode}
         setEditMode={setEditMode}
-        onDone={() => setUpdate(true)}
+        onDone={() => update()}
       />
       <View style={{ flexDirection: "row", height: "100%" }}>
         <AssetTypeSelector assetType={assetType} setAssetType={setAssetType} />
@@ -58,7 +54,15 @@ const AssetTab = () => {
           sliderWidth={Dimensions.get("window").width / 2}
           itemWidth={Dimensions.get("window").width / 1.09}
           vertical={false}
-          renderItem={({ item }) => item && <Asset asset={item} editMode={editMode} update={update} setUpdate={setUpdate} />}
+          renderItem={({ item }) =>
+            item && (
+              <Asset
+                asset={item}
+                editMode={editMode}
+                setUpdate={setUpdate}
+              />
+            )
+          }
         />
       </View>
     </>
@@ -66,4 +70,3 @@ const AssetTab = () => {
 };
 
 export default AssetTab;
-

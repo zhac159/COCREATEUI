@@ -5,16 +5,15 @@
  * OpenAPI spec version: v1
  */
 import type { AssetType } from './assetType';
+import type { AssetMedia } from './assetMedia';
 import type { User } from './user';
 
 export interface Asset {
   assetType?: AssetType;
-  cost?: number;
   description?: string | null;
-  fileSrcs?: string[] | null;
   id?: number;
+  medias?: AssetMedia[] | null;
   name?: string | null;
-  uris?: string[] | null;
   user?: User;
   userId?: number;
 }

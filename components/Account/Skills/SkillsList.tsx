@@ -29,11 +29,11 @@ const SkillsList: FC<SkillsListProps> = ({
     >
       {skillChunks.map((skillChunk, index) => (
         <View
-          key={index}
+          key={index + "chunk"}
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          {skillChunk.map((skill) => (
-            <View key={skill.id} style={{ width: "48%" }}>
+          {skillChunk.map((skill, index) => (
+            <View key={index + "skill-list-has"} style={{ width: "48%" }}>
               <Skill
                 skill={skill}
                 editMode={editMode}

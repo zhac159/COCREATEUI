@@ -4,13 +4,11 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { FileType } from './fileType';
 import type { User } from './user';
 
 export interface PortofolioContent {
   description?: string | null;
   fileSrc?: string | null;
-  fileType?: FileType;
   id?: number;
   name?: string | null;
   order?: number;

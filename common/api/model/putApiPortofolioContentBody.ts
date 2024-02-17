@@ -4,12 +4,10 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { FileType } from './fileType';
 
 export type PutApiPortofolioContentBody = {
   MediaFile?: Blob;
   'PortofolioContentUpdateDTO.Description'?: string;
-  'PortofolioContentUpdateDTO.FileType'?: FileType;
   'PortofolioContentUpdateDTO.Id'?: number;
   'PortofolioContentUpdateDTO.Name'?: string;
   'PortofolioContentUpdateDTO.Order'?: number;

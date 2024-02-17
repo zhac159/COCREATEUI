@@ -6,8 +6,10 @@
  */
 
 export * from './asset';
+export * from './assetCreateDTO';
 export * from './assetDTO';
 export * from './assetDTOAPIResponse';
+export * from './assetMedia';
 export * from './assetType';
 export * from './assetUpdateDTO';
 export * from './booleanAPIResponse';
@@ -16,9 +18,14 @@ export * from './enquiryConfirmDTO';
 export * from './enquiryCreateDTO';
 export * from './enquiryDTO';
 export * from './enquiryDTOAPIResponse';
+export * from './entityType';
 export * from './fileType';
 export * from './loginResponseDTO';
 export * from './loginResponseDTOAPIResponse';
+export * from './mediaCreateDTO';
+export * from './mediaDTO';
+export * from './mediaType';
+export * from './mediaUpdateDTO';
 export * from './portofolioContent';
 export * from './portofolioContentDTO';
 export * from './portofolioContentDTOAPIResponse';
@@ -27,6 +34,8 @@ export * from './postApiAssetParams';
 export * from './postApiPortofolioContentBody';
 export * from './postApiProjectBody';
 export * from './postApiProjectRoleBody';
+export * from './prepareUploadDTO';
+export * from './prepareUploadResponseDTO';
 export * from './project';
 export * from './projectDTO';
 export * from './projectDTOAPIResponse';

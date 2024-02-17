@@ -5,12 +5,12 @@
  * OpenAPI spec version: v1
  */
 import type { AssetType } from './assetType';
+import type { MediaDTO } from './mediaDTO';
 
 export interface AssetDTO {
   assetType?: AssetType;
-  cost?: number;
   description?: string | null;
   id?: number;
+  medias?: MediaDTO[] | null;
   name?: string | null;
-  uris?: string[] | null;
 }
