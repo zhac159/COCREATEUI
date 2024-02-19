@@ -1,12 +1,9 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
-import { Pressable, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];

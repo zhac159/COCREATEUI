@@ -5,50 +5,77 @@ import { View, StyleSheet } from "react-native";
 import { Button, IconButton, Text } from "react-native-paper";
 
 type TabHeaderButtonsProps = {
-  editMode: boolean;
+  editMode?: boolean;
+  disableEditMode?: boolean;
   setEditMode: (editMode: boolean) => void;
+  createMode?: boolean;
+  setCreateMode?: (createMode: boolean) => void;
   onDone: () => void;
+  showPlayButton?: boolean;
 };
 
 const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
-  editMode,
-  setEditMode,
+  editMode = false,
+  disableEditMode = false,
+  setEditMode = () => null,
+  createMode = false,
+  setCreateMode = undefined,
   onDone,
+  showPlayButton = false,
 }) => {
   const theme = useTheme();
 
   return (
     <View style={styles.buttonsContainer}>
-      {!editMode ? (
+      {!editMode && !createMode ? (
         <>
           <IconButton
             icon={() => (
               <FontAwesome6 name="pen" size={18} color="white" solid />
             )}
+            disabled={disableEditMode}
             size={26}
             onPress={() => {
               setEditMode(!editMode);
             }}
             style={{
-              backgroundColor: theme.colors.primary,
+              backgroundColor: disableEditMode? theme.colors.gray: theme.colors.primary,
               margin: 0,
               padding: 0,
             }}
           />
-          <IconButton
-            icon={() => (
-              <FontAwesome6 name="play" size={18} color="white" solid />
-            )}
-            size={26}
-            onPress={() => {
-              console.log("Pressed");
-            }}
-            style={{
-              backgroundColor: theme.colors.black,
-              margin: 0,
-              padding: 0,
-            }}
-          />
+          {setCreateMode && (
+            <IconButton
+              icon={() => (
+                <FontAwesome6 name="plus" size={18} color="white" solid />
+              )}
+              size={26}
+              onPress={() => {
+                setCreateMode(!createMode);
+              }}
+              style={{
+                backgroundColor: theme.colors.primary,
+                margin: 0,
+                padding: 0,
+              }}
+            />
+          )}
+          {showPlayButton && (
+            <IconButton
+              icon={() => (
+                <FontAwesome6 name="play" size={18} color="white" solid />
+              )}
+              size={26}
+              onPress={() => {
+                console.log("Pressed");
+              }}
+              style={{
+                backgroundColor: theme.colors.black,
+                margin: 0,
+                padding: 0,
+              }}
+            />
+          )}
         </>
       ) : (
         <>
@@ -60,7 +87,8 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
               borderRadius: 100,
             }}
             onPress={() => {
-              setEditMode(!editMode);
+              setEditMode(false);
+              if (setCreateMode) setCreateMode(false);
               onDone();
             }}
           >

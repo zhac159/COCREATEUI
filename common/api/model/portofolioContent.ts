@@ -4,15 +4,17 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { PortofolioContentMedia } from './portofolioContentMedia';
+import type { SkillType } from './skillType';
 import type { User } from './user';
 
 export interface PortofolioContent {
+  createdAt?: string;
   description?: string | null;
-  fileSrc?: string | null;
   id?: number;
-  name?: string | null;
+  medias?: PortofolioContentMedia[] | null;
   order?: number;
-  uri?: string | null;
+  skillType?: SkillType;
   user?: User;
   userId?: number;
 }

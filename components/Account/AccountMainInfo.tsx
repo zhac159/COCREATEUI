@@ -6,22 +6,25 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTheme } from "../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
+import { windowHeight } from "./Common/getWindowDimensions";
 
 type AccountMainInfoProps = {
   coins: number;
   username: string;
   rating: number;
+  isSticky: boolean;
 };
 
 const AccountMainInfo: FC<AccountMainInfoProps> = ({
   coins,
   username,
   rating,
+  isSticky,
 }) => {
   const theme = useTheme();
 
   return (
-    <View style={styles.container}>
+    <BlurView style={styles.container} intensity={isSticky ? 100 : 0}>
       <View
         style={{
           ...styles.coins,
@@ -59,7 +62,7 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
         }}
       >
         <BlurView
-        intensity={100}
+          intensity={100}
           style={{
             backgroundColor: theme.colors.black,
             position: "absolute",
@@ -91,7 +94,7 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
           />
         </View>
       </View>
-    </View>
+    </BlurView>
   );
 };
 
@@ -102,13 +105,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     marginTop: 55,
-    height:  Dimensions.get('window').height * 0.21,
+    height: windowHeight * 0.22,
     marginBottom: -55,
   },
   coins: {
     borderRadius: 25.5,
     width: "24%",
-    height: "21.7%",
+    height: "23.7%",
     alignItems: "center",
     alignSelf: "flex-end",
     justifyContent: "center",
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
   shadowCoins: {
     borderRadius: 25.5,
     width: "24%",
-    height: "21.7%",
+    height: "23.7%",
     alignItems: "center",
     alignSelf: "flex-end",
     justifyContent: "center",

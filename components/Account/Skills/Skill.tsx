@@ -60,9 +60,9 @@ const Skill: FC<SkillProps> = ({
         iterationCount="infinite"
         animation={editMode ? WiggleAnimation : undefined}
       >
-        <View style={styles.skillContainer}>
+        <View style={skillStyles.skillContainer}>
           <View
-            style={styles.skillIcon}
+            style={skillStyles.skillIcon}
           >
             <FontAwesome6
               name="camera"
@@ -81,12 +81,12 @@ const Skill: FC<SkillProps> = ({
           </Text>
           {editMode && (
             <TouchableOpacity
-              style={styles.deleteIconButton}
+              style={skillStyles.deleteIconButton}
               onPress={handlePress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <MaterialCommunityIcons
-                name="minus-thick"
+              <FontAwesome6
+                name="minus"
                 size={15}
                 color="white"
               />
@@ -100,7 +100,7 @@ const Skill: FC<SkillProps> = ({
 
 export default Skill;
 
-const styles = StyleSheet.create({
+export const skillStyles = StyleSheet.create({
   skillContainer: {
     backgroundColor: "white",
     flexDirection: "row",

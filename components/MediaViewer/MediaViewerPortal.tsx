@@ -4,6 +4,7 @@ import React from "react";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { useMediaViewerState } from "./mediaViewerState";
 import { BlurView } from "expo-blur";
+import { windowHeight } from "../Account/Common/getWindowDimensions";
 
 const MediaViewerPortal = () => {
   const [mediaViewer, mediaViewerState] = useMediaViewerState();
@@ -20,7 +21,7 @@ const MediaViewerPortal = () => {
         <TouchableOpacity
           onPress={() => mediaViewerState({ ...mediaViewer, visible: false })}
           style={{
-            height: Dimensions.get("window").height + 500,
+            height: windowHeight + 500,
             width: "100%",
             position: "absolute",
             backgroundColor: "transparent",
@@ -29,7 +30,7 @@ const MediaViewerPortal = () => {
         >
           <BlurView
             style={{
-              height: Dimensions.get("window").height + 500,
+              height: windowHeight + 500,
               width: "100%",
               position: "absolute",
             }}

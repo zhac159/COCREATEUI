@@ -1,20 +1,21 @@
 import {
   StyleSheet,
-  Animated,
   Dimensions,
-  ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
 import { View } from "@/components/Themed";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
-import { TabView, SceneMap } from "react-native-tab-view";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import SkillsTab from "@/components/Account/Skills/SkillsTab";
 import AccountMainInfo from "@/components/Account/AccountMainInfo";
 import TabButtons from "@/components/Account/TabButtons";
 import AssetTab from "@/components/Account/Assets/AssetTab";
-import { BlurView } from "expo-blur";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import PortofolioContentTab from "@/components/Account/PortofolioContents/PortofolioContentTab";
+import { Button } from "react-native-paper";
+import { router } from "expo-router";
+import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 export default function Account() {
   const currentUser = useCurrentUserValue();
@@ -27,7 +28,7 @@ export default function Account() {
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    setIsSticky(offsetY - 20 > Dimensions.get("window").height * 0.21);
+    setIsSticky(offsetY - 15 > windowHeight * 0.22);
   };
 
   if (!currentUser) {
@@ -35,7 +36,7 @@ export default function Account() {
   }
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       style={{
         height: "100%",
         width: "100%",
@@ -45,15 +46,16 @@ export default function Account() {
       contentContainerStyle={{ flexGrow: 1 }}
       pointerEvents="box-none"
       stickyHeaderIndices={[1]}
-      scrollEventThrottle={20}
+      scrollEventThrottle={5}
       onScroll={handleScroll}
     >
       <AccountMainInfo
         coins={currentUser.coins || 0}
         username={currentUser.username || "username"}
         rating={currentUser.rating || 0}
-      />
+        isSticky={isSticky}
 
+      />
       <TabButtons
         tabs={buttonNames}
         selectedTab={selectedTab}
@@ -76,7 +78,15 @@ export default function Account() {
       >
         <AssetTab />
       </View>
-    </ScrollView>
+      <View
+        style={{
+          ...styles.scene,
+          display: selectedTab !== 2 ? "none" : "flex",
+        }}
+      >
+        <PortofolioContentTab />
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
 

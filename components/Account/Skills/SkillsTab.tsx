@@ -65,6 +65,7 @@ const SkillsTab = () => {
         editMode={editMode}
         setEditMode={setEditMode}
         onDone={handleSubmit}
+        showPlayButton={true}
       />
       <SkillsList
         skills={skillsSelected}

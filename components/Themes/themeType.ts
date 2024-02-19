@@ -55,6 +55,9 @@ interface CustomTheme extends Theme {
     black: string;
     orange: string;
     white: string;
+    gray: string;
+    lightGray: string;
+    lightestGray: string;
   };
   customIcons: {
     small: {

@@ -4,12 +4,12 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { MediaDTO } from './mediaDTO';
+import type { MediaCreateDTO } from './mediaCreateDTO';
 import type { SkillType } from './skillType';
 
-export interface PortofolioContentDTO {
+export interface PortofolioContentCreateDTO {
   description?: string | null;
-  id?: number;
-  medias?: MediaDTO[] | null;
+  medias?: MediaCreateDTO[] | null;
+  order?: number;
   skillType?: SkillType;
 }

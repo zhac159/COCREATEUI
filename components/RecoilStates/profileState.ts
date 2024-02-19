@@ -153,3 +153,26 @@ export const addressSelector = selector({
 export const useAddressValue = () => useRecoilValue(addressSelector);
 export const useSetAddressState = () => useSetRecoilState(addressSelector);
 export const useAddressState = () => useRecoilState(addressSelector);
+
+// about you selector 
+
+export const aboutYouSelector = selector({
+  key: "aboutYouSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.aboutYou;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        aboutYou: newValue instanceof DefaultValue ? null : newValue,
+      });
+    }
+  },
+});
+
+export const useAboutYouValue = () => useRecoilValue(aboutYouSelector);
+export const useSetAboutYouState = () => useSetRecoilState(aboutYouSelector);
+export const useAboutYouState = () => useRecoilState(aboutYouSelector);

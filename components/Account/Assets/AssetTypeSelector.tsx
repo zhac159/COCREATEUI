@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction } from "react";
-import {TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Text } from "react-native-paper";
 import { AssetType } from "./assetHelper";
@@ -8,14 +8,26 @@ import { useTheme } from "@/components/Themes/theme";
 type AssetTypeSelectorProps = {
   assetType: number;
   setAssetType: Dispatch<SetStateAction<number>>;
+  disabled?: boolean;
 };
 
 const AssetTypeSelector: FC<AssetTypeSelectorProps> = ({
   assetType,
   setAssetType,
+  disabled = false,
 }) => {
   const theme = useTheme();
 
+  function getTextColor(skillGroup: string) {
+    let color;
+    if (assetType === AssetType[skillGroup as keyof typeof AssetType]) {
+      color = theme.colors.white;
+    } else {
+      color = disabled ? theme.colors.gray : theme.colors.black;
+    }
+    return color;
+  }
+  
   return (
     <View>
       {Object.keys(AssetType)
@@ -26,6 +38,7 @@ const AssetTypeSelector: FC<AssetTypeSelectorProps> = ({
               onPressIn={() => {
                 setAssetType(index);
               }}
+              disabled={disabled}
               style={{
                 backgroundColor:
                   assetType === AssetType[skillGroup as keyof typeof AssetType]
@@ -40,11 +53,7 @@ const AssetTypeSelector: FC<AssetTypeSelectorProps> = ({
               <Text
                 style={{
                   ...theme.customFonts.primary.medium,
-                  color:
-                    assetType ===
-                    AssetType[skillGroup as keyof typeof AssetType]
-                      ? theme.colors.white
-                      : theme.colors.black,
+                  color: getTextColor(skillGroup),
                 }}
               >
                 {skillGroup}

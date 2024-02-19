@@ -24,8 +24,10 @@ import type {
   EnquiryCreateDTO,
   EnquiryDTO,
   LoginResponseDTO,
+  PortofolioContentCreateDTO,
   PortofolioContentDTO,
-  PostApiPortofolioContentBody,
+  PortofolioContentGroupUpdateDTO,
+  PortofolioContentUpdateDTO,
   PostApiProjectBody,
   PostApiProjectRoleBody,
   PrepareUploadDTO,
@@ -33,7 +35,6 @@ import type {
   ProjectDTO,
   ProjectRoleDTO,
   ProjectWithMatchingRoleDTO,
-  PutApiPortofolioContentBody,
   SkillDTO,
   SkillUpdateDTO,
   UserCreateDTO,
@@ -140,6 +141,51 @@ export const getPutApiAssetMutationOptions = <TError = ErrorType<unknown>,
 ) => {
 
       const mutationOptions = getPutApiAssetMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const deleteApiAssetId = (
+    id: number,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/Asset/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
+
+
+export const getDeleteApiAssetIdMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAssetId>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiAssetId>>, TError,{id: number}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiAssetId>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteApiAssetId(id,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiAssetIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiAssetId>>>
+    
+    export type DeleteApiAssetIdMutationError = ErrorType<unknown>
+
+    export const useDeleteApiAssetId = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAssetId>>, TError,{id: number}, TContext>, }
+) => {
+
+      const mutationOptions = getDeleteApiAssetIdMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -333,14 +379,14 @@ export const getPostApiLoginRegisterMutationOptions = <TError = ErrorType<unknow
     }
     
 export const postApiPortofolioContent = (
-    postApiPortofolioContentBody: PostApiPortofolioContentBody,
+    portofolioContentCreateDTO: PortofolioContentCreateDTO,
  ) => {
       
-      const formData = customFormData(postApiPortofolioContentBody)
+      
       return customInstance<PortofolioContentDTO>(
       {url: `/api/PortofolioContent`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData
+      headers: {'Content-Type': 'application/json', },
+      data: portofolioContentCreateDTO
     },
       );
     }
@@ -348,14 +394,14 @@ export const postApiPortofolioContent = (
 
 
 export const getPostApiPortofolioContentMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPortofolioContent>>, TError,{data: PostApiPortofolioContentBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiPortofolioContent>>, TError,{data: PostApiPortofolioContentBody}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPortofolioContent>>, TError,{data: PortofolioContentCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiPortofolioContent>>, TError,{data: PortofolioContentCreateDTO}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiPortofolioContent>>, {data: PostApiPortofolioContentBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiPortofolioContent>>, {data: PortofolioContentCreateDTO}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiPortofolioContent(data,)
@@ -367,11 +413,11 @@ export const getPostApiPortofolioContentMutationOptions = <TError = ErrorType<un
    return  { mutationFn, ...mutationOptions }}
 
     export type PostApiPortofolioContentMutationResult = NonNullable<Awaited<ReturnType<typeof postApiPortofolioContent>>>
-    export type PostApiPortofolioContentMutationBody = PostApiPortofolioContentBody
+    export type PostApiPortofolioContentMutationBody = PortofolioContentCreateDTO
     export type PostApiPortofolioContentMutationError = ErrorType<unknown>
 
     export const usePostApiPortofolioContent = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPortofolioContent>>, TError,{data: PostApiPortofolioContentBody}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPortofolioContent>>, TError,{data: PortofolioContentCreateDTO}, TContext>, }
 ) => {
 
       const mutationOptions = getPostApiPortofolioContentMutationOptions(options);
@@ -380,14 +426,14 @@ export const getPostApiPortofolioContentMutationOptions = <TError = ErrorType<un
     }
     
 export const putApiPortofolioContent = (
-    putApiPortofolioContentBody: PutApiPortofolioContentBody,
+    portofolioContentUpdateDTO: PortofolioContentUpdateDTO,
  ) => {
       
-      const formData = customFormData(putApiPortofolioContentBody)
+      
       return customInstance<PortofolioContentDTO>(
       {url: `/api/PortofolioContent`, method: 'PUT',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData
+      headers: {'Content-Type': 'application/json', },
+      data: portofolioContentUpdateDTO
     },
       );
     }
@@ -395,14 +441,14 @@ export const putApiPortofolioContent = (
 
 
 export const getPutApiPortofolioContentMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PortofolioContentUpdateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PortofolioContentUpdateDTO}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPortofolioContent>>, {data: PutApiPortofolioContentBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPortofolioContent>>, {data: PortofolioContentUpdateDTO}> = (props) => {
           const {data} = props ?? {};
 
           return  putApiPortofolioContent(data,)
@@ -414,11 +460,11 @@ export const getPutApiPortofolioContentMutationOptions = <TError = ErrorType<unk
    return  { mutationFn, ...mutationOptions }}
 
     export type PutApiPortofolioContentMutationResult = NonNullable<Awaited<ReturnType<typeof putApiPortofolioContent>>>
-    export type PutApiPortofolioContentMutationBody = PutApiPortofolioContentBody
+    export type PutApiPortofolioContentMutationBody = PortofolioContentUpdateDTO
     export type PutApiPortofolioContentMutationError = ErrorType<unknown>
 
     export const usePutApiPortofolioContent = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PutApiPortofolioContentBody}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContent>>, TError,{data: PortofolioContentUpdateDTO}, TContext>, }
 ) => {
 
       const mutationOptions = getPutApiPortofolioContentMutationOptions(options);
@@ -426,31 +472,33 @@ export const getPutApiPortofolioContentMutationOptions = <TError = ErrorType<unk
       return useMutation(mutationOptions);
     }
     
-export const deleteApiPortofolioContentId = (
-    id: number,
+export const putApiPortofolioContentGroup = (
+    portofolioContentGroupUpdateDTO: PortofolioContentGroupUpdateDTO,
  ) => {
       
       
-      return customInstance<Boolean>(
-      {url: `/api/PortofolioContent/${id}`, method: 'DELETE'
+      return customInstance<PortofolioContentDTO>(
+      {url: `/api/PortofolioContent/group`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: portofolioContentGroupUpdateDTO
     },
       );
     }
   
 
 
-export const getDeleteApiPortofolioContentIdMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiPortofolioContentId>>, TError,{id: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof deleteApiPortofolioContentId>>, TError,{id: number}, TContext> => {
+export const getPutApiPortofolioContentGroupMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContentGroup>>, TError,{data: PortofolioContentGroupUpdateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContentGroup>>, TError,{data: PortofolioContentGroupUpdateDTO}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiPortofolioContentId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPortofolioContentGroup>>, {data: PortofolioContentGroupUpdateDTO}> = (props) => {
+          const {data} = props ?? {};
 
-          return  deleteApiPortofolioContentId(id,)
+          return  putApiPortofolioContentGroup(data,)
         }
 
         
@@ -458,15 +506,15 @@ export const getDeleteApiPortofolioContentIdMutationOptions = <TError = ErrorTyp
 
    return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteApiPortofolioContentIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiPortofolioContentId>>>
-    
-    export type DeleteApiPortofolioContentIdMutationError = ErrorType<unknown>
+    export type PutApiPortofolioContentGroupMutationResult = NonNullable<Awaited<ReturnType<typeof putApiPortofolioContentGroup>>>
+    export type PutApiPortofolioContentGroupMutationBody = PortofolioContentGroupUpdateDTO
+    export type PutApiPortofolioContentGroupMutationError = ErrorType<unknown>
 
-    export const useDeleteApiPortofolioContentId = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiPortofolioContentId>>, TError,{id: number}, TContext>, }
+    export const usePutApiPortofolioContentGroup = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPortofolioContentGroup>>, TError,{data: PortofolioContentGroupUpdateDTO}, TContext>, }
 ) => {
 
-      const mutationOptions = getDeleteApiPortofolioContentIdMutationOptions(options);
+      const mutationOptions = getPutApiPortofolioContentGroupMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

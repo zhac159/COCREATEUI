@@ -99,6 +99,47 @@
                 }
             }
         },
+        "/api/Asset/{id}": {
+            "delete": {
+                "tags": [
+                    "Asset"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/Enquiry/create": {
             "post": {
                 "tags": [
@@ -298,39 +339,19 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "PortofolioContent.Description": {
-                                        "type": "string"
-                                    },
-                                    "PortofolioContent.Name": {
-                                        "type": "string"
-                                    },
-                                    "PortofolioContent.Order": {
-                                        "type": "integer",
-                                        "format": "int32"
-                                    },
-                                    "MediaFile": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                }
-                            },
-                            "encoding": {
-                                "PortofolioContent.Description": {
-                                    "style": "form"
-                                },
-                                "PortofolioContent.Name": {
-                                    "style": "form"
-                                },
-                                "PortofolioContent.Order": {
-                                    "style": "form"
-                                },
-                                "MediaFile": {
-                                    "style": "form"
-                                }
+                                "$ref": "#/components/schemas/PortofolioContentCreateDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentCreateDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentCreateDTO"
                             }
                         }
                     }
@@ -364,46 +385,19 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "PortofolioContentUpdateDTO.Id": {
-                                        "type": "integer",
-                                        "format": "int32"
-                                    },
-                                    "PortofolioContentUpdateDTO.Description": {
-                                        "type": "string"
-                                    },
-                                    "PortofolioContentUpdateDTO.Name": {
-                                        "type": "string"
-                                    },
-                                    "PortofolioContentUpdateDTO.Order": {
-                                        "type": "integer",
-                                        "format": "int32"
-                                    },
-                                    "MediaFile": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                }
-                            },
-                            "encoding": {
-                                "PortofolioContentUpdateDTO.Id": {
-                                    "style": "form"
-                                },
-                                "PortofolioContentUpdateDTO.Description": {
-                                    "style": "form"
-                                },
-                                "PortofolioContentUpdateDTO.Name": {
-                                    "style": "form"
-                                },
-                                "PortofolioContentUpdateDTO.Order": {
-                                    "style": "form"
-                                },
-                                "MediaFile": {
-                                    "style": "form"
-                                }
+                                "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
                             }
                         }
                     }
@@ -432,40 +426,47 @@
                 }
             }
         },
-        "/api/PortofolioContent/{id}": {
-            "delete": {
+        "/api/PortofolioContent/group": {
+            "put": {
                 "tags": [
                     "PortofolioContent"
                 ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "style": "simple",
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentGroupUpdateDTO"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentGroupUpdateDTO"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortofolioContentGroupUpdateDTO"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
                                 }
                             },
                             "text/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BooleanAPIResponse"
+                                    "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
                                 }
                             }
                         }
@@ -1366,13 +1367,12 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "name": {
-                        "type": "string",
-                        "nullable": true
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
                     },
-                    "fileSrc": {
+                    "createdAt": {
                         "type": "string",
-                        "nullable": true
+                        "format": "date-time"
                     },
                     "order": {
                         "type": "integer",
@@ -1385,9 +1385,35 @@
                     "user": {
                         "$ref": "#/components/schemas/User"
                     },
-                    "uri": {
+                    "medias": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PortofolioContentMedia"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContentCreateDTO": {
+                "type": "object",
+                "properties": {
+                    "description": {
                         "type": "string",
-                        "format": "uri",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
+                    },
+                    "medias": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaCreateDTO"
+                        },
                         "nullable": true
                     }
                 },
@@ -1404,17 +1430,14 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "name": {
-                        "type": "string",
-                        "nullable": true
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
                     },
-                    "order": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    "uri": {
-                        "type": "string",
-                        "format": "uri",
+                    "medias": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaDTO"
+                        },
                         "nullable": true
                     }
                 },
@@ -1431,6 +1454,76 @@
                     },
                     "error": {
                         "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContentGroupUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "portofolioContents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContentMedia": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "uri": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "mediaType": {
+                        "$ref": "#/components/schemas/MediaType"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "portofolioContentId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "portofolioContent": {
+                        "$ref": "#/components/schemas/PortofolioContent"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "PortofolioContentUpdateDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "skillType": {
+                        "$ref": "#/components/schemas/SkillType"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "medias": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaUpdateDTO"
+                        },
                         "nullable": true
                     }
                 },

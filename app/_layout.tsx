@@ -57,11 +57,6 @@ function RootLayoutNav() {
             <Stack.Screen name="modal" options={{ presentation: "modal" }} />
             <Stack.Screen
               name="portofolioModal"
-              options={{ presentation: "modal" }}
-            />
-            <Stack.Screen
-              name="assetModal"
-              options={{ presentation: "modal" }}
             />
           </Stack>
           <MediaViewerPortal />
