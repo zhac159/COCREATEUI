@@ -5,7 +5,7 @@ import {
   PrepareUploadDTO,
 } from "@/common/api/model";
 import { View } from "@/components/Themed";
-import { Divider, Text } from "react-native-paper";
+import { Divider, Portal, Text } from "react-native-paper";
 import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -28,6 +28,8 @@ import { uploadFiles, useGetMedia } from "../Common/Media/mediaHelper";
 import { assetStyles } from "./assetHelper";
 import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Carousel } from "react-native-snap-carousel";
 
 type AssetProps = {
   asset: AssetDTO;

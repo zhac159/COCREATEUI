@@ -59,114 +59,105 @@ const PortofolioContent: FC<portofolioContentProps> = ({
   };
 
   useEffect(() => {
-    console.log("hello");
     fetchCachedUris(portofolioContent);
   }, [portofolioContent.medias, cacheImages]);
 
   return (
     <View style={styles.container}>
-      {isFullScreen && (
+      {/* <Portal>
         <GestureHandlerRootView
           style={{
             flex: 1,
             height: "100%",
             width: "100%",
-            backgroundColor: "red",
+            pointerEvents: isFullScreen ? "auto" : "none",
           }}
         >
-          <Portal>
-            <Carousel
-              ref={carouselRef}
-              vertical={false}
-              data={uris}
-              hasParallaxImages
-              containerCustomStyle={{
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "black",
-                zIndex: 1,
-              }}
-              renderItem={renderItem}
-              sliderWidth={windowWidth}
-              itemWidth={windowWidth}
-              onScrollIndexChanged={(index) => setActiveIndex(index)}
-            />
-          </Portal>
-        </GestureHandlerRootView>
-      )}
-
-      {!isFullScreen && (
-        <>
           <Carousel
-            ref={carouselRef}
             vertical={false}
             data={uris}
             hasParallaxImages
             containerCustomStyle={{
-              paddingLeft: 9,
-              paddingTop: 12,
-              paddingBottom: 12,
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "black",
+              zIndex: 1,
+              display: isFullScreen ? "flex" : "none",
             }}
             renderItem={renderItem}
             sliderWidth={windowWidth}
             itemWidth={windowWidth}
-            onScrollIndexChanged={(index) => setActiveIndex(index)}
           />
-          <Pagination
-            dotsLength={uris.length}
-            activeDotIndex={activeIndex}
-            containerStyle={{
-              position: "absolute",
-              bottom: 0,
-              marginBottom: 30,
-              alignSelf: "center",
-            }}
-            dotStyle={{
-              width: 13,
-              height: 13,
-              borderRadius: 15,
-              backgroundColor: theme.colors.white,
-              marginHorizontal: -2,
-            }}
-            inactiveDotStyle={{
-              width: 13,
-              height: 13,
-              borderRadius: 15,
-              backgroundColor: theme.colors.gray,
-              marginHorizontal: -2,
-            }}
-            inactiveDotOpacity={1}
-            inactiveDotScale={1}
+        </GestureHandlerRootView>
+      </Portal> */}
+      <Carousel
+        ref={carouselRef}
+        vertical={false}
+        data={uris}
+        hasParallaxImages
+        containerCustomStyle={{
+          paddingLeft: 9,
+          paddingTop: 12,
+          paddingBottom: 12,
+        }}
+        renderItem={renderItem}
+        sliderWidth={windowWidth}
+        itemWidth={windowWidth}
+        onScrollIndexChanged={(index) => setActiveIndex(index)}
+      />
+      <Pagination
+        dotsLength={uris.length}
+        activeDotIndex={activeIndex}
+        containerStyle={{
+          position: "absolute",
+          bottom: 0,
+          marginBottom: 30,
+          alignSelf: "center",
+        }}
+        dotStyle={{
+          width: 13,
+          height: 13,
+          borderRadius: 15,
+          backgroundColor: theme.colors.white,
+          marginHorizontal: -2,
+        }}
+        inactiveDotStyle={{
+          width: 13,
+          height: 13,
+          borderRadius: 15,
+          backgroundColor: theme.colors.gray,
+          marginHorizontal: -2,
+        }}
+        inactiveDotOpacity={1}
+        inactiveDotScale={1}
+      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 15,
+        }}
+      >
+        <View style={skillStyles.skillIcon}>
+          <FontAwesome6
+            name="camera"
+            size={17}
+            color={theme.colors.white}
+            solid
           />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 15,
-            }}
-          >
-            <View style={skillStyles.skillIcon}>
-              <FontAwesome6
-                name="camera"
-                size={17}
-                color={theme.colors.white}
-                solid
-              />
-            </View>
-            <Text
-              style={{
-                ...theme.customFonts.primary.small,
-                width: "80%",
-              }}
-            >
-              {"Editinga Short Film fo rmy professional carrer"}
-            </Text>
-          </View>
-        </>
-      )}
+        </View>
+        <Text
+          style={{
+            ...theme.customFonts.primary.small,
+            width: "80%",
+          }}
+        >
+          {"Editinga Short Film fo rmy professional carrer"}
+        </Text>
+      </View>
     </View>
   );
 };

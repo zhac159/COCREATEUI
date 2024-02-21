@@ -22,10 +22,8 @@ const Media: React.FC<MediaProps> = ({
   style,
   editMode = false,
 }) => {
-  console.log("uri", uri);
   return (
     <>
-      <GestureHandlerRootView style={{ flex: 1 }}>
         <TapGestureHandler
           onHandlerStateChange={({ nativeEvent }) => {
             if (nativeEvent.state === State.END) {
@@ -81,7 +79,6 @@ const Media: React.FC<MediaProps> = ({
             />
           )}
         </TapGestureHandler>
-      </GestureHandlerRootView>
     </>
   );
 };
