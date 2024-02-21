@@ -1,6 +1,6 @@
 export enum EntityType {
   ASSET,
-  PORTOFOLIO,
+  PORTOFOLIOCONTENT,
   PROJECT,
   PROJECTROLE,
 }

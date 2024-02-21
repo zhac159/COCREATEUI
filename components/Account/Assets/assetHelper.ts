@@ -21,7 +21,7 @@ export const assetStyles = StyleSheet.create({
       height: 2,
     },
     elevation: 5,
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.10,
     shadowRadius: 4,
   },
   mainImage: {

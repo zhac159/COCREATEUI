@@ -22,7 +22,7 @@ const TabButtons: FC<TabButtonsProps> = ({
 
   return (
     <BlurView
-      style={{...styles.container, paddingTop: 55}}
+      style={{...styles.container, paddingTop: 50}}
       intensity={isSticky ? 100 : 0}
     >
       {tabs.map((name, idx) => (

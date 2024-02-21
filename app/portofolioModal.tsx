@@ -19,10 +19,7 @@ export default function PotofolioModal() {
     ...uris.slice(0, selectedImageIndex),
   ];
 
-  const [activeIndex, setActiveIndex] = useState(
-    mediaViewer.selectedImageIndex
-  );
-  const carouselRef = useRef(null);
+  console.log("reorderedUris", reorderedUris);
 
   useEffect(() => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
@@ -64,7 +61,6 @@ export default function PotofolioModal() {
       }}
     >
       <Carousel
-        ref={carouselRef}
         vertical={false}
         data={reorderedUris}
         hasParallaxImages
@@ -72,7 +68,6 @@ export default function PotofolioModal() {
         renderItem={renderItem}
         sliderWidth={windowWidth}
         itemWidth={windowWidth}
-        onScrollIndexChanged={(index) => setActiveIndex(index)}
       />
     </View>
   );

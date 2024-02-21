@@ -1,4 +1,4 @@
-import { Dimensions, View } from "react-native";
+import { View } from "react-native";
 import React, { useEffect, useState } from "react";
 import Asset from "./Asset";
 import { useAssetsValue } from "@/components/RecoilStates/profileState";
@@ -6,7 +6,7 @@ import Carousel from "react-native-snap-carousel";
 import { AssetDTO } from "@/common/api/model";
 import TabHeaderButtons from "../Common/TabHeaderButtons";
 import AssetTypeSelector from "./AssetTypeSelector";
-import NewAsset from "./NewAsset";
+import NewAssetForm from "./NewAssetForm";
 import { windowWidth } from "../Common/getWindowDimensions";
 
 const AssetTab = () => {
@@ -57,7 +57,7 @@ const AssetTab = () => {
               paddingBottom: 10,
             }}
           >
-            <NewAsset
+            <NewAssetForm
               assetType={assetType}
               setCreate={setCreate}
               setCreateMode={setCreateMode}

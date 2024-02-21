@@ -2,6 +2,18 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { useCallback } from "react";
 import { SetterOrUpdater } from "recoil";
+import { MediaType } from "./MediaType";
+
+const getContentType = (uri: string) => {
+  if (uri.endsWith('.jpeg') || uri.endsWith('.jpg')) {
+    return 'image/jpeg';
+  } else if (uri.endsWith('.mp4')) {
+    return 'video/mp4';
+  } else if (uri.endsWith('.mov')) {
+    return 'video/quicktime';
+  }
+  return 'application/octet-stream';
+};
 
 export const uploadFiles = async (sasUris: string[], files: string[]) => {
   for (let i = 0; i < sasUris.length; i++) {
@@ -63,3 +75,14 @@ export const useGetMedia = ( setUpdatedUris: SetterOrUpdater<string[]>, onlyImag
 
   return getMedia;
 };
+
+export const getMediaTypeFromUri = (uri: string) => {
+  if (uri.endsWith('.jpeg') || uri.endsWith('.jpg')) {
+    return MediaType.IMAGE;
+  } else if (uri.endsWith('.mp4')) {
+    return MediaType.VIDEO;
+  } else if (uri.endsWith('.mov')) {
+    return MediaType.VIDEOMOV;
+  }
+  return MediaType.IMAGE;
+}

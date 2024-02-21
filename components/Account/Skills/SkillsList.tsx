@@ -8,12 +8,14 @@ type SkillsListProps = {
   skills: SkillDTO[];
   editMode: boolean;
   deselectSkill: (skillDTO: SkillDTO) => void;
+  selectSkill?: (skillDTO: SkillDTO) => void;
 };
 
 const SkillsList: FC<SkillsListProps> = ({
   skills,
   editMode,
   deselectSkill,
+  selectSkill,
 }) => {
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const joinedSkills = flatten(groupedSkills);
@@ -38,6 +40,7 @@ const SkillsList: FC<SkillsListProps> = ({
                 skill={skill}
                 editMode={editMode}
                 deselectSkill={deselectSkill}
+                selectSkill={selectSkill}
               />
             </View>
           ))}

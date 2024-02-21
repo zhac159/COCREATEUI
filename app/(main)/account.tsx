@@ -28,7 +28,7 @@ export default function Account() {
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    setIsSticky(offsetY - 15 > windowHeight * 0.22);
+    setIsSticky(offsetY  > windowHeight * 0.22);
   };
 
   if (!currentUser) {
@@ -46,7 +46,7 @@ export default function Account() {
       contentContainerStyle={{ flexGrow: 1 }}
       pointerEvents="box-none"
       stickyHeaderIndices={[1]}
-      scrollEventThrottle={5}
+      scrollEventThrottle={16}
       onScroll={handleScroll}
     >
       <AccountMainInfo
