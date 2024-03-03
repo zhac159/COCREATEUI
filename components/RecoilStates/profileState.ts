@@ -20,6 +20,7 @@ export const currentUserState = atom<UserDTO | undefined>({
     address: null,
     portofolioContents: [],
     profilePictureSrc: null,
+    projects:[],
     rating: 0,
     reviewsGiven: [],
     reviewsReceived: [],
@@ -60,6 +61,49 @@ export const useSetPortfolioContentsState = () =>
 
 export const usePortfolioContentsState = () =>
   useRecoilState(portfolioContentsSelector);
+
+export const portofolioContentByIdSelector = selectorFamily({
+  key: "portofolioContentByIdSelector",
+  get:
+    (id: number) =>
+    ({ get }) => {
+      const user = get(currentUserState);
+      if (user && user.portofolioContents) {
+        return user?.portofolioContents.find(
+          (portofolioContent) => portofolioContent.id === id
+        );
+      }
+    },
+  set:
+    (id: number) =>
+    ({ set, get }, newValue) => {
+      const user = get(currentUserState);
+      if (user && user.portofolioContents) {
+        const newPortofolioContents = user.portofolioContents.map(
+          (portofolioContent) =>
+            portofolioContent.id === id && !(newValue instanceof DefaultValue)
+              ? newValue
+              : portofolioContent
+        );
+        set(currentUserState, {
+          ...user,
+          portofolioContents: newPortofolioContents.filter(
+            (portofolioContent): portofolioContent is PortofolioContentDTO =>
+              portofolioContent !== null && portofolioContent !== undefined
+          ),
+        });
+      }
+    },
+});
+
+export const usePortofolioContentByIdValue = (id: number) =>
+  useRecoilValue(portofolioContentByIdSelector(id));
+
+export const useSetPortofolioContentByIdState = (id: number) =>
+  useSetRecoilState(portofolioContentByIdSelector(id));
+
+export const usePortofolioContentByIdState = (id: number) =>
+  useRecoilState(portofolioContentByIdSelector(id));
 
 export const skillsSelector = selector({
   key: "skillsSelector",
@@ -104,34 +148,41 @@ export const useSetAssetsState = () => useSetRecoilState(assetsSelector);
 export const useAssetsState = () => useRecoilState(assetsSelector);
 
 export const assetByIdSelector = selectorFamily({
-  key: 'assetByIdSelector',
-  get: (id) => ({ get }) => {
-    const user = get(currentUserState);
-    if (user && user.assets) {
-    
-    return user?.assets.find(asset => asset.id === id);
-    }
-    else return null;
-  },
-  set: (id) => ({ set, get }, newValue) => {
-    const user = get(currentUserState);
-    if (user && user.assets) {
-      const newAssets = user.assets.map(asset =>
-        asset.id === id && !(newValue instanceof DefaultValue)
-          ? newValue
-          : asset
-      );
-      set(currentUserState, {
-        ...user,
-        assets: newAssets.filter((asset): asset is AssetDTO => asset !== null && asset !== undefined),
-      });
-    }
-  },
+  key: "assetByIdSelector",
+  get:
+    (id) =>
+    ({ get }) => {
+      const user = get(currentUserState);
+      if (user && user.assets) {
+        return user?.assets.find((asset) => asset.id === id);
+      } else return null;
+    },
+  set:
+    (id) =>
+    ({ set, get }, newValue) => {
+      const user = get(currentUserState);
+      if (user && user.assets) {
+        const newAssets = user.assets.map((asset) =>
+          asset.id === id && !(newValue instanceof DefaultValue)
+            ? newValue
+            : asset
+        );
+        set(currentUserState, {
+          ...user,
+          assets: newAssets.filter(
+            (asset): asset is AssetDTO => asset !== null && asset !== undefined
+          ),
+        });
+      }
+    },
 });
 
-export const useAssetByIdValue = (id: number) => useRecoilValue(assetByIdSelector(id));
-export const useSetAssetByIdState = (id: number) => useSetRecoilState(assetByIdSelector(id));
-export const useAssetByIdState = (id: number) => useRecoilState(assetByIdSelector(id));
+export const useAssetByIdValue = (id: number) =>
+  useRecoilValue(assetByIdSelector(id));
+export const useSetAssetByIdState = (id: number) =>
+  useSetRecoilState(assetByIdSelector(id));
+export const useAssetByIdState = (id: number) =>
+  useRecoilState(assetByIdSelector(id));
 
 export const addressSelector = selector({
   key: "addressSelector",
@@ -154,8 +205,6 @@ export const useAddressValue = () => useRecoilValue(addressSelector);
 export const useSetAddressState = () => useSetRecoilState(addressSelector);
 export const useAddressState = () => useRecoilState(addressSelector);
 
-// about you selector 
-
 export const aboutYouSelector = selector({
   key: "aboutYouSelector",
   get: ({ get }) => {
@@ -176,3 +225,48 @@ export const aboutYouSelector = selector({
 export const useAboutYouValue = () => useRecoilValue(aboutYouSelector);
 export const useSetAboutYouState = () => useSetRecoilState(aboutYouSelector);
 export const useAboutYouState = () => useRecoilState(aboutYouSelector);
+
+export const projectSelector = selector({
+  key: "projectSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.projects;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        projects: newValue instanceof DefaultValue ? [] : newValue,
+      });
+    }
+  },
+});
+
+export const useProjectValue = () => useRecoilValue(projectSelector);
+export const useSetProjectState = () => useSetRecoilState(projectSelector);
+export const useProjectState = () => useRecoilState(projectSelector);
+
+
+//coins selector
+
+export const coinsSelector = selector({
+  key: "coinsSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.coins;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        coins: newValue instanceof DefaultValue ? 0 : newValue,
+      });
+    }
+  },
+});
+
+export const useCoinsValue = () => useRecoilValue(coinsSelector);
+export const useSetCoinsState = () => useSetRecoilState(coinsSelector);
+export const useCoinsState = () => useRecoilState(coinsSelector);

@@ -32,6 +32,7 @@ export enum Skills {
   SoundDesign,
   SoundEditing,
   GameDesign,
+  Composing,
 }
 
 export const skillGroupMap = {
@@ -52,6 +53,7 @@ export const skillGroupMap = {
   [Skills.SoundDesign]: SkillGroups.Music,
   [Skills.SoundEditing]: SkillGroups.Music,
   [Skills.GameDesign]: SkillGroups.Filmmaking,
+  [Skills.Composing]: SkillGroups.Music,
 };
 
 const skillsToStringMapping: { [index: number]: string } = {
@@ -72,27 +74,29 @@ const skillsToStringMapping: { [index: number]: string } = {
   [Skills.SoundDesign]: "Sound Design",
   [Skills.SoundEditing]: "Sound Editing",
   [Skills.GameDesign]: "Game Design",
+  [Skills.Composing]: "Composing",
 };
 
 export enum IconNames {
-  Programming = "language-javascript",
-  Management = "account-group",
-  Acting = "drama-masks",
-  Painting = "brush",
-  Writing = "book-open-page-variant",
-  Singing = "music-note",
-  Dancing = "music-box",
-  Drawing = "pencil",
+  Programming = "music",
+  Management = "music",
+  Acting = "music",
+  Painting = "music",
+  Writing = "music",
+  Singing = "music",
+  Dancing = "music",
+  Drawing = "music",
   Photography = "camera",
-  Directing = "movie-open",
-  Producing = "filmstrip",
-  Editing = "video-edit",
-  Cinematography = "camera-iris",
+  Directing = "music",
+  Producing = "music",
+  Editing = "music",
+  Cinematography = "camera",
   SoundEngineering = "volume-high",
-  SoundDesign = "music-clef-treble",
-  SoundEditing = "music-clef-bass",
-  GameDesign = "gamepad-variant",
-  Default = "help-circle",
+  SoundDesign = "record-vinyl",
+  SoundEditing = "headphones",
+  GameDesign = "music",
+  Default = "camera",
+  Composing = "music",
 }
 
 export const getSkillIcon = (skill: Skills): IconNames => {
@@ -131,34 +135,56 @@ export const getSkillIcon = (skill: Skills): IconNames => {
       return IconNames.SoundEditing;
     case Skills.GameDesign:
       return IconNames.GameDesign;
+    case Skills.Composing:
+      return IconNames.Composing;
     default:
       return IconNames.Default;
   }
 };
-export const getSkillGroupColor = (group: SkillGroups): string => {
+export const getSkillGroupColor = (
+  group: SkillGroups,
+  opacity: number = 1
+): string => {
+  var colour: string = ""; // Black
+
   switch (group) {
     case SkillGroups.Filmmaking:
-      return "#FF0000"; // Red
+      colour = "#FF0000"; // Red
+      break;
     case SkillGroups.VisualArts:
-      return "#00FF00"; // Green
+      colour = "#00FF00"; // Green
+      break;
     case SkillGroups.Fashion:
-      return "#0000FF"; // Blue
+      colour = "#0000FF"; // Blue
+      break;
     case SkillGroups.Writing:
-      return "#FFFF00"; // Yellow
+      colour = "#FFFF00"; // Yellow
+      break;
     case SkillGroups.PerformingArts:
-      return "#00FFFF"; // Cyan
+      colour = "#FFA500"; // Orange
+      break;
     case SkillGroups.Music:
-      return "#FF00FF"; // Magenta
+      colour = "#FF00FF"; // Magenta
+      break;
     default:
-      return "#000000"; // Black
+      colour = "#000000"; // Black
   }
+
+  const r = parseInt(colour.slice(1, 3), 16);
+  const g = parseInt(colour.slice(3, 5), 16);
+  const b = parseInt(colour.slice(5, 7), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
 export const getSkillGroupName = (value: SkillGroupType): string => {
   return SkillGroups[value] || "";
 };
 
-export const getSkill = (value: SkillType): string => {
+export const getSkill = (value: SkillType | undefined): string => {
+  if (value === undefined) {
+    return "";
+  }
   return skillsToStringMapping[value] || "";
 };
 

@@ -6,26 +6,30 @@
  */
 import type { User } from './user';
 import type { Enquiry } from './enquiry';
+import type { Point } from './point';
+import type { ProjectRoleMedia } from './projectRoleMedia';
 import type { Project } from './project';
 import type { SeenMatches } from './seenMatches';
 import type { SkillType } from './skillType';
 
 export interface ProjectRole {
+  address?: string | null;
   assignee?: User;
   assigneeId?: number | null;
   cost?: number;
   description?: string | null;
   effort?: number;
+  endDate?: string;
   enquiries?: Enquiry[] | null;
-  fileSrcs?: string[] | null;
   id?: number;
-  latitude?: number;
-  longitude?: number;
+  keywords?: string[] | null;
+  location?: Point;
+  medias?: ProjectRoleMedia[] | null;
   name?: string | null;
   project?: Project;
   projectId?: number;
   remote?: boolean;
   seenMatches?: SeenMatches[] | null;
   skillType?: SkillType;
-  uris?: string[] | null;
+  startDate?: string;
 }

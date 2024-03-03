@@ -6,6 +6,7 @@
  */
 import type { AssetDTO } from './assetDTO';
 import type { PortofolioContentDTO } from './portofolioContentDTO';
+import type { ProjectDTO } from './projectDTO';
 import type { Review } from './review';
 import type { SkillDTO } from './skillDTO';
 
@@ -18,6 +19,7 @@ export interface UserDTO {
   email?: string | null;
   portofolioContents?: PortofolioContentDTO[] | null;
   profilePictureSrc?: string | null;
+  projects?: ProjectDTO[] | null;
   rating?: number;
   reviewsGiven?: Review[] | null;
   reviewsReceived?: Review[] | null;

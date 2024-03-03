@@ -17,7 +17,6 @@ export default function TabLayout() {
 
   return (
     <>
-      <BackgroundColourAnimation />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
@@ -27,7 +26,7 @@ export default function TabLayout() {
             margin: 0,
           },
           headerStyle: {
-            height:  0,
+            height: 0,
             backgroundColor: "transparent",
             shadowOpacity: 0,
           },
@@ -47,6 +46,17 @@ export default function TabLayout() {
             title: "Tab cocreate",
             tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           }}
+        />
+        <Tabs.Screen
+          name="project"
+          options={{
+            title: "Project",
+            headerTitle: "",
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="music" color={color} />
+            ),
+          }}
+          
         />
       </Tabs>
     </>

@@ -6,9 +6,11 @@ export const useCacheImages = () => {
     const maxAttempts = 3;
     const paths = await Promise.all(
       uris.map(async (uri) => {
-        console.log("urihere", uri);
         let path: string | undefined = "";
         const delay = 2000;
+        if(!uri.startsWith("http")) {
+          return uri
+        }
         for (let attempts = 0; attempts < maxAttempts; attempts++) {
           try {
             path = await CacheManager.get(uri, {}).getPath();

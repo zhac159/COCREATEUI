@@ -8,6 +8,7 @@ import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
 import { StyleSheet } from "react-native";
 import {
+  getCleanUrl,
   getMediaTypeFromUri,
   uploadFiles,
   useGetMedia,
@@ -24,7 +25,6 @@ import {
   usePostApiPortofolioContent,
   usePostApiPrepare,
 } from "@/common/api/endpoints/cocreateApi";
-import { MediaType } from "../Common/Media/MediaType";
 import { EntityType } from "../Common/Media/EntityType";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
 
@@ -78,8 +78,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
           let newMedias: MediaCreateDTO[] = [];
           newMedias =
             uris.map((_, index) => {
-              const url = new URL(sasURIs[index] || "");
-              const cleanUrl = `${url.protocol}//${url.host}${url.pathname}`;
+              const cleanUrl = getCleanUrl(sasURIs[index] || "");
               const newMedia: MediaCreateDTO = {
                 uri: cleanUrl,
                 mediaType: getMediaTypeFromUri(cleanUrl),
@@ -100,8 +99,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
   });
 
   const handleCreate = () => {
-    console.log("hello");
-    const prepareDownloadSubmission: PrepareUploadDTO[] =
+    const prepareUploadSubmission: PrepareUploadDTO[] =
       uris.map((uri: string) => {
         const prepareUpload: PrepareUploadDTO = {
           entity: EntityType.PORTOFOLIOCONTENT,
@@ -109,7 +107,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
         };
         return prepareUpload;
       }) || [];
-    prepareDownlaod({ data: prepareDownloadSubmission });
+    prepareDownlaod({ data: prepareUploadSubmission });
   };
 
   useEffect(() => {
@@ -131,6 +129,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
         editMode={false}
         selectSkill={(skill) => setSkill(skill.skillType)}
         deselectSkill={() => null}
+        selectedSkillType={skill}
       />
       <View
         style={{
@@ -184,7 +183,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
         </View>
       </View>
       <TextInput
-        placeholder="Description"
+        placeholder="Description..."
         style={{
           ...theme.customFonts.primary.small,
           backgroundColor: theme.colors.lightGray,

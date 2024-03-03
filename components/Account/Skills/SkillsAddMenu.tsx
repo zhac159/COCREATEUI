@@ -3,24 +3,26 @@ import { TouchableOpacity, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import Skill from "./Skill";
 import React, { FC, useState } from "react";
-import { SkillGroups } from "./skillHelper";
+import { SkillGroups, Skills, skillGroupMap } from "./skillHelper";
 import { useTheme } from "@/components/Themes/theme";
 
 type SkillsAddMenuProps = {
   restOfTheSkills: SkillDTO[];
   show: boolean;
   selectSkill: (skillDTO: SkillDTO) => void;
+  selectedSkillType?: Skills;
 };
 
 const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
   restOfTheSkills,
   show,
   selectSkill,
+  selectedSkillType,
 }) => {
   if (!show) return null;
 
   const [skillGroupType, setSkillGroupType] = useState<SkillGroups>(
-    SkillGroups.Filmmaking
+    selectedSkillType ? skillGroupMap[selectedSkillType]:SkillGroups.Filmmaking
   );
 
   const theme = useTheme();
@@ -30,7 +32,6 @@ const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
       style={{
         flexDirection: "row",
         width: "100%",
-        top: "10%",
         justifyContent: "space-between",
       }}
     >
@@ -89,6 +90,7 @@ const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
                 skill={skill}
                 editMode={false}
                 selectSkill={selectSkill}
+                selectedSkillType={selectedSkillType}
               />
             </View>
           ) : null

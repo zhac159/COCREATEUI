@@ -9,21 +9,21 @@ type TabButtonsProps = {
   tabs: string[];
   selectedTab: number;
   setSelectedTab: (inx: number) => void;
-  isSticky: boolean;
+  blur: number;
 };
 
 const TabButtons: FC<TabButtonsProps> = ({
   tabs,
   selectedTab,
   setSelectedTab,
-  isSticky,
+  blur,
 }) => {
   const theme = useTheme();
 
   return (
     <BlurView
-      style={{...styles.container, paddingTop: 50}}
-      intensity={isSticky ? 100 : 0}
+      style={{...styles.container, paddingTop: 55}}
+      intensity={blur}
     >
       {tabs.map((name, idx) => (
         <TouchableOpacity

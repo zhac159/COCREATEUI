@@ -27,4 +27,5 @@ export const SkillType = {
   NUMBER_14: 14,
   NUMBER_15: 15,
   NUMBER_16: 16,
+  NUMBER_17: 17,
 } as const;

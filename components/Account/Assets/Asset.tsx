@@ -24,9 +24,13 @@ import {
 } from "@/components/RecoilStates/profileState";
 import { EntityType } from "../Common/Media/EntityType";
 import { MediaType } from "../Common/Media/MediaType";
-import { uploadFiles, useGetMedia } from "../Common/Media/mediaHelper";
+import {
+  getCleanUrl,
+  uploadFiles,
+  useGetMedia,
+} from "../Common/Media/mediaHelper";
 import { assetStyles } from "./assetHelper";
-import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
 
 type AssetProps = {
@@ -85,10 +89,8 @@ const Asset: React.FC<AssetProps> = ({
 
         for (let i = 0; i < 3; i++) {
           if (updatedUris[i] !== undefined && data.sasURIs) {
-            const url = new URL(data.sasURIs[currentUpdatedUri] || "");
-            const cleanUrl = `${url.protocol}//${url.host}${url.pathname}`;
+            const cleanUrl = getCleanUrl(data.sasURIs[currentUpdatedUri] || "");
             cacheImages([cleanUrl]);
-
             let updatedMedia: MediaUpdateDTO = {
               uri: cleanUrl,
               mediaType: MediaType.IMAGE,
@@ -120,7 +122,9 @@ const Asset: React.FC<AssetProps> = ({
   const { mutate: delteAsset } = useDeleteApiAssetId({
     mutation: {
       onSuccess: (data) => {
-        setAssets((state) => state ? state.filter((a) => a.id !== asset.id): []);
+        setAssets((state) =>
+          state ? state.filter((a) => a.id !== asset.id) : []
+        );
       },
     },
   });
@@ -165,8 +169,7 @@ const Asset: React.FC<AssetProps> = ({
       uris: combinedUris,
     }));
 
-    router.push("/portofolioModal")
-    
+    router.push("/portofolioModal");
   };
 
   useEffect(() => {
@@ -274,7 +277,7 @@ const Asset: React.FC<AssetProps> = ({
       {editMode && (
         <TouchableOpacity
           style={assetStyles.deleteIconButton}
-          onPress={() => {delteAsset({ id: asset.id || 0 });  setUpdate(() => null)}}
+          onPress={() => delteAsset({ id: asset.id || 0 })}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <FontAwesome6 name="minus" size={15} color="white" />

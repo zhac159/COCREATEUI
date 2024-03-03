@@ -9,20 +9,15 @@ import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
 
 export default function PotofolioModal() {
   const [mediaViewer, mediaViewerState] = useMediaViewerState();
+  const [key, setKey] = useState(Math.random());
 
   const selectedImageIndex = mediaViewer.selectedImageIndex;
 
   const uris = mediaViewer.uris;
 
-  const reorderedUris = [
-    ...uris.slice(selectedImageIndex),
-    ...uris.slice(0, selectedImageIndex),
-  ];
-
-  console.log("reorderedUris", reorderedUris);
-
   useEffect(() => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    setKey(Math.random()); 
   }, []);
   
   const renderItem = ({ item, index }: { item: any; index: number }) => {
@@ -39,7 +34,6 @@ export default function PotofolioModal() {
             source={{ uri }}
             rate={1.0}
             volume={1.0}
-            isMuted={false}
             shouldPlay
             useNativeControls
             isLooping
@@ -61,38 +55,18 @@ export default function PotofolioModal() {
       }}
     >
       <Carousel
+        key={key} 
         vertical={false}
-        data={reorderedUris}
+        data={uris}
         hasParallaxImages
-        containerCustomStyle={{}}
+        containerCustomStyle={{
+          backgroundColor: "black",
+        }}
         renderItem={renderItem}
         sliderWidth={windowWidth}
         itemWidth={windowWidth}
+        firstItem={selectedImageIndex}
       />
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
-
-{
-  /* <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <NewPortofolioContentModal />
-    </View> */
 }

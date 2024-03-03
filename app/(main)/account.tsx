@@ -1,8 +1,8 @@
 import {
   StyleSheet,
-  Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Dimensions,
 } from "react-native";
 import { View } from "@/components/Themed";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
@@ -13,9 +13,8 @@ import TabButtons from "@/components/Account/TabButtons";
 import AssetTab from "@/components/Account/Assets/AssetTab";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import PortofolioContentTab from "@/components/Account/PortofolioContents/PortofolioContentTab";
-import { Button } from "react-native-paper";
-import { router } from "expo-router";
 import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
+import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 
 export default function Account() {
   const currentUser = useCurrentUserValue();
@@ -24,11 +23,11 @@ export default function Account() {
 
   const buttonNames = ["Skills", "Assets", "Portofolio", "Experience"];
 
-  const [isSticky, setIsSticky] = useState(false);
+  const [isSticky, setIsSticky] = useState(0);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    setIsSticky(offsetY  > windowHeight * 0.22);
+    setIsSticky((offsetY - windowHeight * 0.22 + 200) / 10);
   };
 
   if (!currentUser) {
@@ -36,57 +35,58 @@ export default function Account() {
   }
 
   return (
-    <KeyboardAwareScrollView
-      style={{
-        height: "100%",
-        width: "100%",
-        paddingTop: !isSticky ? 0 : 0,
-        flex: 1,
-      }}
-      contentContainerStyle={{ flexGrow: 1 }}
-      pointerEvents="box-none"
-      stickyHeaderIndices={[1]}
-      scrollEventThrottle={16}
-      onScroll={handleScroll}
-    >
-      <AccountMainInfo
-        coins={currentUser.coins || 0}
-        username={currentUser.username || "username"}
-        rating={currentUser.rating || 0}
-        isSticky={isSticky}
-
-      />
-      <TabButtons
-        tabs={buttonNames}
-        selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-        isSticky={isSticky}
-      />
-      <View
+    <>
+      <BackgroundColourAnimation />
+      <KeyboardAwareScrollView
         style={{
-          ...styles.scene,
-          display: selectedTab !== 0 ? "none" : "flex",
+          height: "100%",
+          width: "100%",
+          flex: 1,
         }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        pointerEvents="box-none"
+        stickyHeaderIndices={[1]}
+        scrollEventThrottle={16}
+        onScroll={handleScroll}
       >
-        <SkillsTab />
-      </View>
-      <View
-        style={{
-          ...styles.scene,
-          display: selectedTab !== 1 ? "none" : "flex",
-        }}
-      >
-        <AssetTab />
-      </View>
-      <View
-        style={{
-          ...styles.scene,
-          display: selectedTab !== 2 ? "none" : "flex",
-        }}
-      >
-        <PortofolioContentTab />
-      </View>
-    </KeyboardAwareScrollView>
+        <AccountMainInfo
+          coins={currentUser.coins || 0}
+          username={currentUser.username || "username"}
+          rating={currentUser.rating || 0}
+          blur={isSticky}
+        />
+        <TabButtons
+          tabs={buttonNames}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          blur={isSticky}
+        />
+        <View
+          style={{
+            ...styles.scene,
+            display: selectedTab !== 0 ? "none" : "flex",
+          }}
+        >
+          <SkillsTab />
+        </View>
+        <View
+          style={{
+            ...styles.scene,
+            display: selectedTab !== 1 ? "none" : "flex",
+          }}
+        >
+          <AssetTab />
+        </View>
+        <View
+          style={{
+            ...styles.scene,
+            display: selectedTab !== 2 ? "none" : "flex",
+          }}
+        >
+          <PortofolioContentTab />
+        </View>
+      </KeyboardAwareScrollView>
+    </>
   );
 }
 

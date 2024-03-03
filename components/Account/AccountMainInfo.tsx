@@ -2,29 +2,26 @@ import { FC } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { View } from "@/components/Themed";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTheme } from "../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
-import { windowHeight } from "./Common/getWindowDimensions";
 
 type AccountMainInfoProps = {
   coins: number;
   username: string;
   rating: number;
-  isSticky: boolean;
+  blur: number;
 };
 
 const AccountMainInfo: FC<AccountMainInfoProps> = ({
   coins,
   username,
   rating,
-  isSticky,
+  blur
 }) => {
   const theme = useTheme();
-
   return (
-    <BlurView style={styles.container} intensity={isSticky ? 100 : 0}>
+    <BlurView style={styles.container} intensity={blur} >
       <View
         style={{
           ...styles.coins,
@@ -55,14 +52,14 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
           ...styles.shadowCoins,
           position: "absolute",
           zIndex: -1,
-          top: "40%",
-          right: "1.7%",
+          top: "5.5%",
+          right: "2.2%",
           overflow: "hidden",
           backgroundColor: "transparent",
         }}
       >
         <BlurView
-          intensity={100}
+        intensity={100}
           style={{
             backgroundColor: theme.colors.black,
             position: "absolute",
@@ -104,13 +101,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "transparent",
-    paddingTop: 50,
-    height: windowHeight * 0.22,
+    marginTop: 55,
+    height:  Dimensions.get('window').height * 0.21,
+    marginBottom: -55,
   },
   coins: {
     borderRadius: 25.5,
     width: "24%",
-    height: "30.7%",
+    height: "24.7%",
     alignItems: "center",
     alignSelf: "flex-end",
     justifyContent: "center",
@@ -125,13 +123,14 @@ const styles = StyleSheet.create({
   shadowCoins: {
     borderRadius: 25.5,
     width: "24%",
-    height: "30.7%",
+    height: "24.7%",
     alignItems: "center",
-    position: "absolute",
     alignSelf: "flex-end",
     justifyContent: "center",
     flexDirection: "row",
+    right: "5.8%",
     gap: 5,
+    top: "2%",
     overflow: "visible",
   },
   nameRatingContainer: {

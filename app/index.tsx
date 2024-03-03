@@ -1,7 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import {
   Keyboard,
-  Platform,
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";

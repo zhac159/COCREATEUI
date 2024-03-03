@@ -4,16 +4,16 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { ProjectMedia } from './projectMedia';
 import type { User } from './user';
 import type { ProjectRole } from './projectRole';
 
 export interface Project {
   description?: string | null;
-  fileSrcs?: string[] | null;
   id?: number;
+  medias?: ProjectMedia[] | null;
   name?: string | null;
   projectManager?: User;
   projectManagerId?: number;
   projectRoles?: ProjectRole[] | null;
-  uris?: string[] | null;
 }

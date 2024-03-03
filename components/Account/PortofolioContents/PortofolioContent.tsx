@@ -1,6 +1,12 @@
 import { PortofolioContentDTO } from "@/common/api/model";
 import { FC, useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Carousel, Pagination } from "react-native-snap-carousel";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
@@ -10,19 +16,28 @@ import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerStat
 import { windowWidth } from "../Common/getWindowDimensions";
 import Media from "@/components/MediaViewer/Media";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
-import { Portal } from "react-native-paper";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useDeleteApiPortofolioContentId } from "@/common/api/endpoints/cocreateApi";
+import { useSetPortofolioContentByIdState } from "@/components/RecoilStates/profileState";
+import * as ImagePicker from "expo-image-picker";
+import SkillIcon from "../Skills/SkillIcon";
 
 type portofolioContentProps = {
   portofolioContent: PortofolioContentDTO;
+  editMode?: boolean;
 };
 
 const PortofolioContent: FC<portofolioContentProps> = ({
   portofolioContent,
+  editMode = false,
 }) => {
   const uris = portofolioContent.medias?.map((media) => media.uri || "") || [];
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
+  const setMediaViewer = useSetMediaViewerState();
+
+  const setPortofolioContent = useSetPortofolioContentByIdState(
+    portofolioContent.id || 0
+  );
 
   const [cachedUris, setCachedUris] = useState<string[]>([]);
   const cacheImages = useCacheImages();
@@ -34,139 +49,163 @@ const PortofolioContent: FC<portofolioContentProps> = ({
 
     setCachedUris(result);
   };
-  const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const handlePress = () => {
-    setIsFullScreen(!isFullScreen);
+  const handleUpdatePhoto = async (index: number) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      quality: 1,
+    });
+
+    setPortofolioContent((state) => {
+      const newState = { ...state, medias: [...(state?.medias ?? [])] };
+      if (!result.canceled && newState.medias) {
+        newState.medias[index] = {
+          ...newState.medias[index],
+          uri: result.assets[0].uri,
+        };
+      }
+      return newState;
+    });
   };
 
+  const handlePress = (index: number) => {
+    if (editMode) {
+      handleUpdatePhoto(index);
+      return;
+    }
+
+    setMediaViewer((state) => ({
+      visible: false,
+      selectedImageIndex: index,
+      uris: cachedUris,
+    }));
+
+    router.push("/portofolioModal");
+  };
   const theme = useTheme();
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
-    const uri = item as string;
-    return (
-      <View
-        style={isFullScreen ? styles.fullScreenImage : styles.imageContainer}
-        key={index}
-      >
-        <Media
-          uri={cachedUris[index] || uri}
-          style={{ height: "100%", width: "100%", borderRadius: 7 }}
-          onPress={() => handlePress()}
-        />
-      </View>
-    );
-  };
+  const { mutate: deletePortofolioContent } = useDeleteApiPortofolioContentId({
+    mutation: {
+      onSuccess: () => {
+        setPortofolioContent(undefined);
+      },
+    },
+  });
+
+  const renderItem = ({ item, index }: { item: any; index: number }) => (
+    <View style={styles.imageContainer} key={index}>
+      <Media
+        uri={cachedUris[index]}
+        style={{ flex: 1, borderRadius: 14 }}
+        onPress={() => handlePress(index)}
+        editMode={editMode}
+      />
+      {editMode && (
+        <TouchableOpacity
+          style={styles.deleteIconButton}
+          onPress={() => {
+            deletePortofolioContent({
+              id: portofolioContent.id || 0,
+            });
+          }}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <FontAwesome6 name="minus" size={15} color="white" />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 
   useEffect(() => {
-    console.log("hello");
     fetchCachedUris(portofolioContent);
-  }, [portofolioContent.medias, cacheImages]);
+  }, [portofolioContent]);
 
   return (
     <View style={styles.container}>
-      {isFullScreen && (
-        <GestureHandlerRootView
-          style={{
-            flex: 1,
-            height: "100%",
-            width: "100%",
-            backgroundColor: "red",
-          }}
-        >
-          <Portal>
-            <Carousel
-              ref={carouselRef}
-              vertical={false}
-              data={uris}
-              hasParallaxImages
-              containerCustomStyle={{
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "black",
-                zIndex: 1,
-              }}
-              renderItem={renderItem}
-              sliderWidth={windowWidth}
-              itemWidth={windowWidth}
-              onScrollIndexChanged={(index) => setActiveIndex(index)}
-            />
-          </Portal>
-        </GestureHandlerRootView>
-      )}
-
-      {!isFullScreen && (
-        <>
-          <Carousel
-            ref={carouselRef}
-            vertical={false}
-            data={uris}
-            hasParallaxImages
-            containerCustomStyle={{
-              paddingLeft: 9,
-              paddingTop: 12,
-              paddingBottom: 12,
-            }}
-            renderItem={renderItem}
-            sliderWidth={windowWidth}
-            itemWidth={windowWidth}
-            onScrollIndexChanged={(index) => setActiveIndex(index)}
-          />
-          <Pagination
-            dotsLength={uris.length}
-            activeDotIndex={activeIndex}
-            containerStyle={{
-              position: "absolute",
-              bottom: 0,
-              marginBottom: 30,
-              alignSelf: "center",
-            }}
-            dotStyle={{
-              width: 13,
-              height: 13,
-              borderRadius: 15,
-              backgroundColor: theme.colors.white,
-              marginHorizontal: -2,
-            }}
-            inactiveDotStyle={{
-              width: 13,
-              height: 13,
-              borderRadius: 15,
-              backgroundColor: theme.colors.gray,
-              marginHorizontal: -2,
-            }}
-            inactiveDotOpacity={1}
-            inactiveDotScale={1}
-          />
-          <View
+      <Carousel
+        ref={carouselRef}
+        vertical={false}
+        data={uris}
+        hasParallaxImages
+        containerCustomStyle={{
+          paddingLeft: 9,
+          paddingTop: 12,
+          paddingBottom: 12,
+        }}
+        renderItem={renderItem}
+        sliderWidth={windowWidth}
+        itemWidth={windowWidth}
+        onScrollIndexChanged={(index) => setActiveIndex(index)}
+      />
+      <Pagination
+        dotsLength={uris.length}
+        activeDotIndex={activeIndex}
+        containerStyle={{
+          position: "absolute",
+          bottom: 0,
+          marginBottom: 30,
+          alignSelf: "center",
+        }}
+        dotStyle={{
+          width: 13,
+          height: 13,
+          borderRadius: 15,
+          backgroundColor: theme.colors.white,
+          marginHorizontal: -2,
+        }}
+        inactiveDotStyle={{
+          width: 13,
+          height: 13,
+          borderRadius: 15,
+          backgroundColor: theme.colors.gray,
+          marginHorizontal: -2,
+        }}
+        inactiveDotOpacity={1}
+        inactiveDotScale={1}
+      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 15,
+        }}
+      >
+        <SkillIcon skillType={portofolioContent.skillType || 0} />
+        {editMode ? (
+          <TextInput
+            placeholder="Description..."
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 15,
+              ...theme.customFonts.primary.small,
+              backgroundColor: theme.colors.lightGray,
+              // borderRadius: 7,
+              // height: 100,
+              paddingHorizontal: 5,
+              width: "80%",
             }}
+            numberOfLines={1}
+            value={portofolioContent.description || ""}
+            onChangeText={(description) =>
+              setPortofolioContent((state) => ({
+                ...state,
+                description,
+              }))
+            }
+          />
+        ) : (
+          <Text
+            style={{
+              ...theme.customFonts.primary.small,
+              width: "80%",
+            }}
+            numberOfLines={1}
+            ellipsizeMode="tail"
           >
-            <View style={skillStyles.skillIcon}>
-              <FontAwesome6
-                name="camera"
-                size={17}
-                color={theme.colors.white}
-                solid
-              />
-            </View>
-            <Text
-              style={{
-                ...theme.customFonts.primary.small,
-                width: "80%",
-              }}
-            >
-              {"Editinga Short Film fo rmy professional carrer"}
-            </Text>
-          </View>
-        </>
-      )}
+            {portofolioContent.description || ""}
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
@@ -194,18 +233,12 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
   },
-  fullScreenImage: {
-    backgroundColor: "black",
-    height: "100%",
-    width: "100%",
-    borderRadius: 14,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    elevation: 5,
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+  deleteIconButton: {
+    position: "absolute",
+    top: "-2%",
+    right: "-2%",
+    backgroundColor: "red",
+    borderRadius: 100,
+    padding: 7,
   },
 });

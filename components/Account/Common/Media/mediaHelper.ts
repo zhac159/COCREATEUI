@@ -5,17 +5,20 @@ import { SetterOrUpdater } from "recoil";
 import { MediaType } from "./MediaType";
 
 const getContentType = (uri: string) => {
-  if (uri.endsWith('.jpeg') || uri.endsWith('.jpg')) {
-    return 'image/jpeg';
-  } else if (uri.endsWith('.mp4')) {
-    return 'video/mp4';
-  } else if (uri.endsWith('.mov')) {
-    return 'video/quicktime';
+  if (uri.endsWith(".jpeg") || uri.endsWith(".jpg") || uri.endsWith(".png")) {
+    return "image/jpeg";
+  } else if (uri.endsWith(".mp4")) {
+    return "video/mp4";
+  } else if (uri.endsWith(".mov")) {
+    return "video/mp4";
   }
-  return 'application/octet-stream';
+  return "application/octet-stream";
 };
 
 export const uploadFiles = async (sasUris: string[], files: string[]) => {
+
+  console.log("Uploading files to Azure");
+  
   for (let i = 0; i < sasUris.length; i++) {
     const sasUri = sasUris[i];
     const file = files[i];
@@ -30,18 +33,21 @@ export const uploadFiles = async (sasUris: string[], files: string[]) => {
     let attempts = 0;
     const maxAttempts = 3;
 
+    console.log(`Uploading ${file} to ${sasUri}`);
+
     while (attempts < maxAttempts) {
       try {
         azureResponse = await fetch(sasUri, {
           method: "PUT",
           body: blob,
           headers: {
-            "Content-Type": "image/jpeg",
+            "Content-Type": getContentType(file),
             "x-ms-blob-type": "BlockBlob",
           },
         });
 
         if (azureResponse.ok) {
+          console.log(`Uploaded ${file} to ${sasUri}`);
           break;
         }
       } catch (error) {
@@ -56,10 +62,15 @@ export const uploadFiles = async (sasUris: string[], files: string[]) => {
   }
 };
 
-export const useGetMedia = ( setUpdatedUris: SetterOrUpdater<string[]>, onlyImages = false) => {
+export const useGetMedia = (
+  setUpdatedUris: SetterOrUpdater<string[]>,
+  onlyImages = false
+) => {
   const getMedia = useCallback(async (index: number) => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: onlyImages ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.All,
+      mediaTypes: onlyImages
+        ? ImagePicker.MediaTypeOptions.Images
+        : ImagePicker.MediaTypeOptions.All,
       allowsEditing: false,
       quality: 1,
     });
@@ -77,12 +88,17 @@ export const useGetMedia = ( setUpdatedUris: SetterOrUpdater<string[]>, onlyImag
 };
 
 export const getMediaTypeFromUri = (uri: string) => {
-  if (uri.endsWith('.jpeg') || uri.endsWith('.jpg')) {
+  if (uri.endsWith(".jpeg") || uri.endsWith(".jpg")) {
     return MediaType.IMAGE;
-  } else if (uri.endsWith('.mp4')) {
+  } else if (uri.endsWith(".mp4")) {
     return MediaType.VIDEO;
-  } else if (uri.endsWith('.mov')) {
-    return MediaType.VIDEOMOV;
+  } else if (uri.endsWith(".mov")) {
+    return MediaType.VIDEO;
   }
   return MediaType.IMAGE;
-}
+};
+
+export const getCleanUrl = (url: string) => {
+  const urlObject = new URL(url);
+  return `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
+};

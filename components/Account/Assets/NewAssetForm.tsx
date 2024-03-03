@@ -20,7 +20,7 @@ import {
 import { useSetAssetsState } from "@/components/RecoilStates/profileState";
 import { EntityType } from "../Common/Media/EntityType";
 import { MediaType } from "../Common/Media/MediaType";
-import { uploadFiles, useGetMedia } from "../Common/Media/mediaHelper";
+import { getCleanUrl, uploadFiles, useGetMedia } from "../Common/Media/mediaHelper";
 import { assetStyles } from "./assetHelper";
 import { Divider } from "react-native-paper";
 
@@ -73,8 +73,7 @@ const NewAssetForm: React.FC<NewAssetFormProps> = ({
           let newAssetMedias: MediaCreateDTO[] = [];
           newAssetMedias =
             uris.map((_, index) => {
-              const url = new URL(sasURIs[index] || "");
-              const cleanUrl = `${url.protocol}//${url.host}${url.pathname}`;
+              const cleanUrl = getCleanUrl(sasURIs[index] || "")
               const newMedia: MediaCreateDTO = {
                 uri: cleanUrl,
                 mediaType: MediaType.IMAGE,

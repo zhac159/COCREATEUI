@@ -1,4 +1,4 @@
-import { SkillDTO } from "@/common/api/model";
+import { SkillDTO, SkillType } from "@/common/api/model";
 import { chunk, flatten, groupBy, map } from "lodash";
 import { FC } from "react";
 import {  View } from "react-native";
@@ -9,6 +9,7 @@ type SkillsListProps = {
   editMode: boolean;
   deselectSkill: (skillDTO: SkillDTO) => void;
   selectSkill?: (skillDTO: SkillDTO) => void;
+  selectedSkillType?: SkillType;
 };
 
 const SkillsList: FC<SkillsListProps> = ({
@@ -16,6 +17,7 @@ const SkillsList: FC<SkillsListProps> = ({
   editMode,
   deselectSkill,
   selectSkill,
+  selectedSkillType,
 }) => {
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const joinedSkills = flatten(groupedSkills);
@@ -27,6 +29,7 @@ const SkillsList: FC<SkillsListProps> = ({
         width: "100%",
         flexDirection: "column",
         gap: 20,
+        paddingBottom: "10%",
       }}
     >
       {skillChunks.map((skillChunk, index) => (
@@ -41,6 +44,7 @@ const SkillsList: FC<SkillsListProps> = ({
                 editMode={editMode}
                 deselectSkill={deselectSkill}
                 selectSkill={selectSkill}
+                selectedSkillType={selectedSkillType}
               />
             </View>
           ))}

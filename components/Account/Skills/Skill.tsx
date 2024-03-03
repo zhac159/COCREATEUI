@@ -1,18 +1,20 @@
-import { SkillDTO } from "@/common/api/model";
+import { SkillDTO, SkillType } from "@/common/api/model";
 import { FC } from "react";
 import { Text } from "react-native-paper";
-import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { getSkill, getSkillGroupColor, getSkillIcon } from "./skillHelper";
+import { getSkill, getSkillGroupColor } from "./skillHelper";
 import * as Animatable from "react-native-animatable";
 import { useTheme } from "@/components/Themes/theme";
+import SkillIcon from "./SkillIcon";
 
 type SkillProps = {
   skill: SkillDTO;
   editMode: boolean;
   deselectSkill?: (skillDTO: SkillDTO) => void;
   selectSkill?: (skillDTO: SkillDTO) => void;
+  selectedSkillType?: SkillType;
 };
 
 const Skill: FC<SkillProps> = ({
@@ -20,6 +22,7 @@ const Skill: FC<SkillProps> = ({
   editMode,
   deselectSkill,
   selectSkill,
+  selectedSkillType,
 }) => {
   if (
     !skill ||
@@ -29,7 +32,6 @@ const Skill: FC<SkillProps> = ({
     return null;
 
   const color = getSkillGroupColor(skill.skillGroupType);
-  const icon = getSkillIcon(skill.skillGroupType);
   const name = getSkill(skill.skillType).replace(" ", "\n");
 
   const handlePress = () => {
@@ -60,21 +62,26 @@ const Skill: FC<SkillProps> = ({
         iterationCount="infinite"
         animation={editMode ? WiggleAnimation : undefined}
       >
-        <View style={skillStyles.skillContainer}>
-          <View
-            style={skillStyles.skillIcon}
-          >
-            <FontAwesome6
-              name="camera"
-              size={17}
-              color={theme.colors.white}
-              solid
-            />
-          </View>
+        <View
+          style={{
+            ...skillStyles.skillContainer,
+            backgroundColor:
+              selectedSkillType === skill.skillType
+                ? color
+                : theme.colors.white,
+          }}
+        >
+          <SkillIcon
+            skillType={skill.skillType}
+          />
           <Text
             style={{
               ...theme.customFonts.primary.medium,
               fontSize: 13,
+              color:
+                selectedSkillType === skill.skillType
+                  ? theme.colors.white
+                  : theme.colors.black,
             }}
           >
             {name}
@@ -85,11 +92,7 @@ const Skill: FC<SkillProps> = ({
               onPress={handlePress}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <FontAwesome6
-                name="minus"
-                size={15}
-                color="white"
-              />
+              <FontAwesome6 name="minus" size={15} color="white" />
             </TouchableOpacity>
           )}
         </View>
@@ -102,7 +105,6 @@ export default Skill;
 
 export const skillStyles = StyleSheet.create({
   skillContainer: {
-    backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 14,
@@ -120,11 +122,6 @@ export const skillStyles = StyleSheet.create({
     shadowRadius: 6,
     position: "relative",
   },
-  skillIcon: {
-    backgroundColor: "blue",
-    borderRadius: 50,
-    padding: 11,
-  },
   deleteIconButton: {
     position: "absolute",
     top: -8,
@@ -132,5 +129,5 @@ export const skillStyles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 50,
     padding: 5,
-  }
+  },
 });

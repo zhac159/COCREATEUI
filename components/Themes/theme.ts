@@ -9,11 +9,14 @@ export const LightTheme: CustomTheme = {
     black: "rgb(0, 0, 0)",
     orange: "rgb(255, 87, 0)",
     white: "rgb(255, 255, 255)",
+    darkestGray: "rgb(58, 58, 58)",
+    darkerGray: "rgb(114, 114, 114)",
     gray: "rgb(128, 128, 128)",
+    grayer: "rgb(174, 174, 174)",
     lightGray: "rgb(236, 233, 233)",
     lightestGray: "rgb(244, 244, 244)",
   },
-  customFonts: {
+  customFonts: {  
     primary: {
       small: {
         fontFamily: "Helvetica Neue",

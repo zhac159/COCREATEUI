@@ -6,6 +6,7 @@ export enum AssetType {
   Props,
   Lights,
   Microphones,
+  Instruments,
 }
 
 export const assetStyles = StyleSheet.create({
