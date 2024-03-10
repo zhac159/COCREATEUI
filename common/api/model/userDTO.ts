@@ -7,7 +7,6 @@
 import type { AssetDTO } from './assetDTO';
 import type { PortofolioContentDTO } from './portofolioContentDTO';
 import type { ProjectDTO } from './projectDTO';
-import type { Review } from './review';
 import type { SkillDTO } from './skillDTO';
 
 export interface UserDTO {
@@ -17,12 +16,12 @@ export interface UserDTO {
   bannerPictureSrc?: string | null;
   coins?: number;
   email?: string | null;
+  latitude?: number;
+  longitude?: number;
   portofolioContents?: PortofolioContentDTO[] | null;
   profilePictureSrc?: string | null;
   projects?: ProjectDTO[] | null;
   rating?: number;
-  reviewsGiven?: Review[] | null;
-  reviewsReceived?: Review[] | null;
   skills?: SkillDTO[] | null;
   totalReviews?: number;
   userId?: number;

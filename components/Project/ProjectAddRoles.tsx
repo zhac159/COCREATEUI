@@ -9,12 +9,17 @@ import { useProjectValue } from "../RecoilStates/profileState";
 import CancelButton from "./CancelButton";
 import { useTheme } from "../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useState } from "react";
+import { FC, useState } from "react";
 import ProjectAddRoleForm from "./ProjectAddRoleForm/ProjectAddRoleForm";
 import ProjectRole from "./ProjectRole";
 import { ProjectRoleDTO } from "@/common/api/model";
 
-const ProjectAddRoles = () => {
+type ProjectAddRolesProps = {
+  projectIndex: number;
+  onCancel: () => void;
+};
+
+const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) => {
   const project = useProjectValue();
 
   const [addRole, setAddRole] = useState(false);
@@ -23,7 +28,7 @@ const ProjectAddRoles = () => {
   const handleEditRole = (role: ProjectRoleDTO) => {
     setEditRole(role);
     setAddRole(true);
-  }
+  };
 
   const theme = useTheme();
 
@@ -40,9 +45,7 @@ const ProjectAddRoles = () => {
         {!addRole && (
           <>
             <CancelButton
-              onPress={() => {
-                null;
-              }}
+              onPress={onCancel}
             />
             <Text
               style={{
@@ -54,9 +57,9 @@ const ProjectAddRoles = () => {
               Who Are You Looking For?
             </Text>
             {project &&
-              project[0] &&
-              project[0].projectRoles &&
-              project[0].projectRoles.map((role) => {
+              project[projectIndex] &&
+              project[projectIndex].projectRoles &&
+              project[projectIndex].projectRoles?.map((role) => {
                 return (
                   <ProjectRole
                     key={role.id}
@@ -109,7 +112,7 @@ const ProjectAddRoles = () => {
               setAddRole(false);
             }}
             editRole={editRole}
-            projectId={project[0].id ?? 0}
+            projectId={project[projectIndex].id ?? 0}
           />
         )}
       </View>

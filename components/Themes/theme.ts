@@ -42,12 +42,12 @@ export const LightTheme: CustomTheme = {
       },
       medium: {
         fontFamily: "LibreCaslonText",
-        fontWeight: "500",
+        fontWeight: "700",
         fontSize: 17,
       },
       large: {
         fontFamily: "LibreCaslonText",
-        fontWeight: "400",
+        fontWeight: "900",
         fontSize: 45,
       },
     },

@@ -10,7 +10,6 @@ import {
 import { Carousel, Pagination } from "react-native-snap-carousel";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
-import { skillStyles } from "../Skills/Skill";
 import { router } from "expo-router";
 import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
 import { windowWidth } from "../Common/getWindowDimensions";

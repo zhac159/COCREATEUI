@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   View,
   Text,
@@ -30,7 +30,11 @@ import {
 import { EntityType } from "../Account/Common/Media/EntityType";
 import CancelButton from "./CancelButton";
 
-const ProjectCreate = () => {
+type ProjectCreateProps = {
+  onCancel: () => void;
+};
+
+const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
   const setProject = useSetProjectState();
 
   const [uris, setUris] = useState<string[]>([]);
@@ -48,6 +52,7 @@ const ProjectCreate = () => {
           newState.push(data);
           return newState;
         });
+        onCancel();
       },
     },
   });
@@ -110,9 +115,7 @@ const ProjectCreate = () => {
           }}
         >
           <CancelButton
-            onPress={() => {
-              setShowImages(false);
-            }}
+            onPress={onCancel}
           />
           {!showImages && (
             <>

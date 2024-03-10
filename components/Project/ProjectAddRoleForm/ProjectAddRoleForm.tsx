@@ -89,9 +89,17 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
         setProject((state) => {
           const currentState = state || [];
 
+          const projectIndex = currentState.findIndex(
+            (project) => project.id === projectId
+          );
+
+          if (projectIndex === -1) {
+            return currentState;
+          }
+
           const newState = [...currentState];
 
-          const project = { ...newState[0] };
+          const project = { ...newState[projectIndex] };
 
           if (project.projectRoles) {
             project.projectRoles = [...project.projectRoles, data];
@@ -99,7 +107,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
             project.projectRoles = [data];
           }
 
-          newState[0] = project;
+          newState[projectIndex] = project;
           return newState;
         });
 
@@ -113,11 +121,11 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
       onSuccess: (data) => {
         setProject((state) => {
           const currentState = state || [];
-      
+
           const newState = [...currentState];
-      
+
           const project = { ...newState[0] };
-      
+
           if (project.projectRoles) {
             const index = project.projectRoles.findIndex(
               (role) => role.id === data.id
@@ -132,10 +140,10 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
             const newProject = { ...project, projectRoles: [data] };
             newState[0] = newProject;
           }
-      
+
           return newState;
         });
-      
+
         exitForm();
       },
     },
@@ -254,7 +262,6 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
         address: address,
         remote: remote,
         id: editRole?.id || 0,
-        
       };
       updateProjectRole({ data: updatedProjectRole });
     }

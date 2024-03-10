@@ -8,7 +8,7 @@ import { useTheme } from "../Themes/theme";
 
 type MediaProps = {
   onPress: () => void;
-  uri: string;
+  uri: string | undefined | null;
   style: StyleProp<ImageStyle>;
   editMode?: boolean;
   backgroundColor?: string;
@@ -22,6 +22,7 @@ const Media: React.FC<MediaProps> = ({
   backgroundColor,
 }) => {
   const theme = useTheme();
+
   return (
     <>
       <TapGestureHandler
@@ -76,7 +77,11 @@ const Media: React.FC<MediaProps> = ({
                     onPress();
                   }}
                 >
-                  <FontAwesome6 name="image" size={30} color={theme.colors.white} />
+                  <FontAwesome6
+                    name="image"
+                    size={30}
+                    color={theme.colors.white}
+                  />
                 </TouchableOpacity>
               </View>
             ) : null}
@@ -84,35 +89,40 @@ const Media: React.FC<MediaProps> = ({
         ) : (
           <Image
             source={{
-              uri: uri,
+              uri: uri || "https://via.placeholder.com/150",
             }}
             children={
               editMode ? (
                 <View
-                style={{
-                  position: "absolute",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                  width: "100%",
-                  backgroundColor: backgroundColor || theme.colors.lightGray,
-                }}
-              >
-                <TouchableOpacity
                   style={{
-                    alignItems: "center",
+                    position: "absolute",
                     justifyContent: "center",
-                    backgroundColor: theme.colors.grayer,
-                    borderRadius: 50,
-                    padding: 13,
-                  }}
-                  onPress={() => {
-                    onPress();
+                    alignItems: "center",
+                    height: "100%",
+                    opacity: 0.5,
+                    width: "100%",
+                    backgroundColor: backgroundColor || theme.colors.lightGray,
                   }}
                 >
-                  <FontAwesome6 name="image" size={30} color={theme.colors.white} />
-                </TouchableOpacity>
-              </View>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: theme.colors.grayer,
+                      borderRadius: 50,
+                      padding: 13,
+                    }}
+                    onPress={() => {
+                      onPress();
+                    }}
+                  >
+                    <FontAwesome6
+                      name="image"
+                      size={30}
+                      color={theme.colors.white}
+                    />
+                  </TouchableOpacity>
+                </View>
               ) : null
             }
             style={style}

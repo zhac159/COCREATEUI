@@ -43,7 +43,12 @@ export default function TabLayout() {
         <Tabs.Screen
           name="work"
           options={{
-            title: "Tab cocreate",
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="discover"
+          options={{
             tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           }}
         />
@@ -56,7 +61,6 @@ export default function TabLayout() {
               <TabBarIcon name="music" color={color} />
             ),
           }}
-          
         />
       </Tabs>
     </>

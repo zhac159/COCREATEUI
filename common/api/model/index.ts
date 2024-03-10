@@ -70,6 +70,8 @@ export * from './projectRoleMedia';
 export * from './projectRoleUpdateDTO';
 export * from './projectWithMatchingRoleDTO';
 export * from './projectWithMatchingRoleDTOListAPIResponse';
+export * from './projectWithMatchingRolesListDTO';
+export * from './projectWithMatchingRolesListDTOAPIResponse';
 export * from './putApiAssetBody';
 export * from './putApiAssetParams';
 export * from './putApiPortofolioContentBody';

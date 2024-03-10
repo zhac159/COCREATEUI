@@ -50,18 +50,17 @@ function RootLayoutNav() {
     <Provider theme={LightTheme}>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView style={{flex: 1}} >
-
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-            <Stack.Screen
-              name="portofolioModal"
-              options={{ presentation: "modal" }}
-            />
-          </Stack>
-          <MediaViewerPortal />
-        </GestureHandlerRootView>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+              <Stack.Screen
+                name="portofolioModal"
+                options={{ presentation: "modal" }}
+              />
+            </Stack>
+            <MediaViewerPortal />
+          </GestureHandlerRootView>
         </QueryClientProvider>
       </RecoilRoot>
     </Provider>
