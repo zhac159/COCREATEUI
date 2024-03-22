@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useTheme } from "../Themes/theme";
+import { useTheme } from "../../Themes/theme";
 import { TouchableOpacity, Text } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 

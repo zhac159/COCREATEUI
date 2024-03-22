@@ -53,14 +53,19 @@ interface CustomTheme extends Theme {
   };
   colors: Theme["colors"] & {
     black: string;
+    lightBlack: string;
     orange: string;
     white: string;
     darkestGray: string;
     darkerGray: string;
+    darkGray: string;
     gray: string;
+    iconGray: string;
     grayer: string;
     lightGray: string;
     lightestGray: string;
+    green: string;
+    red: string;
   };
   customIcons: {
     small: {

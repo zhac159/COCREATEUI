@@ -8,16 +8,16 @@ import {
   Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "../Themes/theme";
+import { useTheme } from "../../Themes/theme";
 import {
   getCleanUrl,
   getMediaTypeFromUri,
   uploadFiles,
   useGetMedia,
-} from "../Account/Common/Media/mediaHelper";
-import Media from "../MediaViewer/Media";
-import NextButton from "./NextButton";
-import { useSetProjectState } from "../RecoilStates/profileState";
+} from "../../Account/Common/Media/mediaHelper";
+import Media from "../../MediaViewer/Media";
+import NextButton from "../Common/NextButton";
+import { useSetProjectState } from "../../RecoilStates/profileState";
 import {
   usePostApiPrepare,
   usePostApiProject,
@@ -27,8 +27,8 @@ import {
   PrepareUploadDTO,
   ProjectCreateDTO,
 } from "@/common/api/model";
-import { EntityType } from "../Account/Common/Media/EntityType";
-import CancelButton from "./CancelButton";
+import { EntityType } from "../../Account/Common/Media/EntityType";
+import CancelButton from "../Common/CancelButton";
 
 type ProjectCreateProps = {
   onCancel: () => void;

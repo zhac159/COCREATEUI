@@ -7,17 +7,22 @@ export const LightTheme: CustomTheme = {
     ...DefaultTheme.colors,
     primary: "rgb(35, 68, 255)",
     black: "rgb(0, 0, 0)",
+    lightBlack: "rgb(23, 23, 23)",
     orange: "rgb(255, 87, 0)",
     white: "rgb(255, 255, 255)",
-    darkestGray: "rgb(58, 58, 58)",
-    darkerGray: "rgb(114, 114, 114)",
+    darkestGray: "rgb(25, 25, 25)",
+    darkerGray: "rgb(58, 58, 58)",
+    darkGray: "rgb(114, 114, 114)",
     gray: "rgb(128, 128, 128)",
     grayer: "rgb(174, 174, 174)",
+    iconGray: "rgb(151, 151, 151)",
     lightGray: "rgb(236, 233, 233)",
     lightestGray: "rgb(244, 244, 244)",
+    green: "rgb(56, 250, 152)",
+    red: "rgb(251, 0, 0)",
   },
   customFonts: {  
-    primary: {
+    primary: {  
       small: {
         fontFamily: "Helvetica Neue",
         fontWeight: "500",

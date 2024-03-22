@@ -93,7 +93,7 @@ const ProjectAddRoleWhen: FC<ProjectAddRoleWhenProps> = ({
             <Text
               style={{
                 ...theme.customFonts.primary.medium,
-                color: theme.colors.darkerGray,
+                color: theme.colors.darkGray,
                 fontSize: 20,
               }}
             >
@@ -127,7 +127,7 @@ const ProjectAddRoleWhen: FC<ProjectAddRoleWhenProps> = ({
             <Text
               style={{
                 ...theme.customFonts.primary.medium,
-                color: theme.colors.darkerGray,
+                color: theme.colors.darkGray,
                 fontSize: 20,
               }}
             >

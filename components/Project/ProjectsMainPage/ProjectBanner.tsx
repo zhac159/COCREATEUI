@@ -1,21 +1,21 @@
 import { FC } from "react";
-import { useTheme } from "../Themes/theme";
+import { useTheme } from "../../Themes/theme";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { IconButton } from "react-native-paper";
-import Media from "../MediaViewer/Media";
+import Media from "../../MediaViewer/Media";
 
 type ProjectBannerProps = {
   name: string | undefined | null;
-  setCreateMode: (createMode: boolean) => void;
-  setEditMode: (editMode: boolean) => void;
+  onCreate: (createMode: boolean) => void;
+  onEdit: (editMode: boolean) => void;
   uri: string | undefined | null;
 };
 
 const ProjectBanner: FC<ProjectBannerProps> = ({
   name,
-  setCreateMode,
-  setEditMode,
+  onCreate,
+  onEdit,
   uri,
 }) => {
   const theme = useTheme();
@@ -63,7 +63,7 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
                 solid
               />
             )}
-            onPress={() => setCreateMode(true)}
+            onPress={() => onCreate(true)}
             size={30}
             style={{
               backgroundColor: theme.colors.primary,
@@ -119,7 +119,7 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
                   solid
                 />
               )}
-              onPress={() => setEditMode(true)}
+              onPress={() => onEdit(true)}
               size={30}
               style={{
                 backgroundColor: theme.colors.white,

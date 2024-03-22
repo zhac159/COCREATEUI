@@ -1,14 +1,14 @@
 import { ProjectRoleDTO } from "@/common/api/model";
 import { Dispatch, FC, SetStateAction } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { useTheme } from "../Themes/theme";
-import SkillIcon from "../Account/Skills/SkillIcon";
+import { useTheme } from "../../Themes/theme";
+import SkillIcon from "../../Account/Skills/SkillIcon";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { IconButton } from "react-native-paper";
 import {
   getSkillGroupColor,
   skillGroupMap,
-} from "../Account/Skills/skillHelper";
+} from "../../Account/Skills/skillHelper";
 
 type ProjectRoleProps = {
   projectRole: ProjectRoleDTO;

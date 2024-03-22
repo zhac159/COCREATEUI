@@ -5,6 +5,7 @@
  * OpenAPI spec version: v1
  */
 import type { AssetDTO } from './assetDTO';
+import type { EnquiryDTO } from './enquiryDTO';
 import type { PortofolioContentDTO } from './portofolioContentDTO';
 import type { ProjectDTO } from './projectDTO';
 import type { SkillDTO } from './skillDTO';
@@ -16,6 +17,7 @@ export interface UserDTO {
   bannerPictureSrc?: string | null;
   coins?: number;
   email?: string | null;
+  enquiries?: EnquiryDTO[] | null;
   latitude?: number;
   longitude?: number;
   portofolioContents?: PortofolioContentDTO[] | null;

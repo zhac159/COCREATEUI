@@ -3,7 +3,6 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { useColorScheme } from "@/components/useColorScheme";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-native-paper";
@@ -57,6 +56,9 @@ function RootLayoutNav() {
               <Stack.Screen
                 name="portofolioModal"
                 options={{ presentation: "modal" }}
+              />
+              <Stack.Screen
+                name="enquiryChat"
               />
             </Stack>
             <MediaViewerPortal />

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useTheme } from "../Themes/theme";
+import { useTheme } from "../../Themes/theme";
 import { TouchableOpacity, Text } from "react-native";
 
 type CancelButtonPros = {
@@ -11,7 +11,7 @@ const CancelButton: FC<CancelButtonPros> = ({ onPress }) => {
   return (
     <TouchableOpacity
     style={{
-      backgroundColor: theme.colors.darkestGray,
+      backgroundColor: theme.colors.darkerGray,
       alignSelf: "flex-end",
       borderRadius: 21,
     }}

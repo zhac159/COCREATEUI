@@ -1,4 +1,9 @@
-import { AssetDTO, PortofolioContentDTO, UserDTO } from "@/common/api/model";
+import {
+  AssetDTO,
+  EnquiryDTO,
+  PortofolioContentDTO,
+  UserDTO,
+} from "@/common/api/model";
 import {
   DefaultValue,
   atom,
@@ -20,13 +25,12 @@ export const currentUserState = atom<UserDTO | undefined>({
     address: null,
     portofolioContents: [],
     profilePictureSrc: null,
-    projects:[],
+    projects: [],
     rating: 0,
-    reviewsGiven: [],
-    reviewsReceived: [],
     skills: [],
+    enquiries: [],
     totalReviews: 0,
-    userId: 4,
+    userId: 0,
     username: "nikolas",
   },
 });
@@ -247,7 +251,6 @@ export const useProjectValue = () => useRecoilValue(projectSelector);
 export const useSetProjectState = () => useSetRecoilState(projectSelector);
 export const useProjectState = () => useRecoilState(projectSelector);
 
-
 //coins selector
 
 export const coinsSelector = selector({
@@ -270,3 +273,160 @@ export const coinsSelector = selector({
 export const useCoinsValue = () => useRecoilValue(coinsSelector);
 export const useSetCoinsState = () => useSetRecoilState(coinsSelector);
 export const useCoinsState = () => useRecoilState(coinsSelector);
+
+export const projectRoleEnquiriesByIdSelector = selectorFamily<
+  EnquiryDTO | undefined,
+  number
+>({
+  key: "projectRoleEnquiriesByIdSelector",
+  get:
+    (enquiryId) =>
+    ({ get }) => {
+      const user = get(currentUserState);
+      const enquiries =
+        user?.projects
+          ?.flatMap((project) => project.projectRoles)
+          ?.filter(Boolean)
+          .flatMap((role) => role?.enquiries)
+          ?.filter(Boolean) || [];
+      return (
+        enquiries.find((enquiry) => enquiry && enquiry.id === enquiryId) ||
+        undefined
+      );
+    },
+  set:
+    (enquiryId) =>
+    ({ set, get }, newValue) => {
+      const user = get(currentUserState);
+      if (user && user.projects) {
+        const newProjects = user.projects.map((project) => {
+          const newProjectRoles = project.projectRoles.map((projectRole) => {
+            const newEnquiries = projectRole.enquiries.map((enquiry) => {
+              if (enquiry.id === enquiryId) {
+                return newValue instanceof DefaultValue ? undefined : newValue;
+              }
+              return enquiry;
+            });
+            return {
+              ...projectRole,
+              enquiries: newEnquiries.filter(Boolean) as EnquiryDTO[],
+            };
+          });
+          return {
+            ...project,
+            projectRoles: newProjectRoles,
+          };
+        });
+        set(currentUserState, {
+          ...user,
+          projects: newProjects,
+        });
+      }
+    },
+});
+
+export const useProjectRoleEnquiriesByIdValue = (enquiryId: number) =>
+  useRecoilValue(projectRoleEnquiriesByIdSelector(enquiryId));
+
+export const useSetProjectRoleEnquiriesByIdState = (enquiryId: number) =>
+  useSetRecoilState(projectRoleEnquiriesByIdSelector(enquiryId));
+
+export const useProjectRoleEnquiriesByIdState = (enquiryId: number) =>
+  useRecoilState(projectRoleEnquiriesByIdSelector(enquiryId));
+
+export const userIdSelector = selector({
+  key: "userIdSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.userId;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        userId: newValue instanceof DefaultValue ? 0 : newValue,
+      });
+    }
+  },
+});
+
+export const useUserIdValue = () => useRecoilValue(userIdSelector);
+export const useSetUserIdState = () => useSetRecoilState(userIdSelector);
+export const useUserIdState = () => useRecoilState(userIdSelector);
+
+export const enquiriesByIdSelector = selectorFamily<
+  EnquiryDTO | undefined,
+  number
+>({
+  key: "enquiriesByIdSelector",
+  get:
+    (enquiryId) =>
+    ({ get }) => {
+      const user = get(currentUserState);
+      if (!user || !user.enquiries) return;
+      return (
+        user.enquiries.find((enquiry) => enquiry.id === enquiryId) || undefined
+      );
+    },
+  set:
+    (enquiryId) =>
+    ({ set, get }, newValue) => {
+      const user = get(currentUserState);
+      if (user && user.enquiries) {
+        const newEnquiries = user.enquiries.map((enquiry) => {
+          if (enquiry.id === enquiryId) {
+            return newValue instanceof DefaultValue ? undefined : newValue;
+          }
+          return enquiry;
+        });
+        set(currentUserState, {
+          ...user,
+          enquiries: newEnquiries.filter(Boolean) as EnquiryDTO[],
+        });
+      }
+    },
+});
+
+export const useEnquiriesByIdValue = (enquiryId: number) =>
+  useRecoilValue(enquiriesByIdSelector(enquiryId));
+
+export const useSetEnquiriesByIdState = (enquiryId: number) =>
+  useSetRecoilState(enquiriesByIdSelector(enquiryId));
+
+export const useEnquiriesByIdState = (enquiryId: number) =>
+  useRecoilState(enquiriesByIdSelector(enquiryId));
+
+export const getIntUserIdSelector = selector({
+  key: "getIntUserIdSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.userId;
+  },
+});
+
+export const useGetIntUserIdValue = () => useRecoilValue(getIntUserIdSelector);
+
+
+// enqruiries selector 
+
+export const enquiriesSelector = selector({
+  key: "enquiriesSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.enquiries;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        enquiries: newValue instanceof DefaultValue ? [] : newValue,
+      });
+    }
+  },
+});
+
+export const useEnquiriesValue = () => useRecoilValue(enquiriesSelector);
+export const useSetEnquiriesState = () => useSetRecoilState(enquiriesSelector);
+export const useEnquiriesState = () => useRecoilState(enquiriesSelector);

@@ -1,11 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { useSkillsValue } from "@/components/RecoilStates/profileState";
 import { getSkillGroupColor } from "@/components/Account/Skills/skillHelper";
 import { Animated, Image, Easing } from "react-native";
 import { BlurView } from "expo-blur";
 
-const BackgroundColourAnimation = () => {
+type BackgroundColourAnimationProps = {
+  hideBlur?: boolean;
+};
+
+const BackgroundColourAnimation: FC<BackgroundColourAnimationProps> = ({
+  hideBlur = false,
+}) => {
   const skills = useSkillsValue();
 
   var colors = [];
@@ -25,21 +31,21 @@ const BackgroundColourAnimation = () => {
   }
   const rotateAnim = useRef(new Animated.Value(0)).current;
   let rotationValue = 0;
-  
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       rotationValue = (rotationValue + 0.005) % 1;
       rotateAnim.setValue(rotationValue);
     }, 100);
-  
+
     return () => {
       clearInterval(intervalId);
     };
   }, []);
-  
+
   const rotation = rotateAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
 
   return (
@@ -85,15 +91,17 @@ const BackgroundColourAnimation = () => {
           }}
         />
       </Animated.View>
-      <BlurView
-        style={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          backgroundColor: "white",
-          opacity: 0.3
-        }}
-      ></BlurView>
+      {!hideBlur && (
+        <BlurView
+          style={{
+            height: "100%",
+            width: "100%",
+            position: "absolute",
+            backgroundColor: "white",
+            opacity: 0.3,
+          }}
+        />
+      )}
     </Animated.View>
   );
 };

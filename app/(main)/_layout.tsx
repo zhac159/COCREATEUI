@@ -1,9 +1,18 @@
-import React from "react";
+import React, { createContext, useEffect, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
-import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import * as SecureStore from "expo-secure-store";
+import {
+  enquiriesByIdSelector,
+  projectRoleEnquiriesByIdSelector,
+  useGetIntUserIdValue,
+  useSetProjectRoleEnquiriesByIdState,
+} from "@/components/RecoilStates/profileState";
+import { useRecoilCallback } from "recoil";
+import { EnquiryMessageDTO } from "@/common/api/model";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -12,8 +21,80 @@ function TabBarIcon(props: {
   return <FontAwesome size={15} {...props} />;
 }
 
+export const ConnectionContext = createContext<HubConnection | null>(null);
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [connection, setConnection] = useState<HubConnection | null>(null);
+  const userId = useGetIntUserIdValue();
+
+  const updateEnquiry = useRecoilCallback(
+    ({ set }) =>
+      (enquiryId: number, message: EnquiryMessageDTO) => {
+        var foundFlag = false;
+
+        set(enquiriesByIdSelector(enquiryId), (currentEnquiry) => {
+          if (currentEnquiry) {
+            foundFlag = true;
+            return {
+              ...currentEnquiry,
+              messages: [
+                ...(currentEnquiry.messages || []),
+                { ...message, senderId: message.senderId },
+              ],
+            };
+          }
+          return currentEnquiry;
+        });
+
+        if (!foundFlag) {
+          set(projectRoleEnquiriesByIdSelector(enquiryId), (currentEnquiry) => {
+            if (currentEnquiry) {
+              return {
+                ...currentEnquiry,
+                messages: [
+                  ...(currentEnquiry.messages || []),
+                  { ...message, senderId: message.senderId },
+                ],
+              };
+            }
+            return currentEnquiry;
+          });
+        }
+      }
+  );
+
+  useEffect(() => {
+    const fetchTokenAndStartConnection = async () => {
+      const token = await SecureStore.getItemAsync("userToken");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+      const connection = new HubConnectionBuilder()
+        .withUrl("http://192.168.1.92:5000/chatHub", {
+          accessTokenFactory: () => token,
+        })
+        .withAutomaticReconnect()
+        .build();
+
+      connection
+        .start()
+        .then(() => console.log("Connection started"))
+        .catch((err) => console.log("Error while starting connection: " + err));
+
+      connection.on("ReceiveEnquiryMessage", (message: EnquiryMessageDTO) => {
+        updateEnquiry(message.enquiryId || 0, message);
+      });
+
+      setConnection(connection);
+    };
+
+    fetchTokenAndStartConnection();
+
+    return () => {
+      connection?.stop().then(() => console.log("Connection stopped"));
+    };
+  }, []);
 
   return (
     <>
@@ -47,7 +128,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="discover"
+          name="discovery"
           options={{
             tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           }}

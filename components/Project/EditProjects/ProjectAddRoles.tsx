@@ -5,12 +5,12 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { useProjectValue } from "../RecoilStates/profileState";
-import CancelButton from "./CancelButton";
-import { useTheme } from "../Themes/theme";
+import { useProjectValue } from "../../RecoilStates/profileState";
+import CancelButton from "../Common/CancelButton";
+import { useTheme } from "../../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FC, useState } from "react";
-import ProjectAddRoleForm from "./ProjectAddRoleForm/ProjectAddRoleForm";
+import ProjectAddRoleForm from "../ProjectAddRoleForm/ProjectAddRoleForm";
 import ProjectRole from "./ProjectRole";
 import { ProjectRoleDTO } from "@/common/api/model";
 

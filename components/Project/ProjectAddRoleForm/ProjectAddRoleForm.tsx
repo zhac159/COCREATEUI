@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { useTheme } from "../../Themes/theme";
-import CancelButton from "../CancelButton";
-import NextButton from "../NextButton";
+import CancelButton from "../Common/CancelButton";
+import NextButton from "../Common/NextButton";
 import {
   usePostApiPrepare,
   usePostApiProjectRole,

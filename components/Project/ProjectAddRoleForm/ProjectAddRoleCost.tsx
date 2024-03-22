@@ -46,7 +46,7 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
           style={{
             ...theme.customFonts.primary.medium,
             fontSize: 22,
-            color: theme.colors.darkerGray,
+            color: theme.colors.darkGray,
           }}
         >
           Credits Available:

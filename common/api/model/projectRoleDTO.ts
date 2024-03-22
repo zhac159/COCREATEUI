@@ -5,6 +5,7 @@
  * OpenAPI spec version: v1
  */
 import type { UserInformationDTO } from './userInformationDTO';
+import type { EnquiryDTO } from './enquiryDTO';
 import type { MediaDTO } from './mediaDTO';
 import type { SkillType } from './skillType';
 
@@ -15,6 +16,7 @@ export interface ProjectRoleDTO {
   description?: string | null;
   effort?: number;
   endDate?: string;
+  enquiries?: EnquiryDTO[] | null;
   id?: number;
   keywords?: string[] | null;
   latitude?: number;

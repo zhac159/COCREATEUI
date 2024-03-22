@@ -178,8 +178,6 @@ const PortofolioContent: FC<portofolioContentProps> = ({
             style={{
               ...theme.customFonts.primary.small,
               backgroundColor: theme.colors.lightGray,
-              // borderRadius: 7,
-              // height: 100,
               paddingHorizontal: 5,
               width: "80%",
             }}

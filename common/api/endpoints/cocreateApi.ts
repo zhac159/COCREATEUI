@@ -23,6 +23,8 @@ import type {
   EnquiryConfirmDTO,
   EnquiryCreateDTO,
   EnquiryDTO,
+  EnquiryMessageCreateDTO,
+  EnquiryMessageDTO,
   LoginResponseDTO,
   PortofolioContentCreateDTO,
   PortofolioContentDTO,
@@ -282,6 +284,53 @@ export const getPostApiEnquiryConfirmMutationOptions = <TError = ErrorType<unkno
 ) => {
 
       const mutationOptions = getPostApiEnquiryConfirmMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiEnquirySendMessage = (
+    enquiryMessageCreateDTO: EnquiryMessageCreateDTO,
+ ) => {
+      
+      
+      return customInstance<EnquiryMessageDTO>(
+      {url: `/api/Enquiry/send-message`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: enquiryMessageCreateDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiEnquirySendMessageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessage>>, TError,{data: EnquiryMessageCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessage>>, TError,{data: EnquiryMessageCreateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiEnquirySendMessage>>, {data: EnquiryMessageCreateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiEnquirySendMessage(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiEnquirySendMessageMutationResult = NonNullable<Awaited<ReturnType<typeof postApiEnquirySendMessage>>>
+    export type PostApiEnquirySendMessageMutationBody = EnquiryMessageCreateDTO
+    export type PostApiEnquirySendMessageMutationError = ErrorType<unknown>
+
+    export const usePostApiEnquirySendMessage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessage>>, TError,{data: EnquiryMessageCreateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiEnquirySendMessageMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

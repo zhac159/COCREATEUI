@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 9,
     marginLeft: 9,
+    textAlign: "center",
   },
   icon : {
     margin: 0,
