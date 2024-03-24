@@ -4,9 +4,8 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { NewEnquiryMessageCreateDTO } from './newEnquiryMessageCreateDTO';
 
 export interface EnquiryCreateDTO {
-  message?: NewEnquiryMessageCreateDTO;
+  enquiryMessage?: string | null;
   projectRoleId?: number;
 }

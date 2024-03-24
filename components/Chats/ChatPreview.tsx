@@ -1,42 +1,43 @@
-import { EnquiryDTO } from "@/common/api/model";
+import { EnquiryDTO, UserInformationDTO } from "@/common/api/model";
 import { FC } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useTheme } from "../Themes/theme";
 import Media from "../MediaViewer/Media";
 import { formatDistance, parseISO } from "date-fns";
-import {
-  router,
-} from "expo-router";
+import { router } from "expo-router";
 import { useSetCurrentChatIdState } from "../RecoilStates/currentChatIdState";
+import { ChatType, ChatTypeIdPair } from "./ChatHelper";
 
-type EnquiryChatPreviewProps = {
-  enquiry: EnquiryDTO;
-  enquirer: boolean;
+type ChatPreviewProps = {
+  chatIdTypePair: ChatTypeIdPair;
+  chatImage: string;
+  chatName: string;
 };
 
-const EnquiryChatPreview: FC<EnquiryChatPreviewProps> = ({
-  enquiry,
-  enquirer,
+const ChatPreview: FC<ChatPreviewProps> = ({
+  chatIdTypePair,
+  chatImage,
+  chatName,
 }) => {
   const theme = useTheme();
 
   const setChatId = useSetCurrentChatIdState();
 
-  const latestMessage = enquiry.messages
-    ?.slice()
-    .sort(
-      (a, b) =>
-        new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
-    )[0];
+  //   const latestMessage = enquiry.messages
+  //     ?.slice()
+  //     .sort(
+  //       (a, b) =>
+  //         new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
+  //     )[0];
 
-  const lastMessageString = latestMessage?.message || "";
+  //   const lastMessageString = latestMessage?.message || "";
 
-  let formattedDate = "";
-  if (latestMessage?.date) {
-    const date = parseISO(latestMessage.date);
-    formattedDate = formatDistance(date, new Date(), { addSuffix: true });
-  }
+  //   let formattedDate = "";
+  //   if (latestMessage?.date) {
+  //     const date = parseISO(latestMessage.date);
+  //     formattedDate = formatDistance(date, new Date(), { addSuffix: true });
+  //   }
 
   return (
     <TouchableOpacity
@@ -48,8 +49,8 @@ const EnquiryChatPreview: FC<EnquiryChatPreviewProps> = ({
         paddingHorizontal: 10,
       }}
       onPress={() => {
-        setChatId(enquiry.id || 0);
-        router.push("/enquiryChat");
+        setChatId(chatIdTypePair);
+        router.push("/chat");
       }}
     >
       <View>
@@ -82,9 +83,7 @@ const EnquiryChatPreview: FC<EnquiryChatPreviewProps> = ({
               color: theme.colors.black,
             }}
           >
-            {!enquirer
-              ? enquiry.enquirer?.username
-              : enquiry.projectManager?.username}
+            {chatName}
           </Text>
           <Text
             style={{
@@ -93,7 +92,7 @@ const EnquiryChatPreview: FC<EnquiryChatPreviewProps> = ({
               color: theme.colors.darkGray,
             }}
           >
-            {formattedDate}
+            {"yesterday"}
           </Text>
         </View>
         <Text
@@ -103,14 +102,14 @@ const EnquiryChatPreview: FC<EnquiryChatPreviewProps> = ({
             color: theme.colors.darkGray,
           }}
         >
-          {lastMessageString}
+          {"lastMessageString"}
         </Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-export default EnquiryChatPreview;
+export default ChatPreview;
 
 const styles = StyleSheet.create({
   container: {

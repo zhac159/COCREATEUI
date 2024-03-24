@@ -5,7 +5,9 @@ import {
   useEnquiriesValue,
   useProjectValue,
 } from "@/components/RecoilStates/profileState";
-import EnquiryChatPreview from "@/components/Chats/EnquiryChatPreview";
+import ChatPreview from "@/components/Chats/ChatPreview";
+import { ChatType } from "@/components/Chats/ChatHelper";
+// import EnquiryChatPreview from "@/components/Chats/EnquiryChatPreview";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();
@@ -14,7 +16,14 @@ export default function Work() {
     <View style={styles.container}>
       {enquiries &&
         enquiries.map((enquiry) => (
-          <EnquiryChatPreview enquiry={enquiry} enquirer />
+          <ChatPreview
+            chatImage="https://picsum.photos/200/300"
+            chatName={enquiry.projectManager?.username || "N/A"}
+            chatIdTypePair={{
+              chatId: enquiry.id || 0,
+              chatType: ChatType.Enquiry,
+            }}
+          />
         ))}
     </View>
   );

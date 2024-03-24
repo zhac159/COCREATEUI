@@ -5,12 +5,10 @@
  * OpenAPI spec version: v1
  */
 import type { UserInformationDTO } from './userInformationDTO';
-import type { EnquiryMessageDTO } from './enquiryMessageDTO';
 
 export interface EnquiryDTO {
   enquirer?: UserInformationDTO;
   id?: number;
-  messages?: EnquiryMessageDTO[] | null;
   projectManager?: UserInformationDTO;
   projectRoleId?: number;
 }

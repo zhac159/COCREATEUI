@@ -1,23 +1,20 @@
-import { ProjectRoleDTO } from "@/common/api/model";
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useState,
-} from "react";
-import {
-  View,
-  Text,
-} from "react-native";
+  MessageCreateDTO,
+  MessageDTO,
+  ProjectRoleDTO,
+} from "@/common/api/model";
+import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
+import { View, Text } from "react-native";
 import { Carousel } from "react-native-snap-carousel";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
-import EnquiryChatPreview from "@/components/Chats/EnquiryChatPreview";
 import { useTheme } from "@/components/Themes/theme";
 import { EnquiryDTO } from "@/common/api/model";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
 import ProjectBanner from "./ProjectBanner";
 import ViewApplicationsButton from "./ViewApplicationsButton";
 import ProjectRoleSelection from "./ProjectRoleSelection";
+import ChatPreview from "@/components/Chats/ChatPreview";
+import { ChatType } from "@/components/Chats/ChatHelper";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -111,9 +108,13 @@ const Projects: FC<ProjectsProps> = ({
         }}
       >
         {enquiriesToRender.map((enquiry) => (
-          <EnquiryChatPreview
-            enquiry={enquiry}
-            enquirer={false}
+          <ChatPreview
+            chatName={enquiry.enquirer?.username || "N/A"}
+            chatIdTypePair={{
+              chatId: enquiry.id || 0,
+              chatType: ChatType.Enquiry,
+            }}
+            chatImage="https://picsum.photos/200/300"
             key={enquiry.id}
           />
         ))}

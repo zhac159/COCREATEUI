@@ -12,7 +12,8 @@ import {
   useSetProjectRoleEnquiriesByIdState,
 } from "@/components/RecoilStates/profileState";
 import { useRecoilCallback } from "recoil";
-import { EnquiryMessageDTO } from "@/common/api/model";
+import { EnquiryMessageDTO, MessageDTO } from "@/common/api/model";
+import { Alert } from "react-native";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -28,73 +29,73 @@ export default function TabLayout() {
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const userId = useGetIntUserIdValue();
 
-  const updateEnquiry = useRecoilCallback(
-    ({ set }) =>
-      (enquiryId: number, message: EnquiryMessageDTO) => {
-        var foundFlag = false;
+  // const updateEnquiry = useRecoilCallback(
+  //   ({ set }) =>
+  //     (enquiryId: number, message: EnquiryMessageDTO) => {
+  //       var foundFlag = false;
 
-        set(enquiriesByIdSelector(enquiryId), (currentEnquiry) => {
-          if (currentEnquiry) {
-            foundFlag = true;
-            return {
-              ...currentEnquiry,
-              messages: [
-                ...(currentEnquiry.messages || []),
-                { ...message, senderId: message.senderId },
-              ],
-            };
-          }
-          return currentEnquiry;
-        });
+  //       set(enquiriesByIdSelector(enquiryId), (currentEnquiry) => {
+  //         if (currentEnquiry) {
+  //           foundFlag = true;
+  //           return {
+  //             ...currentEnquiry,
+  //             messages: [
+  //               ...(currentEnquiry.messages || []),
+  //               { ...message, senderId: message.senderId },
+  //             ],
+  //           };
+  //         }
+  //         return currentEnquiry;
+  //       });
 
-        if (!foundFlag) {
-          set(projectRoleEnquiriesByIdSelector(enquiryId), (currentEnquiry) => {
-            if (currentEnquiry) {
-              return {
-                ...currentEnquiry,
-                messages: [
-                  ...(currentEnquiry.messages || []),
-                  { ...message, senderId: message.senderId },
-                ],
-              };
-            }
-            return currentEnquiry;
-          });
-        }
-      }
-  );
+  //       if (!foundFlag) {
+  //         set(projectRoleEnquiriesByIdSelector(enquiryId), (currentEnquiry) => {
+  //           if (currentEnquiry) {
+  //             return {
+  //               ...currentEnquiry,
+  //               messages: [
+  //                 ...(currentEnquiry.messages || []),
+  //                 { ...message, senderId: message.senderId },
+  //               ],
+  //             };
+  //           }
+  //           return currentEnquiry;
+  //         });
+  //       }
+  //     }
+  // );
 
-  useEffect(() => {
-    const fetchTokenAndStartConnection = async () => {
-      const token = await SecureStore.getItemAsync("userToken");
-      if (!token) {
-        throw new Error("Token not found");
-      }
-      const connection = new HubConnectionBuilder()
-        .withUrl("http://192.168.1.92:5000/chatHub", {
-          accessTokenFactory: () => token,
-        })
-        .withAutomaticReconnect()
-        .build();
+  // useEffect(() => {
+  //   const fetchTokenAndStartConnection = async () => {
+  //     const token = await SecureStore.getItemAsync("userToken");
+  //     if (!token) {
+  //       throw new Error("Token not found");
+  //     }
+  //     const connection = new HubConnectionBuilder()
+  //       .withUrl("http://192.168.1.92:5000/chatHub", {
+  //         accessTokenFactory: () => token,
+  //       })
+  //       .withAutomaticReconnect()
+  //       .build();
 
-      connection
-        .start()
-        .then(() => console.log("Connection started"))
-        .catch((err) => console.log("Error while starting connection: " + err));
+  //     connection
+  //       .start()
+  //       .then(() => console.log("Connection started"))
+  //       .catch((err) => console.log("Error while starting connection: " + err));
 
-      connection.on("ReceiveEnquiryMessage", (message: EnquiryMessageDTO) => {
-        updateEnquiry(message.enquiryId || 0, message);
-      });
+  //     connection.on("ReceiveEnquiryMessage", (message: MessageDTO) => {
+  //       Alert.alert("New message", JSON.stringify(message.content) || "");
+  //     });
 
-      setConnection(connection);
-    };
+  //     setConnection(connection);
+  //   };
 
-    fetchTokenAndStartConnection();
+  //   fetchTokenAndStartConnection();
 
-    return () => {
-      connection?.stop().then(() => console.log("Connection stopped"));
-    };
-  }, []);
+  //   return () => {
+  //     connection?.stop().then(() => console.log("Connection stopped"));
+  //   };
+  // }, []);
 
   return (
     <>
