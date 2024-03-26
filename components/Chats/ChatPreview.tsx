@@ -50,7 +50,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
       }}
       onPress={() => {
         setChatId(chatIdTypePair);
-        router.push("/chat");
+        router.push("/main/chat");
       }}
     >
       <View>

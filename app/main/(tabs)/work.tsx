@@ -23,6 +23,7 @@ export default function Work() {
               chatId: enquiry.id || 0,
               chatType: ChatType.Enquiry,
             }}
+            key={enquiry.id}
           />
         ))}
     </View>

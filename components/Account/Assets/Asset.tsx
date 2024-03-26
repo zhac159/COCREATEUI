@@ -169,7 +169,7 @@ const Asset: React.FC<AssetProps> = ({
       uris: combinedUris,
     }));
 
-    router.push("/portofolioModal");
+    router.push("/main/portofolioModal");
   };
 
   useEffect(() => {

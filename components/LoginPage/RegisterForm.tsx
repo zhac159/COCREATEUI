@@ -22,11 +22,12 @@ const RegisterForm = () => {
           return;
         }
         SecureStore.setItemAsync("userToken", token);
+        
         if (data.user?.address == null) {
-          router.replace("/locationForm");
+          router.replace("/main/locationForm");
           return;
         }
-        router.replace("/account");
+        router.replace("/main/(tabs)/account");
       },
       onError: (error) => {
         console.log(error.code);

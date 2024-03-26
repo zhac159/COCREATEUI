@@ -18,7 +18,7 @@ export default function LocationForm() {
   const { mutate, isLoading } = usePutApiUserLocation({
     mutation: {
       onSuccess: (data) => {
-        router.replace("/account");
+        router.replace("/main/(tabs)/account");
         setAddress(data.address);
       },
       onError: (error) => {

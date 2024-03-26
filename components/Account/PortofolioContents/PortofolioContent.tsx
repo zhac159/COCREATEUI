@@ -80,7 +80,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
       uris: cachedUris,
     }));
 
-    router.push("/portofolioModal");
+    router.push("/main/portofolioModal");
   };
   const theme = useTheme();
 
