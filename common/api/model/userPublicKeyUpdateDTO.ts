@@ -5,8 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export interface UserInformationDTO {
+export interface UserPublicKeyUpdateDTO {
   publicKey?: string | null;
-  userId?: number;
-  username?: string | null;
 }

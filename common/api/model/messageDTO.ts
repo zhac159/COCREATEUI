@@ -14,6 +14,7 @@ export interface MessageDTO {
   date?: string;
   id?: string;
   mediaType?: MediaType;
+  nonce?: string | null;
   senderId?: number;
   uri?: string | null;
 }

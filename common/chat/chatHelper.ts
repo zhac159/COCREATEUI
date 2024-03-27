@@ -1,12 +1,17 @@
 import { HubConnection } from "@microsoft/signalr";
-import { SQLTransaction, SQLiteDatabase } from "expo-sqlite";
 import { ChatType, MessageDTO } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
 import { Dispatch, SetStateAction } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { convertMessageDTOToIMessage } from "../database/databaseHelper";
 import * as Crypto from "expo-crypto";
-import { decryptMessage, encryptMessage, getAesKey } from "../encryption/encryptionHelper";
+import {
+  toBase64,
+  encryptMessage,
+  getAesKey,
+  getNonce,
+} from "../encryption/encryptionHelper";
+import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 
 export async function handleReceivedMessages(
   connection: HubConnection,
@@ -47,17 +52,16 @@ export async function handleReceivedMessages(
 
     console.log("Inserting messages:", values);
 
-    db.transaction((tx: SQLTransaction) => {
-      tx.executeSql(
+    try {
+      await db.runAsync(
         `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, chatId) VALUES ${placeholders}`,
-        values,
-        () => console.log("Insert success"),
-        (_, error) => {
-          console.log("Insert error:", error);
-          return false;
-        }
+        values
       );
-    });
+      console.log("Insert success");
+    } catch (error) {
+      console.log("Insert error:", error);
+    }
+
     const ids = validMessages.map((message) => message.id);
     try {
       await connection.invoke("AknowledgeMessageAsync", ids);
@@ -88,6 +92,10 @@ export async function sendMessage(
 
   const id: string = Crypto.randomUUID();
 
+  const nonce = getNonce();
+
+  const base64String = toBase64(nonce);
+
   const messageCreateDTO: MessageCreateDTO = {
     id,
     content: message.text,
@@ -95,39 +103,28 @@ export async function sendMessage(
     chatType: chatIdTypePair.chatType,
     date: new Date().toISOString(),
     uri: null,
+    nonce: base64String,
   };
 
-  return new Promise((resolve, reject) => {
-    database.transaction((tx) => {
-      tx.executeSql(
-        `insert into messages (id, senderId, content, uri, mediaType, date, chatType, chatId) values (?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          id,
-          userId,
-          message.text ? encryptMessage(message.text, aesKey) : null,
-          message.uri || null,
-          message.mediaType || null,
-          messageCreateDTO.date,
-          chatIdTypePair.chatType,
-          chatIdTypePair.chatId,
-        ],
-        (_, resultSet) => {
-          console.log("Insert success:", resultSet);
-          try {
-            connection.invoke("SendMessageAsync", messageCreateDTO);
-            resolve({ ...messageCreateDTO, senderId: userId });
-          } catch (err) {
-            reject(err);
-          }
-        },
-        (_, error) => {
-          console.log("Insert error:", error);
-          reject(error);
-          return true; 
-        }
-      );
-    });
-  });
+  try {
+    await database.runAsync(
+      `insert into messages (id, senderId, content, uri, mediaType, date, chatType, chatId) values (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        userId,
+        message.text ? encryptMessage(message.text, aesKey) : null,
+        message.uri || null,
+        message.mediaType || null,
+        messageCreateDTO.date,
+        chatIdTypePair.chatType,
+        chatIdTypePair.chatId,
+      ]
+    );
+    connection.invoke("SendMessageAsync", messageCreateDTO);
+    return { ...messageCreateDTO, senderId: userId };
+  } catch (err) {
+    throw err;
+  }
 }
 
 export function handleReceivedMessagesInChat(

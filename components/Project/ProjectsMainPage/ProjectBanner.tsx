@@ -71,12 +71,14 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
             }}
           />
         </View>
-        <View>
+        <View
+        >
           <Text
             style={{
               ...theme.customFonts.secondary.medium,
               color: theme.colors.white,
-              fontSize: 50,
+              fontSize: 40,
+              paddingBottom: 20,
             }}
           >
             {name}

@@ -4,25 +4,40 @@ import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useSetCurrentUserState } from "../RecoilStates/profileState";
-import { usePostApiLogin, usePostApiLoginRegister } from "@/common/api/endpoints/cocreateApi";
+import {
+  usePostApiLogin,
+  usePostApiLoginRegister,
+  usePutApiUserPublicKey,
+} from "@/common/api/endpoints/cocreateApi";
 import { UserCreateDTO, UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
+import {
+  generateDatabaseKey,
+  generateKeyPair,
+} from "@/common/encryption/encryptionHelper";
 
 const RegisterForm = () => {
   const setCurrentUser = useSetCurrentUserState();
+
+  const { mutate: setPublicKey } = usePutApiUserPublicKey();
 
   const { setValue, handleSubmit } = useForm<UserCreateDTO>();
 
   const { mutate, isLoading, error } = usePostApiLoginRegister({
     mutation: {
-  onSuccess: (data) => {
+      onSuccess: async (data) => {
         setCurrentUser(data.user);
         const token = data.token;
         if (!token) {
           return;
         }
         SecureStore.setItemAsync("userToken", token);
-        
+        generateDatabaseKey();
+
+        var publicKey = await generateKeyPair();
+
+        setPublicKey({ data: { publicKey: publicKey.publicKey.toString() } });
+
         if (data.user?.address == null) {
           router.replace("/main/locationForm");
           return;

@@ -106,4 +106,5 @@ export * from './userPortofolioDTO';
 export * from './userPortofolioDTOAPIResponse';
 export * from './userPortofolioDTOListAPIResponse';
 export * from './userPortofolioUpdateDTO';
+export * from './userPublicKeyUpdateDTO';
 export * from './userUpdateDTO';

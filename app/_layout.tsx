@@ -2,14 +2,15 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import {useEffect } from "react";
+import { useEffect } from "react";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-native-paper";
 import { LightTheme } from "@/components/Themes/theme";
 import MediaViewerPortal from "@/components/MediaViewer/MediaViewerPortal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { SQLiteProvider } from "expo-sqlite/build/next/hooks";
+import { migrateDbIfNeeded } from "@/common/database/databaseHelper";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -43,21 +44,25 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-
 function RootLayoutNav() {
   const queryClient = new QueryClient();
 
   return (
     <Provider theme={LightTheme}>
       <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-              <GestureHandlerRootView style={{ flex: 1 }}>
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="index" options={{ headerShown: false }} />
-                </Stack>
-                <MediaViewerPortal />
-              </GestureHandlerRootView>
-        </QueryClientProvider>
+        <SQLiteProvider
+          databaseName={"cocreateLocalDatabase2.db"}
+          onInit={migrateDbIfNeeded}
+        >
+          <QueryClientProvider client={queryClient}>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+              </Stack>
+              <MediaViewerPortal />
+            </GestureHandlerRootView>
+          </QueryClientProvider>
+        </SQLiteProvider>
       </RecoilRoot>
     </Provider>
   );

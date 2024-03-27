@@ -14,7 +14,7 @@ import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerStat
 import { useCurrentChatIdValue } from "@/components/RecoilStates/currentChatIdState";
 import { useContext, useEffect, useState } from "react";
 import "react-native-get-random-values";
-import { ConnectionContext, DatabaseContext } from "./_layout";
+import { ConnectionContext } from "./_layout";
 import {
   convertMessageDTOToIMessage,
   fetchMessages,
@@ -26,56 +26,79 @@ import {
 import * as Crypto from "expo-crypto";
 import CryptoES from "crypto-es";
 import { Button } from "react-native-paper";
-
 import * as nacl from "tweetnacl";
+import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
+import * as Random from "expo-crypto";
+import { Buffer } from "buffer";
 
 export default function EnquiryChat() {
   const chatIdTypePair = useCurrentChatIdValue();
-  const database = useContext(DatabaseContext);
+  const database = useSQLiteContext();
 
   const handleEncryption = async () => {
-    // // Generate Alice's keys
-    // const aliceKeys = nacl.box.keyPair();
+    // Generate Alice's keys
+    const aliceRandomBytes = await Random.getRandomBytesAsync(32);
+    const aliceKeys = nacl.box.keyPair.fromSecretKey(aliceRandomBytes);
 
-    // // Generate Bob's keys
-    // const bobKeys = nacl.box.keyPair();
+    console.log("aliceKeys", aliceKeys);
 
-    // // Alice uses her private key and Bob's public key to derive a shared secret
-    // const aliceSharedSecret = nacl.box.before(
-    //   bobKeys.publicKey,
-    //   aliceKeys.secretKey
-    // );
+    // Generate Bob's keys
+    const bobRandomBytes = await Random.getRandomBytesAsync(32);
+    const bobKeys = nacl.box.keyPair.fromSecretKey(bobRandomBytes);
 
-    // // Bob uses his private key and Alice's public key to derive a shared secret
-    // const bobSharedSecret = nacl.box.before(
-    //   aliceKeys.publicKey,
-    //   bobKeys.secretKey
-    // );
+    // Alice uses her private key and Bob's public key to derive a shared secret
+    const aliceSharedSecret = nacl.box.before(
+      bobKeys.publicKey,
+      aliceKeys.secretKey
+    );
 
-    // const nonce = nacl.randomBytes(24);
+    // Bob uses his private key and Alice's public key to derive a shared secret
+    const bobSharedSecret = nacl.box.before(
+      aliceKeys.publicKey,
+      bobKeys.secretKey
+    );
 
-    // // Alice encrypts a message for Bob
-    // const secretMessage = nacl.box(
-    //   new Uint8Array([1, 2, 3]),
-    //   nonce,
-    //   bobKeys.publicKey,
-    //   aliceKeys.secretKey
-    // );
+    const nonce = await Random.getRandomBytesAsync(24);
+    // const base64String = Buffer.from(nonce).toString("base64");
 
-    // console.log(secretMessage);
+    // const originalNonce =  Uint8Array.from(Buffer.from(base64String, "base64"));
 
-    // //loop 100 times
+    // console.log("Nonce:", nonce);
 
-    // for (let i = 0; i < 100; i++) {
-    //   const decryptedMessage = nacl.box.open(
-    //     secretMessage,
-    //     nonce,
-    //     aliceKeys.publicKey,
-    //     bobKeys.secretKey
-    //   );
-    // }
-    // console.log("decryptedMessage");
+    // console.log("base64String", base64String);
 
+    // console.log("Nonce:", originalNonce);
+
+    // // console.log("nonce", nonce);
+
+    // Alice encrypts a message for Bob
+    const secretMessage = nacl.box(
+      new Uint8Array([1, 2, 3]),
+      nonce,
+      bobKeys.publicKey,
+      aliceKeys.secretKey
+    );
+
+    console.log(secretMessage);
+
+    //loop 100 times
+
+    for (let i = 0; i < 100; i++) {
+      const decryptedMessage = nacl.box.open(
+        secretMessage,
+        nonce,
+        aliceKeys.publicKey,
+        bobKeys.secretKey
+      );
+    }
+    console.log(
+      nacl.box.open(
+        secretMessage,
+        nonce,
+        aliceKeys.publicKey,
+        bobKeys.secretKey
+      )
+    );
 
     // // aliceSharedSecret and bobSharedSecret should now be the same
     // console.log(
@@ -83,25 +106,25 @@ export default function EnquiryChat() {
     //   nacl.verify(aliceSharedSecret, bobSharedSecret)
     // );
 
-    const passphrase = await Crypto.digestStringAsync(
-      Crypto.CryptoDigestAlgorithm.SHA256,
-      Math.random().toString()
-    );
+    // const passphrase = await Crypto.digestStringAsync(
+    //   Crypto.CryptoDigestAlgorithm.SHA256,
+    //   Math.random().toString()
+    // );
 
-    const messages2: string[] = Array(100).fill("Hello, world!");
+    // const messages2: string[] = Array(100).fill("Hello, world!");
 
-    const encryptedMessages = messages2.map((message) => {
-      const encrypted = CryptoES.AES.encrypt(message, passphrase);
-      return encrypted.toString();
-    });
+    // const encryptedMessages = messages2.map((message) => {
+    //   const encrypted = CryptoES.AES.encrypt(message, passphrase);
+    //   return encrypted.toString();
+    // });
 
-    const decryptedMessages = encryptedMessages.map((encrypted) => {
-      const decrypted = CryptoES.AES.decrypt(encrypted, passphrase);
-      return decrypted.toString(CryptoES.enc.Utf8);
-    });
+    // const decryptedMessages = encryptedMessages.map((encrypted) => {
+    //   const decrypted = CryptoES.AES.decrypt(encrypted, passphrase);
+    //   return decrypted.toString(CryptoES.enc.Utf8);
+    // });
 
-    console.log("Encrypted messages:", encryptedMessages);
-    console.log("Decrypted messages:", decryptedMessages);
+    // console.log("Encrypted messages:", encryptedMessages);
+    // console.log("Decrypted messages:", decryptedMessages);
   };
 
   const connection = useContext(ConnectionContext);

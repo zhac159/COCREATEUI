@@ -1092,6 +1092,54 @@
           }
         }
       }
+    },
+    "/api/User/public-key": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPublicKeyUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPublicKeyUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPublicKeyUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1413,6 +1461,11 @@
           "date": {
             "type": "string",
             "format": "date-time"
+          },
+          "nonce": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1445,6 +1498,11 @@
           },
           "mediaType": {
             "$ref": "#/components/schemas/MediaType"
+          },
+          "nonce": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
           },
           "date": {
             "type": "string",
@@ -2109,6 +2167,11 @@
             "type": "string",
             "nullable": true
           },
+          "publicKey": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
           "skills": {
             "type": "array",
             "items": {
@@ -2186,6 +2249,11 @@
           },
           "username": {
             "type": "string",
+            "nullable": true
+          },
+          "publicKey": {
+            "type": "string",
+            "format": "byte",
             "nullable": true
           }
         },
@@ -2294,6 +2362,17 @@
             "items": {
               "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserPublicKeyUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "publicKey": {
+            "type": "string",
+            "format": "byte",
             "nullable": true
           }
         },

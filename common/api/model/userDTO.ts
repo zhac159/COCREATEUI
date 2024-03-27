@@ -23,6 +23,7 @@ export interface UserDTO {
   portofolioContents?: PortofolioContentDTO[] | null;
   profilePictureSrc?: string | null;
   projects?: ProjectDTO[] | null;
+  publicKey?: string | null;
   rating?: number;
   skills?: SkillDTO[] | null;
   totalReviews?: number;

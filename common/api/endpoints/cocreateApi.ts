@@ -48,6 +48,7 @@ import type {
   UserLoginDTO,
   UserPortofolioDTO,
   UserPortofolioUpdateDTO,
+  UserPublicKeyUpdateDTO,
   UserUpdateDTO
 } from '../model'
 import { customInstance } from '../mutator/custom-instance';
@@ -1146,6 +1147,53 @@ export const getPutApiUserPortofolioMutationOptions = <TError = ErrorType<unknow
 ) => {
 
       const mutationOptions = getPutApiUserPortofolioMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const putApiUserPublicKey = (
+    userPublicKeyUpdateDTO: UserPublicKeyUpdateDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/User/public-key`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: userPublicKeyUpdateDTO
+    },
+      );
+    }
+  
+
+
+export const getPutApiUserPublicKeyMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiUserPublicKey>>, TError,{data: UserPublicKeyUpdateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiUserPublicKey>>, TError,{data: UserPublicKeyUpdateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiUserPublicKey>>, {data: UserPublicKeyUpdateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiUserPublicKey(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiUserPublicKeyMutationResult = NonNullable<Awaited<ReturnType<typeof putApiUserPublicKey>>>
+    export type PutApiUserPublicKeyMutationBody = UserPublicKeyUpdateDTO
+    export type PutApiUserPublicKeyMutationError = ErrorType<unknown>
+
+    export const usePutApiUserPublicKey = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiUserPublicKey>>, TError,{data: UserPublicKeyUpdateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPutApiUserPublicKeyMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

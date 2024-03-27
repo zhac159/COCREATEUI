@@ -35,7 +35,7 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             width: 71,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba(251, 0, 0, " + opacity + ")",
+            backgroundColor: "rgba( 251, 0, 0," + (-opacity + 0.22) + ")",
           }}
           intensity={10}
         >
@@ -65,7 +65,7 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             width: 71,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba(56, 250, 152, " + (-opacity + 0.22) + ")",
+            backgroundColor: "rgba(56, 250, 152, " + opacity + ")",
           }}
           intensity={10}
         >
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom:  25,
+    bottom: 25,
     alignSelf: "center",
     gap: 30,
   },

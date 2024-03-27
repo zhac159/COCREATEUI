@@ -2,6 +2,7 @@ import * as SQLite from "expo-sqlite";
 import { MessageDTO } from "../api/model";
 import { IMessage } from "react-native-gifted-chat";
 import { decryptMessage, getAesKey } from "../encryption/encryptionHelper";
+import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 
 export function initializeDatabase() {
   const database = SQLite.openDatabase("cocreateLocalDatabase.db");
@@ -50,40 +51,45 @@ export function initializeDatabase() {
   return database;
 }
 
+export async function migrateDbIfNeeded(db: SQLiteDatabase) {
+  await db.execAsync(`create table if not exists messages (
+    id TEXT PRIMARY KEY NOT NULL,
+    senderId INTEGER NOT NULL,
+    content TEXT,
+    uri TEXT,
+    mediaType INTEGER,
+    date TEXT NOT NULL,
+    chatType INTEGER NOT NULL,
+    chatId INTEGER NOT NULL
+  );`);
+  await db.execAsync(
+    `create index if not exists idx_messages_chatId_chatType on messages (chatId, chatType);`
+  );
+  await db.execAsync(
+    `CREATE INDEX IF NOT EXISTS idx_messages_date ON messages (date DESC);`
+  );
+}
+
 export async function fetchMessages(
-  database: SQLite.SQLiteDatabase,
+  database: SQLiteDatabase,
   chatIdTypePair: { chatId: number; chatType: number }
 ): Promise<MessageDTO[]> {
   const aesKey = await getAesKey();
 
   if (!aesKey) throw new Error("AES key not found");
 
-  return new Promise((resolve, reject) => {
-    database.transaction((tx) => {
-      tx.executeSql(
-        `SELECT * FROM messages WHERE chatId = ? AND chatType = ? ORDER BY date DESC`,
-        [chatIdTypePair.chatId, chatIdTypePair.chatType],
-        (_, resultSet) => {
-          const rows: MessageDTO[] = Array.from(
-            { length: resultSet.rows.length },
-            (_, i) => {
-              const row = resultSet.rows.item(i) as MessageDTO;
-              row.content = row.content ? decryptMessage(row.content, aesKey): null;
-              return row;
-            }
-          );
-          resolve(rows);
-        },
-        (_, error) => {
-          console.log("Select error:", error);
-          reject(error);
-          return true;
-        }
-      );
-    });
-  });
-}
+  const resultSet = await database.getAllAsync(
+    `SELECT * FROM messages WHERE chatId = ? AND chatType = ? ORDER BY date DESC`,
+    [chatIdTypePair.chatId, chatIdTypePair.chatType]
+  );
 
+  const rows: MessageDTO[] = resultSet.map((row: any) => {
+    row.content = row.content ? decryptMessage(row.content, aesKey) : null;
+    return row as MessageDTO;
+  });
+
+  return rows;
+}
 export function convertMessageDTOToIMessage(message: MessageDTO): IMessage {
   return {
     _id: `${message.id}`,

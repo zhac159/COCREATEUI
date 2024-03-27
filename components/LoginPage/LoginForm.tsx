@@ -7,7 +7,7 @@ import { useSetCurrentUserState } from "../RecoilStates/profileState";
 import { usePostApiLogin } from "@/common/api/endpoints/cocreateApi";
 import { UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
-import { generateEncryptionKey } from "@/common/encryption/encryptionHelper";
+import { generateDatabaseKey } from "@/common/encryption/encryptionHelper";
 
 const LoginForm = () => {
   const setCurrentUser = useSetCurrentUserState();
@@ -23,7 +23,6 @@ const LoginForm = () => {
           return;
         }
         SecureStore.setItemAsync("userToken", token);
-        // generateEncryptionKey();
 
         if (data.user?.address == null) {
           router.replace("/main/locationForm");
