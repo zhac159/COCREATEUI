@@ -1,6 +1,6 @@
 import { MessageDTO } from "../api/model";
 import { IMessage } from "react-native-gifted-chat";
-import { decryptMessageAES, getAesKey } from "../encryption/encryptionHelper";
+import { decryptMessageAES, getDatabasKey } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
@@ -24,15 +24,15 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
 
 export async function fetchMessages(
   database: SQLiteDatabase,
-  chatIdTypePair: { chatId: number; chatType: number }
+  chatTargetIdTypePair: { chatTargetId: number; chatType: number }
 ): Promise<MessageDTO[]> {
-  const aesKey = await getAesKey();
+  const aesKey = await getDatabasKey();
 
   if (!aesKey) throw new Error("AES key not found");
 
   const resultSet = await database.getAllAsync(
     `SELECT * FROM messages WHERE targetId = ? AND chatType = ? ORDER BY date DESC`,
-    [chatIdTypePair.chatId, chatIdTypePair.chatType]
+    [chatTargetIdTypePair.chatTargetId, chatTargetIdTypePair.chatType]
   );
 
   const rows: MessageDTO[] = resultSet.map((row: any) => {

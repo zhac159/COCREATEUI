@@ -1,12 +1,13 @@
 import { Stack } from "expo-router";
 import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
-import { MessageDTO } from "@/common/api/model";
-import {
-  migrateDbIfNeeded,
-} from "@/common/database/databaseHelper";
+import { EncryptedKeyExchangeDTO, MessageDTO } from "@/common/api/model";
+import { migrateDbIfNeeded } from "@/common/database/databaseHelper";
 import { fetchTokenAndStartConnection } from "@/common/webSockets/webSocketsHelper";
-import { handleReceivedMessages } from "@/common/chat/chatHelper";
+import {
+  handleReceiveEncryptedKeysExchange,
+  handleReceivedMessages,
+} from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
@@ -26,7 +27,6 @@ export default function HelperScreenNav() {
     };
   }, []);
 
-
   useEffect(() => {
     if (!connection || !database) return;
 
@@ -35,17 +35,28 @@ export default function HelperScreenNav() {
     });
   }, [connection, database]);
 
+  useEffect(() => {
+    if (!connection) return;
+
+    connection.on(
+      "ReceiveEncryptedKeysExchange",
+      (encryptedKeys: EncryptedKeyExchangeDTO[]) => {
+        handleReceiveEncryptedKeysExchange(connection, encryptedKeys);
+      }
+    );
+  }, [connection]);
+
   return (
     <ConnectionContext.Provider value={connection}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-          <Stack.Screen
-            name="portofolioModal"
-            options={{ presentation: "modal" }}
-          />
-          <Stack.Screen name="chat" />
-          <Stack.Screen name="locationForm" />
-        </Stack>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        <Stack.Screen
+          name="portofolioModal"
+          options={{ presentation: "modal" }}
+        />
+        <Stack.Screen name="chat" />
+        <Stack.Screen name="locationForm" />
+      </Stack>
     </ConnectionContext.Provider>
   );
 }

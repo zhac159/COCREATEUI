@@ -11,7 +11,7 @@ import { useUserIdValue } from "@/components/RecoilStates/profileState";
 import Media from "@/components/MediaViewer/Media";
 import { router } from "expo-router";
 import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
-import { useCurrentChatIdValue } from "@/components/RecoilStates/currentChatIdState";
+import { useCurrentChatTargetIdValue } from "@/components/RecoilStates/currentChatTargetIdState";
 import { useContext, useEffect, useState } from "react";
 import "react-native-get-random-values";
 import { ConnectionContext } from "./_layout";
@@ -29,7 +29,7 @@ import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
 import * as Random from "expo-crypto";
 
 export default function EnquiryChat() {
-  const chatIdTypePair = useCurrentChatIdValue();
+  const chatTargetIdTypePair = useCurrentChatTargetIdValue();
   const database = useSQLiteContext();
 
   const handleEncryption = async () => {
@@ -129,12 +129,10 @@ export default function EnquiryChat() {
 
   const [messages, setMessages] = useState<IMessage[]>([]);
 
-  const setMediaViewer = useSetMediaViewerState();
 
   useEffect(() => {
     if (!database) return;
-
-    fetchMessages(database, chatIdTypePair)
+    fetchMessages(database, chatTargetIdTypePair)
       .then((fetchedMessages) =>
         fetchedMessages.map((message) => convertMessageDTOToIMessage(message))
       )
@@ -144,8 +142,7 @@ export default function EnquiryChat() {
 
   const handleSendMessage = (messages: any[]) => {
     const message = messages[0];
-    console.log("Message:", message);
-    sendMessage(connection, database, userId, chatIdTypePair, message)
+    sendMessage(connection, database, userId, chatTargetIdTypePair, message)
       .then((messageDTO) => {
         setMessages((state) => [
           convertMessageDTOToIMessage(messageDTO),
@@ -157,15 +154,15 @@ export default function EnquiryChat() {
 
   useEffect(() => {
     if (!connection || !database) return;
-
     const cleanup = handleReceivedMessagesInChat(
       connection,
-      chatIdTypePair,
+      chatTargetIdTypePair,
       setMessages
     );
-
     return cleanup;
   }, [connection, database]);
+
+  const setMediaViewer = useSetMediaViewerState();
 
   const handleSelectMedia = (uri: string) => {
     setMediaViewer((state) => ({

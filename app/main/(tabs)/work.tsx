@@ -1,26 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import {
-  useEnquiriesByIdValue,
-  useEnquiriesValue,
-  useProjectValue,
-} from "@/components/RecoilStates/profileState";
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { useEnquiriesValue } from "@/components/RecoilStates/profileState";
 import ChatPreview from "@/components/Chats/ChatPreview";
 import { ChatType } from "@/components/Chats/ChatHelper";
-// import EnquiryChatPreview from "@/components/Chats/EnquiryChatPreview";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();
 
+  if (!enquiries) return <Text>Loading...</Text>;
+
+  const appliedEnquiries = enquiries.filter((enquiry) => enquiry.shortlisted);
+
   return (
     <View style={styles.container}>
-      {enquiries &&
-        enquiries.map((enquiry) => (
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "black",
+          margin: 10,
+        }}
+      >
+        Applied
+      </Text>
+      {appliedEnquiries &&
+        appliedEnquiries.map((enquiry) => (
           <ChatPreview
             chatImage="https://picsum.photos/200/300"
             chatName={enquiry.projectManager?.username || "N/A"}
-            chatIdTypePair={{
-              chatId: enquiry.projectManager?.userId || 0,
+            chatTargetIdTypePair={{
+              chatTargetId: enquiry.projectManager?.userId || 0,
               chatType: ChatType.Enquiry,
             }}
             key={enquiry.id}

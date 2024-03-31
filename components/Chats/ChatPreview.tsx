@@ -6,23 +6,23 @@ import { useTheme } from "../Themes/theme";
 import Media from "../MediaViewer/Media";
 import { formatDistance, parseISO } from "date-fns";
 import { router } from "expo-router";
-import { useSetCurrentChatIdState } from "../RecoilStates/currentChatIdState";
+import { useSetCurrentChatTargetIdState } from "../RecoilStates/currentChatTargetIdState";
 import { ChatType, ChatTypeIdPair } from "./ChatHelper";
 
 type ChatPreviewProps = {
-  chatIdTypePair: ChatTypeIdPair;
+  chatTargetIdTypePair: ChatTypeIdPair;
   chatImage: string;
   chatName: string;
 };
 
 const ChatPreview: FC<ChatPreviewProps> = ({
-  chatIdTypePair,
+  chatTargetIdTypePair,
   chatImage,
   chatName,
 }) => { 
   const theme = useTheme();
 
-  const setChatId = useSetCurrentChatIdState();
+  const setChatTargetId = useSetCurrentChatTargetIdState();
 
   //   const latestMessage = enquiry.messages
   //     ?.slice()
@@ -49,7 +49,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
         paddingHorizontal: 10,
       }}
       onPress={() => {
-        setChatId(chatIdTypePair);
+        setChatTargetId(chatTargetIdTypePair);
         router.push("/main/chat");
       }}
     >

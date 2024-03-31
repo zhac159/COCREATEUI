@@ -17,7 +17,7 @@ export async function fetchTokenAndStartConnection() {
   connection
     .start()
     .then(() => console.log("Connection started"))
-    .then(() => connection.invoke("GetMessagesAsync"))
+    .then(() => connection.invoke("GetEncryptedKeyExchangesAsync"))
     .catch((err) => console.log("Error while starting connection: " + err));
 
   return connection;

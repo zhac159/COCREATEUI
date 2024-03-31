@@ -5,6 +5,6 @@ export enum ChatType {
 }
 
 export type ChatTypeIdPair = {
-  chatId: number;
+  chatTargetId: number;
   chatType: ChatType;
 };

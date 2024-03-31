@@ -236,6 +236,46 @@
         }
       }
     },
+    "/api/Enquiry/shortlist-enquiry": {
+      "put": {
+        "tags": [
+          "Enquiry"
+        ],
+        "parameters": [
+          {
+            "name": "enquiryId",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Enquiry/send-message": {
       "post": {
         "tags": [
@@ -277,6 +317,54 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MessageDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Enquiry/send-messa2ge": {
+      "post": {
+        "tags": [
+          "Enquiry"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncryptedKeyExchangeCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncryptedKeyExchangeCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncryptedKeyExchangeCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncryptedKeyExchangeDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncryptedKeyExchangeDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncryptedKeyExchangeDTOAPIResponse"
                 }
               }
             }
@@ -1140,6 +1228,54 @@
           }
         }
       }
+    },
+    "/api/User/profiles": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGetProfilesDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGetProfilesDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGetProfilesDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfilesDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfilesDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfilesDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1277,6 +1413,76 @@
         "type": "integer",
         "format": "int32"
       },
+      "EncryptedKeyExchangeCreateDTO": {
+        "type": "object",
+        "properties": {
+          "nonce": {
+            "type": "string",
+            "nullable": true
+          },
+          "publicKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "encryptedSymmetricKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "targetId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chatType": {
+            "$ref": "#/components/schemas/ChatType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EncryptedKeyExchangeDTO": {
+        "type": "object",
+        "properties": {
+          "nonce": {
+            "type": "string",
+            "nullable": true
+          },
+          "publicKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "encryptedSymmetricKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "targetId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "senderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chatType": {
+            "$ref": "#/components/schemas/ChatType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EncryptedKeyExchangeDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EncryptedKeyExchangeDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "EnquiryConfirmDTO": {
         "type": "object",
         "properties": {
@@ -1317,6 +1523,13 @@
           },
           "projectManager": {
             "$ref": "#/components/schemas/UserInformationDTO"
+          },
+          "enquiryMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortlisted": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -2237,6 +2450,20 @@
         },
         "additionalProperties": false
       },
+      "UserGetProfilesDTO": {
+        "type": "object",
+        "properties": {
+          "userIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UserInformationDTO": {
         "type": "object",
         "properties": {
@@ -2358,6 +2585,75 @@
             "items": {
               "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfileDTO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "aboutYou": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalReviews": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillDTO"
+            },
+            "nullable": true
+          },
+          "portofolioContents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PortofolioContentDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfilesDTO": {
+        "type": "object",
+        "properties": {
+          "userProfiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserProfileDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfilesDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserProfilesDTO"
+          },
+          "error": {
+            "type": "string",
             "nullable": true
           }
         },

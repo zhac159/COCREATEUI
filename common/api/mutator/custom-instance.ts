@@ -51,7 +51,7 @@ export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
     },
   }).then(
     ({ data, status }: { data: ApiResponse<T>, status: number }) => {
-      // console.log("Response", JSON.stringify(data, null, 2));
+      console.log("Response", JSON.stringify(data, null, 2));
       if (!data.success) {
         throw new CustomError(data.error || "Unknown error", status.toString());
       }

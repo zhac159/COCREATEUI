@@ -20,6 +20,8 @@ import type {
   AssetCreateDTO,
   AssetDTO,
   AssetUpdateDTO,
+  EncryptedKeyExchangeCreateDTO,
+  EncryptedKeyExchangeDTO,
   EnquiryConfirmDTO,
   EnquiryCreateDTO,
   EnquiryDTO,
@@ -38,16 +40,19 @@ import type {
   ProjectRoleDTO,
   ProjectRoleUpdateDTO,
   ProjectWithMatchingRolesListDTO,
+  PutApiEnquiryShortlistEnquiryParams,
   SkillDTO,
   SkillUpdateDTO,
   UserCreateDTO,
   UserDTO,
   UserGetMatchingProjectRolesDTO,
+  UserGetProfilesDTO,
   UserLocationDTO,
   UserLocationUpdateDTO,
   UserLoginDTO,
   UserPortofolioDTO,
   UserPortofolioUpdateDTO,
+  UserProfilesDTO,
   UserPublicKeyUpdateDTO,
   UserUpdateDTO
 } from '../model'
@@ -289,6 +294,52 @@ export const getPostApiEnquiryConfirmMutationOptions = <TError = ErrorType<unkno
       return useMutation(mutationOptions);
     }
     
+export const putApiEnquiryShortlistEnquiry = (
+    params?: PutApiEnquiryShortlistEnquiryParams,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/Enquiry/shortlist-enquiry`, method: 'PUT',
+        params
+    },
+      );
+    }
+  
+
+
+export const getPutApiEnquiryShortlistEnquiryMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiEnquiryShortlistEnquiry>>, TError,{params?: PutApiEnquiryShortlistEnquiryParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiEnquiryShortlistEnquiry>>, TError,{params?: PutApiEnquiryShortlistEnquiryParams}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiEnquiryShortlistEnquiry>>, {params?: PutApiEnquiryShortlistEnquiryParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  putApiEnquiryShortlistEnquiry(params,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiEnquiryShortlistEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof putApiEnquiryShortlistEnquiry>>>
+    
+    export type PutApiEnquiryShortlistEnquiryMutationError = ErrorType<unknown>
+
+    export const usePutApiEnquiryShortlistEnquiry = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiEnquiryShortlistEnquiry>>, TError,{params?: PutApiEnquiryShortlistEnquiryParams}, TContext>, }
+) => {
+
+      const mutationOptions = getPutApiEnquiryShortlistEnquiryMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiEnquirySendMessage = (
     messageCreateDTO: MessageCreateDTO,
  ) => {
@@ -332,6 +383,53 @@ export const getPostApiEnquirySendMessageMutationOptions = <TError = ErrorType<u
 ) => {
 
       const mutationOptions = getPostApiEnquirySendMessageMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiEnquirySendMessa2ge = (
+    encryptedKeyExchangeCreateDTO: EncryptedKeyExchangeCreateDTO,
+ ) => {
+      
+      
+      return customInstance<EncryptedKeyExchangeDTO>(
+      {url: `/api/Enquiry/send-messa2ge`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: encryptedKeyExchangeCreateDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiEnquirySendMessa2geMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessa2ge>>, TError,{data: EncryptedKeyExchangeCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessa2ge>>, TError,{data: EncryptedKeyExchangeCreateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiEnquirySendMessa2ge>>, {data: EncryptedKeyExchangeCreateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiEnquirySendMessa2ge(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiEnquirySendMessa2geMutationResult = NonNullable<Awaited<ReturnType<typeof postApiEnquirySendMessa2ge>>>
+    export type PostApiEnquirySendMessa2geMutationBody = EncryptedKeyExchangeCreateDTO
+    export type PostApiEnquirySendMessa2geMutationError = ErrorType<unknown>
+
+    export const usePostApiEnquirySendMessa2ge = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessa2ge>>, TError,{data: EncryptedKeyExchangeCreateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiEnquirySendMessa2geMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1194,6 +1292,53 @@ export const getPutApiUserPublicKeyMutationOptions = <TError = ErrorType<unknown
 ) => {
 
       const mutationOptions = getPutApiUserPublicKeyMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiUserProfiles = (
+    userGetProfilesDTO: UserGetProfilesDTO,
+ ) => {
+      
+      
+      return customInstance<UserProfilesDTO>(
+      {url: `/api/User/profiles`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userGetProfilesDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiUserProfilesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserProfiles>>, TError,{data: UserGetProfilesDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserProfiles>>, TError,{data: UserGetProfilesDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserProfiles>>, {data: UserGetProfilesDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiUserProfiles(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUserProfilesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserProfiles>>>
+    export type PostApiUserProfilesMutationBody = UserGetProfilesDTO
+    export type PostApiUserProfilesMutationError = ErrorType<unknown>
+
+    export const usePostApiUserProfiles = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserProfiles>>, TError,{data: UserGetProfilesDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiUserProfilesMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

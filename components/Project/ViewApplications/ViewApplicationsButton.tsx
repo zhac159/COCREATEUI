@@ -5,9 +5,11 @@ import { StyleSheet } from "react-native";
 import { Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 
-type ViewApplicationsButtonProps = {};
+type ViewApplicationsButtonProps = {
+  onPress: () => void;
+};
 
-const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = () => {
+const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({onPress}) => {
   const theme = useTheme();
 
   return (
@@ -16,6 +18,7 @@ const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = () => {
         ...styles.viewApplicationContainer,
         backgroundColor: theme.colors.black,
       }}
+      onPress={onPress}
     >
       <Text
         style={{

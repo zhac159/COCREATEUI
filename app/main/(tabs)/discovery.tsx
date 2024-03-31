@@ -1,4 +1,7 @@
-import { usePostApiUserMatchingProjects } from "@/common/api/endpoints/cocreateApi";
+import {
+  usePostApiEnquiryCreate,
+  usePostApiUserMatchingProjects,
+} from "@/common/api/endpoints/cocreateApi";
 import { ProjectWithMatchingRolesListDTO } from "@/common/api/model";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
@@ -7,6 +10,7 @@ import { StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
 export default function Discovery() {
+  
   const [matchingProjects, setMatchingProjects] =
     useState<ProjectWithMatchingRolesListDTO>();
 
@@ -16,6 +20,14 @@ export default function Discovery() {
     mutation: {
       onSuccess: (data) => {
         setMatchingProjects(data);
+      },
+    },
+  });
+
+  const { mutate: createEnquiry } = usePostApiEnquiryCreate({
+    mutation: {
+      onSuccess: (data) => {
+        console.log(data);
       },
     },
   });
@@ -52,6 +64,15 @@ export default function Discovery() {
         }}
         onSwipedAborted={() => setSwipingDistance(0)}
         onSwiped={() => setSwipingDistance(0)}
+        onSwipedRight={(index) => {
+          createEnquiry({
+            data: {
+              projectRoleId:
+                matchingProjects.projectWithMatchingRoles[index].projectRoleId,
+              enquiryMessage: "Hello, I am interested in your project",
+            },
+          });
+        }}
         verticalSwipe={false}
         cardVerticalMargin={0}
         cardHorizontalMargin={0}

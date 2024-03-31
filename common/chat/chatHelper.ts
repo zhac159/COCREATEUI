@@ -1,5 +1,5 @@
 import { HubConnection } from "@microsoft/signalr";
-import { ChatType, MessageDTO } from "../api/model";
+import { ChatType, EncryptedKeyExchangeDTO, MessageDTO } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
 import { Dispatch, SetStateAction } from "react";
 import { IMessage } from "react-native-gifted-chat";
@@ -8,12 +8,17 @@ import * as Crypto from "expo-crypto";
 import {
   toBase64,
   encryptMessageAES,
-  getAesKey,
+  getDatabasKey,
   getNonce,
   encryptMessageDFH,
   decryptMessageDFH,
+  fromBase64,
+  getAesKeyString,
+  getSymmetricAesKey,
+  decryptMessageAES,
 } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
+import * as SecureStore from "expo-secure-store";
 
 export async function handleReceivedMessages(
   connection: HubConnection,
@@ -22,86 +27,102 @@ export async function handleReceivedMessages(
 ): Promise<void> {
   if (!db) return;
 
-  const aesKey = await getAesKey();
+  console.log("Received messages:", messages);
+
+  const aesKey = await getDatabasKey();
 
   if (!aesKey) return;
 
-  console.log("Received messages:", messages);
+  const placeholders = messages
+    .map(() => "(?, ?, ?, ?, ?, ?, ?, ?)")
+    .join(", ");
 
-  const publicKey = "nHbJYq7nFY+4ZFFk8+HhU0NRK12RNoSrPNN0JXlNolA=";
+  let values = [];
+  for (const message of messages) {
+    if (message.chatType === undefined || !message.senderId) return;
 
-  const validMessages = messages.filter(
-    ({ id, chatType, senderId, date, targetId, nonce }) =>
-      id &&
-      chatType !== undefined &&
-      senderId !== undefined &&
-      nonce !== undefined &&
-      date &&
-      targetId !== undefined
-  );
+    const symmetricAesKey = await getSymmetricAesKey(
+      message.chatType,
+      message.senderId
+    );
 
-  if (validMessages.length > 0) {
-    const placeholders = validMessages
-      .map(() => "(?, ?, ?, ?, ?, ?, ?, ?)")
-      .join(", ");
-    let values = [];
-    for (const {
-      id,
-      chatType,
-      senderId,
-      date,
-      targetId,
-      content,
-      uri,
-      mediaType,
-      nonce,
-    } of validMessages) {
-      // const decryptedContent = content
-      //   ? await decryptMessageDFH(content, nonce, publicKey)
-      //   : null;
-
-      const encryptedContent = content
-        ? encryptMessageAES(content, aesKey)
-        : null;
-
-      values.push(
-        id || null,
-        senderId || null,
-        encryptedContent,
-        uri || null,
-        mediaType || null,
-        date || null,
-        chatType !== undefined ? chatType : null,
-        senderId || null
-      );
+    if (!symmetricAesKey) {
+      console.log("Symmetric key not found");
+      return;
     }
 
-    console.log("Inserting messages:", values);
+    const decryptedContent = message.content
+      ? decryptMessageAES(message.content, symmetricAesKey)
+      : null;
 
-    try {
-      await db.runAsync(
-        `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId) VALUES ${placeholders}`,
-        values
-      );
-      console.log("Insert success");
-    } catch (error) {
-      console.log("Insert error:", error);
-    }
+    if (!decryptedContent) return;
 
-    const ids = validMessages.map((message) => message.id);
-    try {
-      await connection.invoke("AknowledgeMessageAsync", ids);
-    } catch (error) {
-      console.log("Error invoking AknowledgeMessageAsync:", error);
-    }
+    const encryptedContent = message.content
+      ? encryptMessageAES(decryptedContent, aesKey)
+      : null;
+
+    values.push(
+      message.id !== undefined ? message.id : null,
+      message.senderId !== undefined ? message.senderId : null,
+      encryptedContent,
+      message.uri !== undefined ? message.uri : null,
+      message.mediaType !== undefined ? message.mediaType : null,
+      message.date !== undefined ? message.date : null,
+      message.chatType !== undefined ? message.chatType : null,
+      message.senderId !== undefined ? message.senderId : null
+    );
   }
+
+  try {
+    await db.runAsync(
+      `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId) VALUES ${placeholders}`,
+      values
+    );
+  } catch (error) {
+    console.log("Insert error:", error);
+  }
+
+  const ids = messages.map((message) => message.id);
+  await connection.invoke("AknowledgeMessageAsync", ids);
+}
+
+export async function handleReceiveEncryptedKeysExchange(
+  connection: HubConnection,
+  encryptedKeys: EncryptedKeyExchangeDTO[]
+): Promise<void> {
+  console.log("Received encrypted keys:", encryptedKeys);
+
+  encryptedKeys.forEach(async (encryptedKey) => {
+    if (
+      encryptedKey.encryptedSymmetricKey &&
+      encryptedKey.nonce &&
+      encryptedKey.publicKey &&
+      encryptedKey.chatType !== undefined &&
+      encryptedKey.senderId
+    ) {
+      const decryptedKey = await decryptMessageDFH(
+        encryptedKey.encryptedSymmetricKey,
+        encryptedKey.nonce,
+        encryptedKey.publicKey
+      );
+
+      console.log("Decrypted key:", decryptedKey);
+
+      await SecureStore.setItemAsync(
+        getAesKeyString(encryptedKey.chatType, encryptedKey.senderId),
+        decryptedKey
+      );
+    }
+
+    connection.invoke("GetMessagesAsync");
+  });
 }
 
 export async function sendMessage(
   connection: HubConnection | null,
   database: SQLiteDatabase | null,
   userId: number,
-  chatIdTypePair: { chatId: number; chatType: ChatType },
+  chatTargetIdTypePair: { chatTargetId: number; chatType: ChatType },
   message: any
 ): Promise<MessageDTO> {
   if (!connection) {
@@ -112,9 +133,14 @@ export async function sendMessage(
     throw new Error("Database is not available");
   }
 
-  const publicKey = "02UO+o4Uw1SY1xg1PEY9t/X4cT+/2Rb1dtVF4TxUvhw=";
+  const symmetricAesKey = await getSymmetricAesKey(
+    chatTargetIdTypePair.chatType,
+    chatTargetIdTypePair.chatTargetId
+  );
 
-  const aesKey = await getAesKey();
+  if (!symmetricAesKey) throw new Error("Symmetric key not found");
+
+  const aesKey = await getDatabasKey();
 
   if (!aesKey) throw new Error("AES key not found");
 
@@ -124,17 +150,13 @@ export async function sendMessage(
 
   const base64String = toBase64(nonce);
 
-  // const encryptedMessage = await encryptMessageDFH(
-  //   message.text,
-  //   nonce,
-  //   publicKey
-  // );
+  const encryptedMessage = encryptMessageAES(message.text, symmetricAesKey);
 
   const messageCreateDTO: MessageCreateDTO = {
     id,
-    content: message.text,
-    targetId: chatIdTypePair.chatId,
-    chatType: chatIdTypePair.chatType,
+    content: encryptedMessage,
+    targetId: chatTargetIdTypePair.chatTargetId,
+    chatType: chatTargetIdTypePair.chatType,
     date: new Date().toISOString(),
     uri: null,
     nonce: base64String,
@@ -152,12 +174,12 @@ export async function sendMessage(
         message.uri || null,
         message.mediaType || null,
         messageCreateDTO.date,
-        chatIdTypePair.chatType,
-        chatIdTypePair.chatId,
+        chatTargetIdTypePair.chatType,
+        chatTargetIdTypePair.chatTargetId,
       ]
     );
     connection.invoke("SendMessageAsync", messageCreateDTO);
-    return { ...messageCreateDTO, senderId: userId };
+    return { ...messageCreateDTO, content: message.text, senderId: userId };
   } catch (err) {
     throw err;
   }
@@ -165,14 +187,14 @@ export async function sendMessage(
 
 export function handleReceivedMessagesInChat(
   connection: HubConnection,
-  chatIdTypePair: { chatId: number; chatType: number },
+  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
   setMessages: Dispatch<SetStateAction<IMessage[]>>
 ): () => void {
   const handleMessage = (messages: MessageDTO[]) => {
     var filteredMessages = messages.filter(
       (message) =>
-        message.targetId === chatIdTypePair.chatId &&
-        message.chatType === chatIdTypePair.chatType
+        message.targetId === chatTargetIdTypePair.chatTargetId &&
+        message.chatType === chatTargetIdTypePair.chatType
     );
     setMessages((state) => [
       ...filteredMessages.map((message, index) =>

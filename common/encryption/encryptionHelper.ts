@@ -3,19 +3,16 @@ import * as SecureStore from "expo-secure-store";
 import CryptoES from "crypto-es";
 import nacl from "tweetnacl";
 import { Buffer } from "buffer";
+import { ChatType } from "@/components/Chats/ChatHelper";
+import { EncryptedKeyExchangeCreateDTO } from "../api/model";
+import { HubConnection } from "@microsoft/signalr";
 
-export async function generateDatabaseKey(): Promise<string> {
-  const passphrase = await Crypto.digestStringAsync(
+export async function generateAESKey(): Promise<string> {
+  const aesKey = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
     Math.random().toString()
   );
-  await SecureStore.setItemAsync("CoCreate-Local-Aes-Key", passphrase);
-
-  return passphrase;
-}
-
-export async function getAesKey(): Promise<string | null> {
-  return await SecureStore.getItemAsync("CoCreate-Local-Aes-Key");
+  return aesKey;
 }
 
 export function encryptMessageAES(message: string, passphrase: string): string {
@@ -26,6 +23,51 @@ export function encryptMessageAES(message: string, passphrase: string): string {
 export function decryptMessageAES(message: string, passphrase: string): string {
   const descryptedMessage = CryptoES.AES.decrypt(message, passphrase);
   return descryptedMessage.toString(CryptoES.enc.Utf8);
+}
+
+export async function generateDatabaseKey(): Promise<string> {
+  const databaseKey = await generateAESKey();
+
+  await SecureStore.setItemAsync("CoCreate-Local-Aes-Key", databaseKey);
+
+  return databaseKey;
+}
+
+export async function getDatabasKey(): Promise<string | null> {
+  return await SecureStore.getItemAsync("CoCreate-Local-Aes-Key");
+}
+
+export async function generateKeyPair(): Promise<nacl.BoxKeyPair> {
+  const privateKey = await Crypto.getRandomBytesAsync(32);
+  const publicKey = nacl.box.keyPair.fromSecretKey(privateKey);
+
+  await SecureStore.setItemAsync(
+    "CoCreate-Local-Private-Key",
+    toBase64(privateKey)
+  );
+
+  await SecureStore.setItemAsync(
+    "CoCreate-Local-Public-Key",
+    toBase64(publicKey.publicKey)
+  );
+
+  return publicKey;
+}
+
+export async function getPrivateKey(): Promise<Uint8Array | null> {
+  let privateKey = await SecureStore.getItemAsync("CoCreate-Local-Private-Key");
+  if (privateKey == null) {
+    return null;
+  }
+  return fromBase64(privateKey);
+}
+
+export async function getPublicKey(): Promise<Uint8Array | null> {
+  let publicKey = await SecureStore.getItemAsync("CoCreate-Local-Public-Key");
+  if (publicKey == null) {
+    return null;
+  }
+  return fromBase64(publicKey);
 }
 
 export async function encryptMessageDFH(
@@ -74,26 +116,6 @@ export async function decryptMessageDFH(
   return Buffer.from(byteArrayMessage).toString();
 }
 
-export async function generateKeyPair(): Promise<nacl.BoxKeyPair> {
-
-  const privateKey = await Crypto.getRandomBytesAsync(32);
-  const publicKey = nacl.box.keyPair.fromSecretKey(privateKey);
-
-  await SecureStore.setItemAsync(
-    "CoCreate-Local-Private-Key",
-    toBase64(privateKey)
-  );
-  return publicKey;
-}
-
-export async function getPrivateKey(): Promise<Uint8Array | null> {
-  let privateKey = await SecureStore.getItemAsync("CoCreate-Local-Private-Key");
-  if (privateKey == null) {
-    return null;
-  }
-  return fromBase64(privateKey);
-}
-
 export function toBase64(arr: Uint8Array): string {
   return Buffer.from(arr).toString("base64");
 }
@@ -104,4 +126,48 @@ export function fromBase64(base64String: string): Uint8Array {
 
 export function getNonce(): Uint8Array {
   return Crypto.getRandomBytes(24);
+}
+
+export async function createAndExchangeKeys(
+  receiverPublicKey: string,
+  receiverId: number,
+  chatType: ChatType,
+  connection: HubConnection | null
+): Promise<void> {
+  const aesKey = await generateAESKey();
+  await SecureStore.setItemAsync(getAesKeyString(chatType, receiverId), aesKey);
+
+  const nonce = getNonce();
+  const encryptedKey = await encryptMessageDFH(
+    aesKey,
+    nonce,
+    receiverPublicKey
+  );
+
+  const publicKey = await getPublicKey();
+
+  if (publicKey == null) {
+    throw new Error("Public key not found");
+  }
+
+  const keyExchangeDTO: EncryptedKeyExchangeCreateDTO = {
+    chatType: chatType,
+    encryptedSymmetricKey: encryptedKey,
+    nonce: toBase64(nonce),
+    publicKey: toBase64(publicKey),
+    targetId: receiverId,
+  };
+
+  await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);
+}
+
+export function getAesKeyString(chatType: ChatType, targetId: number): string {
+  return "CoCreate-" + chatType + "-" + targetId + "-Aes-Key";
+}
+
+export function getSymmetricAesKey(
+  chatType: ChatType,
+  targetId: number
+): Promise<string | null> {
+  return SecureStore.getItemAsync(getAesKeyString(chatType, targetId));
 }

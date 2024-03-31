@@ -1,9 +1,5 @@
-import {
-  MessageCreateDTO,
-  MessageDTO,
-  ProjectRoleDTO,
-} from "@/common/api/model";
-import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
+import { ProjectRoleDTO } from "@/common/api/model";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { View, Text } from "react-native";
 import { Carousel } from "react-native-snap-carousel";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
@@ -11,10 +7,11 @@ import { useTheme } from "@/components/Themes/theme";
 import { EnquiryDTO } from "@/common/api/model";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
 import ProjectBanner from "./ProjectBanner";
-import ViewApplicationsButton from "./ViewApplicationsButton";
+import ViewApplicationsButton from "../ViewApplications/ViewApplicationsButton";
 import ProjectRoleSelection from "./ProjectRoleSelection";
 import ChatPreview from "@/components/Chats/ChatPreview";
 import { ChatType } from "@/components/Chats/ChatHelper";
+import ViewApplications from "../ViewApplications/ViewApplications";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -61,14 +58,23 @@ const Projects: FC<ProjectsProps> = ({
   };
 
   let enquiriesToRender: EnquiryDTO[] = [];
+
   if (selectedRole?.enquiries) {
     enquiriesToRender = selectedRole.enquiries;
   } else {
     if (projects && projects[selectedProject])
       projects[selectedProject].projectRoles?.forEach((role) =>
-        role.enquiries?.forEach((enquiry) => enquiriesToRender.push(enquiry))
+        role.enquiries?.forEach((enquiry) => {
+          enquiriesToRender.push(enquiry);
+        })
       );
   }
+
+  // return (
+  //   <ViewApplications
+  //     enquiries={enquiriesToRender.filter((enquiry) => !enquiry.shortlisted)}
+  //   />
+  // );
 
   return (
     <View>
@@ -92,7 +98,9 @@ const Projects: FC<ProjectsProps> = ({
           selectedRole={selectedRole}
           setSelectedRole={setSelectedRole}
         />
-        <ViewApplicationsButton />
+        <ViewApplicationsButton
+          onPress={() => console.log("View Applications")}
+        />
         <Text
           style={{
             ...theme.customFonts.primary.medium,
@@ -107,17 +115,19 @@ const Projects: FC<ProjectsProps> = ({
           borderTopColor: theme.colors.gray,
         }}
       >
-        {enquiriesToRender.map((enquiry) => (
-          <ChatPreview
-            chatName={enquiry.enquirer?.username || "N/A"}
-            chatIdTypePair={{
-              chatId: enquiry.enquirer?.userId || 0,
-              chatType: ChatType.Enquiry,
-            }}
-            chatImage="https://picsum.photos/200/300"
-            key={enquiry.id}
-          />
-        ))}
+        {enquiriesToRender
+          .filter((enquiry) => enquiry.shortlisted)
+          .map((enquiry) => (
+            <ChatPreview
+              chatName={enquiry.enquirer?.username || "N/A"}
+              chatTargetIdTypePair={{
+                chatTargetId: enquiry.enquirer?.userId || 0,
+                chatType: ChatType.Enquiry,
+              }}
+              chatImage="https://picsum.photos/200/300"
+              key={enquiry.id}
+            />
+          ))}
       </View>
     </View>
   );
