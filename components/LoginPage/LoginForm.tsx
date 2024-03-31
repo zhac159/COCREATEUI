@@ -4,19 +4,28 @@ import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 import { Button, TextInput, Text } from "react-native-paper";
 import { useSetCurrentUserState } from "../RecoilStates/profileState";
-import { usePostApiLogin } from "@/common/api/endpoints/cocreateApi";
+import {
+  usePostApiLogin,
+  usePutApiUserPublicKey,
+} from "@/common/api/endpoints/cocreateApi";
 import { UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
-import { generateDatabaseKey } from "@/common/encryption/encryptionHelper";
+import {
+  generateDatabaseKey,
+  generateKeyPair,
+  toBase64,
+} from "@/common/encryption/encryptionHelper";
 
 const LoginForm = () => {
   const setCurrentUser = useSetCurrentUserState();
 
   const { setValue, handleSubmit } = useForm<UserLoginDTO>();
 
+  const { mutate: setPublicKey } = usePutApiUserPublicKey();
+
   const { mutate, isLoading, error } = usePostApiLogin({
     mutation: {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setCurrentUser(data.user);
         const token = data.token;
         if (!token) {
@@ -24,11 +33,15 @@ const LoginForm = () => {
         }
         SecureStore.setItemAsync("userToken", token);
 
+        // var publicKey = await generateKeyPair();
+
+        // setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
+
         if (data.user?.address == null) {
           router.replace("/main/locationForm");
           return;
         }
-        
+
         router.replace("/main/(tabs)/account");
       },
       onError: (error) => {
@@ -82,4 +95,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-

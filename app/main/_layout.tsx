@@ -3,7 +3,6 @@ import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
 import { MessageDTO } from "@/common/api/model";
 import {
-  initializeDatabase,
   migrateDbIfNeeded,
 } from "@/common/database/databaseHelper";
 import { fetchTokenAndStartConnection } from "@/common/webSockets/webSocketsHelper";

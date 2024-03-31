@@ -14,6 +14,7 @@ import * as SecureStore from "expo-secure-store";
 import {
   generateDatabaseKey,
   generateKeyPair,
+  toBase64,
 } from "@/common/encryption/encryptionHelper";
 
 const RegisterForm = () => {
@@ -36,7 +37,7 @@ const RegisterForm = () => {
 
         var publicKey = await generateKeyPair();
 
-        setPublicKey({ data: { publicKey: publicKey.publicKey.toString() } });
+        setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
 
         if (data.user?.address == null) {
           router.replace("/main/locationForm");

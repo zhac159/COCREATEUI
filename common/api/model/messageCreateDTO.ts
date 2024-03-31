@@ -8,12 +8,12 @@ import type { ChatType } from './chatType';
 import type { MediaType } from './mediaType';
 
 export interface MessageCreateDTO {
-  chatId?: number;
   chatType?: ChatType;
   content?: string | null;
   date?: string;
   id?: string;
   mediaType?: MediaType;
   nonce?: string | null;
+  targetId?: number;
   uri?: string | null;
 }

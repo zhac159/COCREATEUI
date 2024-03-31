@@ -1,6 +1,6 @@
 export enum ChatType {
-  Project,
   Enquiry,
+  Project,
   AssetEnquiry,
 }
 

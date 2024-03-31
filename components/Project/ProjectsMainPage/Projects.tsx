@@ -111,7 +111,7 @@ const Projects: FC<ProjectsProps> = ({
           <ChatPreview
             chatName={enquiry.enquirer?.username || "N/A"}
             chatIdTypePair={{
-              chatId: enquiry.id || 0,
+              chatId: enquiry.enquirer?.userId || 0,
               chatType: ChatType.Enquiry,
             }}
             chatImage="https://picsum.photos/200/300"

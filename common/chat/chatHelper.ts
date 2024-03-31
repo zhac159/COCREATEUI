@@ -7,9 +7,11 @@ import { convertMessageDTOToIMessage } from "../database/databaseHelper";
 import * as Crypto from "expo-crypto";
 import {
   toBase64,
-  encryptMessage,
+  encryptMessageAES,
   getAesKey,
   getNonce,
+  encryptMessageDFH,
+  decryptMessageDFH,
 } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 
@@ -24,37 +26,61 @@ export async function handleReceivedMessages(
 
   if (!aesKey) return;
 
+  console.log("Received messages:", messages);
+
+  const publicKey = "nHbJYq7nFY+4ZFFk8+HhU0NRK12RNoSrPNN0JXlNolA=";
+
   const validMessages = messages.filter(
-    ({ id, chatType, senderId, date, chatId }) =>
+    ({ id, chatType, senderId, date, targetId, nonce }) =>
       id &&
       chatType !== undefined &&
       senderId !== undefined &&
+      nonce !== undefined &&
       date &&
-      chatId !== undefined
+      targetId !== undefined
   );
 
   if (validMessages.length > 0) {
     const placeholders = validMessages
       .map(() => "(?, ?, ?, ?, ?, ?, ?, ?)")
       .join(", ");
-    const values = validMessages.flatMap(
-      ({ id, chatType, senderId, date, chatId, content, uri, mediaType }) => [
+    let values = [];
+    for (const {
+      id,
+      chatType,
+      senderId,
+      date,
+      targetId,
+      content,
+      uri,
+      mediaType,
+      nonce,
+    } of validMessages) {
+      // const decryptedContent = content
+      //   ? await decryptMessageDFH(content, nonce, publicKey)
+      //   : null;
+
+      const encryptedContent = content
+        ? encryptMessageAES(content, aesKey)
+        : null;
+
+      values.push(
         id || null,
         senderId || null,
-        content ? encryptMessage(content, aesKey) : null,
+        encryptedContent,
         uri || null,
         mediaType || null,
         date || null,
-        chatType || null,
-        chatId || null,
-      ]
-    );
+        chatType !== undefined ? chatType : null,
+        senderId || null
+      );
+    }
 
     console.log("Inserting messages:", values);
 
     try {
       await db.runAsync(
-        `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, chatId) VALUES ${placeholders}`,
+        `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId) VALUES ${placeholders}`,
         values
       );
       console.log("Insert success");
@@ -86,6 +112,8 @@ export async function sendMessage(
     throw new Error("Database is not available");
   }
 
+  const publicKey = "02UO+o4Uw1SY1xg1PEY9t/X4cT+/2Rb1dtVF4TxUvhw=";
+
   const aesKey = await getAesKey();
 
   if (!aesKey) throw new Error("AES key not found");
@@ -96,23 +124,31 @@ export async function sendMessage(
 
   const base64String = toBase64(nonce);
 
+  // const encryptedMessage = await encryptMessageDFH(
+  //   message.text,
+  //   nonce,
+  //   publicKey
+  // );
+
   const messageCreateDTO: MessageCreateDTO = {
     id,
     content: message.text,
-    chatId: chatIdTypePair.chatId,
+    targetId: chatIdTypePair.chatId,
     chatType: chatIdTypePair.chatType,
     date: new Date().toISOString(),
     uri: null,
     nonce: base64String,
   };
 
+  console.log("Sending message:", messageCreateDTO);
+
   try {
     await database.runAsync(
-      `insert into messages (id, senderId, content, uri, mediaType, date, chatType, chatId) values (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `insert into messages (id, senderId, content, uri, mediaType, date, chatType, targetId) values (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         userId,
-        message.text ? encryptMessage(message.text, aesKey) : null,
+        message.text ? encryptMessageAES(message.text, aesKey) : null,
         message.uri || null,
         message.mediaType || null,
         messageCreateDTO.date,
@@ -135,7 +171,7 @@ export function handleReceivedMessagesInChat(
   const handleMessage = (messages: MessageDTO[]) => {
     var filteredMessages = messages.filter(
       (message) =>
-        message.chatId === chatIdTypePair.chatId &&
+        message.targetId === chatIdTypePair.chatId &&
         message.chatType === chatIdTypePair.chatType
     );
     setMessages((state) => [

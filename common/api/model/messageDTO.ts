@@ -8,7 +8,6 @@ import type { ChatType } from './chatType';
 import type { MediaType } from './mediaType';
 
 export interface MessageDTO {
-  chatId?: number;
   chatType?: ChatType;
   content?: string | null;
   date?: string;
@@ -16,5 +15,6 @@ export interface MessageDTO {
   mediaType?: MediaType;
   nonce?: string | null;
   senderId?: number;
+  targetId?: number;
   uri?: string | null;
 }

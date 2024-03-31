@@ -23,13 +23,10 @@ import {
   handleReceivedMessagesInChat,
   sendMessage,
 } from "@/common/chat/chatHelper";
-import * as Crypto from "expo-crypto";
-import CryptoES from "crypto-es";
 import { Button } from "react-native-paper";
 import * as nacl from "tweetnacl";
 import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
 import * as Random from "expo-crypto";
-import { Buffer } from "buffer";
 
 export default function EnquiryChat() {
   const chatIdTypePair = useCurrentChatIdValue();

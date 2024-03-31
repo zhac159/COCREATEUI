@@ -20,7 +20,7 @@ export default function Work() {
             chatImage="https://picsum.photos/200/300"
             chatName={enquiry.projectManager?.username || "N/A"}
             chatIdTypePair={{
-              chatId: enquiry.id || 0,
+              chatId: enquiry.projectManager?.userId || 0,
               chatType: ChatType.Enquiry,
             }}
             key={enquiry.id}

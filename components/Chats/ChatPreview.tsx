@@ -19,7 +19,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
   chatIdTypePair,
   chatImage,
   chatName,
-}) => {
+}) => { 
   const theme = useTheme();
 
   const setChatId = useSetCurrentChatIdState();

@@ -51,7 +51,7 @@ function RootLayoutNav() {
     <Provider theme={LightTheme}>
       <RecoilRoot>
         <SQLiteProvider
-          databaseName={"cocreateLocalDatabase2.db"}
+          databaseName={"cocreateLocalDatabase3.db"}
           onInit={migrateDbIfNeeded}
         >
           <QueryClientProvider client={queryClient}>

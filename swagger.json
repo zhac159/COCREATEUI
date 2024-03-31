@@ -1440,7 +1440,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "chatId": {
+          "targetId": {
             "type": "integer",
             "format": "int32"
           },
@@ -1464,7 +1464,6 @@
           },
           "nonce": {
             "type": "string",
-            "format": "byte",
             "nullable": true
           }
         },
@@ -1481,7 +1480,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "chatId": {
+          "targetId": {
             "type": "integer",
             "format": "int32"
           },
@@ -1501,7 +1500,6 @@
           },
           "nonce": {
             "type": "string",
-            "format": "byte",
             "nullable": true
           },
           "date": {
@@ -2169,7 +2167,6 @@
           },
           "publicKey": {
             "type": "string",
-            "format": "byte",
             "nullable": true
           },
           "skills": {
@@ -2253,7 +2250,6 @@
           },
           "publicKey": {
             "type": "string",
-            "format": "byte",
             "nullable": true
           }
         },
@@ -2372,7 +2368,6 @@
         "properties": {
           "publicKey": {
             "type": "string",
-            "format": "byte",
             "nullable": true
           }
         },
