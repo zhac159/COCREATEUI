@@ -22,6 +22,27 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   );
 }
 
+export async function fetchLastMessages(
+  database: SQLiteDatabase,
+  chatTargetIdTypePair: { chatTargetId: number; chatType: number }
+): Promise<MessageDTO[]> {
+  const aesKey = await getDatabasKey();
+
+  if (!aesKey) throw new Error("AES key not found");
+
+  const resultSet = await database.getAllAsync(
+    `SELECT * FROM messages WHERE targetId = ? AND chatType = ? ORDER BY date DESC LIMIT 3`,
+    [chatTargetIdTypePair.chatTargetId, chatTargetIdTypePair.chatType]
+  );
+
+  const rows: MessageDTO[] = resultSet.map((row: any) => {
+    row.content = row.content ? decryptMessageAES(row.content, aesKey) : null;
+    return row as MessageDTO;
+  });
+
+  return rows;
+}
+
 export async function fetchMessages(
   database: SQLiteDatabase,
   chatTargetIdTypePair: { chatTargetId: number; chatType: number }

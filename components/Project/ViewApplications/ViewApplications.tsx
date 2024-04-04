@@ -13,14 +13,17 @@ import UserProfile from "@/components/Common/UserProfile/UserProfile";
 import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
 import { ChatType } from "@/components/Chats/ChatHelper";
 import { ConnectionContext } from "@/app/main/_layout";
+import { IconButton } from "react-native-paper";
 
 type ViewApplicationsProps = {
   enquiries: EnquiryDTO[];
+  close: () => void;
 };
 
-const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries }) => {
+const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
   const [applicantsProfiles, setApplicantsProfiles] =
     useState<UserProfilesDTO>();
+
 
   const connection = useContext(ConnectionContext);
 
@@ -57,7 +60,12 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries }) => {
 
   return (
     <>
-      <Swiper
+      <IconButton
+        icon="close"
+        onPress={close}
+        style={{ position: "absolute", right: 0, top: 0 }}
+      />
+      {applicantsProfiles.userProfiles.length !== 0 && <Swiper
         cards={applicantsProfiles?.userProfiles}
         renderCard={(userProfile) => <UserProfile userProfile={userProfile} />}
         containerStyle={{
@@ -88,7 +96,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries }) => {
         stackSize={4}
         stackSeparation={4}
         disableBottomSwipe
-      />
+      />}
       <ConfirmationButtons
         onConfirm={() => console.log("confirm")}
         onCancel={() => console.log("cancel")}

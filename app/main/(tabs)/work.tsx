@@ -9,7 +9,9 @@ export default function Work() {
 
   if (!enquiries) return <Text>Loading...</Text>;
 
-  const appliedEnquiries = enquiries.filter((enquiry) => enquiry.shortlisted);
+  const shortlistedEnquiries = enquiries.filter(
+    (enquiry) => enquiry.shortlisted
+  );
 
   return (
     <View style={styles.container}>
@@ -21,10 +23,10 @@ export default function Work() {
           margin: 10,
         }}
       >
-        Applied
+        Shortlisted
       </Text>
-      {appliedEnquiries &&
-        appliedEnquiries.map((enquiry) => (
+      {shortlistedEnquiries &&
+        shortlistedEnquiries.map((enquiry) => (
           <ChatPreview
             chatImage="https://picsum.photos/200/300"
             chatName={enquiry.projectManager?.username || "N/A"}

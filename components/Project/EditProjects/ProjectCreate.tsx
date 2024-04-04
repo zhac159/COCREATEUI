@@ -29,6 +29,8 @@ import {
 } from "@/common/api/model";
 import { EntityType } from "../../Account/Common/Media/EntityType";
 import CancelButton from "../Common/CancelButton";
+import { generateAndStoreSymmetricAesKey } from "@/common/encryption/encryptionHelper";
+import { ChatType } from "@/components/Chats/ChatHelper";
 
 type ProjectCreateProps = {
   onCancel: () => void;
@@ -46,12 +48,13 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
 
   const { mutate: createProject } = usePostApiProject({
     mutation: {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setProject((state) => {
           const newState = [...(state || [])];
           newState.push(data);
           return newState;
         });
+        await generateAndStoreSymmetricAesKey(ChatType.Project, data.id!);
         onCancel();
       },
     },
@@ -114,9 +117,7 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
             gap: 25,
           }}
         >
-          <CancelButton
-            onPress={onCancel}
-          />
+          <CancelButton onPress={onCancel} />
           {!showImages && (
             <>
               <Text

@@ -7,12 +7,32 @@ import { ChatType } from "@/components/Chats/ChatHelper";
 import { EncryptedKeyExchangeCreateDTO } from "../api/model";
 import { HubConnection } from "@microsoft/signalr";
 
+export function getAesKeyString(chatType: ChatType, targetId: number): string {
+  return "CoCreate-" + chatType + "-" + targetId + "-Aes-Key";
+}
+
 export async function generateAESKey(): Promise<string> {
   const aesKey = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
     Math.random().toString()
   );
   return aesKey;
+}
+
+export function getSymmetricAesKey(
+  chatType: ChatType,
+  targetId: number
+): Promise<string | null> {
+  return SecureStore.getItemAsync(getAesKeyString(chatType, targetId));
+}
+
+export async function generateAndStoreSymmetricAesKey(
+  chatType: ChatType,
+  targetId: number
+): Promise<string> {
+  const key = await generateAESKey();
+  await SecureStore.setItemAsync(getAesKeyString(chatType, targetId), key);
+  return key;
 }
 
 export function encryptMessageAES(message: string, passphrase: string): string {
@@ -134,8 +154,7 @@ export async function createAndExchangeKeys(
   chatType: ChatType,
   connection: HubConnection | null
 ): Promise<void> {
-  const aesKey = await generateAESKey();
-  await SecureStore.setItemAsync(getAesKeyString(chatType, receiverId), aesKey);
+  const aesKey = await generateAndStoreSymmetricAesKey(chatType, receiverId);
 
   const nonce = getNonce();
   const encryptedKey = await encryptMessageDFH(
@@ -161,13 +180,38 @@ export async function createAndExchangeKeys(
   await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);
 }
 
-export function getAesKeyString(chatType: ChatType, targetId: number): string {
-  return "CoCreate-" + chatType + "-" + targetId + "-Aes-Key";
-}
+export async function exchangeProjectKey(
+  receiverPublicKey: string,
+  receiverId: number,
+  projectId: number,
+  connection: HubConnection | null
+): Promise<void> {
+  const projectKey = await getSymmetricAesKey(ChatType.Project, projectId);
 
-export function getSymmetricAesKey(
-  chatType: ChatType,
-  targetId: number
-): Promise<string | null> {
-  return SecureStore.getItemAsync(getAesKeyString(chatType, targetId));
+  if (projectKey == null) {
+    console.log("no projectKey");
+    return
+  }
+
+  const nonce = getNonce();
+  const encryptedKey = await encryptMessageDFH(
+    projectKey,
+    nonce,
+    receiverPublicKey
+  );
+
+  const publicKey = await getPublicKey();
+
+  if (publicKey == null) return;
+
+  const keyExchangeDTO: EncryptedKeyExchangeCreateDTO = {
+    chatType: ChatType.Project,
+    encryptedSymmetricKey: encryptedKey,
+    nonce: toBase64(nonce),
+    publicKey: toBase64(publicKey),
+    targetId: receiverId,
+    groupChatId: projectId,
+  };
+
+  await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);
 }

@@ -1,33 +1,74 @@
 import { HubConnection } from "@microsoft/signalr";
-import { ChatType, EncryptedKeyExchangeDTO, MessageDTO } from "../api/model";
+import { EncryptedKeyExchangeDTO, MessageDTO } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
 import { Dispatch, SetStateAction } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { convertMessageDTOToIMessage } from "../database/databaseHelper";
 import * as Crypto from "expo-crypto";
 import {
-  toBase64,
   encryptMessageAES,
   getDatabasKey,
-  getNonce,
-  encryptMessageDFH,
   decryptMessageDFH,
-  fromBase64,
   getAesKeyString,
   getSymmetricAesKey,
   decryptMessageAES,
 } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import * as SecureStore from "expo-secure-store";
+import { ChatType, ChatTypeIdPair } from "@/components/Chats/ChatHelper";
+
+export async function handleReceiveEncryptedKeysExchange(
+  connection: HubConnection,
+  encryptedKeys: EncryptedKeyExchangeDTO[]
+): Promise<void> {
+  console.log("Received encrypted keys:", encryptedKeys);
+
+  encryptedKeys.forEach(async (encryptedKey) => {
+    if (
+      encryptedKey.encryptedSymmetricKey &&
+      encryptedKey.nonce &&
+      encryptedKey.publicKey &&
+      encryptedKey.chatType !== undefined &&
+      encryptedKey.senderId
+    ) {
+      const decryptedKey = await decryptMessageDFH(
+        encryptedKey.encryptedSymmetricKey,
+        encryptedKey.nonce,
+        encryptedKey.publicKey
+      );
+
+      console.log("Decrypted key:", decryptedKey);
+
+      const targetId = encryptedKey.groupChatId
+        ? encryptedKey.groupChatId
+        : encryptedKey.senderId;
+
+      console.log("Target id:", targetId);
+      console.log("Chat type:", encryptedKey.chatType);
+
+      await SecureStore.setItemAsync(
+        getAesKeyString(encryptedKey.chatType, targetId),
+        decryptedKey
+      );
+    }
+  });
+
+  const ids = encryptedKeys.map((encryptedKeys) => encryptedKeys.id);
+  await connection.invoke("AknowledgeEncryptedKeyExchangeAsync", ids);
+
+  connection.invoke("GetMessagesAsync");
+}
 
 export async function handleReceivedMessages(
   connection: HubConnection,
   db: SQLiteDatabase,
-  messages: MessageDTO[]
+  messages: MessageDTO[],
+  setLastMessages: (
+    chatTypeIdPair: ChatTypeIdPair,
+    newValue: MessageDTO
+  ) => void
 ): Promise<void> {
   if (!db) return;
-
-  console.log("Received messages:", messages);
 
   const aesKey = await getDatabasKey();
 
@@ -47,7 +88,6 @@ export async function handleReceivedMessages(
     );
 
     if (!symmetricAesKey) {
-      console.log("Symmetric key not found");
       return;
     }
 
@@ -56,6 +96,11 @@ export async function handleReceivedMessages(
       : null;
 
     if (!decryptedContent) return;
+
+    setLastMessages(
+      { chatTargetId: message.senderId, chatType: message.chatType },
+      { ...message, content: decryptedContent }
+    );
 
     const encryptedContent = message.content
       ? encryptMessageAES(decryptedContent, aesKey)
@@ -86,36 +131,45 @@ export async function handleReceivedMessages(
   await connection.invoke("AknowledgeMessageAsync", ids);
 }
 
-export async function handleReceiveEncryptedKeysExchange(
+export function handleReceivedMessagesInChat(
   connection: HubConnection,
-  encryptedKeys: EncryptedKeyExchangeDTO[]
-): Promise<void> {
-  console.log("Received encrypted keys:", encryptedKeys);
+  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
+  setMessages: Dispatch<SetStateAction<IMessage[]>>
+): () => void {
+  const handleMessage = async (messages: MessageDTO[]) => {
+    var filteredMessages = messages.filter(
+      (message) =>
+        message.senderId === chatTargetIdTypePair.chatTargetId &&
+        message.chatType === chatTargetIdTypePair.chatType
+    );
 
-  encryptedKeys.forEach(async (encryptedKey) => {
-    if (
-      encryptedKey.encryptedSymmetricKey &&
-      encryptedKey.nonce &&
-      encryptedKey.publicKey &&
-      encryptedKey.chatType !== undefined &&
-      encryptedKey.senderId
-    ) {
-      const decryptedKey = await decryptMessageDFH(
-        encryptedKey.encryptedSymmetricKey,
-        encryptedKey.nonce,
-        encryptedKey.publicKey
-      );
+    const symmetricAesKey = await getSymmetricAesKey(
+      chatTargetIdTypePair.chatType,
+      chatTargetIdTypePair.chatTargetId
+    );
 
-      console.log("Decrypted key:", decryptedKey);
-
-      await SecureStore.setItemAsync(
-        getAesKeyString(encryptedKey.chatType, encryptedKey.senderId),
-        decryptedKey
-      );
+    if (!symmetricAesKey) {
+      return;
     }
 
-    connection.invoke("GetMessagesAsync");
-  });
+    setMessages((state) => [
+      ...filteredMessages.map((message, index) =>
+        convertMessageDTOToIMessage({
+          ...message,
+          content: message.content
+            ? decryptMessageAES(message.content, symmetricAesKey)
+            : message.content,
+        })
+      ),
+      ...state,
+    ]);
+  };
+
+  connection.on("ReceiveMessages", handleMessage);
+
+  return () => {
+    connection.off("ReceiveMessages", handleMessage);
+  };
 }
 
 export async function sendMessage(
@@ -128,7 +182,6 @@ export async function sendMessage(
   if (!connection) {
     throw new Error("Connection is not established");
   }
-
   if (!database) {
     throw new Error("Database is not available");
   }
@@ -137,20 +190,14 @@ export async function sendMessage(
     chatTargetIdTypePair.chatType,
     chatTargetIdTypePair.chatTargetId
   );
-
   if (!symmetricAesKey) throw new Error("Symmetric key not found");
 
-  const aesKey = await getDatabasKey();
+  const encryptedMessage = encryptMessageAES(message.text, symmetricAesKey);
 
+  const aesKey = await getDatabasKey();
   if (!aesKey) throw new Error("AES key not found");
 
   const id: string = Crypto.randomUUID();
-
-  const nonce = getNonce();
-
-  const base64String = toBase64(nonce);
-
-  const encryptedMessage = encryptMessageAES(message.text, symmetricAesKey);
 
   const messageCreateDTO: MessageCreateDTO = {
     id,
@@ -159,10 +206,7 @@ export async function sendMessage(
     chatType: chatTargetIdTypePair.chatType,
     date: new Date().toISOString(),
     uri: null,
-    nonce: base64String,
   };
-
-  console.log("Sending message:", messageCreateDTO);
 
   try {
     await database.runAsync(
@@ -183,30 +227,4 @@ export async function sendMessage(
   } catch (err) {
     throw err;
   }
-}
-
-export function handleReceivedMessagesInChat(
-  connection: HubConnection,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
-  setMessages: Dispatch<SetStateAction<IMessage[]>>
-): () => void {
-  const handleMessage = (messages: MessageDTO[]) => {
-    var filteredMessages = messages.filter(
-      (message) =>
-        message.targetId === chatTargetIdTypePair.chatTargetId &&
-        message.chatType === chatTargetIdTypePair.chatType
-    );
-    setMessages((state) => [
-      ...filteredMessages.map((message, index) =>
-        convertMessageDTOToIMessage(message)
-      ),
-      ...state,
-    ]);
-  };
-
-  connection.on("ReceiveMessages", handleMessage);
-
-  return () => {
-    connection.off("ReceiveMessages", handleMessage);
-  };
 }

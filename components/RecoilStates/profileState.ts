@@ -274,66 +274,6 @@ export const useCoinsValue = () => useRecoilValue(coinsSelector);
 export const useSetCoinsState = () => useSetRecoilState(coinsSelector);
 export const useCoinsState = () => useRecoilState(coinsSelector);
 
-// export const projectRoleEnquiriesByIdSelector = selectorFamily<
-//   EnquiryDTO | undefined,
-//   number
-// >({
-//   key: "projectRoleEnquiriesByIdSelector",
-//   get:
-//     (enquiryId) =>
-//     ({ get }) => {
-//       const user = get(currentUserState);
-//       const enquiries =
-//         user?.projects
-//           ?.flatMap((project) => project.projectRoles)
-//           ?.filter(Boolean)
-//           .flatMap((role) => role?.enquiries)
-//           ?.filter(Boolean) || [];
-//       return (
-//         enquiries.find((enquiry) => enquiry && enquiry.id === enquiryId) ||
-//         undefined
-//       );
-//     },
-//   set:
-//     (enquiryId) =>
-//     ({ set, get }, newValue) => {
-//       const user = get(currentUserState);
-//       if (user && user.projects) {
-//         const newProjects = user.projects.map((project) => {
-//           const newProjectRoles = project.projectRoles.map((projectRole) => {
-//             const newEnquiries = projectRole.enquiries.map((enquiry) => {
-//               if (enquiry.id === enquiryId) {
-//                 return newValue instanceof DefaultValue ? undefined : newValue;
-//               }
-//               return enquiry;
-//             });
-//             return {
-//               ...projectRole,
-//               enquiries: newEnquiries.filter(Boolean) as EnquiryDTO[],
-//             };
-//           });
-//           return {
-//             ...project,
-//             projectRoles: newProjectRoles,
-//           };
-//         });
-//         set(currentUserState, {
-//           ...user,
-//           projects: newProjects,
-//         });
-//       }
-//     },
-// });
-
-// export const useProjectRoleEnquiriesByIdValue = (enquiryId: number) =>
-//   useRecoilValue(projectRoleEnquiriesByIdSelector(enquiryId));
-
-// export const useSetProjectRoleEnquiriesByIdState = (enquiryId: number) =>
-//   useSetRecoilState(projectRoleEnquiriesByIdSelector(enquiryId));
-
-// export const useProjectRoleEnquiriesByIdState = (enquiryId: number) =>
-//   useRecoilState(projectRoleEnquiriesByIdSelector(enquiryId));
-
 export const userIdSelector = selector({
   key: "userIdSelector",
   get: ({ get }) => {

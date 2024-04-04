@@ -23,112 +23,23 @@ import {
   handleReceivedMessagesInChat,
   sendMessage,
 } from "@/common/chat/chatHelper";
-import { Button } from "react-native-paper";
-import * as nacl from "tweetnacl";
 import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
-import * as Random from "expo-crypto";
+import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
+import { Button } from "react-native-paper";
+import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
 
 export default function EnquiryChat() {
   const chatTargetIdTypePair = useCurrentChatTargetIdValue();
   const database = useSQLiteContext();
 
-  const handleEncryption = async () => {
-    // Generate Alice's keys
-    const aliceRandomBytes = await Random.getRandomBytesAsync(32);
-    const aliceKeys = nacl.box.keyPair.fromSecretKey(aliceRandomBytes);
-
-    console.log("aliceKeys", aliceKeys);
-
-    // Generate Bob's keys
-    const bobRandomBytes = await Random.getRandomBytesAsync(32);
-    const bobKeys = nacl.box.keyPair.fromSecretKey(bobRandomBytes);
-
-    // Alice uses her private key and Bob's public key to derive a shared secret
-    const aliceSharedSecret = nacl.box.before(
-      bobKeys.publicKey,
-      aliceKeys.secretKey
-    );
-
-    // Bob uses his private key and Alice's public key to derive a shared secret
-    const bobSharedSecret = nacl.box.before(
-      aliceKeys.publicKey,
-      bobKeys.secretKey
-    );
-
-    const nonce = await Random.getRandomBytesAsync(24);
-    // const base64String = Buffer.from(nonce).toString("base64");
-
-    // const originalNonce =  Uint8Array.from(Buffer.from(base64String, "base64"));
-
-    // console.log("Nonce:", nonce);
-
-    // console.log("base64String", base64String);
-
-    // console.log("Nonce:", originalNonce);
-
-    // // console.log("nonce", nonce);
-
-    // Alice encrypts a message for Bob
-    const secretMessage = nacl.box(
-      new Uint8Array([1, 2, 3]),
-      nonce,
-      bobKeys.publicKey,
-      aliceKeys.secretKey
-    );
-
-    console.log(secretMessage);
-
-    //loop 100 times
-
-    for (let i = 0; i < 100; i++) {
-      const decryptedMessage = nacl.box.open(
-        secretMessage,
-        nonce,
-        aliceKeys.publicKey,
-        bobKeys.secretKey
-      );
-    }
-    console.log(
-      nacl.box.open(
-        secretMessage,
-        nonce,
-        aliceKeys.publicKey,
-        bobKeys.secretKey
-      )
-    );
-
-    // // aliceSharedSecret and bobSharedSecret should now be the same
-    // console.log(
-    //   "Shared secrets match:",
-    //   nacl.verify(aliceSharedSecret, bobSharedSecret)
-    // );
-
-    // const passphrase = await Crypto.digestStringAsync(
-    //   Crypto.CryptoDigestAlgorithm.SHA256,
-    //   Math.random().toString()
-    // );
-
-    // const messages2: string[] = Array(100).fill("Hello, world!");
-
-    // const encryptedMessages = messages2.map((message) => {
-    //   const encrypted = CryptoES.AES.encrypt(message, passphrase);
-    //   return encrypted.toString();
-    // });
-
-    // const decryptedMessages = encryptedMessages.map((encrypted) => {
-    //   const decrypted = CryptoES.AES.decrypt(encrypted, passphrase);
-    //   return decrypted.toString(CryptoES.enc.Utf8);
-    // });
-
-    // console.log("Encrypted messages:", encryptedMessages);
-    // console.log("Decrypted messages:", decryptedMessages);
-  };
+ 
 
   const connection = useContext(ConnectionContext);
   const userId = useUserIdValue() || 0;
 
   const [messages, setMessages] = useState<IMessage[]>([]);
 
+  const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
 
   useEffect(() => {
     if (!database) return;
@@ -144,6 +55,15 @@ export default function EnquiryChat() {
     const message = messages[0];
     sendMessage(connection, database, userId, chatTargetIdTypePair, message)
       .then((messageDTO) => {
+        if (messageDTO.targetId && messageDTO.chatType !== undefined) {
+          setLastMessages(
+            {
+              chatTargetId: messageDTO.targetId,
+              chatType: messageDTO.chatType,
+            },
+            { ...message, content: messageDTO.content }
+          );
+        }
         setMessages((state) => [
           convertMessageDTOToIMessage(messageDTO),
           ...state,
@@ -209,13 +129,11 @@ export default function EnquiryChat() {
           />
         )}
       />
-      <Button
-        onPress={() => {
-          handleEncryption();
-        }}
+      {/* <Button
+        onPress={() => handleConfirmEnquiry()}
       >
         <Text>Send</Text>
-      </Button>
+      </Button> */}
     </View>
   );
 }

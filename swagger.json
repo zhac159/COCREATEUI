@@ -1432,6 +1432,11 @@
             "type": "integer",
             "format": "int32"
           },
+          "groupChatId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "chatType": {
             "$ref": "#/components/schemas/ChatType"
           }
@@ -1441,6 +1446,10 @@
       "EncryptedKeyExchangeDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "nonce": {
             "type": "string",
             "nullable": true
@@ -1456,6 +1465,11 @@
           "targetId": {
             "type": "integer",
             "format": "int32"
+          },
+          "groupChatId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "senderId": {
             "type": "integer",
@@ -1674,10 +1688,6 @@
           "date": {
             "type": "string",
             "format": "date-time"
-          },
-          "nonce": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1710,10 +1720,6 @@
           },
           "mediaType": {
             "$ref": "#/components/schemas/MediaType"
-          },
-          "nonce": {
-            "type": "string",
-            "nullable": true
           },
           "date": {
             "type": "string",

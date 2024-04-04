@@ -1,5 +1,5 @@
 import { ProjectRoleDTO } from "@/common/api/model";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
 import { View, Text } from "react-native";
 import { Carousel } from "react-native-snap-carousel";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
@@ -12,6 +12,11 @@ import ProjectRoleSelection from "./ProjectRoleSelection";
 import ChatPreview from "@/components/Chats/ChatPreview";
 import { ChatType } from "@/components/Chats/ChatHelper";
 import ViewApplications from "../ViewApplications/ViewApplications";
+import { set } from "lodash";
+import { Button } from "react-native-paper";
+import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
+import { exchangeProjectKey } from "@/common/encryption/encryptionHelper";
+import { ConnectionContext } from "@/app/main/_layout";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -31,6 +36,37 @@ const Projects: FC<ProjectsProps> = ({
   const projects = useProjectValue();
 
   const [selectedRole, setSelectedRole] = useState<ProjectRoleDTO | null>(null);
+
+  const connection = useContext(ConnectionContext);
+
+  const [showApplications, setShowApplications] = useState(false);
+
+  const { mutate: confirmEnquiry } = usePostApiEnquiryConfirm({
+    mutation: {
+      onSuccess: async (data) => {
+        console.log("Enquiry confirmed");
+      },
+    },
+  });
+
+  const handleConfirmEnquiry = async (
+    enquiryId: number,
+    receiverPublicKey: string,
+    receiverId: number,
+    projectId: number
+  ) => {
+    confirmEnquiry({
+      data: {
+        enquiryId: enquiryId,
+      },
+    });
+    await exchangeProjectKey(
+      receiverPublicKey,
+      receiverId,
+      projectId,
+      connection
+    );
+  };
 
   const uris = projects
     ? projects?.map((project) => (project.medias ? project.medias[0].uri : ""))
@@ -70,11 +106,13 @@ const Projects: FC<ProjectsProps> = ({
       );
   }
 
-  // return (
-  //   <ViewApplications
-  //     enquiries={enquiriesToRender.filter((enquiry) => !enquiry.shortlisted)}
-  //   />
-  // );
+  if (showApplications)
+    return (
+      <ViewApplications
+        enquiries={enquiriesToRender.filter((enquiry) => !enquiry.shortlisted)}
+        close={() => setShowApplications(false)}
+      />
+    );
 
   return (
     <View>
@@ -98,9 +136,7 @@ const Projects: FC<ProjectsProps> = ({
           selectedRole={selectedRole}
           setSelectedRole={setSelectedRole}
         />
-        <ViewApplicationsButton
-          onPress={() => console.log("View Applications")}
-        />
+        <ViewApplicationsButton onPress={() => setShowApplications(true)} />
         <Text
           style={{
             ...theme.customFonts.primary.medium,
@@ -118,15 +154,29 @@ const Projects: FC<ProjectsProps> = ({
         {enquiriesToRender
           .filter((enquiry) => enquiry.shortlisted)
           .map((enquiry) => (
-            <ChatPreview
-              chatName={enquiry.enquirer?.username || "N/A"}
-              chatTargetIdTypePair={{
-                chatTargetId: enquiry.enquirer?.userId || 0,
-                chatType: ChatType.Enquiry,
-              }}
-              chatImage="https://picsum.photos/200/300"
-              key={enquiry.id}
-            />
+            <>
+              <ChatPreview
+                chatName={enquiry.enquirer?.username || "N/A"}
+                chatTargetIdTypePair={{
+                  chatTargetId: enquiry.enquirer?.userId || 0,
+                  chatType: ChatType.Enquiry,
+                }}
+                chatImage="https://picsum.photos/200/300"
+                key={enquiry.id}
+              />
+              <Button
+                onPress={() => {
+                  handleConfirmEnquiry(
+                    enquiry.id!,
+                    enquiry.enquirer?.publicKey || "",
+                    enquiry.enquirer?.userId || 0,
+                    projects ? projects[selectedProject]?.id! : 2
+                  );
+                }}
+              >
+                <Text>Confirm</Text>
+              </Button>
+            </>
           ))}
       </View>
     </View>

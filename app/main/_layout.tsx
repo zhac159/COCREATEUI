@@ -2,18 +2,20 @@ import { Stack } from "expo-router";
 import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
 import { EncryptedKeyExchangeDTO, MessageDTO } from "@/common/api/model";
-import { migrateDbIfNeeded } from "@/common/database/databaseHelper";
 import { fetchTokenAndStartConnection } from "@/common/webSockets/webSocketsHelper";
 import {
   handleReceiveEncryptedKeysExchange,
   handleReceivedMessages,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
+import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
 export default function HelperScreenNav() {
   const [connection, setConnection] = useState<HubConnection | null>(null);
+
+  const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
 
   const database = useSQLiteContext();
 
@@ -31,7 +33,7 @@ export default function HelperScreenNav() {
     if (!connection || !database) return;
 
     connection.on("ReceiveMessages", (messages: MessageDTO[]) => {
-      handleReceivedMessages(connection, database, messages);
+      handleReceivedMessages(connection, database, messages, setLastMessages);
     });
   }, [connection, database]);
 

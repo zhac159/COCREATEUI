@@ -1,5 +1,4 @@
-import { EnquiryDTO, UserInformationDTO } from "@/common/api/model";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useTheme } from "../Themes/theme";
@@ -7,7 +6,12 @@ import Media from "../MediaViewer/Media";
 import { formatDistance, parseISO } from "date-fns";
 import { router } from "expo-router";
 import { useSetCurrentChatTargetIdState } from "../RecoilStates/currentChatTargetIdState";
-import { ChatType, ChatTypeIdPair } from "./ChatHelper";
+import { ChatTypeIdPair } from "./ChatHelper";
+import {
+  useLastMessagesByTargetAndChatTypeState
+} from "../RecoilStates/lastMessagesState";
+import { useSQLiteContext } from "expo-sqlite/next";
+import { fetchLastMessages } from "@/common/database/databaseHelper";
 
 type ChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
@@ -19,25 +23,34 @@ const ChatPreview: FC<ChatPreviewProps> = ({
   chatTargetIdTypePair,
   chatImage,
   chatName,
-}) => { 
+}) => {
   const theme = useTheme();
 
   const setChatTargetId = useSetCurrentChatTargetIdState();
+  const database = useSQLiteContext();
 
-  //   const latestMessage = enquiry.messages
-  //     ?.slice()
-  //     .sort(
-  //       (a, b) =>
-  //         new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
-  //     )[0];
+  const [lastMessages, setLastMessages] =
+    useLastMessagesByTargetAndChatTypeState(chatTargetIdTypePair);
 
-  //   const lastMessageString = latestMessage?.message || "";
+  useEffect(() => {
+    if (!database) return;
+    fetchLastMessages(database, chatTargetIdTypePair)
+      .then((fetchedMessages) => {
+        setLastMessages(fetchedMessages);
+      })
+      .catch((error) => console.error("Error fetching messages:", error));
+  }, [database]);
 
-  //   let formattedDate = "";
-  //   if (latestMessage?.date) {
-  //     const date = parseISO(latestMessage.date);
-  //     formattedDate = formatDistance(date, new Date(), { addSuffix: true });
-  //   }
+  const latestMessage = lastMessages?.[0];
+
+  const lastMessageString = latestMessage?.content || "";
+
+  let formattedDate = "";
+
+  if (latestMessage?.date) {
+    const date = parseISO(latestMessage.date);
+    formattedDate = formatDistance(date, new Date(), { addSuffix: true });
+  }
 
   return (
     <TouchableOpacity
@@ -92,7 +105,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
               color: theme.colors.darkGray,
             }}
           >
-            {"yesterday"}
+            {formattedDate}
           </Text>
         </View>
         <Text
@@ -102,7 +115,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
             color: theme.colors.darkGray,
           }}
         >
-          {"lastMessageString"}
+          {lastMessageString}
         </Text>
       </View>
     </TouchableOpacity>

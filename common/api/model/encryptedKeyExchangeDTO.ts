@@ -9,6 +9,8 @@ import type { ChatType } from './chatType';
 export interface EncryptedKeyExchangeDTO {
   chatType?: ChatType;
   encryptedSymmetricKey?: string | null;
+  groupChatId?: number | null;
+  id?: string;
   nonce?: string | null;
   publicKey?: string | null;
   senderId?: number;
