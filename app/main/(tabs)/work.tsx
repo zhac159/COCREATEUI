@@ -1,11 +1,17 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { useEnquiriesValue } from "@/components/RecoilStates/profileState";
+import {
+  useAssignedProjectsValue,
+  useEnquiriesValue,
+} from "@/components/RecoilStates/profileState";
 import ChatPreview from "@/components/Chats/ChatPreview";
 import { ChatType } from "@/components/Chats/ChatHelper";
+import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();
+
+  const assignedProjects = useAssignedProjectsValue();
 
   if (!enquiries) return <Text>Loading...</Text>;
 
@@ -15,6 +21,17 @@ export default function Work() {
 
   return (
     <View style={styles.container}>
+      {assignedProjects &&
+        assignedProjects.map((project) => (
+          <ProjectChatPreview
+            chatTargetIdTypePair={{
+              chatTargetId: project.id || 0,
+              chatType: ChatType.Project,
+            }}
+            project={project}
+            key={project.id}
+          />
+        ))}
       <Text
         style={{
           fontSize: 20,
@@ -45,7 +62,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
-    justifyContent: "center",
+    paddingVertical: "10%",
   },
   title: {
     fontSize: 20,

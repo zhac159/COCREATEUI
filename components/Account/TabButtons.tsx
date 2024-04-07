@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Button, IconButton, Text } from "react-native-paper";
-import { View } from "@/components/Themed";
 import { useTheme } from "../Themes/theme";
-import { StyleSheet, Touchable, TouchableOpacity } from "react-native";
+import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
 import { BlurView } from "expo-blur";
 
 type TabButtonsProps = {

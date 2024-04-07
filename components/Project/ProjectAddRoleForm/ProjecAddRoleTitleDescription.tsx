@@ -19,6 +19,8 @@ const ProjectAddRoleTitleDescription: FC<
   const skillGroupType = skillGroupMap[skill || 0];
   const color = skill === undefined ? theme.colors.lightestGray:getSkillGroupColor(skillGroupType, 0.12);
 
+  console.log(color);
+
   return (
     <>
       <Text

@@ -4,11 +4,17 @@ import { HubConnection } from "@microsoft/signalr";
 import { EncryptedKeyExchangeDTO, MessageDTO } from "@/common/api/model";
 import { fetchTokenAndStartConnection } from "@/common/webSockets/webSocketsHelper";
 import {
+  handleReceiveNewEnquiry,
+  handleUpdateEnquiryShortlistStatus,
   handleReceiveEncryptedKeysExchange,
   handleReceivedMessages,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
+import {
+  useUpdateEnquiryShortlisted,
+  useUpdateProjectRoleEnquiries,
+} from "@/components/RecoilStates/profileState";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
@@ -17,13 +23,17 @@ export default function HelperScreenNav() {
 
   const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
 
+  const updateProjectRoleEnquiries = useUpdateProjectRoleEnquiries();
+
+  const updateShortlistEnquiry = useUpdateEnquiryShortlisted();
+
   const database = useSQLiteContext();
+   
 
   useEffect(() => {
     fetchTokenAndStartConnection().then((connection) => {
       setConnection(connection);
     });
-
     return () => {
       connection?.stop().then(() => console.log("Connection stopped"));
     };
@@ -46,6 +56,28 @@ export default function HelperScreenNav() {
         handleReceiveEncryptedKeysExchange(connection, encryptedKeys);
       }
     );
+  }, [connection]);
+
+  useEffect(() => {
+    if (!connection) return;
+
+    const cleanup = handleReceiveNewEnquiry(
+      connection,
+      updateProjectRoleEnquiries
+    );
+
+    return cleanup();
+  }, [connection]);
+
+  useEffect(() => {
+    if (!connection) return;
+
+    const cleanup = handleUpdateEnquiryShortlistStatus(
+      connection,
+      updateShortlistEnquiry
+    );
+
+    return cleanup();
   }, [connection]);
 
   return (

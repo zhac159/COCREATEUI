@@ -5,8 +5,7 @@ import {
   MediaCreateDTO,
   PrepareUploadDTO,
 } from "@/common/api/model";
-import { View } from "@/components/Themed";
-import { TextInput } from "react-native";
+import { TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";

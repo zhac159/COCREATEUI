@@ -116,6 +116,8 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
 
   const theme = useTheme();
 
+  console.log(uris)
+
   if (!userSkills) return null;
 
   return (

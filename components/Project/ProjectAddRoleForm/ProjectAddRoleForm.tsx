@@ -276,7 +276,11 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
   };
 
   return (
-    <>
+    <View
+      style={{
+        height: "100%",
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -367,7 +371,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
           formStep === 5 ? handleFormLastStep() : setFormStep(formStep + 1);
         }}
       />
-    </>
+    </View>
   );
 };
 

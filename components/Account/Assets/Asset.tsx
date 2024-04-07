@@ -4,9 +4,8 @@ import {
   MediaUpdateDTO,
   PrepareUploadDTO,
 } from "@/common/api/model";
-import { View } from "@/components/Themed";
 import { Divider, Text } from "react-native-paper";
-import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";

@@ -2402,6 +2402,13 @@
             },
             "nullable": true
           },
+          "assignedProjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectDTO"
+            },
+            "nullable": true
+          },
           "assets": {
             "type": "array",
             "items": {

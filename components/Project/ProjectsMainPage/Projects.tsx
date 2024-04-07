@@ -1,5 +1,12 @@
 import { ProjectRoleDTO } from "@/common/api/model";
-import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { View, Text } from "react-native";
 import { Carousel } from "react-native-snap-carousel";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
@@ -17,6 +24,8 @@ import { Button } from "react-native-paper";
 import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
 import { exchangeProjectKey } from "@/common/encryption/encryptionHelper";
 import { ConnectionContext } from "@/app/main/_layout";
+import GroupChatPreview from "@/components/Chats/GroupChatPreview";
+import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -32,12 +41,10 @@ const Projects: FC<ProjectsProps> = ({
   setCreateMode,
 }) => {
   const theme = useTheme();
-
+  const connection = useContext(ConnectionContext);
   const projects = useProjectValue();
 
   const [selectedRole, setSelectedRole] = useState<ProjectRoleDTO | null>(null);
-
-  const connection = useContext(ConnectionContext);
 
   const [showApplications, setShowApplications] = useState(false);
 
@@ -72,6 +79,16 @@ const Projects: FC<ProjectsProps> = ({
     ? projects?.map((project) => (project.medias ? project.medias[0].uri : ""))
     : [];
 
+  const handleEdit = (index: number) => {
+    setEditMode(true);
+    setSelectedProject(index);
+  };
+
+  const handleCreate = (index: number) => {
+    setCreateMode(true);
+    setSelectedProject(index);
+  };
+
   const renderItem = ({
     item,
     index,
@@ -79,32 +96,33 @@ const Projects: FC<ProjectsProps> = ({
     item: string | null | undefined;
     index: number;
   }) => {
+    const project = projects?.[index];
     return (
       <ProjectBanner
-        name={projects ? projects[index]?.name : "N/A"}
-        onEdit={() => {
-          setEditMode(true), setSelectedProject(index);
-        }}
-        onCreate={() => {
-          setCreateMode(true), setSelectedProject(index);
-        }}
+        name={project?.name ?? "N/A"}
+        onEdit={() => handleEdit(index)}
+        onCreate={() => handleCreate(index)}
         uri={uris[index]}
       />
     );
   };
 
-  let enquiriesToRender: EnquiryDTO[] = [];
+  const enquiriesToRender: EnquiryDTO[] = useMemo(() => {
+    let enquiries: EnquiryDTO[] = [];
 
-  if (selectedRole?.enquiries) {
-    enquiriesToRender = selectedRole.enquiries;
-  } else {
-    if (projects && projects[selectedProject])
-      projects[selectedProject].projectRoles?.forEach((role) =>
-        role.enquiries?.forEach((enquiry) => {
-          enquiriesToRender.push(enquiry);
-        })
-      );
-  }
+    if (selectedRole?.enquiries) {
+      enquiries = selectedRole.enquiries;
+    } else {
+      if (projects && projects[selectedProject]) {
+        projects[selectedProject].projectRoles?.forEach((role) =>
+          role.enquiries?.forEach((enquiry) => {
+            enquiries.push(enquiry);
+          })
+        );
+      }
+    }
+    return enquiries;
+  }, [selectedRole, projects, selectedProject]);
 
   if (showApplications)
     return (
@@ -154,7 +172,7 @@ const Projects: FC<ProjectsProps> = ({
         {enquiriesToRender
           .filter((enquiry) => enquiry.shortlisted)
           .map((enquiry) => (
-            <>
+            <View key={enquiry.id}>
               <ChatPreview
                 chatName={enquiry.enquirer?.username || "N/A"}
                 chatTargetIdTypePair={{
@@ -162,7 +180,6 @@ const Projects: FC<ProjectsProps> = ({
                   chatType: ChatType.Enquiry,
                 }}
                 chatImage="https://picsum.photos/200/300"
-                key={enquiry.id}
               />
               <Button
                 onPress={() => {
@@ -176,9 +193,17 @@ const Projects: FC<ProjectsProps> = ({
               >
                 <Text>Confirm</Text>
               </Button>
-            </>
+            </View>
           ))}
       </View>
+      <ProjectChatPreview
+        chatTargetIdTypePair={{
+          chatTargetId: projects![selectedProject].id!,
+          chatType: ChatType.Project,
+        }}
+        project={projects![selectedProject]}
+        key={"opdslkfa;jaswpojasdpoajs"}
+      />
     </View>
   );
 };

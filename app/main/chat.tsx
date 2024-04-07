@@ -1,5 +1,4 @@
-import { StyleSheet, Text } from "react-native";
-import { View } from "@/components/Themed";
+import { StyleSheet, View } from "react-native";
 import {
   Bubble,
   Composer,
@@ -25,8 +24,6 @@ import {
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
-import { Button } from "react-native-paper";
-import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
 
 export default function EnquiryChat() {
   const chatTargetIdTypePair = useCurrentChatTargetIdValue();
@@ -61,7 +58,7 @@ export default function EnquiryChat() {
               chatTargetId: messageDTO.targetId,
               chatType: messageDTO.chatType,
             },
-            { ...message, content: messageDTO.content }
+            { ...messageDTO, content: messageDTO.content }
           );
         }
         setMessages((state) => [

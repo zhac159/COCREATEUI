@@ -23,10 +23,8 @@ export const uploadFiles = async (sasUris: string[], files: string[]) => {
     const sasUri = sasUris[i];
     const file = files[i];
 
-    const fileData = await FileSystem.readAsStringAsync(file, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-    const response = await fetch(`data:image/jpeg;base64,${fileData}`);
+    
+    const response = await fetch(file);
     const blob = await response.blob();
 
     let azureResponse;

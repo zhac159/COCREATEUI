@@ -19,6 +19,7 @@ export const currentUserState = atom<UserDTO | undefined>({
   default: {
     aboutYou: null,
     assets: [],
+    assignedProjects: [],
     bannerPictureSrc: null,
     coins: 0,
     email: "testsssse3mrail@gmail.com",
@@ -345,10 +346,8 @@ export const getIntUserIdSelector = selector({
   },
 });
 
+
 export const useGetIntUserIdValue = () => useRecoilValue(getIntUserIdSelector);
-
-
-// enqruiries selector 
 
 export const enquiriesSelector = selector({
   key: "enquiriesSelector",
@@ -370,3 +369,94 @@ export const enquiriesSelector = selector({
 export const useEnquiriesValue = () => useRecoilValue(enquiriesSelector);
 export const useSetEnquiriesState = () => useSetRecoilState(enquiriesSelector);
 export const useEnquiriesState = () => useRecoilState(enquiriesSelector);
+
+
+export const assignedProjectsSelector = selector({
+  key: "assignedProjectsSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.assignedProjects;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        assignedProjects: newValue instanceof DefaultValue ? [] : newValue,
+      });
+    }
+  },
+});
+
+export const useAssignedProjectsValue = () => useRecoilValue(assignedProjectsSelector);
+export const useSetAssignedProjectsState = () => useSetRecoilState(assignedProjectsSelector);
+export const useAssignedProjectsState = () => useRecoilState(assignedProjectsSelector);
+
+export const useUpdateProjectRoleEnquiries = () => {
+  const [user, setUser] = useRecoilState(currentUserState);
+
+  return (enquiry: EnquiryDTO) => {
+    if (!user || !user.projects || !enquiry.projectRoleId) return;
+
+    const newProjects = user.projects.map(project => {
+      if (!project.projectRoles) return project;
+
+      const newProjectRoles = project.projectRoles.map(role => {
+        if (role.id !== enquiry.projectRoleId) return role;
+
+        const newEnquiries = role.enquiries ? [...role.enquiries, enquiry] : [enquiry];
+        return { ...role, enquiries: newEnquiries };
+      });
+
+      return { ...project, projectRoles: newProjectRoles };
+    });
+
+    setUser({ ...user, projects: newProjects });
+  };
+};
+
+export const useUpdateEnquiryShortlisted = () => {
+  const [user, setUser] = useRecoilState(currentUserState);
+
+  return (enquiryId: number) => {
+    if (!user || !user.enquiries) return;
+
+    console.log("enquiryId", enquiryId);
+
+    const newEnquiries = user.enquiries.map(enquiry => {
+      if (enquiry.id !== enquiryId) return enquiry;
+
+      return { ...enquiry, shortlisted: true };
+    });
+
+    setUser({ ...user, enquiries: newEnquiries });
+  };
+};
+
+export const useUpdateEnquiryShortlistedInProjects = () => {
+  const [user, setUser] = useRecoilState(currentUserState);
+
+  return (enquiryId: number) => {
+    if (!user || !user.projects) return;
+
+    const newProjects = user.projects.map(project => {
+      if (!project.projectRoles) return project;
+
+      const newProjectRoles = project.projectRoles.map(role => {
+        if (!role.enquiries) return role;
+
+        const newEnquiries = role.enquiries.map(enquiry => {
+          if (enquiry.id !== enquiryId) return enquiry;
+
+          return { ...enquiry, shortlisted: true };
+        });
+
+        return { ...role, enquiries: newEnquiries };
+      });
+
+      return { ...project, projectRoles: newProjectRoles };
+    });
+
+    setUser({ ...user, projects: newProjects });
+  };
+};

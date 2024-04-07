@@ -1,5 +1,11 @@
 import { HubConnection } from "@microsoft/signalr";
-import { EncryptedKeyExchangeDTO, MessageDTO } from "../api/model";
+import {
+  EncryptedKeyExchangeDTO,
+  EnquiryDTO,
+  MessageDTO,
+  ProjectDTO,
+  UserInformationDTO,
+} from "../api/model";
 import { MessageCreateDTO } from "../api/model";
 import { Dispatch, SetStateAction } from "react";
 import { IMessage } from "react-native-gifted-chat";
@@ -82,9 +88,13 @@ export async function handleReceivedMessages(
   for (const message of messages) {
     if (message.chatType === undefined || !message.senderId) return;
 
+    const chatTargetId = getChatId(message);
+
+    if (!chatTargetId) return;
+
     const symmetricAesKey = await getSymmetricAesKey(
       message.chatType,
-      message.senderId
+      chatTargetId
     );
 
     if (!symmetricAesKey) {
@@ -98,7 +108,7 @@ export async function handleReceivedMessages(
     if (!decryptedContent) return;
 
     setLastMessages(
-      { chatTargetId: message.senderId, chatType: message.chatType },
+      { chatTargetId: chatTargetId, chatType: message.chatType },
       { ...message, content: decryptedContent }
     );
 
@@ -114,7 +124,7 @@ export async function handleReceivedMessages(
       message.mediaType !== undefined ? message.mediaType : null,
       message.date !== undefined ? message.date : null,
       message.chatType !== undefined ? message.chatType : null,
-      message.senderId !== undefined ? message.senderId : null
+      chatTargetId
     );
   }
 
@@ -139,7 +149,7 @@ export function handleReceivedMessagesInChat(
   const handleMessage = async (messages: MessageDTO[]) => {
     var filteredMessages = messages.filter(
       (message) =>
-        message.senderId === chatTargetIdTypePair.chatTargetId &&
+        getChatId(message) === chatTargetIdTypePair.chatTargetId &&
         message.chatType === chatTargetIdTypePair.chatType
     );
 
@@ -227,4 +237,66 @@ export async function sendMessage(
   } catch (err) {
     throw err;
   }
+}
+
+export function getChatId(message: MessageDTO): number {
+  const id =
+    message.chatType === ChatType.Project ? message.targetId : message.senderId;
+
+  if (!id) throw new Error("Chat id not found");
+
+  return id;
+}
+
+export function findUserById(
+  project: ProjectDTO,
+  id: number
+): UserInformationDTO | null {
+  if (project.projectManager?.userId === id) {
+    return project.projectManager;
+  }
+  for (const role of project.projectRoles || []) {
+    if (role.assignee?.userId === id) {
+      return role.assignee;
+    }
+  }
+  return null;
+}
+
+export function getProjectUsers(project: ProjectDTO): UserInformationDTO[] {
+  console.log("Project:", project);
+
+  const usersInProject: UserInformationDTO[] = [];
+
+  if (project.projectManager) {
+    usersInProject.push(project.projectManager);
+  }
+
+  for (const role of project.projectRoles || []) {
+    if (role.assignee) usersInProject.push(role.assignee);
+  }
+
+  return usersInProject;
+}
+
+export function handleReceiveNewEnquiry(
+  connection: HubConnection,
+  updateProjectRoleEnquiries: (enquiry: EnquiryDTO) => void
+): () => void {
+  connection.on("ReceiveNewEnquiry", updateProjectRoleEnquiries);
+
+  return () => {
+    connection.off("ReceiveNewEnquiry  ", updateProjectRoleEnquiries);
+  };
+}
+
+export function handleUpdateEnquiryShortlistStatus(
+  connection: HubConnection,
+  updateEnquiriyShortlist: (enquiryId: number) => void
+): () => void {
+  connection.on("ReceiveNewShortlist", updateEnquiriyShortlist);
+
+  return () => {
+    connection.off("ReceiveNewShortlist  ", updateEnquiriyShortlist);
+  };
 }

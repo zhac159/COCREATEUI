@@ -27,7 +27,7 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
 
   const otherRoles = matchingProject.project?.projectRoles?.filter(
     (role) => role.id !== matchingProject.projectRoleId
-  );
+  ) || [];
 
   const matchingRoleNode = useMemo(
     () => (
@@ -88,15 +88,17 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
                   backgroundColor: theme.colors.lightBlack,
                 }}
               >
-                <Text
-                  style={{
-                    ...theme.customFonts.primary.medium,
-                    color: theme.colors.white,
-                  }}
-                >
-                  Team
-                </Text>
-                {otherRoles?.map((role) => (
+                {otherRoles.length > 0 && (
+                  <Text
+                    style={{
+                      ...theme.customFonts.primary.medium,
+                      color: theme.colors.white,
+                    }}
+                  >
+                    Team
+                  </Text>
+                )}
+                {otherRoles.map((role) => (
                   <TeamMemberPreview otherRole={role} key={role.id} />
                 ))}
               </View>

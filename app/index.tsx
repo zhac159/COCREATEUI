@@ -2,8 +2,8 @@ import {
   Keyboard,
   StyleSheet,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { View } from "@/components/Themed";
 import LoginForm from "@/components/LoginPage/LoginForm";
 import RegisterForm from "@/components/LoginPage/RegisterForm";
 import { useState } from "react";

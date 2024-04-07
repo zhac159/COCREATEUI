@@ -5,12 +5,12 @@ import {
 import { ProjectWithMatchingRolesListDTO } from "@/common/api/model";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
 export default function Discovery() {
-  
   const [matchingProjects, setMatchingProjects] =
     useState<ProjectWithMatchingRolesListDTO>();
 
@@ -32,15 +32,17 @@ export default function Discovery() {
     },
   });
 
-  useEffect(() => {
-    getMatchingProjects({
-      data: {
-        distance: 100,
-        effort: 1000000,
-      },
-    });
-  }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      getMatchingProjects({
+        data: {
+          distance: 100,
+          effort: 1000000,
+        },
+      });
+    }, [])
+  );
+  
   if (
     !matchingProjects ||
     !matchingProjects.projectWithMatchingRoles ||

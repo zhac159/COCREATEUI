@@ -74,7 +74,10 @@ export const LightTheme: CustomTheme = {
   },
 };
 
-
+export function addOpactity(rgb: string, alpha: number): string {
+  const rgba = rgb.replace('rgb', 'rgba').replace(')', `, ${alpha})`);
+  return rgba;
+}
 
 export function useTheme(): CustomTheme {
   return usePaperTheme() as CustomTheme;

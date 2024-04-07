@@ -1,15 +1,15 @@
-import { StyleProp, TouchableOpacity, View } from "react-native";
+import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Image, ImageStyle } from "expo-image";
 import React from "react";
 import { TapGestureHandler, State } from "react-native-gesture-handler";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Video } from "expo-av";
-import { useTheme } from "../Themes/theme";
+import { addOpactity, useTheme } from "../Themes/theme";
 
 type MediaProps = {
   onPress: () => void;
   uri: string | undefined | null;
-  style: StyleProp<ImageStyle>;
+  style: StyleProp<ViewStyle>;
   editMode?: boolean;
   backgroundColor?: string;
 };
@@ -87,46 +87,50 @@ const Media: React.FC<MediaProps> = ({
             ) : null}
           </View>
         ) : (
-          <Image
-            source={{
-              uri: uri || "https://via.placeholder.com/150",
-            }}
-            children={
-              editMode ? (
-                <View
+          <View style={[style, { overflow: "hidden" }]}>
+            <Image
+              source={{
+                uri: uri || "https://via.placeholder.com/150",
+              }}
+              contentFit="cover"
+              style={{
+                height: "100%",
+                width: "100%",
+              }}
+            />
+            {editMode ? (
+              <View
+                style={{
+                  position: "absolute",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  width: "100%",
+                  backgroundColor: addOpactity(theme.colors.lightGray, 0.5),
+                }}
+              >
+                <TouchableOpacity
                   style={{
-                    position: "absolute",
-                    justifyContent: "center",
                     alignItems: "center",
-                    height: "100%",
-                    opacity: 0.5,
-                    width: "100%",
-                    backgroundColor: backgroundColor || theme.colors.lightGray,
+                    justifyContent: "center",
+                    position: "absolute",
+                    backgroundColor: theme.colors.grayer,
+                    borderRadius: 50,
+                    padding: 13,
+                  }}
+                  onPress={() => {
+                    onPress();
                   }}
                 >
-                  <TouchableOpacity
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: theme.colors.grayer,
-                      borderRadius: 50,
-                      padding: 13,
-                    }}
-                    onPress={() => {
-                      onPress();
-                    }}
-                  >
-                    <FontAwesome6
-                      name="image"
-                      size={30}
-                      color={theme.colors.white}
-                    />
-                  </TouchableOpacity>
-                </View>
-              ) : null
-            }
-            style={style}
-          />
+                  <FontAwesome6
+                    name="image"
+                    size={30}
+                    color={theme.colors.white}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+          </View>
         )}
       </TapGestureHandler>
     </>

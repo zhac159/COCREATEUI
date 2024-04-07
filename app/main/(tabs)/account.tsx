@@ -3,8 +3,8 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   Dimensions,
+  View,
 } from "react-native";
-import { View } from "@/components/Themed";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
 import { useState } from "react";
 import SkillsTab from "@/components/Account/Skills/SkillsTab";
@@ -44,11 +44,30 @@ export default function Account() {
           flex: 1,
         }}
         contentContainerStyle={{ flexGrow: 1 }}
-        pointerEvents="box-none"
+        // pointerEvents="box-none"
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
         onScroll={handleScroll}
       >
+        {/* <View
+          style={{
+            backgroundColor: "red",
+            height: windowHeight * 0.5,
+            width: "100%",
+          }}
+        >
+
+        </View>
+        
+        <View
+          style={{
+            backgroundColor: "red",
+            height: windowHeight * 0.5,
+            width: "100%",
+          }}
+        >
+
+        </View> */}
         <AccountMainInfo
           coins={currentUser.coins || 0}
           username={currentUser.username || "username"}
