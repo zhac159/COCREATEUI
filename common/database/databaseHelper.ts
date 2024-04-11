@@ -45,15 +45,19 @@ export async function fetchLastMessages(
 
 export async function fetchMessages(
   database: SQLiteDatabase,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number }
+  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
+  partition: number
 ): Promise<MessageDTO[]> {
   const aesKey = await getDatabasKey();
 
   if (!aesKey) throw new Error("AES key not found");
 
+  const limit = 25;
+  const offset = partition * limit;
+
   const resultSet = await database.getAllAsync(
-    `SELECT * FROM messages WHERE targetId = ? AND chatType = ? ORDER BY date DESC`,
-    [chatTargetIdTypePair.chatTargetId, chatTargetIdTypePair.chatType]
+    `SELECT * FROM messages WHERE targetId = ? AND chatType = ? ORDER BY date DESC LIMIT ? OFFSET ?`,
+    [chatTargetIdTypePair.chatTargetId, chatTargetIdTypePair.chatType, limit, offset]
   );
 
   const rows: MessageDTO[] = resultSet.map((row: any) => {
@@ -63,7 +67,6 @@ export async function fetchMessages(
 
   return rows;
 }
-
 export function convertMessageDTOToIMessage(message: MessageDTO): IMessage {
   return {
     _id: `${message.id}`,
@@ -72,6 +75,7 @@ export function convertMessageDTOToIMessage(message: MessageDTO): IMessage {
     user: {
       _id: message.senderId || "unknown",
     },
+    image: message.uri || undefined,
     sent: true,
   };
 }

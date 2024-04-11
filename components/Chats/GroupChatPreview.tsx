@@ -39,8 +39,6 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
     );
   }, [database]);
 
-  console.log(lastMessages);
-
   return (
     <TouchableOpacity
       activeOpacity={1}

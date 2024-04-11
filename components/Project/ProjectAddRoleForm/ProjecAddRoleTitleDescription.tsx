@@ -37,6 +37,7 @@ const ProjectAddRoleTitleDescription: FC<
           ...theme.customFonts.primary.medium,
           ...styles.titleTextInput,
           color: theme.colors.black,
+          textAlignVertical: "top",
           backgroundColor: color,
         }}
         numberOfLines={14}
@@ -62,6 +63,7 @@ const ProjectAddRoleTitleDescription: FC<
         style={{
           ...theme.customFonts.primary.medium,
           ...styles.desciptionTextInput,
+          textAlignVertical: "top",
           color: theme.colors.black,
           backgroundColor: color,
         }}

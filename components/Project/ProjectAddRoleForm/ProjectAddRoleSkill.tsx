@@ -26,6 +26,7 @@ const ProjectAddRoleSkill: FC<ProjectAddRoleSkillProps> = ({
           ...theme.customFonts.secondary.large,
           fontWeight: "400",
           fontSize: 35,
+          paddingBottom: 20,
         }}
       >
         What Skill Are You Looking For?
@@ -36,7 +37,7 @@ const ProjectAddRoleSkill: FC<ProjectAddRoleSkillProps> = ({
         selectSkill={(skillDTO) => {
           setSkill(skillDTO.skillType);
         }}
-        selectedSkillType={skill}
+        selectedSkill={skill}
       />
     </>
   );

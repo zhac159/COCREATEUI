@@ -1,13 +1,15 @@
 import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
-import { Image, ImageStyle } from "expo-image";
+import { Image } from "expo-image";
 import React from "react";
 import { TapGestureHandler, State } from "react-native-gesture-handler";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Video } from "expo-av";
 import { addOpactity, useTheme } from "../Themes/theme";
+import { useSetMediaViewerState } from "./mediaViewerState";
+import { router } from "expo-router";
 
 type MediaProps = {
-  onPress: () => void;
+  onPress?: () => void;
   uri: string | undefined | null;
   style: StyleProp<ViewStyle>;
   editMode?: boolean;
@@ -22,6 +24,20 @@ const Media: React.FC<MediaProps> = ({
   backgroundColor,
 }) => {
   const theme = useTheme();
+
+  const setMediaViewer = useSetMediaViewerState();
+
+  const handleSelectMedia = (uri: string) => {
+    setMediaViewer((state) => ({
+      visible: false,
+      selectedImageIndex: 0,
+      uris: [uri],
+    }));
+
+    router.push("/main/portofolioModal");
+  };
+
+  if(!onPress) onPress = () => handleSelectMedia(uri || "");
 
   return (
     <>

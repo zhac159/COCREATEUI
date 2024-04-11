@@ -6,7 +6,6 @@ import {
   SetStateAction,
   useCallback,
   useRef,
-  useState,
 } from "react";
 import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
@@ -68,7 +67,7 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
           style={{
             ...styles.roleButton,
             backgroundColor: isRoleSelected(projectRole)
-              ? theme.colors.black
+              ? theme.colors.primary
               : "transparent",
           }}
         >

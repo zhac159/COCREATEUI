@@ -31,6 +31,7 @@ import { EntityType } from "../../Account/Common/Media/EntityType";
 import CancelButton from "../Common/CancelButton";
 import { generateAndStoreSymmetricAesKey } from "@/common/encryption/encryptionHelper";
 import { ChatType } from "@/components/Chats/ChatHelper";
+import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 
 type ProjectCreateProps = {
   onCancel: () => void;
@@ -38,6 +39,7 @@ type ProjectCreateProps = {
 
 const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
   const setProject = useSetProjectState();
+  const upload = usePrepareAndUpload(EntityType.PROJECT);
 
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris, true);
@@ -60,45 +62,23 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
     },
   });
 
-  const { mutate: prepareDownlaod } = usePostApiPrepare({
-    mutation: {
-      onSuccess: (data) => {
-        const sasURIs = data.sasURIs;
-
-        if (sasURIs) {
-          uploadFiles(data.sasURIs || [], uris);
-          let newMedias: MediaCreateDTO[] = [];
-          newMedias =
-            uris.map((_, index) => {
-              const cleanUrl = getCleanUrl(sasURIs[index] || "");
-              const newMedia: MediaCreateDTO = {
-                uri: cleanUrl,
-                mediaType: getMediaTypeFromUri(cleanUrl),
-              };
-              return newMedia;
-            }) || [];
-
-          const NewProject: ProjectCreateDTO = {
-            medias: newMedias,
-            description: description,
-            name: title,
-          };
-          createProject({ data: NewProject });
-        }
-      },
-    },
-  });
-
-  const handleCreate = () => {
-    const prepareUploadSubmission: PrepareUploadDTO[] =
-      uris.map((uri: string) => {
-        const prepareUpload: PrepareUploadDTO = {
-          entity: EntityType.PROJECT,
-          mediaType: getMediaTypeFromUri(uri),
+  const handleCreate = async () => {
+    const urls = await upload(uris);
+    const newMedias =
+      urls.map((url) => {
+        const newMedia: MediaCreateDTO = {
+          uri: url,
+          mediaType: getMediaTypeFromUri(url),
         };
-        return prepareUpload;
+        return newMedia;
       }) || [];
-    prepareDownlaod({ data: prepareUploadSubmission });
+      
+    const NewProject: ProjectCreateDTO = {
+      medias: newMedias,
+      description: description,
+      name: title,
+    };
+    createProject({ data: NewProject });
   };
 
   const theme = useTheme();

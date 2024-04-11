@@ -10,6 +10,7 @@ import type { SkillType } from './skillType';
 export interface SkillDTO {
   description?: string | null;
   id?: number;
+  keywords?: string[] | null;
   level?: number;
   skillGroupType?: SkillGroupType;
   skillType?: SkillType;

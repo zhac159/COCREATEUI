@@ -19,12 +19,10 @@ import ProjectRoleSelection from "./ProjectRoleSelection";
 import ChatPreview from "@/components/Chats/ChatPreview";
 import { ChatType } from "@/components/Chats/ChatHelper";
 import ViewApplications from "../ViewApplications/ViewApplications";
-import { set } from "lodash";
 import { Button } from "react-native-paper";
 import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
 import { exchangeProjectKey } from "@/common/encryption/encryptionHelper";
 import { ConnectionContext } from "@/app/main/_layout";
-import GroupChatPreview from "@/components/Chats/GroupChatPreview";
 import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 
 type ProjectsProps = {
@@ -155,13 +153,13 @@ const Projects: FC<ProjectsProps> = ({
           setSelectedRole={setSelectedRole}
         />
         <ViewApplicationsButton onPress={() => setShowApplications(true)} />
-        <Text
+        {/* <Text
           style={{
             ...theme.customFonts.primary.medium,
           }}
         >
           Shortlisted
-        </Text>
+        </Text> */}
       </View>
       <View
         style={{

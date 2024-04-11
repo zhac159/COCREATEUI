@@ -82,8 +82,6 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
           <Button
             style={{
               backgroundColor: theme.colors.primary,
-              paddingHorizontal: "2%",
-              paddingVertical: "2.5%",
               borderRadius: 100,
             }}
             onPress={() => {
@@ -96,6 +94,8 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
               style={{
                 ...theme.customFonts.primary.medium,
                 color: theme.colors.white,
+                paddingHorizontal: 8,
+                paddingVertical: 2,
               }}
             >
               {"Done"}

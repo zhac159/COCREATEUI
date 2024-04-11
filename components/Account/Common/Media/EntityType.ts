@@ -3,4 +3,5 @@ export enum EntityType {
   PORTOFOLIOCONTENT,
   PROJECT,
   PROJECTROLE,
+  CHATS
 }

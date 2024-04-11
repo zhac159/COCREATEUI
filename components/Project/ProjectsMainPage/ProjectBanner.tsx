@@ -25,7 +25,6 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
       <Media
         uri={uri}
         style={{ flex: 1 }}
-        onPress={() => console.log("jdpo")}
       />
       <View
         style={{
@@ -79,6 +78,7 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
               color: theme.colors.white,
               fontSize: 40,
               paddingBottom: 20,
+              fontWeight: "400",
             }}
           >
             {name}
@@ -97,32 +97,32 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
                 flexDirection: "row",
                 alignItems: "center",
                 borderRadius: 14,
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                opacity: 0.8,
-                backgroundColor: theme.colors.white,
+                paddingVertical: 10,
+                paddingHorizontal: 30,
+                backgroundColor: theme.colors.darkerGray,
               }}
             >
               <Text
                 style={{
                   ...theme.customFonts.primary.medium,
+                  color: theme.colors.white,
                   fontSize: 20,
                 }}
               >
-                Find Asset
+                Find Assets
               </Text>
             </TouchableOpacity>
             <IconButton
               icon={() => (
                 <FontAwesome6
                   name="pen"
-                  size={19}
+                  size={18}
                   color={theme.colors.black}
                   solid
                 />
               )}
               onPress={() => onEdit(true)}
-              size={30}
+              size={25}
               style={{
                 backgroundColor: theme.colors.white,
                 margin: 0,

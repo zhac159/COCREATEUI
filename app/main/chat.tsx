@@ -1,4 +1,10 @@
-import { StyleSheet, View } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  RefreshControl,
+} from "react-native";
 import {
   Bubble,
   Composer,
@@ -8,66 +14,54 @@ import {
 } from "react-native-gifted-chat";
 import { useUserIdValue } from "@/components/RecoilStates/profileState";
 import Media from "@/components/MediaViewer/Media";
-import { router } from "expo-router";
-import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
 import { useCurrentChatTargetIdValue } from "@/components/RecoilStates/currentChatTargetIdState";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import "react-native-get-random-values";
 import { ConnectionContext } from "./_layout";
+
 import {
-  convertMessageDTOToIMessage,
-  fetchMessages,
-} from "@/common/database/databaseHelper";
-import {
+  convertIMessageToCreateMessageDTO,
   handleReceivedMessagesInChat,
-  sendMessage,
+  useChatMessages,
+  useSendMessage,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
-import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { useTheme } from "@/components/Themes/theme";
+import { IconButton } from "react-native-paper";
+import { useGetMedia } from "@/components/Account/Common/Media/mediaHelper";
+import SendImagePortal from "@/components/Chats/SendImagePortal";
 
 export default function EnquiryChat() {
-  const chatTargetIdTypePair = useCurrentChatTargetIdValue();
   const database = useSQLiteContext();
-
- 
-
   const connection = useContext(ConnectionContext);
-  const userId = useUserIdValue() || 0;
-
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const chatTargetIdTypePair = useCurrentChatTargetIdValue();
+  const userId = useUserIdValue() || 0;
+  const theme = useTheme();
 
-  const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
+  const [partition, setPartition] = useState(0);
+
+  const [uris, setUris] = useState<string[]>([]);
+  const getMedia = useGetMedia(setUris, true);
+
+  const loadMessages = useChatMessages(
+    database,
+    chatTargetIdTypePair,
+    setMessages
+  );
+
+  const handleSendMessage = useSendMessage(
+    connection,
+    database,
+    userId,
+    chatTargetIdTypePair,
+    setMessages
+  );
 
   useEffect(() => {
-    if (!database) return;
-    fetchMessages(database, chatTargetIdTypePair)
-      .then((fetchedMessages) =>
-        fetchedMessages.map((message) => convertMessageDTOToIMessage(message))
-      )
-      .then(setMessages)
-      .catch((error) => console.error("Error fetching messages:", error));
-  }, [database]);
-
-  const handleSendMessage = (messages: any[]) => {
-    const message = messages[0];
-    sendMessage(connection, database, userId, chatTargetIdTypePair, message)
-      .then((messageDTO) => {
-        if (messageDTO.targetId && messageDTO.chatType !== undefined) {
-          setLastMessages(
-            {
-              chatTargetId: messageDTO.targetId,
-              chatType: messageDTO.chatType,
-            },
-            { ...messageDTO, content: messageDTO.content }
-          );
-        }
-        setMessages((state) => [
-          convertMessageDTOToIMessage(messageDTO),
-          ...state,
-        ]);
-      })
-      .catch((error) => console.error("Error sending message:", error));
-  };
+    loadMessages(partition);
+  }, [partition]);
 
   useEffect(() => {
     if (!connection || !database) return;
@@ -79,25 +73,31 @@ export default function EnquiryChat() {
     return cleanup;
   }, [connection, database]);
 
-  const setMediaViewer = useSetMediaViewerState();
-
-  const handleSelectMedia = (uri: string) => {
-    setMediaViewer((state) => ({
-      visible: false,
-      selectedImageIndex: 0,
-      uris: [uri],
-    }));
-
-    router.push("/main/portofolioModal");
-  };
-
-  console.log("rerender");
+  if (uris.length > 0) {
+    return (
+      <SendImagePortal
+        handleSendMessage={handleSendMessage}
+        setUris={setUris}
+        uri={uris[0]}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>
       <GiftedChat
         messages={messages}
-        onSend={handleSendMessage}
+        loadEarlier={false}
+        listViewProps={{
+          onEndReached: () => {
+            setPartition((state) => state + 1);
+          },
+          onEndReachedThreshold: 0.5,
+        }}
+        onSend={(messages) => {
+          const message = convertIMessageToCreateMessageDTO(messages[0]);
+          handleSendMessage(message);
+        }}
         renderAvatar={null}
         user={{
           _id: userId,
@@ -109,10 +109,18 @@ export default function EnquiryChat() {
           <Media
             uri={props.currentMessage?.image || ""}
             style={{ width: 150, height: 50 }}
-            onPress={() => handleSelectMedia(props.currentMessage?.image || "")}
           />
         )}
         messagesContainerStyle={{ paddingHorizontal: 10 }}
+        renderActions={(props) => (
+          <View>
+            <IconButton
+              onPress={() => getMedia(0)}
+              icon={() => <FontAwesome6 name="camera" size={18} solid />}
+              size={26}
+            />
+          </View>
+        )}
         renderInputToolbar={(props) => (
           <InputToolbar
             {...props}
@@ -126,11 +134,6 @@ export default function EnquiryChat() {
           />
         )}
       />
-      {/* <Button
-        onPress={() => handleConfirmEnquiry()}
-      >
-        <Text>Send</Text>
-      </Button> */}
     </View>
   );
 }

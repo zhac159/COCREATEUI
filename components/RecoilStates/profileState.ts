@@ -2,6 +2,7 @@ import {
   AssetDTO,
   EnquiryDTO,
   PortofolioContentDTO,
+  SkillType,
   UserDTO,
 } from "@/common/api/model";
 import {
@@ -421,8 +422,6 @@ export const useUpdateEnquiryShortlisted = () => {
   return (enquiryId: number) => {
     if (!user || !user.enquiries) return;
 
-    console.log("enquiryId", enquiryId);
-
     const newEnquiries = user.enquiries.map(enquiry => {
       if (enquiry.id !== enquiryId) return enquiry;
 
@@ -458,5 +457,21 @@ export const useUpdateEnquiryShortlistedInProjects = () => {
     });
 
     setUser({ ...user, projects: newProjects });
+  };
+};
+
+export const useUpdateSkillKeywords = (skillType: SkillType) => {
+  const [user, setUser] = useRecoilState(currentUserState);
+
+  return (keywords: string[]) => {
+    if (!user || !user.skills) return;
+
+    const newSkills = user.skills.map(skill => {
+      if (skill.skillType !== skillType) return skill;
+
+      return { ...skill, keywords };
+    });
+
+    setUser({ ...user, skills: newSkills });
   };
 };

@@ -58,8 +58,6 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     });
   }, []);
 
-  console.log(applicantsProfiles);
-
   if (!applicantsProfiles || !applicantsProfiles.userProfiles)
     return <Text>Loading...</Text>;
 

@@ -32,6 +32,7 @@ import { EntityType } from "@/components/Account/Common/Media/EntityType";
 import { View, Text } from "react-native";
 import SkillIcon from "@/components/Account/Skills/SkillIcon";
 import FormStepIndicator from "./ProjectAddRoleStepFormIndicator";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type ProjectAddRoleFormProps = {
   exitForm: () => void;
@@ -276,8 +277,8 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
   };
 
   return (
-    <View
-      style={{
+    <KeyboardAwareScrollView
+      contentContainerStyle={{
         height: "100%",
       }}
     >
@@ -371,7 +372,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
           formStep === 5 ? handleFormLastStep() : setFormStep(formStep + 1);
         }}
       />
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

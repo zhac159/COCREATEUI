@@ -5,7 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-native-paper";
+import { Portal, Provider } from "react-native-paper";
 import { LightTheme } from "@/components/Themes/theme";
 import MediaViewerPortal from "@/components/MediaViewer/MediaViewerPortal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -49,21 +49,23 @@ function RootLayoutNav() {
 
   return (
     <Provider theme={LightTheme}>
-      <RecoilRoot>
-        <SQLiteProvider
-          databaseName={"cocreateLocalDatabase3.db"}
-          onInit={migrateDbIfNeeded}
-        >
-          <QueryClientProvider client={queryClient}>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="index" options={{ headerShown: false }} />
-              </Stack>
-              <MediaViewerPortal />
-            </GestureHandlerRootView>
-          </QueryClientProvider>
-        </SQLiteProvider>
-      </RecoilRoot>
+      <Portal.Host>
+        <RecoilRoot>
+          <SQLiteProvider
+            databaseName={"cocreateLocalDatabase3.db"}
+            onInit={migrateDbIfNeeded}
+          >
+            <QueryClientProvider client={queryClient}>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="index" options={{ headerShown: false }} />
+                </Stack>
+                <MediaViewerPortal />
+              </GestureHandlerRootView>
+            </QueryClientProvider>
+          </SQLiteProvider>
+        </RecoilRoot>
+      </Portal.Host>
     </Provider>
   );
 }

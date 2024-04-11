@@ -44,9 +44,9 @@ export default ViewApplicationsButton;
 
 const styles = StyleSheet.create({
   viewApplicationsText: {
-    fontSize: 25,
-    paddingTop: 10,
-    paddingBottom: 10,
+    fontSize: 18,
+    paddingTop: 12,
+    paddingBottom: 12,
     paddingRight: 14,
     paddingLeft: 14,
   },
@@ -60,6 +60,6 @@ const styles = StyleSheet.create({
   viewApplicationsRightArrow: {
     paddingRight: 16,
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 20,
   },
 });

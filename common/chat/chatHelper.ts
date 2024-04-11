@@ -7,9 +7,12 @@ import {
   UserInformationDTO,
 } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { IMessage } from "react-native-gifted-chat";
-import { convertMessageDTOToIMessage } from "../database/databaseHelper";
+import {
+  convertMessageDTOToIMessage,
+  fetchMessages,
+} from "../database/databaseHelper";
 import * as Crypto from "expo-crypto";
 import {
   encryptMessageAES,
@@ -22,6 +25,9 @@ import {
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import * as SecureStore from "expo-secure-store";
 import { ChatType, ChatTypeIdPair } from "@/components/Chats/ChatHelper";
+import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
+import { downloadFile, usePrepareAndUpload } from "../media/mediaHooks";
+import { EntityType } from "@/components/Account/Common/Media/EntityType";
 
 export async function handleReceiveEncryptedKeysExchange(
   connection: HubConnection,
@@ -105,6 +111,8 @@ export async function handleReceivedMessages(
       ? decryptMessageAES(message.content, symmetricAesKey)
       : null;
 
+    const decryptedUri = message.uri ? decryptMessageAES(message.uri, symmetricAesKey) : null;
+
     if (!decryptedContent) return;
 
     setLastMessages(
@@ -116,11 +124,17 @@ export async function handleReceivedMessages(
       ? encryptMessageAES(decryptedContent, aesKey)
       : null;
 
+    let uri: string | null = null;
+
+    if (decryptedUri) {
+      uri = await downloadFile(decryptedUri);
+    }
+
     values.push(
       message.id !== undefined ? message.id : null,
       message.senderId !== undefined ? message.senderId : null,
       encryptedContent,
-      message.uri !== undefined ? message.uri : null,
+      uri !== undefined ? uri : null,
       message.mediaType !== undefined ? message.mediaType : null,
       message.date !== undefined ? message.date : null,
       message.chatType !== undefined ? message.chatType : null,
@@ -166,6 +180,9 @@ export function handleReceivedMessagesInChat(
       ...filteredMessages.map((message, index) =>
         convertMessageDTOToIMessage({
           ...message,
+          uri: message.uri
+            ? decryptMessageAES(message.uri, symmetricAesKey)
+            : null,
           content: message.content
             ? decryptMessageAES(message.content, symmetricAesKey)
             : message.content,
@@ -187,7 +204,8 @@ export async function sendMessage(
   database: SQLiteDatabase | null,
   userId: number,
   chatTargetIdTypePair: { chatTargetId: number; chatType: ChatType },
-  message: any
+  message: MessageCreateDTO,
+  upload: (uris: string[]) => Promise<string[]>
 ): Promise<MessageDTO> {
   if (!connection) {
     throw new Error("Connection is not established");
@@ -202,12 +220,19 @@ export async function sendMessage(
   );
   if (!symmetricAesKey) throw new Error("Symmetric key not found");
 
-  const encryptedMessage = encryptMessageAES(message.text, symmetricAesKey);
+  const encryptedMessage = encryptMessageAES(
+    message.content ?? "",
+    symmetricAesKey
+  );
 
   const aesKey = await getDatabasKey();
   if (!aesKey) throw new Error("AES key not found");
 
   const id: string = Crypto.randomUUID();
+
+  const url = message.uri ? await upload([message.uri]) : null;
+
+  const encryptedUri = encryptMessageAES(url ? url[0] : "", symmetricAesKey);
 
   const messageCreateDTO: MessageCreateDTO = {
     id,
@@ -215,7 +240,7 @@ export async function sendMessage(
     targetId: chatTargetIdTypePair.chatTargetId,
     chatType: chatTargetIdTypePair.chatType,
     date: new Date().toISOString(),
-    uri: null,
+    uri: url ? encryptedUri : null,
   };
 
   try {
@@ -224,16 +249,21 @@ export async function sendMessage(
       [
         id,
         userId,
-        message.text ? encryptMessageAES(message.text, aesKey) : null,
+        encryptMessageAES(message.content ?? "", aesKey),
         message.uri || null,
         message.mediaType || null,
-        messageCreateDTO.date,
+        messageCreateDTO.date!,
         chatTargetIdTypePair.chatType,
         chatTargetIdTypePair.chatTargetId,
       ]
     );
     connection.invoke("SendMessageAsync", messageCreateDTO);
-    return { ...messageCreateDTO, content: message.text, senderId: userId };
+    return {
+      ...messageCreateDTO,
+      content: message.content,
+      uri: message.uri,
+      senderId: userId,
+    };
   } catch (err) {
     throw err;
   }
@@ -299,4 +329,93 @@ export function handleUpdateEnquiryShortlistStatus(
   return () => {
     connection.off("ReceiveNewShortlist  ", updateEnquiriyShortlist);
   };
+}
+
+export const useSendMessage = (
+  connection: any,
+  database: any,
+  userId: number,
+  chatTargetIdTypePair: any,
+  setMessages: any
+) => {
+  const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
+  const upload = usePrepareAndUpload(EntityType.CHATS, false);
+
+  return useCallback(
+    (message: MessageCreateDTO) => {
+      sendMessage(
+        connection,
+        database,
+        userId,
+        chatTargetIdTypePair,
+        message,
+        upload
+      )
+        .then((messageDTO) => {
+          if (messageDTO.targetId && messageDTO.chatType !== undefined) {
+            setLastMessages(
+              {
+                chatTargetId: messageDTO.targetId,
+                chatType: messageDTO.chatType,
+              },
+              { ...messageDTO }
+            );
+          }
+          setMessages((state: IMessage[]) => [
+            convertMessageDTOToIMessage(messageDTO),
+            ...state,
+          ]);
+        })
+        .catch((error) => console.error("Error sending message:", error));
+    },
+    [
+      connection,
+      database,
+      userId,
+      chatTargetIdTypePair,
+      setLastMessages,
+      setMessages,
+    ]
+  );
+};
+
+export const useChatMessages = (
+  database: any,
+  chatTargetIdTypePair: any,
+  setMessages: Dispatch<SetStateAction<IMessage[]>>
+) => {
+  const loadMessages = useCallback(
+    async (partition: number) => {
+      if (!database) return;
+      try {
+        const fetchedMessages = await fetchMessages(
+          database,
+          chatTargetIdTypePair,
+          partition
+        );
+        const iMessages = fetchedMessages.map((message) =>
+          convertMessageDTOToIMessage(message)
+        );
+
+        if (iMessages.length === 0) return;
+        
+        setMessages((state) => [...state, ...iMessages]);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    },
+    [database, chatTargetIdTypePair, setMessages]
+  );
+
+  return loadMessages;
+};
+export function convertIMessageToCreateMessageDTO(
+  message: IMessage,
+  uri?: string
+): MessageCreateDTO {
+  const messageCreateDTO: MessageCreateDTO = {
+    content: message.text,
+    uri: uri ?? null,
+  };
+  return messageCreateDTO;
 }

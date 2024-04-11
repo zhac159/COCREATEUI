@@ -116,8 +116,6 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
 
   const theme = useTheme();
 
-  console.log(uris)
-
   if (!userSkills) return null;
 
   return (
@@ -131,7 +129,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
         editMode={false}
         selectSkill={(skill) => setSkill(skill.skillType)}
         deselectSkill={() => null}
-        selectedSkillType={skill}
+        selectedSkill={skill}
       />
       <View
         style={{
