@@ -23,22 +23,26 @@ export const usePrepareAndUpload = (entityType: EntityType, cleanUrl = true) => 
             return prepareUpload;
           }) || [];
 
+
         prepareDownload(
           { data: prepareUploadSubmission },
           {
             onSuccess: async (data) => {
+              console.log("Error2 files to Azure");
+
               const sasURIs = data.sasURIs;
-              console.log("SAS URIs", sasURIs);
               if (sasURIs) {
                 await uploadFiles(sasURIs || [], uris);
                 resolve(sasURIs.map((uri, index) => cleanUrl ? getCleanUrl(uri || ""):uri ));
               }
             },
             onError: (error) => {
+              console.log("Error files to Azure");
               reject(error);
             },
           }
         );
+        console.log("Error3 files to Azure");
       });
     },
     [entityType, prepareDownload]

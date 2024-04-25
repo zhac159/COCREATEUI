@@ -41,33 +41,14 @@ export default function Account() {
         style={{
           height: "100%",
           width: "100%",
+          paddingBottom: 200,
           flex: 1,
         }}
         contentContainerStyle={{ flexGrow: 1 }}
-        // pointerEvents="box-none"
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
         onScroll={handleScroll}
       >
-        {/* <View
-          style={{
-            backgroundColor: "red",
-            height: windowHeight * 0.5,
-            width: "100%",
-          }}
-        >
-
-        </View>
-        
-        <View
-          style={{
-            backgroundColor: "red",
-            height: windowHeight * 0.5,
-            width: "100%",
-          }}
-        >
-
-        </View> */}
         <AccountMainInfo
           coins={currentUser.coins || 0}
           username={currentUser.username || "username"}

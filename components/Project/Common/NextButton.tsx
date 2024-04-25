@@ -19,8 +19,6 @@ const NextButton: FC<NextButtonPros> = ({ onPress, text, icon }) => {
         borderRadius: 21,
         flexDirection: "row",
         alignItems: "center",
-        position: "absolute", 
-        bottom: 50, 
       }}
       onPress={onPress}
     >

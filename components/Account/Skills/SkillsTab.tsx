@@ -71,6 +71,7 @@ const SkillsTab = () => {
         skills={skillsSelected}
         editMode={editMode}
         deselectSkill={deselectSkill}
+        flipMode = {editMode}
       />
       <SkillsAddMenu
         restOfTheSkills={restOfTheSkills}

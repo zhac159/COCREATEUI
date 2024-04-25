@@ -96,7 +96,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
     <View style={styles.imageContainer} key={index}>
       <Media
         uri={cachedUris[index]}
-        style={{ flex: 1, borderRadius: 14 }}
+        style={{ flex: 1, borderRadius: 14}}
         onPress={() => handlePress(index)}
         editMode={editMode}
       />
@@ -131,7 +131,11 @@ const PortofolioContent: FC<portofolioContentProps> = ({
           paddingLeft: 9,
           paddingTop: 12,
           paddingBottom: 12,
-        }}
+       }}
+       contentContainerCustomStyle={{
+        paddingTop: 12,
+       }}
+
         renderItem={renderItem}
         sliderWidth={windowWidth}
         itemWidth={windowWidth}
@@ -178,6 +182,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
             style={{
               ...theme.customFonts.primary.small,
               backgroundColor: theme.colors.lightGray,
+              borderRadius: 7,
               paddingHorizontal: 5,
               width: "80%",
             }}
@@ -217,7 +222,6 @@ export const styles = StyleSheet.create({
     marginRight: 40,
   },
   imageContainer: {
-    backgroundColor: "black",
     height: 483,
     width: "90%",
     borderRadius: 14,
@@ -232,6 +236,7 @@ export const styles = StyleSheet.create({
   },
   deleteIconButton: {
     position: "absolute",
+    zIndex: 100,  
     top: "-2%",
     right: "-2%",
     backgroundColor: "red",

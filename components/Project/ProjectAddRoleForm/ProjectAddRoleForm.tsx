@@ -280,7 +280,11 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
     <KeyboardAwareScrollView
       contentContainerStyle={{
         height: "100%",
+        paddingBottom: 50,
       }}
+      keyboardShouldPersistTaps = "always"
+      extraHeight={10}
+      enableOnAndroid={false}
     >
       <View
         style={{
@@ -293,7 +297,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            gap: 11,
+            gap: 11
           }}
         >
           <SkillIcon skillType={skill} />
@@ -321,57 +325,72 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
           <CancelButton onPress={exitForm} />
         </View>
       </View>
-      {formStep === 0 && (
-        <ProjectAddRoleSkill skill={skill} setSkill={setSkill} />
-      )}
-      {formStep === 1 && (
-        <ProjectAddRoleTitleDescription
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-          skill={skill}
-        />
-      )}
-      {formStep === 2 && (
-        <ProjectAddRoleKeywords
-          keywords={keywords}
-          setKeywords={setKeywords}
-          skill={skill}
-        />
-      )}
-      {formStep === 3 && (
-        <ProjectAddRoleImages uris={uris} setUris={setUris} skill={skill} />
-      )}
-      {formStep === 4 && (
-        <ProjectAddRoleWhenWhereHowLong
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
-          effort={effort}
-          setEffort={setEffort}
-          hours={hours}
-          setHours={setHours}
-          longitude={longitude}
-          setLongitude={setLongitude}
-          latitude={latitude}
-          setLatitude={setLatitude}
-          address={address}
-          setAddress={setAddress}
-          remote={remote}
-          setRemote={setRemote}
-          skill={skill}
-        />
-      )}
-      {formStep === 5 && <ProjectAddRoleCost cost={cost} setCost={setCost} />}
-      <NextButton
-        text={formStep === 5 ? "Finish Role" : "Next"}
-        icon="arrow-right"
-        onPress={() => {
-          formStep === 5 ? handleFormLastStep() : setFormStep(formStep + 1);
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-between",
+          paddingTop: 20,
         }}
-      />
+      >
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+        {formStep === 0 && (
+          <ProjectAddRoleSkill skill={skill} setSkill={setSkill} />
+        )}
+        {formStep === 1 && (
+          <ProjectAddRoleTitleDescription
+            title={title}
+            setTitle={setTitle}
+            description={description}
+            setDescription={setDescription}
+            skill={skill}
+          />
+        )}
+        {formStep === 2 && (
+          <ProjectAddRoleKeywords
+            keywords={keywords}
+            setKeywords={setKeywords}
+            skill={skill}
+          />
+        )}
+        {formStep === 3 && (
+          <ProjectAddRoleImages uris={uris} setUris={setUris} skill={skill} />
+        )}
+        {formStep === 4 && (
+          <ProjectAddRoleWhenWhereHowLong
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            effort={effort}
+            setEffort={setEffort}
+            hours={hours}
+            setHours={setHours}
+            longitude={longitude}
+            setLongitude={setLongitude}
+            latitude={latitude}
+            setLatitude={setLatitude}
+            address={address}
+            setAddress={setAddress}
+            remote={remote}
+            setRemote={setRemote}
+            skill={skill}
+          />
+        )}
+        {formStep === 5 && <ProjectAddRoleCost cost={cost} setCost={setCost} />}
+        </View>
+
+        <NextButton
+          text={formStep === 5 ? "Finish Role" : "Next"}
+          icon="arrow-right"
+          onPress={() => {
+            formStep === 5 ? handleFormLastStep() : setFormStep(formStep + 1);
+          }}
+        />
+      </View>
     </KeyboardAwareScrollView>
   );
 };

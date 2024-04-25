@@ -1,7 +1,6 @@
 import {
   useAboutYouState,
   usePortfolioContentsState,
-  usePortfolioContentsValue,
 } from "@/components/RecoilStates/profileState";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import TabHeaderButtons from "../Common/TabHeaderButtons";
@@ -9,7 +8,7 @@ import { useState } from "react";
 import { useTheme } from "@/components/Themes/theme";
 import PortofolioContent from "./PortofolioContent";
 import NewPortofolioContentForm from "./NewPortofolioContentForm";
-import { MediaCreateDTO, PrepareUploadDTO } from "@/common/api/model";
+import { PrepareUploadDTO } from "@/common/api/model";
 import { EntityType } from "../Common/Media/EntityType";
 import {
   getCleanUrl,
@@ -24,7 +23,6 @@ import {
 const PortofolioContentTab = () => {
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
-  const [create, setCreate] = useState<() => void>(() => null);
   const [uris, setUris] = useState<string[]>([]);
   const theme = useTheme();
 
@@ -116,27 +114,25 @@ const PortofolioContentTab = () => {
         justifyContent: "flex-start",
       }}
     >
-      <TabHeaderButtons
-        editMode={editMode}
-        setEditMode={setEditMode}
-        showPlayButton={true}
-        disableEditMode={false}
-        createMode={createMode}
-        setCreateMode={setCreateMode}
-        onDone={() => (editMode ? handleUpdatePortofolioContent() : create())}
-      />
       {createMode ? (
-        <NewPortofolioContentForm
-          setCreate={setCreate}
-          setCreateMode={setCreateMode}
-        />
+        <NewPortofolioContentForm setCreateMode={setCreateMode} />
       ) : (
         <>
+          <TabHeaderButtons
+            editMode={editMode}
+            setEditMode={setEditMode}
+            showPlayButton={true}
+            setCreateMode={setCreateMode}
+            disableEditMode={false}
+            createMode={createMode}
+            onDone={handleUpdatePortofolioContent}
+          />
           {editMode ? (
             <TextInput
               style={{
                 ...theme.customFonts.primary.medium,
                 ...styles.titleTextInput,
+                textAlignVertical: "top",
                 color: theme.colors.black,
                 backgroundColor: theme.colors.lightestGray,
               }}

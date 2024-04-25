@@ -8,10 +8,14 @@ import {
 } from "react-native-google-places-autocomplete";
 import projectAddRoleWhenWhereHowLongStyles from "./projectAddRoleWhenWhereHowLongStyles";
 import { Checkbox } from "react-native-paper";
-import { LogBox } from 'react-native';
-import { Skills, getSkillGroupColor, skillGroupMap } from "@/components/Account/Skills/skillHelper";
+import { LogBox } from "react-native";
+import {
+  Skills,
+  getSkillGroupColor,
+  skillGroupMap,
+} from "@/components/Account/Skills/skillHelper";
 
-LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
 type ProjectAddRoleWhereProps = {
   longitude: number;
@@ -36,16 +40,18 @@ const ProjectAddRoleWhere: FC<ProjectAddRoleWhereProps> = ({
   setRemote,
   skill,
 }) => {
-  
   const theme = useTheme();
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
 
   useEffect(() => {
     ref.current?.setAddressText(address);
   }, []);
-    
+
   const skillGroupType = skillGroupMap[skill || 0];
-  const color = skill === undefined ? theme.colors.lightestGray:getSkillGroupColor(skillGroupType, 0.12);
+  const color =
+    skill === undefined
+      ? theme.colors.lightestGray
+      : getSkillGroupColor(skillGroupType, 0.12);
 
   return (
     <>
@@ -54,6 +60,7 @@ const ProjectAddRoleWhere: FC<ProjectAddRoleWhereProps> = ({
           ...projectAddRoleWhenWhereHowLongStyles.formElementContainer,
           backgroundColor: theme.colors.white,
         }}
+        
       >
         <View
           style={projectAddRoleWhenWhereHowLongStyles.formElementTitleContainer}
@@ -71,43 +78,45 @@ const ProjectAddRoleWhere: FC<ProjectAddRoleWhereProps> = ({
             Production Location
           </Text>
         </View>
-        <GooglePlacesAutocomplete
-          ref={ref}
-          placeholder="Enter Location"
-          minLength={2}
-          fetchDetails={true}
-          onPress={(data, details = null) => {
-            if (details == null) {
-              return;
-            }
-            setLongitude(details.geometry.location.lng);
-            setLatitude(details.geometry.location.lat);
-            setAddress(details.formatted_address);
-          }}
-          query={{
-            key: "AIzaSyDxcKLuYiGnKpesxd2Ifoz-aNzDXNk3B4g",
-            language: "en",
-          }}
-          styles={{
-            container: {
-              marginTop: "5%",
-              width: "100%",
-            },
-            listView: {
-              position: "absolute",
-              marginTop: 45,
-              width: "100%",
-            },
-            textInput: {
-              ...theme.customFonts.primary.medium,
-              backgroundColor: color,
-              color: theme.colors.black,
-              borderRadius: 7,
-              padding: 10,
-              width: "100%",
-            },
-          }}
-        />
+
+          <GooglePlacesAutocomplete
+            ref={ref}
+            placeholder="Enter Location"
+            minLength={2}
+            fetchDetails={true}
+            onPress={(data, details = null) => {
+              console.log("test");
+              if (details == null) {
+                return;
+              }
+              setLongitude(details.geometry.location.lng);
+              setLatitude(details.geometry.location.lat);
+              setAddress(details.formatted_address);
+            }}
+            query={{
+              key: "AIzaSyDxcKLuYiGnKpesxd2Ifoz-aNzDXNk3B4g",
+              language: "en",
+            }}
+            styles={{
+              container: {
+                marginTop: "5%",
+                width: "100%",
+              },
+              listView: {
+                position: "absolute",
+                marginTop: 45,
+                width: "100%",
+              },
+              textInput: {
+                ...theme.customFonts.primary.medium,
+                backgroundColor: color,
+                color: theme.colors.black,
+                borderRadius: 7,
+                padding: 10,
+                width: "100%",
+              },
+            }}
+          />
         <View
           style={{
             flexDirection: "row",

@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet } from "react-native";
 
 export enum AssetType {
   Camera,
@@ -19,7 +19,7 @@ export const assetStyles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 10,
     },
     elevation: 5,
     shadowOpacity: 0.10,

@@ -24,6 +24,8 @@ const RoleDetailIconTexts: FC<RoleDetailIconTextxProps> = ({ icon, text }) => {
           ...styles.text,
           color: theme.colors.white,
         }}
+        numberOfLines={1}
+        ellipsizeMode="tail"
       >
         {text}
       </Text>
@@ -43,5 +45,6 @@ const styles = StyleSheet.create({
   text : {
     textAlign: "center",
     fontSize: 17,
+    maxWidth: 200,
   }
 });

@@ -1,20 +1,17 @@
 import { SkillDTO, SkillType } from "@/common/api/model";
-import { FC } from "react";
-import { Text } from "react-native-paper";
-import { FontAwesome6 } from "@expo/vector-icons";
-import { View, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native";
-import { getSkill, getSkillGroupColor } from "./skillHelper";
-import * as Animatable from "react-native-animatable";
-import { useTheme } from "@/components/Themes/theme";
-import SkillIcon from "./SkillIcon";
+import { FC, useState } from "react";
+import { StyleSheet } from "react-native";
+import FlipCard from "react-native-flip-card";
+import SkillForm from "./SkillForm";
+import SkillFrontSide from "./SkillFrontSide";
 
 type SkillProps = {
   skill: SkillDTO;
   editMode: boolean;
   deselectSkill?: (skillDTO: SkillDTO) => void;
   selectSkill?: (skillDTO: SkillDTO) => void;
-  selectedSkillType?: SkillType;
+  selectedSkill?: SkillType;
+  flipMode?: boolean;
 };
 
 const Skill: FC<SkillProps> = ({
@@ -22,7 +19,8 @@ const Skill: FC<SkillProps> = ({
   editMode,
   deselectSkill,
   selectSkill,
-  selectedSkillType,
+  selectedSkill,
+  flipMode = false,
 }) => {
   if (
     !skill ||
@@ -31,73 +29,32 @@ const Skill: FC<SkillProps> = ({
   )
     return null;
 
-  const color = getSkillGroupColor(skill.skillGroupType);
-  const name = getSkill(skill.skillType).replace(" ", "\n");
+  const [flip, setFlip] = useState(false);
 
-  const handlePress = () => {
-    deselectSkill ? deselectSkill(skill) : null;
-  };
-
-  const WiggleAnimation = {
-    0: {
-      transform: [{ rotate: "-1deg" }],
-    },
-    0.5: {
-      transform: [{ rotate: "1deg" }],
-    },
-    1: {
-      transform: [{ rotate: "-1deg" }],
-    },
-  };
-
-  const theme = useTheme();
+  if (flipMode) {
+    return (
+      <FlipCard flipVertical={false} flipHorizontal={true} flip={flip}>
+        <SkillFrontSide
+          skill={skill}
+          editMode={editMode}
+          deselectSkill={deselectSkill}
+          selectSkill={selectSkill ?? (() => setFlip(true))}
+          selectedSkill={selectedSkill}
+          flipMode={flipMode}
+        />
+        <SkillForm onClose={() => setFlip(false)} skill={skill} />
+      </FlipCard>
+    );
+  }
 
   return (
-    <TouchableOpacity
-      disabled={!selectSkill}
-      onPress={() => (selectSkill ? selectSkill(skill) : null)}
-    >
-      <Animatable.View
-        duration={500}
-        iterationCount="infinite"
-        animation={editMode ? WiggleAnimation : undefined}
-      >
-        <View
-          style={{
-            ...skillStyles.skillContainer,
-            backgroundColor:
-              selectedSkillType === skill.skillType
-                ? color
-                : theme.colors.white,
-          }}
-        >
-          <SkillIcon
-            skillType={skill.skillType}
-          />
-          <Text
-            style={{
-              ...theme.customFonts.primary.medium,
-              fontSize: 13,
-              color:
-                selectedSkillType === skill.skillType
-                  ? theme.colors.white
-                  : theme.colors.black,
-            }}
-          >
-            {name}
-          </Text>
-          {editMode && (
-            <TouchableOpacity
-              style={skillStyles.deleteIconButton}
-              onPress={handlePress}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <FontAwesome6 name="minus" size={15} color="white" />
-            </TouchableOpacity>
-          )}
-        </View>
-      </Animatable.View>
-    </TouchableOpacity>
+    <SkillFrontSide
+      skill={skill}
+      editMode={editMode}
+      deselectSkill={deselectSkill}
+      selectSkill={selectSkill}
+      selectedSkill={selectedSkill}
+    />
   );
 };
 

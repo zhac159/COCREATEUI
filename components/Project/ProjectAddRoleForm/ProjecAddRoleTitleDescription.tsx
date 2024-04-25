@@ -19,8 +19,6 @@ const ProjectAddRoleTitleDescription: FC<
   const skillGroupType = skillGroupMap[skill || 0];
   const color = skill === undefined ? theme.colors.lightestGray:getSkillGroupColor(skillGroupType, 0.12);
 
-  console.log(color);
-
   return (
     <>
       <Text
@@ -95,13 +93,13 @@ export default ProjectAddRoleTitleDescription;
 const styles = StyleSheet.create({
   titleTextInput: {
     fontSize: 25,
-    height: "12%",
+    height: 100,
     padding: 10,
     borderRadius: 7,
   },
   desciptionTextInput: {
     fontSize: 16,
-    height: "25%",
+    height: 150,
     padding: 10,
     borderRadius: 7,
   },

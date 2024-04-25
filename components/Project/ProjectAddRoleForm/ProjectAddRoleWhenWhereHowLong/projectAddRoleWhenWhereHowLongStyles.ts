@@ -2,8 +2,9 @@ import { StyleSheet } from "react-native";
 
 const projectAddRoleWhenWhereHowLongStyles = StyleSheet.create({
   formElementContainer: {
-    height: "20%",
+    height: 180,
     borderRadius: 14,
+    marginVertical: 10,
     paddingHorizontal: 18,
     paddingVertical: 13,
     borderWidth: 1,

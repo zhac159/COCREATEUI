@@ -1,9 +1,6 @@
 import {
   StyleSheet,
-  TouchableOpacity,
   View,
-  Text,
-  RefreshControl,
 } from "react-native";
 import {
   Bubble,
@@ -27,7 +24,6 @@ import {
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useTheme } from "@/components/Themes/theme";
 import { IconButton } from "react-native-paper";
 import { useGetMedia } from "@/components/Account/Common/Media/mediaHelper";
 import SendImagePortal from "@/components/Chats/SendImagePortal";
@@ -35,13 +31,10 @@ import SendImagePortal from "@/components/Chats/SendImagePortal";
 export default function EnquiryChat() {
   const database = useSQLiteContext();
   const connection = useContext(ConnectionContext);
-  const [messages, setMessages] = useState<IMessage[]>([]);
   const chatTargetIdTypePair = useCurrentChatTargetIdValue();
   const userId = useUserIdValue() || 0;
-  const theme = useTheme();
 
-  const [partition, setPartition] = useState(0);
-
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris, true);
 
@@ -59,9 +52,20 @@ export default function EnquiryChat() {
     setMessages
   );
 
+  const handleLoadMessages = useCallback(async () => {
+    const lastmessage = messages[messages.length - 1];
+    if (!lastmessage) return;
+    const lastMessageDate = lastmessage.createdAt as Date
+    
+    await loadMessages(lastMessageDate.toISOString());
+  }, [loadMessages, messages]);
+
   useEffect(() => {
-    loadMessages(partition);
-  }, [partition]);
+    const fetchMessages = async () => {
+      await loadMessages();
+    };
+    fetchMessages();
+  }, []);
 
   useEffect(() => {
     if (!connection || !database) return;
@@ -90,7 +94,7 @@ export default function EnquiryChat() {
         loadEarlier={false}
         listViewProps={{
           onEndReached: () => {
-            setPartition((state) => state + 1);
+            handleLoadMessages();
           },
           onEndReachedThreshold: 0.5,
         }}

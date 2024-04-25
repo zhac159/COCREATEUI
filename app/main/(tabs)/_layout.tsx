@@ -9,7 +9,6 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         tabBarStyle: {
           backgroundColor: "rgba(55, 55, 55, 0.8)",
           position: "absolute",
@@ -23,7 +22,7 @@ export default function TabLayout() {
           shadowOpacity: 0,
         },
       }}
-      sceneContainerStyle={{ backgroundColor: "transparent" }}
+      sceneContainerStyle={{ backgroundColor: "transparent"}}
     >
       <Tabs.Screen
         name="discovery"

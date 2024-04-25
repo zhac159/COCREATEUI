@@ -2,39 +2,30 @@ import {
   useSetPortfolioContentsState,
   useSkillsValue,
 } from "@/components/RecoilStates/profileState";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { View, TextInput } from "react-native";
+import { Dispatch, FC, SetStateAction, useState } from "react";
+import { View, TextInput, Text } from "react-native";
 import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
 import { StyleSheet } from "react-native";
-import {
-  getCleanUrl,
-  getMediaTypeFromUri,
-  uploadFiles,
-  useGetMedia,
-} from "../Common/Media/mediaHelper";
+import { getMediaTypeFromUri, useGetMedia } from "../Common/Media/mediaHelper";
 import { useTheme } from "@/components/Themes/theme";
 import {
   MediaCreateDTO,
   PortofolioContentCreateDTO,
   PortofolioContentDTO,
-  PrepareUploadDTO,
   SkillType,
 } from "@/common/api/model";
-import {
-  usePostApiPortofolioContent,
-  usePostApiPrepare,
-} from "@/common/api/endpoints/cocreateApi";
+import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi";
 import { EntityType } from "../Common/Media/EntityType";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
+import { usePrepareAndUpload } from "@/common/media/mediaHooks";
+import { Button } from "react-native-paper";
 
 type NewPortofolioContentFormProps = {
-  setCreate: Dispatch<SetStateAction<() => void>>;
   setCreateMode: Dispatch<SetStateAction<boolean>>;
 };
 
 const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
-  setCreate,
   setCreateMode,
 }) => {
   const setPortofolioContents = useSetPortfolioContentsState();
@@ -54,6 +45,8 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris);
 
+  const upload = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
+
   const { mutate: createPortofolioContent } = usePostApiPortofolioContent({
     mutation: {
       onSuccess: (data) => {
@@ -68,51 +61,24 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
     },
   });
 
-  const { mutate: prepareDownlaod } = usePostApiPrepare({
-    mutation: {
-      onSuccess: (data) => {
-        const sasURIs = data.sasURIs;
+  const handleCreate = async () => {
+    const uploadedUrls = await upload(uris);
+    const newMedias: MediaCreateDTO[] = uploadedUrls.map((url) => {
+      return {
+        uri: url,
+        mediaType: getMediaTypeFromUri(url),
+      };
+    });
 
-        if (sasURIs) {
-          uploadFiles(data.sasURIs || [], uris);
-          let newMedias: MediaCreateDTO[] = [];
-          newMedias =
-            uris.map((_, index) => {
-              const cleanUrl = getCleanUrl(sasURIs[index] || "");
-              const newMedia: MediaCreateDTO = {
-                uri: cleanUrl,
-                mediaType: getMediaTypeFromUri(cleanUrl),
-              };
-              return newMedia;
-            }) || [];
+    const NewPortofolioContent: PortofolioContentCreateDTO = {
+      medias: newMedias,
+      description: description,
+      skillType: skill,
+      order: 10,
+    };
 
-          const NewPortofolioContent: PortofolioContentCreateDTO = {
-            medias: newMedias,
-            description: description,
-            skillType: skill,
-            order: 10,
-          };
-          createPortofolioContent({ data: NewPortofolioContent });
-        }
-      },
-    },
-  });
-
-  const handleCreate = () => {
-    const prepareUploadSubmission: PrepareUploadDTO[] =
-      uris.map((uri: string) => {
-        const prepareUpload: PrepareUploadDTO = {
-          entity: EntityType.PORTOFOLIOCONTENT,
-          mediaType: getMediaTypeFromUri(uri),
-        };
-        return prepareUpload;
-      }) || [];
-    prepareDownlaod({ data: prepareUploadSubmission });
+    createPortofolioContent({ data: NewPortofolioContent });
   };
-
-  useEffect(() => {
-    setCreate(() => handleCreate);
-  }, [uris, description, skill]);
 
   const theme = useTheme();
 
@@ -124,6 +90,26 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
         gap: 50,
       }}
     >
+      <Button
+        style={{
+          ...NewPortofolioContentFormStyles.doneButton,
+          backgroundColor: theme.colors.primary,
+        }}
+        onPress={async () => {
+          await handleCreate();
+        }}
+      >
+        <Text
+          style={{
+            ...theme.customFonts.primary.medium,
+            color: theme.colors.white,
+            paddingHorizontal: 8,
+            paddingVertical: 2,
+          }}
+        >
+          {"Done"}
+        </Text>
+      </Button>
       <SkillsList
         skills={userSkills}
         editMode={false}
@@ -218,5 +204,12 @@ const NewPortofolioContentFormStyles = StyleSheet.create({
     width: "100%",
     height: 187,
     borderRadius: 7,
+  },
+  doneButton: {
+    alignSelf: "flex-end",
+    marginTop: "2%",
+    marginRight: "2%",
+    marginBottom: "5%",
+    borderRadius: 100,
   },
 });

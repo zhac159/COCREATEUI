@@ -222,5 +222,6 @@ export const mapSkillDTOToSkillUpdateDTO = (
     level: skillDTO.level,
     skillGroupType: skillDTO.skillGroupType,
     skillType: skillDTO.skillType,
+    keywords: skillDTO.keywords ?? [],
   };
 };

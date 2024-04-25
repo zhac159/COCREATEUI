@@ -143,6 +143,7 @@ export async function handleReceivedMessages(
   }
 
   try {
+    if(values.length === 0) return;
     await db.runAsync(
       `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId) VALUES ${placeholders}`,
       values
@@ -385,13 +386,13 @@ export const useChatMessages = (
   setMessages: Dispatch<SetStateAction<IMessage[]>>
 ) => {
   const loadMessages = useCallback(
-    async (partition: number) => {
+    async (lastMessageDate?: string) => {
       if (!database) return;
       try {
         const fetchedMessages = await fetchMessages(
           database,
           chatTargetIdTypePair,
-          partition
+          lastMessageDate
         );
         const iMessages = fetchedMessages.map((message) =>
           convertMessageDTOToIMessage(message)

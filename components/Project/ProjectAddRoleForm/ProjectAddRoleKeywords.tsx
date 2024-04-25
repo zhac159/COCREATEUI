@@ -65,7 +65,7 @@ export default ProjectAddRoleKeywords;
 const styles = StyleSheet.create({
   titleTextInput: {
     fontSize: 25,
-    height: "12%",
+    height: 300,
     padding: 10,
     borderRadius: 7,
   },

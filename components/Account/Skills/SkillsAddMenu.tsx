@@ -10,19 +10,19 @@ type SkillsAddMenuProps = {
   restOfTheSkills: SkillDTO[];
   show: boolean;
   selectSkill: (skillDTO: SkillDTO) => void;
-  selectedSkillType?: Skills;
+  selectedSkill?: Skills;
 };
 
 const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
   restOfTheSkills,
   show,
   selectSkill,
-  selectedSkillType,
+  selectedSkill,
 }) => {
   if (!show) return null;
 
   const [skillGroupType, setSkillGroupType] = useState<SkillGroups>(
-    selectedSkillType ? skillGroupMap[selectedSkillType]:SkillGroups.Filmmaking
+    selectedSkill ? skillGroupMap[selectedSkill]:SkillGroups.Filmmaking
   );
 
   const theme = useTheme();
@@ -90,7 +90,7 @@ const SkillsAddMenu: FC<SkillsAddMenuProps> = ({
                 skill={skill}
                 editMode={false}
                 selectSkill={selectSkill}
-                selectedSkillType={selectedSkillType}
+                selectedSkill={selectedSkill}
               />
             </View>
           ) : null
