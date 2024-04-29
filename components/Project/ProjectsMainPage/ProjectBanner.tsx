@@ -4,8 +4,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { IconButton } from "react-native-paper";
 import Media from "../../MediaViewer/Media";
+import { router, useRouter } from "expo-router";
 
 type ProjectBannerProps = {
+  id: number;
   name: string | undefined | null;
   onCreate: (createMode: boolean) => void;
   onEdit: (editMode: boolean) => void;
@@ -13,6 +15,7 @@ type ProjectBannerProps = {
 };
 
 const ProjectBanner: FC<ProjectBannerProps> = ({
+  id,
   name,
   onCreate,
   onEdit,
@@ -20,28 +23,28 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
 }) => {
   const theme = useTheme();
 
+  const router = useRouter();
+
+  const handleNavigation = () => {
+    router.navigate({
+      pathname: "/main/completeProject",
+      params: {
+        projectId: id,
+      },
+    });
+  };
+
   return (
     <View style={styles.imageContainer} key={uri}>
-      <Media
-        uri={uri}
-        style={{ flex: 1 }}
-      />
+      <Media uri={uri} style={{ flex: 1 }} />
       <View
         style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          paddingTop: "15%",
-          paddingBottom: "5%",
-          paddingHorizontal: "5%",
-          justifyContent: "space-between",
+          ...styles.content,
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            ...styles.header,
           }}
         >
           <Text
@@ -70,35 +73,47 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
             }}
           />
         </View>
-        <View
-        >
+        <View>
+          <TouchableOpacity
+            style={{
+              ...styles.finishProjectButton,
+              backgroundColor: theme.colors.primary,
+            }}
+            onPress={handleNavigation}
+          >
+            <Text
+              style={{
+                ...theme.customFonts.primary.medium,
+                color: theme.colors.white,
+                fontSize: 18,
+              }}
+            >
+              Finish Project
+            </Text>
+            <FontAwesome6
+              name="check"
+              size={18}
+              color={theme.colors.white}
+              solid
+            />
+          </TouchableOpacity>
           <Text
             style={{
               ...theme.customFonts.secondary.medium,
+              ...styles.name,
               color: theme.colors.white,
-              fontSize: 40,
-              paddingBottom: 20,
-              fontWeight: "400",
             }}
           >
             {name}
           </Text>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
-              alignSelf: "flex-end",
-              alignContent: "center",
+              ...styles.footer,
             }}
           >
             <TouchableOpacity
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                borderRadius: 14,
-                paddingVertical: 10,
-                paddingHorizontal: 30,
+                ...styles.findAssetButton,
                 backgroundColor: theme.colors.darkerGray,
               }}
             >
@@ -147,5 +162,47 @@ const styles = StyleSheet.create({
   imageContainer: {
     height: 400,
     width: "100%",
+  },
+  name: {
+    fontSize: 40,
+    paddingBottom: 20,
+    fontWeight: "400",
+  },
+  content: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    paddingTop: "15%",
+    paddingBottom: "5%",
+    paddingHorizontal: "5%",
+    justifyContent: "space-between",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    alignSelf: "flex-end",
+    alignContent: "center",
+  },
+  findAssetButton: {
+    borderRadius: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+  },
+  finishProjectButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    borderRadius: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    maxWidth: 170,
+    marginBottom: 10,
   },
 });

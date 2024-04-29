@@ -7,27 +7,31 @@
 import type { AssetDTO } from './assetDTO';
 import type { ProjectDTO } from './projectDTO';
 import type { EnquiryDTO } from './enquiryDTO';
+import type { ExperienceDTO } from './experienceDTO';
 import type { PortofolioContentDTO } from './portofolioContentDTO';
+import type { ReviewDTO } from './reviewDTO';
 import type { SkillDTO } from './skillDTO';
 
 export interface UserDTO {
   aboutYou?: string | null;
   address?: string | null;
-  assets?: AssetDTO[] | null;
-  assignedProjects?: ProjectDTO[] | null;
+  assets: AssetDTO[];
+  assignedProjects: ProjectDTO[];
   bannerPictureSrc?: string | null;
   coins?: number;
-  email?: string | null;
-  enquiries?: EnquiryDTO[] | null;
+  email: string;
+  enquiries: EnquiryDTO[];
+  experiences: ExperienceDTO[];
   latitude?: number;
   longitude?: number;
-  portofolioContents?: PortofolioContentDTO[] | null;
+  portofolioContents: PortofolioContentDTO[];
   profilePictureSrc?: string | null;
-  projects?: ProjectDTO[] | null;
+  projects: ProjectDTO[];
   publicKey?: string | null;
-  rating?: number;
-  skills?: SkillDTO[] | null;
-  totalReviews?: number;
-  userId?: number;
-  username?: string | null;
+  rating: number;
+  reviewsReceived: ReviewDTO[];
+  skills: SkillDTO[];
+  totalReviews: number;
+  userId: number;
+  username: string;
 }

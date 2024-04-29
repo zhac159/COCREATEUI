@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, router, useRouter } from "expo-router";
 import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
 import { EncryptedKeyExchangeDTO, MessageDTO } from "@/common/api/model";
@@ -8,18 +8,25 @@ import {
   handleUpdateEnquiryShortlistStatus,
   handleReceiveEncryptedKeysExchange,
   handleReceivedMessages,
+  handleUpdateCompleteProject,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
 import {
+  useUpdateProjectComplete,
   useUpdateEnquiryShortlisted,
   useUpdateProjectRoleEnquiries,
+  useAssignedProjectsValue,
 } from "@/components/RecoilStates/profileState";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
 export default function HelperScreenNav() {
   const [connection, setConnection] = useState<HubConnection | null>(null);
+  
+  const router = useRouter();
+
+  const assignedProjects = useAssignedProjectsValue();
 
   const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
 
@@ -27,8 +34,9 @@ export default function HelperScreenNav() {
 
   const updateShortlistEnquiry = useUpdateEnquiryShortlisted();
 
+  const updateProjectComplete = useUpdateProjectComplete();
+
   const database = useSQLiteContext();
-   
 
   useEffect(() => {
     fetchTokenAndStartConnection().then((connection) => {
@@ -66,7 +74,7 @@ export default function HelperScreenNav() {
       updateProjectRoleEnquiries
     );
 
-    return cleanup();
+    return cleanup;
   }, [connection]);
 
   useEffect(() => {
@@ -77,8 +85,36 @@ export default function HelperScreenNav() {
       updateShortlistEnquiry
     );
 
-    return cleanup();
+    return cleanup;
   }, [connection]);
+
+  useEffect(() => {
+    if (!connection) return;
+
+    const cleanup = handleUpdateCompleteProject(
+      connection,
+      updateProjectComplete
+    );
+
+    return cleanup;
+  }, [connection]);
+
+  useEffect(() => {
+    if (assignedProjects) {
+      var completedProject = assignedProjects.find(
+        (project) => project.completed
+      );
+
+      if (completedProject) {
+        router.navigate({
+          pathname: "/main/completeProjectRole",
+          params: {
+            projectId: completedProject.id,
+          },
+        });
+      }
+    }
+  }, [assignedProjects]);
 
   return (
     <ConnectionContext.Provider value={connection}>
@@ -86,6 +122,14 @@ export default function HelperScreenNav() {
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         <Stack.Screen
           name="portofolioModal"
+          options={{ presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="completeProject"
+          options={{ presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="completeProjectRole"
           options={{ presentation: "modal" }}
         />
         <Stack.Screen name="chat" />

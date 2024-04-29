@@ -33,10 +33,6 @@ const LoginForm = () => {
         }
         SecureStore.setItemAsync("userToken", token);
 
-        // var publicKey = await generateKeyPair();
-
-        // setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
-
         if (data.user?.address == null) {
           router.replace("/main/locationForm");
           return;

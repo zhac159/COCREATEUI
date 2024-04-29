@@ -42,6 +42,7 @@ const Media: React.FC<MediaProps> = ({
   return (
     <>
       <TapGestureHandler
+      
         onHandlerStateChange={({ nativeEvent }) => {
           if (nativeEvent.state === State.END && !editMode) {
             onPress();

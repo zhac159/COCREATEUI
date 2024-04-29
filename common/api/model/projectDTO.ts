@@ -9,6 +9,7 @@ import type { UserInformationDTO } from './userInformationDTO';
 import type { ProjectRoleDTO } from './projectRoleDTO';
 
 export interface ProjectDTO {
+  completed?: boolean;
   description?: string | null;
   id?: number;
   medias?: MediaDTO[] | null;

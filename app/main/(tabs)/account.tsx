@@ -15,6 +15,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import PortofolioContentTab from "@/components/Account/PortofolioContents/PortofolioContentTab";
 import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
+import ExperienceTab from "@/components/Experience/ExperienceTab";
 
 export default function Account() {
   const currentUser = useCurrentUserValue();
@@ -47,7 +48,7 @@ export default function Account() {
         contentContainerStyle={{ flexGrow: 1 }}
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
-        onScroll={handleScroll}
+        // onScroll={handleScroll}
       >
         <AccountMainInfo
           coins={currentUser.coins || 0}
@@ -84,6 +85,14 @@ export default function Account() {
           }}
         >
           <PortofolioContentTab />
+        </View>
+        <View
+          style={{
+            ...styles.scene,
+            display: selectedTab !== 3 ? "none" : "flex",
+          }}
+        >
+          <ExperienceTab />
         </View>
       </KeyboardAwareScrollView>
     </>

@@ -10,8 +10,6 @@ import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Media from "../MediaViewer/Media";
 import { MessageCreateDTO } from "@/common/api/model";
-import { EntityType } from "../Account/Common/Media/EntityType";
-import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 
 type SendImagePortalProps = {
   handleSendMessage: (message: MessageCreateDTO) => void;

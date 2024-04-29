@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "../../Themes/theme";
 import {
   getCleanUrl,
+  getMediaCreateDTOs,
   getMediaTypeFromUri,
   uploadFiles,
   useGetMedia,
@@ -64,14 +65,8 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
 
   const handleCreate = async () => {
     const urls = await upload(uris);
-    const newMedias =
-      urls.map((url) => {
-        const newMedia: MediaCreateDTO = {
-          uri: url,
-          mediaType: getMediaTypeFromUri(url),
-        };
-        return newMedia;
-      }) || [];
+
+    const newMedias = getMediaCreateDTOs(urls);
       
     const NewProject: ProjectCreateDTO = {
       medias: newMedias,
@@ -114,7 +109,8 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
                   ...theme.customFonts.primary.medium,
                   ...styles.titleTextInput,
                   color: theme.colors.black,
-                  backgroundColor: theme.colors.lightestGray,
+                  backgroundColor: theme.colors.lightGray,
+                  textAlignVertical: "top"
                 }}
                 numberOfLines={14}
                 multiline={true}
@@ -140,7 +136,8 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
                   ...theme.customFonts.primary.medium,
                   ...styles.desciptionTextInput,
                   color: theme.colors.black,
-                  backgroundColor: theme.colors.lightestGray,
+                  backgroundColor: theme.colors.lightGray,
+                  textAlignVertical: "top"
                 }}
                 numberOfLines={14}
                 multiline={true}
@@ -222,13 +219,13 @@ export default ProjectCreate;
 const styles = StyleSheet.create({
   titleTextInput: {
     fontSize: 25,
-    height: "12%",
+    height: 100,
     padding: 10,
     borderRadius: 7,
   },
   desciptionTextInput: {
     fontSize: 16,
-    height: "25%",
+    minHeight: "40%",
     padding: 10,
     borderRadius: 7,
   },

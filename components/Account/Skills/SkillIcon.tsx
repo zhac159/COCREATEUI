@@ -1,15 +1,16 @@
 import { SkillType } from "@/common/api/model";
 import { FC } from "react";
 import { getSkillGroupColor, getSkillIcon, skillGroupMap } from "./skillHelper";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
 
 type SkillIconProps = {
   skillType: SkillType | undefined;
+  style?: ViewStyle;
 };
 
-const SkillIcon: FC<SkillIconProps> = ({ skillType }) => {
+const SkillIcon: FC<SkillIconProps> = ({ skillType, style }) => {
   const skillGroupType = skillGroupMap[skillType || 0];
 
   const color = getSkillGroupColor(skillGroupType);
@@ -20,7 +21,7 @@ const SkillIcon: FC<SkillIconProps> = ({ skillType }) => {
   if(skillType === undefined)
     return <View></View>
   return (
-    <View style={{ ...skillStyles.skillIcon, backgroundColor: color }}>
+    <View style={{ ...style, ...skillStyles.skillIcon, backgroundColor: color }}>
       <FontAwesome6 name={icon} size={17} color={theme.colors.white} solid />
     </View>
   );

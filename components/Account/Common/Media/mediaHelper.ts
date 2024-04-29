@@ -1,8 +1,8 @@
-import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { useCallback } from "react";
 import { SetterOrUpdater } from "recoil";
 import { MediaType } from "./MediaType";
+import { MediaCreateDTO } from "@/common/api/model";
 
 const getContentType = (uri: string) => {
   if (uri.endsWith(".jpeg") || uri.endsWith(".jpg") || uri.endsWith(".png")) {
@@ -16,14 +16,12 @@ const getContentType = (uri: string) => {
 };
 
 export const uploadFiles = async (sasUris: string[], files: string[]) => {
-
   console.log("Uploading files to Azure");
-  
+
   for (let i = 0; i < sasUris.length; i++) {
     const sasUri = sasUris[i];
     const file = files[i];
 
-    
     const response = await fetch(file);
     const blob = await response.blob();
 
@@ -99,4 +97,16 @@ export const getMediaTypeFromUri = (uri: string) => {
 export const getCleanUrl = (url: string) => {
   const urlObject = new URL(url);
   return `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
+};
+
+export const getMediaCreateDTOs = (urls: string[]) => {
+  return (
+    urls.map((url) => {
+      const newMedia: MediaCreateDTO = {
+        uri: url,
+        mediaType: getMediaTypeFromUri(url),
+      };
+      return newMedia;
+    }) || []
+  );
 };

@@ -176,6 +176,7 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
           padding: 10,
           borderRadius: 7,
           height: 100,
+          textAlignVertical: "top",
         }}
         multiline={true}
         value={description}

@@ -16,6 +16,8 @@ export default function Project() {
 
   const projects = useProjectValue();
 
+  console.log(projects);
+
   if (projects?.length === 0 || createMode) {
     return <ProjectCreate onCancel={() => setCreateMode(false)} />;
   }

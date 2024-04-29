@@ -111,7 +111,9 @@ export async function handleReceivedMessages(
       ? decryptMessageAES(message.content, symmetricAesKey)
       : null;
 
-    const decryptedUri = message.uri ? decryptMessageAES(message.uri, symmetricAesKey) : null;
+    const decryptedUri = message.uri
+      ? decryptMessageAES(message.uri, symmetricAesKey)
+      : null;
 
     if (!decryptedContent) return;
 
@@ -143,7 +145,7 @@ export async function handleReceivedMessages(
   }
 
   try {
-    if(values.length === 0) return;
+    if (values.length === 0) return;
     await db.runAsync(
       `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId) VALUES ${placeholders}`,
       values
@@ -332,6 +334,17 @@ export function handleUpdateEnquiryShortlistStatus(
   };
 }
 
+export function handleUpdateCompleteProject(
+  connection: HubConnection,
+  updateProject: (projectId: number) => void
+): () => void {
+  connection.on("ReceiveCompleteProject", updateProject);
+
+  return () => {
+    connection.off("ReceiveCompleteProject", updateProject);
+  };
+}
+
 export const useSendMessage = (
   connection: any,
   database: any,
@@ -399,7 +412,7 @@ export const useChatMessages = (
         );
 
         if (iMessages.length === 0) return;
-        
+
         setMessages((state) => [...state, ...iMessages]);
       } catch (error) {
         console.error("Error fetching messages:", error);

@@ -12,6 +12,7 @@ import type { SkillType } from './skillType';
 export interface ProjectRoleDTO {
   address?: string | null;
   assignee?: UserInformationDTO;
+  completed?: boolean;
   cost?: number;
   description?: string | null;
   effort?: number;

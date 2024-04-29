@@ -5,15 +5,11 @@
  * OpenAPI spec version: v1
  */
 
-export type EntityType = typeof EntityType[keyof typeof EntityType];
+export type ExperienceType = typeof ExperienceType[keyof typeof ExperienceType];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const EntityType = {
+export const ExperienceType = {
   NUMBER_0: 0,
   NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
 } as const;

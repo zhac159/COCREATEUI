@@ -97,6 +97,7 @@ const Projects: FC<ProjectsProps> = ({
     const project = projects?.[index];
     return (
       <ProjectBanner
+        id={project?.id ?? 0}
         name={project?.name ?? "N/A"}
         onEdit={() => handleEdit(index)}
         onCreate={() => handleCreate(index)}
@@ -130,6 +131,8 @@ const Projects: FC<ProjectsProps> = ({
       />
     );
 
+  if(projects && !projects[selectedProject]) return <Text>Loading...</Text>
+
   return (
     <View>
       <Carousel
@@ -153,13 +156,6 @@ const Projects: FC<ProjectsProps> = ({
           setSelectedRole={setSelectedRole}
         />
         <ViewApplicationsButton onPress={() => setShowApplications(true)} />
-        {/* <Text
-          style={{
-            ...theme.customFonts.primary.medium,
-          }}
-        >
-          Shortlisted
-        </Text> */}
       </View>
       <View
         style={{

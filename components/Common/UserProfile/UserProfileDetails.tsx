@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useTheme } from "../../Themes/theme";
-import UserProgileDetailsNumbers from "./UserProgileDetailsNumbers";
+import UserProfileDetailsNumbers from "./UserProfileDetailsNumbers";
 import { FontAwesome6 } from "@expo/vector-icons";
 
 type UserProfileDetailsProps = {
@@ -44,12 +44,12 @@ const UserProfileDetails: FC<UserProfileDetailsProps> = ({
           gap: 20,
         }}
       >
-        <UserProgileDetailsNumbers value={rolesWorked} text={"Roles\nWorked"} />
-        <UserProgileDetailsNumbers
+        <UserProfileDetailsNumbers value={rolesWorked} text={"Roles\nWorked"} />
+        <UserProfileDetailsNumbers
           value={rolesWorked}
           text={"Project\nCommisioned"}
         />
-        <UserProgileDetailsNumbers
+        <UserProfileDetailsNumbers
           value={rolesWorked}
           text={
             <FontAwesome6

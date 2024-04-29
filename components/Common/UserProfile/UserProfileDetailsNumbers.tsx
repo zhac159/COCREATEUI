@@ -1,13 +1,15 @@
 import { useTheme } from "@/components/Themes/theme";
 import React, { FC } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TextStyle } from "react-native";
 
-type UserProgileDetailsNumbersProps = {
-  value: number;
+type UserProfileDetailsNumbersProps = {
+  value: number | string;
   text: string | JSX.Element;
+  valueStyle?: TextStyle;
+  textStyle?: TextStyle;
 };
 
-const UserProgileDetailsNumbers: FC<UserProgileDetailsNumbersProps> = ({ value, text }) => {
+const UserProfileDetailsNumbers: FC<UserProfileDetailsNumbersProps> = ({ value, text,valueStyle, textStyle }) => {
   const theme = useTheme();
 
   return (
@@ -22,6 +24,7 @@ const UserProgileDetailsNumbers: FC<UserProgileDetailsNumbersProps> = ({ value, 
         style={{
           ...theme.customFonts.primary.medium,
           fontSize: 29,
+          ...valueStyle
         }}
       >
         {value}
@@ -31,6 +34,7 @@ const UserProgileDetailsNumbers: FC<UserProgileDetailsNumbersProps> = ({ value, 
           ...theme.customFonts.primary.medium,
           color: theme.colors.darkerGray,
           fontSize: 11,
+          ...textStyle
         }}
       >
         {text}
@@ -39,4 +43,4 @@ const UserProgileDetailsNumbers: FC<UserProgileDetailsNumbersProps> = ({ value, 
   );
 };
 
-export default UserProgileDetailsNumbers;
+export default UserProfileDetailsNumbers;

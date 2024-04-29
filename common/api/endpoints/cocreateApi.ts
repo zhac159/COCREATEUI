@@ -25,6 +25,8 @@ import type {
   EnquiryConfirmDTO,
   EnquiryCreateDTO,
   EnquiryDTO,
+  ExperienceCreateDTO,
+  ExperienceDTO,
   LoginResponseDTO,
   MessageCreateDTO,
   MessageDTO,
@@ -34,8 +36,10 @@ import type {
   PortofolioContentUpdateDTO,
   PrepareUploadDTO,
   PrepareUploadResponseDTO,
+  ProjectCompleteDTO,
   ProjectCreateDTO,
   ProjectDTO,
+  ProjectRoleCompleteDTO,
   ProjectRoleCreateDTO,
   ProjectRoleDTO,
   ProjectRoleUpdateDTO,
@@ -434,6 +438,53 @@ export const getPostApiEnquirySendMessa2geMutationOptions = <TError = ErrorType<
       return useMutation(mutationOptions);
     }
     
+export const postApiExperience = (
+    experienceCreateDTO: ExperienceCreateDTO,
+ ) => {
+      
+      
+      return customInstance<ExperienceDTO>(
+      {url: `/api/Experience`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: experienceCreateDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiExperienceMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiExperience>>, TError,{data: ExperienceCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiExperience>>, TError,{data: ExperienceCreateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiExperience>>, {data: ExperienceCreateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiExperience(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiExperienceMutationResult = NonNullable<Awaited<ReturnType<typeof postApiExperience>>>
+    export type PostApiExperienceMutationBody = ExperienceCreateDTO
+    export type PostApiExperienceMutationError = ErrorType<unknown>
+
+    export const usePostApiExperience = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiExperience>>, TError,{data: ExperienceCreateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiExperienceMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiLogin = (
     userLoginDTO: UserLoginDTO,
  ) => {
@@ -808,6 +859,53 @@ export const getPostApiProjectMutationOptions = <TError = ErrorType<unknown>,
       return useMutation(mutationOptions);
     }
     
+export const postApiProjectComplete = (
+    projectCompleteDTO: ProjectCompleteDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/Project/complete`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: projectCompleteDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiProjectCompleteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiProjectComplete>>, TError,{data: ProjectCompleteDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiProjectComplete>>, TError,{data: ProjectCompleteDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiProjectComplete>>, {data: ProjectCompleteDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiProjectComplete(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiProjectCompleteMutationResult = NonNullable<Awaited<ReturnType<typeof postApiProjectComplete>>>
+    export type PostApiProjectCompleteMutationBody = ProjectCompleteDTO
+    export type PostApiProjectCompleteMutationError = ErrorType<unknown>
+
+    export const usePostApiProjectComplete = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiProjectComplete>>, TError,{data: ProjectCompleteDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiProjectCompleteMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const getApiProjectProjectId = (
     projectId: number,
  signal?: AbortSignal
@@ -954,6 +1052,53 @@ export const getPutApiProjectRoleMutationOptions = <TError = ErrorType<unknown>,
 ) => {
 
       const mutationOptions = getPutApiProjectRoleMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiProjectRoleComplete = (
+    projectRoleCompleteDTO: ProjectRoleCompleteDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/ProjectRole/complete`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: projectRoleCompleteDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiProjectRoleCompleteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiProjectRoleComplete>>, TError,{data: ProjectRoleCompleteDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiProjectRoleComplete>>, TError,{data: ProjectRoleCompleteDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiProjectRoleComplete>>, {data: ProjectRoleCompleteDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiProjectRoleComplete(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiProjectRoleCompleteMutationResult = NonNullable<Awaited<ReturnType<typeof postApiProjectRoleComplete>>>
+    export type PostApiProjectRoleCompleteMutationBody = ProjectRoleCompleteDTO
+    export type PostApiProjectRoleCompleteMutationError = ErrorType<unknown>
+
+    export const usePostApiProjectRoleComplete = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiProjectRoleComplete>>, TError,{data: ProjectRoleCompleteDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiProjectRoleCompleteMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
