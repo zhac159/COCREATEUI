@@ -4,6 +4,9 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { useTheme } from "../../Themes/theme";
 import UserProfileDetailsNumbers from "../UserProfile/UserProfileDetailsNumbers";
 import { FontAwesome6 } from "@expo/vector-icons";
+import Carousel from "react-native-reanimated-carousel";
+import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
+import Review from "./Review";
 
 type ReviewCarouselProps = {
   reviews: ReviewDTO[];
@@ -18,9 +21,9 @@ const ReviewCarousel: FC<ReviewCarouselProps> = ({
 }) => {
   const theme = useTheme();
 
-  // const renderReview = ({ item }: { item: ReviewDTO }) => (
-
-  // );
+  const renderReview = ({ item }: { item: ReviewDTO }) => (
+    <Review review={item} />
+  );
 
   return (
     <View
@@ -29,6 +32,7 @@ const ReviewCarousel: FC<ReviewCarouselProps> = ({
       <View
         style={{
           flexDirection: "row",
+          marginLeft: "10%",
         }}
       >
         <UserProfileDetailsNumbers
@@ -63,6 +67,26 @@ const ReviewCarousel: FC<ReviewCarouselProps> = ({
           text={"Reviews"}
         />
       </View>
+      <View
+        style={{
+          flex: 1,
+          alignSelf: "center",
+          width: "94%",
+          overflow: "hidden",
+        }}
+      >
+        <Carousel
+          width={windowWidth}
+          vertical={false}
+          data={reviews}
+          renderItem={renderReview}
+          height={500}
+          panGestureHandlerProps={{
+            activeOffsetX: [-5, 5],
+            failOffsetY: [-5, 5],
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -71,8 +95,11 @@ export default ReviewCarousel;
 
 const styles = StyleSheet.create({
   container: {
-    height: 450,
-    padding: 30,
+    height: 400,
+    paddingTop: 30,
+    gap: 10,
     alignContent: "center",
+    borderRadius: 14,
+    overflow: "hidden",
   },
 });

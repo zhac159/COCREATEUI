@@ -7,5 +7,5 @@
 import type { UserProfileDTO } from './userProfileDTO';
 
 export interface UserProfilesDTO {
-  userProfiles?: UserProfileDTO[] | null;
+  userProfiles: UserProfileDTO[];
 }

@@ -10,7 +10,7 @@ export const AXIOS_INSTANCE = Axios.create({
 });
 
 AXIOS_INSTANCE.interceptors.request.use(async (request) => {
-  // console.log("Starting Request", JSON.stringify(request, null, 2));
+  console.log("Starting Request", JSON.stringify(request, null, 2));
 
   const token = await SecureStore.getItemAsync("userToken");
 

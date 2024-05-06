@@ -8,6 +8,7 @@ import {
   getSkillGroupColor,
   skillGroupMap,
 } from "@/components/Account/Skills/skillHelper";
+import DurationPicker from "@/components/Common/Forms/DurationPicker";
 
 type ProjectAddRoleHowLongProps = {
   effort: number;
@@ -56,53 +57,12 @@ const ProjectAddRoleHowLong: FC<ProjectAddRoleHowLongProps> = ({
             Time Effort
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <TextInput
-            style={{
-              ...theme.customFonts.primary.medium,
-              ...projectAddRoleWhenWhereHowLongStyles.formTextInput,
-              color: theme.colors.black,
-              backgroundColor: color,
-            }}
-            value={effort.toString()}
-            onChangeText={(text) =>
-              setEffort(hours ? Number(text) : Number(text) * 24)
-            }
-            keyboardType="numeric"
-          />
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 15,
-            }}
-          >
-            <Text
-              style={{
-                ...theme.customFonts.primary.medium,
-                color: hours ? theme.colors.black : theme.colors.gray,
-              }}
-              onPress={() => setHours(true)}
-            >
-              Hours
-            </Text>
-            <Text
-              style={{
-                ...theme.customFonts.primary.medium,
-                color: !hours ? theme.colors.black : theme.colors.gray,
-              }}
-              onPress={() => setHours(false)}
-            >
-              Working Days
-            </Text>
-          </View>
-        </View>
+        <DurationPicker
+          duration={effort}
+          setDuration={setEffort}
+          hours={hours}
+          setHours={setHours}
+        />
       </View>
     </>
   );

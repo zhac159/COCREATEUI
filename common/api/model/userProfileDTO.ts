@@ -4,15 +4,19 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { ExperienceDTO } from './experienceDTO';
 import type { PortofolioContentDTO } from './portofolioContentDTO';
+import type { ReviewDTO } from './reviewDTO';
 import type { SkillDTO } from './skillDTO';
 
 export interface UserProfileDTO {
-  aboutYou?: string | null;
-  portofolioContents?: PortofolioContentDTO[] | null;
-  rating?: number;
-  skills?: SkillDTO[] | null;
-  totalReviews?: number;
-  userId?: number;
-  username?: string | null;
+  aboutYou: string;
+  experiences: ExperienceDTO[];
+  portofolioContents: PortofolioContentDTO[];
+  rating: number;
+  reviewsReceived: ReviewDTO[];
+  skills: SkillDTO[];
+  totalReviews: number;
+  userId: number;
+  username: string;
 }

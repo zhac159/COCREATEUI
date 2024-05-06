@@ -140,6 +140,102 @@
         }
       }
     },
+    "/api/Asset/search": {
+      "post": {
+        "tags": [
+          "Asset"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetSearchDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetSearchDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetSearchDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetSearchResultDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetSearchResultDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetSearchResultDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AssetOffer/create": {
+      "post": {
+        "tags": [
+          "AssetOffer"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetOfferCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetOfferCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssetOfferCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetOfferDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetOfferDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetOfferDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Enquiry/create": {
       "post": {
         "tags": [
@@ -1449,6 +1545,13 @@
         "additionalProperties": false
       },
       "AssetDTO": {
+        "required": [
+          "assetType",
+          "description",
+          "id",
+          "medias",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1456,12 +1559,12 @@
             "format": "int32"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "assetType": {
             "$ref": "#/components/schemas/AssetType"
@@ -1470,8 +1573,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -1484,6 +1586,182 @@
           },
           "data": {
             "$ref": "#/components/schemas/AssetDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetInformationDTO": {
+        "required": [
+          "assetType",
+          "description",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "assetType": {
+            "$ref": "#/components/schemas/AssetType"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/UserInformationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetOfferCreateDTO": {
+        "required": [
+          "assetId",
+          "assetUsageEndTime",
+          "assetUsageStartTime",
+          "duration",
+          "offerValue",
+          "projectId"
+        ],
+        "type": "object",
+        "properties": {
+          "offerValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assetUsageStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assetUsageEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetOfferDTO": {
+        "required": [
+          "assetUsageEndTime",
+          "assetUsageStartTime",
+          "description",
+          "duration",
+          "id",
+          "offerValue"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offerValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assetUsageStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assetUsageEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "asset": {
+            "$ref": "#/components/schemas/AssetInformationDTO"
+          },
+          "project": {
+            "$ref": "#/components/schemas/ProjectInformationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetOfferDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AssetOfferDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetSearchDTO": {
+        "type": "object",
+        "properties": {
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetType": {
+            "$ref": "#/components/schemas/AssetType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetSearchResultDTO": {
+        "required": [
+          "assets"
+        ],
+        "type": "object",
+        "properties": {
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetDTO"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetSearchResultDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AssetSearchResultDTO"
           },
           "error": {
             "type": "string",
@@ -2148,6 +2426,16 @@
         "additionalProperties": false
       },
       "ProjectDTO": {
+        "required": [
+          "assetOffers",
+          "completed",
+          "description",
+          "id",
+          "medias",
+          "name",
+          "projectManager",
+          "projectRoles"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2155,12 +2443,12 @@
             "format": "int32"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "completed": {
             "type": "boolean"
@@ -2169,8 +2457,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaDTO"
-            },
-            "nullable": true
+            }
           },
           "projectManager": {
             "$ref": "#/components/schemas/UserInformationDTO"
@@ -2179,8 +2466,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProjectRoleDTO"
-            },
-            "nullable": true
+            }
+          },
+          "assetOffers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetOfferDTO"
+            }
           }
         },
         "additionalProperties": false
@@ -2197,6 +2489,28 @@
           "error": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProjectInformationDTO": {
+        "required": [
+          "id",
+          "name",
+          "projectManager"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "projectManager": {
+            "$ref": "#/components/schemas/UserInformationDTO"
           }
         },
         "additionalProperties": false
@@ -2517,11 +2831,17 @@
         "additionalProperties": false
       },
       "ReviewDTO": {
+        "required": [
+          "createdAt",
+          "description",
+          "rating",
+          "reviewerUser"
+        ],
         "type": "object",
         "properties": {
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "rating": {
             "type": "number",
@@ -2673,6 +2993,7 @@
       },
       "UserDTO": {
         "required": [
+          "assetOffers",
           "assets",
           "assignedProjects",
           "email",
@@ -2721,14 +3042,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "rating": {
-            "type": "number",
-            "format": "double"
-          },
-          "totalReviews": {
-            "type": "integer",
-            "format": "int32"
-          },
           "profilePictureSrc": {
             "type": "string",
             "nullable": true
@@ -2740,6 +3053,14 @@
           "publicKey": {
             "type": "string",
             "nullable": true
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalReviews": {
+            "type": "integer",
+            "format": "int32"
           },
           "skills": {
             "type": "array",
@@ -2787,6 +3108,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ExperienceDTO"
+            }
+          },
+          "assetOffers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetOfferDTO"
             }
           }
         },
@@ -2963,6 +3290,17 @@
         "additionalProperties": false
       },
       "UserProfileDTO": {
+        "required": [
+          "aboutYou",
+          "experiences",
+          "portofolioContents",
+          "rating",
+          "reviewsReceived",
+          "skills",
+          "totalReviews",
+          "userId",
+          "username"
+        ],
         "type": "object",
         "properties": {
           "userId": {
@@ -2970,12 +3308,12 @@
             "format": "int32"
           },
           "username": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "aboutYou": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "rating": {
             "type": "number",
@@ -2985,32 +3323,44 @@
             "type": "integer",
             "format": "int32"
           },
+          "reviewsReceived": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewDTO"
+            }
+          },
           "skills": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SkillDTO"
-            },
-            "nullable": true
+            }
           },
           "portofolioContents": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PortofolioContentDTO"
-            },
-            "nullable": true
+            }
+          },
+          "experiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExperienceDTO"
+            }
           }
         },
         "additionalProperties": false
       },
       "UserProfilesDTO": {
+        "required": [
+          "userProfiles"
+        ],
         "type": "object",
         "properties": {
           "userProfiles": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserProfileDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false

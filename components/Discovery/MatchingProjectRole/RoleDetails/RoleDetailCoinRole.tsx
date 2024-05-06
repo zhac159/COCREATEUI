@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   role: {
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: "600",
     textAlign: "center",
   },
 });

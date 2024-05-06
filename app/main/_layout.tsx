@@ -18,12 +18,14 @@ import {
   useUpdateProjectRoleEnquiries,
   useAssignedProjectsValue,
 } from "@/components/RecoilStates/profileState";
+import { JsStack } from "@/components/Common/JStack";
+import { TransitionPresets } from "@react-navigation/stack";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
 export default function HelperScreenNav() {
   const [connection, setConnection] = useState<HubConnection | null>(null);
-  
+
   const router = useRouter();
 
   const assignedProjects = useAssignedProjectsValue();
@@ -118,23 +120,49 @@ export default function HelperScreenNav() {
 
   return (
     <ConnectionContext.Provider value={connection}>
-      <Stack screenOptions={{ headerShown: false }}>
+      <JsStack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        <Stack.Screen
-          name="portofolioModal"
-          options={{ presentation: "modal" }}
-        />
-        <Stack.Screen
+        <JsStack.Screen
           name="completeProject"
-          options={{ presentation: "modal" }}
+          options={{
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
         />
-        <Stack.Screen
+        <JsStack.Screen
+          name="assetFinder"
+          options={{
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
           name="completeProjectRole"
-          options={{ presentation: "modal" }}
+          options={{
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+          name="portofolioModal"
+          options={{
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+          name="assetOffer"
+          options={{
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
         />
         <Stack.Screen name="chat" />
         <Stack.Screen name="locationForm" />
-      </Stack>
+      </JsStack>
     </ConnectionContext.Provider>
   );
 }

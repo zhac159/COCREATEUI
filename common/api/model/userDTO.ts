@@ -4,6 +4,7 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { AssetOfferDTO } from './assetOfferDTO';
 import type { AssetDTO } from './assetDTO';
 import type { ProjectDTO } from './projectDTO';
 import type { EnquiryDTO } from './enquiryDTO';
@@ -15,6 +16,7 @@ import type { SkillDTO } from './skillDTO';
 export interface UserDTO {
   aboutYou?: string | null;
   address?: string | null;
+  assetOffers: AssetOfferDTO[];
   assets: AssetDTO[];
   assignedProjects: ProjectDTO[];
   bannerPictureSrc?: string | null;

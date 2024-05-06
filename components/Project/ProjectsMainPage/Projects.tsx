@@ -13,7 +13,7 @@ import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
 import { useTheme } from "@/components/Themes/theme";
 import { EnquiryDTO } from "@/common/api/model";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
-import ProjectBanner from "./ProjectBanner";
+import ProjectBanner from "./ProjectBanner/ProjectBanner";
 import ViewApplicationsButton from "../ViewApplications/ViewApplicationsButton";
 import ProjectRoleSelection from "./ProjectRoleSelection";
 import ChatPreview from "@/components/Chats/ChatPreview";

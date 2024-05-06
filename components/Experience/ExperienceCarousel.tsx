@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { ExperienceDTO } from "@/common/api/model";
-import { Carousel } from "react-native-snap-carousel";
 import { windowWidth } from "../Account/Common/getWindowDimensions";
+import Carousel from "react-native-reanimated-carousel";
 
 type ExperienceCarouselProps = {
   experiences: ExperienceDTO[];
@@ -16,7 +16,7 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
   renderItem,
 }) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, overflow: "hidden" }}>
       <Text
         style={{
           ...styles.experienceType,
@@ -25,19 +25,17 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
         {title}
       </Text>
       <Carousel
+        width={windowWidth}
         vertical={false}
+        loop={false}
         data={experiences}
-        inactiveSlideOpacity={1}
-        hasParallaxImages
-        containerCustomStyle={{
-          paddingLeft: 9,
-        }}
-        contentContainerCustomStyle={{
-          paddingVertical: 20
-        }}
+        style={{ paddingLeft: 10 }}
         renderItem={renderItem}
-        sliderWidth={windowWidth}
-        itemWidth={windowWidth}
+        height={500}
+        panGestureHandlerProps={{
+          activeOffsetX: [-3, 3],
+          failOffsetY: [-5, 5],
+        }}
       />
     </View>
   );
@@ -49,7 +47,6 @@ const styles = StyleSheet.create({
   experienceType: {
     fontSize: 17,
     fontWeight: "700",
-    marginBottom: 12,
     paddingLeft: 20,
   },
 });

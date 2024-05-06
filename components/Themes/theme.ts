@@ -20,6 +20,7 @@ export const LightTheme: CustomTheme = {
     lightestGray: "rgb(244, 244, 244)",
     green: "rgb(56, 250, 152)",
     red: "rgb(251, 0, 0)",
+    lightBlue: "rgb(223, 228, 255)",
   },
   customFonts: {  
     primary: {  

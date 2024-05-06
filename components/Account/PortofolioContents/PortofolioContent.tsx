@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { Carousel, Pagination } from "react-native-snap-carousel";
+import Carousel from "react-native-reanimated-carousel";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
 import { router } from "expo-router";
@@ -96,7 +96,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
     <View style={styles.imageContainer} key={index}>
       <Media
         uri={cachedUris[index]}
-        style={{ flex: 1, borderRadius: 14}}
+        style={{ flex: 1, borderRadius: 14 }}
         onPress={() => handlePress(index)}
         editMode={editMode}
       />
@@ -123,25 +123,19 @@ const PortofolioContent: FC<portofolioContentProps> = ({
   return (
     <View style={styles.container}>
       <Carousel
-        ref={carouselRef}
+        width={windowWidth}
         vertical={false}
+        loop={false}
         data={uris}
-        hasParallaxImages
-        containerCustomStyle={{
-          paddingLeft: 9,
-          paddingTop: 12,
-          paddingBottom: 12,
-       }}
-       contentContainerCustomStyle={{
-        paddingTop: 12,
-       }}
-
         renderItem={renderItem}
-        sliderWidth={windowWidth}
-        itemWidth={windowWidth}
-        onScrollIndexChanged={(index) => setActiveIndex(index)}
+        height={500}
+        panGestureHandlerProps={{
+          activeOffsetX: [-3, 3],
+          failOffsetY: [-5, 5],
+        }}
+        // onScrollIndexChanged={(index) => setActiveIndex(index)}
       />
-      <Pagination
+      {/* <Pagination
         dotsLength={uris.length}
         activeDotIndex={activeIndex}
         containerStyle={{
@@ -166,7 +160,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
         }}
         inactiveDotOpacity={1}
         inactiveDotScale={1}
-      />
+      /> */}
       <View
         style={{
           flexDirection: "row",
@@ -218,7 +212,8 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: "10%",
-    width: "100%",
+    width: "87%",
+    alignSelf: "center",
     marginRight: 40,
   },
   imageContainer: {
@@ -236,7 +231,7 @@ export const styles = StyleSheet.create({
   },
   deleteIconButton: {
     position: "absolute",
-    zIndex: 100,  
+    zIndex: 100,
     top: "-2%",
     right: "-2%",
     backgroundColor: "red",

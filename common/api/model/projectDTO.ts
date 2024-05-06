@@ -4,16 +4,18 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { AssetOfferDTO } from './assetOfferDTO';
 import type { MediaDTO } from './mediaDTO';
 import type { UserInformationDTO } from './userInformationDTO';
 import type { ProjectRoleDTO } from './projectRoleDTO';
 
 export interface ProjectDTO {
-  completed?: boolean;
-  description?: string | null;
-  id?: number;
-  medias?: MediaDTO[] | null;
-  name?: string | null;
-  projectManager?: UserInformationDTO;
-  projectRoles?: ProjectRoleDTO[] | null;
+  assetOffers: AssetOfferDTO[];
+  completed: boolean;
+  description: string;
+  id: number;
+  medias: MediaDTO[];
+  name: string;
+  projectManager: UserInformationDTO;
+  projectRoles: ProjectRoleDTO[];
 }

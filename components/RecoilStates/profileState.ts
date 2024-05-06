@@ -17,10 +17,11 @@ import {
 import { selector } from "recoil";
 import { UserReviewDetails } from "../Common/Review/reviewHelper";
 
-export const currentUserState = atom<UserDTO | undefined>({
+export const currentUserState = atom<UserDTO>({
   key: "userState",
   default: {
     aboutYou: null,
+    assetOffers: [],
     assets: [],
     assignedProjects: [],
     bannerPictureSrc: null,
@@ -44,13 +45,11 @@ export const currentUserState = atom<UserDTO | undefined>({
 export const useSetCurrentUserState = () => useSetRecoilState(currentUserState);
 export const useCurrentUserValue = () => useRecoilValue(currentUserState);
 
-export const portfolioContentsSelector = selector<
-  PortofolioContentDTO[] | null | undefined
->({
+export const portfolioContentsSelector = selector<PortofolioContentDTO[]>({
   key: "portfolioContentsSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.portofolioContents;
+    return user ? user.portofolioContents : [];
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -119,7 +118,7 @@ export const skillsSelector = selector({
   key: "skillsSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.skills;
+    return user ? user.skills : [];
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -140,7 +139,7 @@ export const assetsSelector = selector({
   key: "assetsSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.assets;
+    return user ? user.assets : [];
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -240,7 +239,7 @@ export const projectSelector = selector({
   key: "projectSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.projects;
+    return user ? user.projects : [];
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -319,7 +318,7 @@ export const userIdSelector = selector({
   key: "userIdSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.userId;
+    return user ? user.userId : 0;
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -392,7 +391,7 @@ export const enquiriesSelector = selector({
   key: "enquiriesSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.enquiries;
+    return user ? user.enquiries:[];
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -413,7 +412,7 @@ export const assignedProjectsSelector = selector({
   key: "assignedProjectsSelector",
   get: ({ get }) => {
     const user = get(currentUserState);
-    return user?.assignedProjects;
+    return user ? user.assignedProjects:[];
   },
   set: ({ set, get }, newValue) => {
     const user = get(currentUserState);
@@ -437,7 +436,6 @@ export const useUpdateProjectRoleEnquiries = () => {
   const [user, setUser] = useRecoilState(currentUserState);
 
   return (enquiry: EnquiryDTO) => {
-    if (!user || !user.projects || !enquiry.projectRoleId) return;
 
     const newProjects = user.projects.map((project) => {
       if (!project.projectRoles) return project;
@@ -494,7 +492,7 @@ export const useUpdateEnquiryShortlistedInProjects = () => {
   const [user, setUser] = useRecoilState(currentUserState);
 
   return (enquiryId: number) => {
-    if (!user || !user.projects) return;
+    if (!user) return;
 
     const newProjects = user.projects.map((project) => {
       if (!project.projectRoles) return project;

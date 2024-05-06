@@ -9,6 +9,32 @@ export enum AssetType {
   Instruments,
 }
 
+export enum AssetIconNames {
+  Camera = "camera",
+  Location = "map-marker",
+  Props = "table",
+  Lights = "lightbulb",
+  Microphones = "microphone",
+  Instruments = "guitar",
+}
+
+export const getAssetIcon = (assetType: AssetType): AssetIconNames => {
+  switch (assetType) {
+    case AssetType.Camera:
+      return AssetIconNames.Camera;
+    case AssetType.Location:
+      return AssetIconNames.Location;
+    case AssetType.Props:
+      return AssetIconNames.Props;
+    case AssetType.Lights:
+      return AssetIconNames.Lights;
+    case AssetType.Microphones:
+      return AssetIconNames.Microphones;
+    case AssetType.Instruments:
+      return AssetIconNames.Instruments;
+  }
+};
+
 export const assetStyles = StyleSheet.create({
   container: {
     flexDirection: "column",
@@ -22,7 +48,7 @@ export const assetStyles = StyleSheet.create({
       height: 10,
     },
     elevation: 5,
-    shadowOpacity: 0.10,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   mainImage: {
@@ -64,7 +90,7 @@ export const assetStyles = StyleSheet.create({
     borderTopLeftRadius: 7,
     borderBottomRightRadius: 7,
   },
-  description : {
+  description: {
     fontSize: 12,
     backgroundColor: "transparent",
     height: "20%",
@@ -93,5 +119,5 @@ export const assetStyles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 50,
     padding: 5,
-  }
+  },
 });

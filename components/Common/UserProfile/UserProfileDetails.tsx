@@ -41,11 +41,11 @@ const UserProfileDetails: FC<UserProfileDetailsProps> = ({
           flexDirection: "row",
           justifyContent: "space-between",
           marginTop: 20,
-          gap: 20,
+          width: "65%",
         }}
       >
         <UserProfileDetailsNumbers value={rolesWorked} text={"Roles\nWorked"} />
-        <UserProfileDetailsNumbers
+        <UserProfileDetailsNumbers 
           value={rolesWorked}
           text={"Project\nCommisioned"}
         />

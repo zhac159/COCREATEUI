@@ -19,6 +19,10 @@ import type {
 import type {
   AssetCreateDTO,
   AssetDTO,
+  AssetOfferCreateDTO,
+  AssetOfferDTO,
+  AssetSearchDTO,
+  AssetSearchResultDTO,
   AssetUpdateDTO,
   EncryptedKeyExchangeCreateDTO,
   EncryptedKeyExchangeDTO,
@@ -200,6 +204,100 @@ export const getDeleteApiAssetIdMutationOptions = <TError = ErrorType<unknown>,
 ) => {
 
       const mutationOptions = getDeleteApiAssetIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiAssetSearch = (
+    assetSearchDTO: AssetSearchDTO,
+ ) => {
+      
+      
+      return customInstance<AssetSearchResultDTO>(
+      {url: `/api/Asset/search`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: assetSearchDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiAssetSearchMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAssetSearch>>, TError,{data: AssetSearchDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAssetSearch>>, TError,{data: AssetSearchDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAssetSearch>>, {data: AssetSearchDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAssetSearch(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAssetSearchMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAssetSearch>>>
+    export type PostApiAssetSearchMutationBody = AssetSearchDTO
+    export type PostApiAssetSearchMutationError = ErrorType<unknown>
+
+    export const usePostApiAssetSearch = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAssetSearch>>, TError,{data: AssetSearchDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiAssetSearchMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiAssetOfferCreate = (
+    assetOfferCreateDTO: AssetOfferCreateDTO,
+ ) => {
+      
+      
+      return customInstance<AssetOfferDTO>(
+      {url: `/api/AssetOffer/create`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: assetOfferCreateDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiAssetOfferCreateMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAssetOfferCreate>>, TError,{data: AssetOfferCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiAssetOfferCreate>>, TError,{data: AssetOfferCreateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiAssetOfferCreate>>, {data: AssetOfferCreateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiAssetOfferCreate(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiAssetOfferCreateMutationResult = NonNullable<Awaited<ReturnType<typeof postApiAssetOfferCreate>>>
+    export type PostApiAssetOfferCreateMutationBody = AssetOfferCreateDTO
+    export type PostApiAssetOfferCreateMutationError = ErrorType<unknown>
+
+    export const usePostApiAssetOfferCreate = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAssetOfferCreate>>, TError,{data: AssetOfferCreateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiAssetOfferCreateMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

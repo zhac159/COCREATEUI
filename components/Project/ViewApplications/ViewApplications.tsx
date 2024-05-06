@@ -1,5 +1,9 @@
-import { EnquiryDTO, UserProfilesDTO } from "@/common/api/model";
-import { FC, useContext } from "react";
+import {
+  EnquiryDTO,
+  UserProfileDTO,
+  UserProfilesDTO,
+} from "@/common/api/model";
+import { FC, useCallback, useContext, useMemo } from "react";
 import { Text } from "react-native";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -46,6 +50,10 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     },
   });
 
+  const renderCard = useCallback((userProfile: UserProfileDTO) => {
+    return <UserProfile userProfile={userProfile} />;
+  }, []);
+
   useEffect(() => {
     const applicantsIds = enquiries
       ?.map((enquiries) => enquiries.enquirer?.userId)
@@ -58,22 +66,12 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     });
   }, []);
 
-  if (!applicantsProfiles || !applicantsProfiles.userProfiles)
-    return <Text>Loading...</Text>;
-
-  return (
-    <>
-      <IconButton
-        icon="close"
-        onPress={close}
-        style={{ position: "absolute", right: "5%", top: "10%", zIndex: 1000 }}
-      />
-      {applicantsProfiles.userProfiles.length !== 0 && (
+  const memoizedSwiper = useMemo(() => {
+    return (
+      applicantsProfiles && (
         <Swiper
-          cards={applicantsProfiles?.userProfiles}
-          renderCard={(userProfile) => (
-            <UserProfile userProfile={userProfile} />
-          )}
+          cards={applicantsProfiles.userProfiles}
+          renderCard={renderCard}
           containerStyle={{
             backgroundColor: "black",
             padding: 0,
@@ -99,12 +97,27 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
           onSwiped={() => setSwipingDistance(0)}
           verticalSwipe={false}
           cardVerticalMargin={0}
+          showSecondCard={false}
           cardHorizontalMargin={0}
           stackSize={4}
           stackSeparation={4}
           disableBottomSwipe
         />
-      )}
+      )
+    );
+  }, [applicantsProfiles]);
+
+  if (!applicantsProfiles || !applicantsProfiles.userProfiles || applicantsProfiles.userProfiles.length === 0)
+    return <Text>Loading...</Text>;
+
+  return (
+    <>
+      <IconButton
+        icon="close"
+        onPress={close}
+        style={{ position: "absolute", right: "5%", top: "10%", zIndex: 1000 }}
+      />
+      {memoizedSwiper}
       <ConfirmationButtons
         onConfirm={() => console.log("confirm")}
         onCancel={() => console.log("cancel")}

@@ -8,9 +8,9 @@ import type { AssetType } from './assetType';
 import type { MediaDTO } from './mediaDTO';
 
 export interface AssetDTO {
-  assetType?: AssetType;
-  description?: string | null;
-  id?: number;
-  medias?: MediaDTO[] | null;
-  name?: string | null;
+  assetType: AssetType;
+  description: string;
+  id: number;
+  medias: MediaDTO[];
+  name: string;
 }

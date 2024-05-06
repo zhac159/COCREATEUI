@@ -34,7 +34,7 @@ const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
             color: theme.colors.black,
           }}
         >
-          {"500"}
+          {coins}
         </Text>
       </View>
       {showShadow && (
@@ -59,7 +59,7 @@ const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
               color: theme.colors.black,
             }}
           >
-            {"500"}
+            {coins}
           </Text>
           <BlurView
             intensity={100}

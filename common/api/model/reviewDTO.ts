@@ -7,8 +7,8 @@
 import type { UserInformationDTO } from './userInformationDTO';
 
 export interface ReviewDTO {
-  createdAt?: string;
-  description?: string | null;
-  rating?: number;
-  reviewerUser?: UserInformationDTO;
+  createdAt: string;
+  description: string;
+  rating: number;
+  reviewerUser: UserInformationDTO;
 }

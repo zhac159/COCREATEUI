@@ -6,7 +6,7 @@ import { ProjectWithMatchingRolesListDTO } from "@/common/api/model";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
 import { useFocusEffect } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
@@ -57,6 +57,7 @@ export default function Discovery() {
         renderCard={(matchingProject) => (
           <MatchingProject matchingProject={matchingProject} />
         )}
+        
         containerStyle={{
           backgroundColor: "black",
           padding: 0,
@@ -70,7 +71,7 @@ export default function Discovery() {
           createEnquiry({
             data: {
               projectRoleId:
-                matchingProjects.projectWithMatchingRoles[index].projectRoleId,
+                matchingProjects.projectWithMatchingRoles![index].projectRoleId,
               enquiryMessage: "Hello, I am interested in your project",
             },
           });

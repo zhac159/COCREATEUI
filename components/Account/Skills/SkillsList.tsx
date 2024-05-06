@@ -6,8 +6,8 @@ import Skill from "./Skill";
 
 type SkillsListProps = {
   skills: SkillDTO[];
-  editMode: boolean;
-  deselectSkill: (skillDTO: SkillDTO) => void;
+  editMode?: boolean;
+  deselectSkill?: (skillDTO: SkillDTO) => void;
   selectSkill?: (skillDTO: SkillDTO) => void;
   selectedSkill?: SkillType;
   flipMode?: boolean;
@@ -15,7 +15,7 @@ type SkillsListProps = {
 
 const SkillsList: FC<SkillsListProps> = ({
   skills,
-  editMode,
+  editMode = false,
   deselectSkill,
   selectSkill,
   selectedSkill,
