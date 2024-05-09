@@ -7,9 +7,13 @@ import { useRouter } from "expo-router";
 
 type ProjectBannerHeaderProps = {
   onCreate: (createMode: boolean) => void;
+  onEdit: (editMode: boolean) => void;
 };
 
-const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({ onCreate }) => {
+const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
+  onCreate,
+  onEdit,
+}) => {
   const theme = useTheme();
 
   const router = useRouter();
@@ -29,22 +33,44 @@ const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({ onCreate }) => {
       >
         Your Projects
       </Text>
-      <IconButton
-        icon={() => (
-          <FontAwesome6
-            name="plus"
-            size={18}
-            color={theme.colors.white}
-            solid
-          />
-        )}
-        onPress={() => onCreate(true)}
-        size={30}
+      <View
         style={{
-          backgroundColor: theme.colors.primary,
-          margin: 0,
+          gap: 16,
         }}
-      />
+      >
+        <IconButton
+          icon={() => (
+            <FontAwesome6
+              name="plus"
+              size={18}
+              color={theme.colors.white}
+              solid
+            />
+          )}
+          onPress={() => onCreate(true)}
+          size={30}
+          style={{
+            backgroundColor: theme.colors.primary,
+            margin: 0,
+          }}
+        />
+        <IconButton
+          icon={() => (
+            <FontAwesome6
+              name="pen"
+              size={18}
+              color={theme.colors.black}
+              solid
+            />
+          )}
+          onPress={() => onEdit(true)}
+          size={30}
+          style={{
+            backgroundColor: theme.colors.white,
+            margin: 0,
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -55,6 +81,5 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
 });

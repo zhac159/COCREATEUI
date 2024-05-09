@@ -1,28 +1,28 @@
 import { FC } from "react";
 import { useTheme } from "../../../Themes/theme";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { FontAwesome6 } from "@expo/vector-icons";
-import { IconButton } from "react-native-paper";
-import { useRouter } from "expo-router";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { ProjectRoleDTO } from "@/common/api/model";
+import { Dispatch, SetStateAction } from "react";
+import ProjectRoleSelection from "../ProjectRoleSelection";
 
 type ProjectBannerFooterProps = {
-  onEdit: (editMode: boolean) => void;
   id: number;
+  roles: ProjectRoleDTO[];
+  selectedRole: ProjectRoleDTO | null;
+  setSelectedRole: Dispatch<SetStateAction<ProjectRoleDTO | null>>;
+  selectAssetsMode: boolean;
+  setSelectAssetsMode: Dispatch<SetStateAction<boolean>>;
 };
 
-const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({ onEdit, id }) => {
+const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({
+  id,
+  roles,
+  selectedRole,
+  setSelectedRole,
+  selectAssetsMode,
+  setSelectAssetsMode,
+}) => {
   const theme = useTheme();
-
-  const router = useRouter();
-
-  const navigateToCompleteProjectForm = () => {
-    router.navigate({
-      pathname: "/main/assetFinder",
-      params: {
-        projectId: id,
-      },
-    });
-  };
 
   return (
     <View
@@ -33,9 +33,11 @@ const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({ onEdit, id }) => {
       <TouchableOpacity
         style={{
           ...styles.findAssetButton,
-          backgroundColor: theme.colors.darkerGray,
+          backgroundColor: selectAssetsMode
+            ? theme.colors.primary
+            : theme.colors.secondary,
         }}
-        onPress={navigateToCompleteProjectForm}
+        onPress={() => setSelectAssetsMode((state) => !state)}
       >
         <Text
           style={{
@@ -44,20 +46,16 @@ const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({ onEdit, id }) => {
             fontSize: 20,
           }}
         >
-          Find Assets
+          Assets
         </Text>
       </TouchableOpacity>
-      <IconButton
-        icon={() => (
-          <FontAwesome6 name="pen" size={18} color={theme.colors.black} solid />
-        )}
-        onPress={() => onEdit(true)}
-        size={25}
-        style={{
-          backgroundColor: theme.colors.white,
-          margin: 0,
-        }}
-      />
+      <View>
+        <ProjectRoleSelection
+          roles={roles}
+          selectedRole={selectedRole}
+          setSelectedRole={setSelectedRole}
+        />
+      </View>
     </View>
   );
 };
@@ -66,15 +64,16 @@ export default ProjectBannerFooter;
 
 const styles = StyleSheet.create({
   footer: {
-    flexDirection: "row",
-    alignItems: "center",
     gap: 10,
-    alignSelf: "flex-end",
-    alignContent: "center",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
   findAssetButton: {
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    borderRadius: 8,
+    paddingTop: 4,
+    paddingBottom: 5,
+    alignContent: "center",
+    justifyContent: "center",
+    paddingHorizontal: 15,
   },
 });

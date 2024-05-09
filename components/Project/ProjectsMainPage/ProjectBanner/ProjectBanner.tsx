@@ -5,6 +5,8 @@ import Media from "../../../MediaViewer/Media";
 import ProjectBannerHeader from "./ProjectBannerHeader";
 import CompleteProjectButton from "./CompleteProjectButton";
 import ProjectBannerFooter from "./ProjectBannerFooter";
+import { ProjectRoleDTO } from "@/common/api/model";
+import { Dispatch, SetStateAction } from "react";
 
 type ProjectBannerProps = {
   id: number;
@@ -12,6 +14,11 @@ type ProjectBannerProps = {
   onCreate: (createMode: boolean) => void;
   onEdit: (editMode: boolean) => void;
   uri: string | undefined | null;
+  roles: ProjectRoleDTO[];
+  selectedRole: ProjectRoleDTO | null;
+  setSelectedRole: Dispatch<SetStateAction<ProjectRoleDTO | null>>;
+  selectAssetsMode: boolean;
+  setSelectAssetsMode: Dispatch<SetStateAction<boolean>>;
 };
 
 const ProjectBanner: FC<ProjectBannerProps> = ({
@@ -20,18 +27,25 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
   onCreate,
   onEdit,
   uri,
+  roles,
+  selectedRole,
+  setSelectedRole,
+  selectAssetsMode,
+  setSelectAssetsMode,
 }) => {
   const theme = useTheme();
 
   return (
     <View style={styles.imageContainer} key={uri}>
-      <Media uri={uri} style={{ flex: 1 }} />
+      <Media uri={uri} style={{ flex: 1 }}
+        onPress={() => { console.log("Media Pressed") }}
+      />
       <View
         style={{
           ...styles.content,
         }}
       >
-        <ProjectBannerHeader onCreate={onCreate} />
+        <ProjectBannerHeader onCreate={onCreate} onEdit={onEdit} />
         <View>
           <CompleteProjectButton id={id} />
           <Text
@@ -43,7 +57,14 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
           >
             {name}
           </Text>
-          <ProjectBannerFooter onEdit={onEdit} id={id} />
+          <ProjectBannerFooter
+            id={id}
+            roles={roles}
+            selectedRole={selectedRole}
+            setSelectedRole={setSelectedRole}
+            selectAssetsMode={selectAssetsMode}
+            setSelectAssetsMode={setSelectAssetsMode}
+          />
         </View>
       </View>
     </View>

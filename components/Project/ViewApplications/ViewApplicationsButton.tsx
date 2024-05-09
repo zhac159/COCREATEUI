@@ -1,5 +1,6 @@
 import { useTheme } from "@/components/Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native";
@@ -7,10 +8,25 @@ import { TouchableOpacity } from "react-native";
 
 type ViewApplicationsButtonProps = {
   onPress: () => void;
+  assetMode?: boolean;
 };
 
-const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({onPress}) => {
+const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({
+  onPress,
+  assetMode,
+}) => {
   const theme = useTheme();
+
+  const router = useRouter();
+
+  const navigateToCompleteProjectForm = () => {
+    router.navigate({
+      pathname: "/main/assetFinder",
+      params: {
+        projectId: 1,
+      },
+    });
+  };
 
   return (
     <TouchableOpacity

@@ -210,6 +210,29 @@ export const addressSelector = selector({
   },
 });
 
+// assetoffers 
+
+export const assetOffersSelector = selector({
+  key: "assetOffersSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.assetOffers ?? [];
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        assetOffers: newValue instanceof DefaultValue ? [] : newValue,
+      });
+    }
+  },
+});
+
+export const useAssetOffersValue = () => useRecoilValue(assetOffersSelector);
+export const useSetAssetOffersState = () => useSetRecoilState(assetOffersSelector);
+export const useAssetOffersState = () => useRecoilState(assetOffersSelector);
+
 export const useAddressValue = () => useRecoilValue(addressSelector);
 export const useSetAddressState = () => useSetRecoilState(addressSelector);
 export const useAddressState = () => useRecoilState(addressSelector);

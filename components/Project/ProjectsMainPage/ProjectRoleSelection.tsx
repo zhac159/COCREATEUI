@@ -1,18 +1,11 @@
 import { ProjectRoleDTO } from "@/common/api/model";
 import { useTheme } from "@/components/Themes/theme";
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useCallback,
-  useRef,
-} from "react";
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { Dispatch, FC, SetStateAction, useCallback, useRef } from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
 
-
 type ProjectRoleSelectionProps = {
-  roles: ProjectRoleDTO[] | null | undefined;
+  roles: ProjectRoleDTO[];
   selectedRole: ProjectRoleDTO | null;
   setSelectedRole: Dispatch<SetStateAction<ProjectRoleDTO | null>>;
 };
@@ -22,6 +15,9 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
   selectedRole,
   setSelectedRole,
 }) => {
+
+  roles = [...roles]
+
   const theme = useTheme();
   const flatListRef = useRef<FlatList>(null);
 
@@ -55,10 +51,8 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
       ref={flatListRef}
       horizontal
       data={[null, ...(roles)]}
-      contentContainerStyle={{
-        paddingVertical: 40,
-      }}
       showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{ justifyContent: 'flex-start', alignItems: 'center'}}
       renderItem={({ item: projectRole }) => (
         <TouchableOpacity
           onPress={() => {
@@ -109,3 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+
+
+

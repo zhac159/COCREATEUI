@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import {
+  useAssetOffersValue,
   useAssignedProjectsValue,
   useEnquiriesValue,
 } from "@/components/RecoilStates/profileState";
@@ -12,6 +13,8 @@ export default function Work() {
   const enquiries = useEnquiriesValue();
 
   const assignedProjects = useAssignedProjectsValue();
+
+  const assetOffers = useAssetOffersValue();
 
   if (!enquiries) return <Text>Loading...</Text>;
 
@@ -52,6 +55,28 @@ export default function Work() {
               chatType: ChatType.Enquiry,
             }}
             key={enquiry.id}
+          />
+        ))}
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "black",
+          margin: 10,
+        }}
+      >
+        Work Offers
+      </Text>
+      {assetOffers &&
+        assetOffers.map((offer) => (
+          <ChatPreview
+            chatImage="https://picsum.photos/200/300"
+            chatName={offer.project?.projectManager.username || "N/A"}
+            chatTargetIdTypePair={{
+              chatTargetId: offer.project?.projectManager.userId || 0,
+              chatType: ChatType.AssetEnquiry,
+            }}
+            key={offer.id}
           />
         ))}
     </View>

@@ -1,5 +1,5 @@
 import { AssetDTO, AssetOfferCreateDTO } from "@/common/api/model";
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,9 @@ import ButtonWithIcon from "../Common/ButtonWithIcon";
 import { usePostApiAssetOfferCreate } from "@/common/api/endpoints/cocreateApi";
 import { router } from "expo-router";
 import { useSetProjectByIdState } from "../RecoilStates/profileState";
+import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
+import { ChatType } from "../Chats/ChatHelper";
+import { ConnectionContext } from "@/app/main/_layout";
 
 type AssetOfferFormProps = {
   asset: AssetDTO;
@@ -31,6 +34,8 @@ const AssetOfferForm: FC<AssetOfferFormProps> = ({
   const theme = useTheme();
 
   const setProject = useSetProjectByIdState(projectId);
+  
+  const connection = useContext(ConnectionContext);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -45,14 +50,23 @@ const AssetOfferForm: FC<AssetOfferFormProps> = ({
         router.back();
         setProject((state) => {
           if (!state) return state;
-        
-          const newAssetOffers = state.assetOffers ? [...state.assetOffers, data] : [data];
-        
+
+          const newAssetOffers = state.assetOffers
+            ? [...state.assetOffers, data]
+            : [data];
+
           return {
             ...state,
             assetOffers: newAssetOffers,
           };
         });
+
+        createAndExchangeKeys(
+          data.asset!.owner!.publicKey || "",
+          data.asset!.owner!.userId || 0,
+          ChatType.AssetEnquiry,
+          connection
+        );
       },
       onError: (error) => {
         console.log(error);
