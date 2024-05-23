@@ -10,7 +10,6 @@ import { MessageCreateDTO } from "../api/model";
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import {
-  convertMessageDTOToIMessage,
   fetchMessages,
 } from "../database/databaseHelper";
 import * as Crypto from "expo-crypto";
@@ -24,10 +23,11 @@ import {
 } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import * as SecureStore from "expo-secure-store";
-import { ChatType, ChatTypeIdPair } from "@/components/Chats/ChatHelper";
+import { ChatType, ChatTypeIdPair } from "@/components/Chats/chatHelper";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
 import { downloadFile, usePrepareAndUpload } from "../media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
+import Message from "@/components/Common/Messages/Message";
 
 export async function handleReceiveEncryptedKeysExchange(
   connection: HubConnection,
@@ -80,6 +80,7 @@ export async function handleReceivedMessages(
     newValue: MessageDTO
   ) => void
 ): Promise<void> {
+
   if (!db) return;
 
   const aesKey = await getDatabasKey();
@@ -87,7 +88,7 @@ export async function handleReceivedMessages(
   if (!aesKey) return;
 
   const placeholders = messages
-    .map(() => "(?, ?, ?, ?, ?, ?, ?, ?)")
+    .map(() => "(?, ?, ?, ?, ?, ?, ?, ?, ?)")
     .join(", ");
 
   let values = [];
@@ -140,14 +141,15 @@ export async function handleReceivedMessages(
       message.mediaType !== undefined ? message.mediaType : null,
       message.date !== undefined ? message.date : null,
       message.chatType !== undefined ? message.chatType : null,
-      chatTargetId
+      chatTargetId,
+      message.replyMessageId !== undefined ? message.replyMessageId : null,
     );
   }
 
   try {
     if (values.length === 0) return;
     await db.runAsync(
-      `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId) VALUES ${placeholders}`,
+      `INSERT INTO messages (id, senderId, content, uri, mediaType, date, chatType, targetId, replyMessageId) VALUES ${placeholders}`,
       values
     );
   } catch (error) {
@@ -161,7 +163,7 @@ export async function handleReceivedMessages(
 export function handleReceivedMessagesInChat(
   connection: HubConnection,
   chatTargetIdTypePair: { chatTargetId: number; chatType: number },
-  setMessages: Dispatch<SetStateAction<IMessage[]>>
+  setMessages: Dispatch<SetStateAction<MessageDTO[]>>
 ): () => void {
   const handleMessage = async (messages: MessageDTO[]) => {
     var filteredMessages = messages.filter(
@@ -179,20 +181,27 @@ export function handleReceivedMessagesInChat(
       return;
     }
 
+    var decryptedMessages = filteredMessages.map((message) => {
+      const decryptedContent = message.content
+        ? decryptMessageAES(message.content, symmetricAesKey)
+        : null;
+
+      const decryptedUri = message.uri
+        ? decryptMessageAES(message.uri, symmetricAesKey)
+        : null;
+
+      return {
+        ...message,
+        content: decryptedContent,
+        uri: decryptedUri,
+      };
+    });
+
     setMessages((state) => [
-      ...filteredMessages.map((message, index) =>
-        convertMessageDTOToIMessage({
-          ...message,
-          uri: message.uri
-            ? decryptMessageAES(message.uri, symmetricAesKey)
-            : null,
-          content: message.content
-            ? decryptMessageAES(message.content, symmetricAesKey)
-            : message.content,
-        })
-      ),
+      ...decryptedMessages,
       ...state,
     ]);
+
   };
 
   connection.on("ReceiveMessages", handleMessage);
@@ -221,6 +230,7 @@ export async function sendMessage(
     chatTargetIdTypePair.chatType,
     chatTargetIdTypePair.chatTargetId
   );
+  
   if (!symmetricAesKey) throw new Error("Symmetric key not found");
 
   const encryptedMessage = encryptMessageAES(
@@ -244,6 +254,7 @@ export async function sendMessage(
     chatType: chatTargetIdTypePair.chatType,
     date: new Date().toISOString(),
     uri: url ? encryptedUri : null,
+    replyMessageId: message.replyMessageId,
   };
 
   try {
@@ -375,10 +386,10 @@ export const useSendMessage = (
               { ...messageDTO }
             );
           }
-          setMessages((state: IMessage[]) => [
-            convertMessageDTOToIMessage(messageDTO),
-            ...state,
-          ]);
+          // setMessages((state: MessageDTO[]) => [
+          //   messageDTO,
+          //   ...state,
+          // ]);
         })
         .catch((error) => console.error("Error sending message:", error));
     },
@@ -396,7 +407,7 @@ export const useSendMessage = (
 export const useChatMessages = (
   database: any,
   chatTargetIdTypePair: any,
-  setMessages: Dispatch<SetStateAction<IMessage[]>>
+  setMessages: Dispatch<SetStateAction<Message[]>>
 ) => {
   const loadMessages = useCallback(
     async (lastMessageDate?: string) => {
@@ -407,13 +418,10 @@ export const useChatMessages = (
           chatTargetIdTypePair,
           lastMessageDate
         );
-        const iMessages = fetchedMessages.map((message) =>
-          convertMessageDTOToIMessage(message)
-        );
 
-        if (iMessages.length === 0) return;
+        if (fetchedMessages.length === 0) return;
 
-        setMessages((state) => [...state, ...iMessages]);
+        setMessages((state) => [...state, ...fetchedMessages]);
       } catch (error) {
         console.error("Error fetching messages:", error);
       }

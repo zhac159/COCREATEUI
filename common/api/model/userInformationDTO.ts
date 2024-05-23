@@ -7,6 +7,6 @@
 
 export interface UserInformationDTO {
   publicKey?: string | null;
-  userId?: number;
-  username?: string | null;
+  userId: number;
+  username: string;
 }

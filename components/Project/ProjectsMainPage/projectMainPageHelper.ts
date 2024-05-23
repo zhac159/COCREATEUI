@@ -1,7 +1,9 @@
 import { ProjectRoleDTO } from "@/common/api/model";
 
-type SelectedRole = {
+export type SelectedRole = {
   role?: ProjectRoleDTO;
   allRoles?: boolean;
   assetMode?: boolean;
 };
+
+export const bannerHeight = 475;

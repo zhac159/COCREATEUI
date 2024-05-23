@@ -4,8 +4,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useTheme } from "../Themes/theme";
 import Media from "../MediaViewer/Media";
 import { router } from "expo-router";
-import { useSetCurrentChatTargetIdState } from "../RecoilStates/currentChatTargetIdState";
-import { ChatTypeIdPair } from "./ChatHelper";
+import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
+import { ChatTypeIdPair } from "./chatHelper";
 import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { fetchLastMessages } from "@/common/database/databaseHelper";
@@ -16,15 +16,17 @@ import { findUserById } from "@/common/chat/chatHelper";
 type GroupChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
   project: ProjectDTO;
+  showImage: boolean;
 };
 
 const GroupChatPreview: FC<GroupChatPreviewProps> = ({
   chatTargetIdTypePair,
   project,
+  showImage = true,
 }) => {
   const theme = useTheme();
 
-  const setChatTargetId = useSetCurrentChatTargetIdState();
+  const setCurrentChatData = useSetCurrentChatDataState();
 
   const database = useSQLiteContext();
 
@@ -43,18 +45,29 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
     <TouchableOpacity
       activeOpacity={1}
       onPress={() => {
-        setChatTargetId(chatTargetIdTypePair);
+        setCurrentChatData({
+          chatName: project.name,
+          colors: [],
+          chatTypeIdPair: chatTargetIdTypePair,
+        });
         router.push("/main/chat");
       }}
       style={{
         ...styles.container,
+        backgroundColor: !showImage ? theme.colors.lightGray : "transparent",
       }}
     >
-      <Media
-        uri={project.medias ? project.medias[1].uri:"https://picsum.photos/200/300  "}
-        style={styles.image}
-        onPress={() => {}}
-      />
+      {showImage && (
+        <Media
+          uri={
+            project.medias
+              ? project.medias[1].uri
+              : "https://picsum.photos/200/300  "
+          }
+          style={styles.image}
+          onPress={() => {}}
+        />
+      )}
       <View
         style={{
           ...styles.detailsContainer,

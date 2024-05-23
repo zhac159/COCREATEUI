@@ -15,7 +15,7 @@ import {
 } from "@/common/api/endpoints/cocreateApi";
 import UserProfile from "@/components/Common/UserProfile/UserProfile";
 import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
-import { ChatType } from "@/components/Chats/ChatHelper";
+import { ChatType } from "@/components/Chats/chatHelper";
 import { ConnectionContext } from "@/app/main/_layout";
 import { IconButton } from "react-native-paper";
 import { useUpdateEnquiryShortlistedInProjects } from "@/components/RecoilStates/profileState";

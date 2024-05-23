@@ -1,18 +1,26 @@
 import { ProjectRoleDTO } from "@/common/api/model";
-import { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { View, Dimensions } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
 import { EnquiryDTO } from "@/common/api/model";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
 import ProjectBanner from "./ProjectBanner/ProjectBanner";
-import ViewApplicationsButton from "../ViewApplications/ViewApplicationsButton";
-import { ChatType } from "@/components/Chats/ChatHelper";
+import { ChatType } from "@/components/Chats/chatHelper";
 import ViewApplications from "../ViewApplications/ViewApplications";
 import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 import { ScrollView } from "react-native-gesture-handler";
 import AssetOfferChats from "./AssetOfferChats";
 import ShortlistedEnquiriesChats from "./ShortlistedEnquiriesChats";
+import { SelectedRole, bannerHeight } from "./projectMainPageHelper";
+import ViewApplicationsAndAssetsButton from "../ViewApplications/ViewApplicationsAndAssetsButton";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -29,12 +37,11 @@ const Projects: FC<ProjectsProps> = ({
 }) => {
   const projects = useProjectValue();
 
-  const [selectedRole, setSelectedRole] = useState<ProjectRoleDTO | null>(null);
-
-  const [selectAssetsMode, setSelectAssetsMode] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<SelectedRole>({
+    allRoles: true,
+  });
 
   const [showApplications, setShowApplications] = useState(false);
-
 
   const uris = projects
     ? projects?.map((project) => project.medias[0].uri)
@@ -68,8 +75,6 @@ const Projects: FC<ProjectsProps> = ({
         roles={projects[selectedProject].projectRoles}
         selectedRole={selectedRole}
         setSelectedRole={setSelectedRole}
-        selectAssetsMode={selectAssetsMode}
-        setSelectAssetsMode={setSelectAssetsMode}
       />
     );
   };
@@ -77,8 +82,8 @@ const Projects: FC<ProjectsProps> = ({
   const enquiriesToRender: EnquiryDTO[] = useMemo(() => {
     let enquiries: EnquiryDTO[] = [];
 
-    if (selectedRole?.enquiries) {
-      enquiries = selectedRole.enquiries;
+    if (selectedRole.role?.enquiries) {
+      enquiries = selectedRole.role?.enquiries;
     } else {
       if (projects && projects[selectedProject]) {
         projects[selectedProject].projectRoles?.forEach((role) =>
@@ -109,7 +114,7 @@ const Projects: FC<ProjectsProps> = ({
         loop={false}
         data={uris}
         renderItem={renderItem}
-        height={400}
+        height={bannerHeight}
         panGestureHandlerProps={{
           hitSlop: { top: 20, bottom: -250, left: 20, right: 20 },
         }}
@@ -118,19 +123,30 @@ const Projects: FC<ProjectsProps> = ({
         style={{
           height: Dimensions.get("window").height - 350,
         }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          gap: 30
+        }}
       >
-        <ViewApplicationsButton
-          onPress={() => setShowApplications(true)}
-          assetMode={selectAssetsMode}
-        />
-        <ShortlistedEnquiriesChats enquiries={enquiriesToRender} />
-        <AssetOfferChats assetOffers={projects[selectedProject].assetOffers} />
         <ProjectChatPreview
           chatTargetIdTypePair={{
             chatTargetId: projects![selectedProject].id!,
             chatType: ChatType.Project,
           }}
           project={projects![selectedProject]}
+        />
+        <ViewApplicationsAndAssetsButton
+          onPress={() => setShowApplications(true)}
+          assetMode={!!selectedRole.assetMode}
+        />
+        <ShortlistedEnquiriesChats
+          projectId={projects[selectedProject].id}
+          enquiries={enquiriesToRender}
+          show={!!selectedRole.allRoles || !!selectedRole.role}
+        />
+        <AssetOfferChats
+          assetOffers={projects[selectedProject].assetOffers}
+          show={!!selectedRole.assetMode}
         />
       </ScrollView>
     </View>

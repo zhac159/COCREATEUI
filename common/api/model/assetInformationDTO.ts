@@ -12,5 +12,5 @@ export interface AssetInformationDTO {
   description: string;
   id: number;
   name: string;
-  owner?: UserInformationDTO;
+  owner: UserInformationDTO;
 }

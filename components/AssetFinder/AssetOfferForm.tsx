@@ -17,7 +17,7 @@ import { usePostApiAssetOfferCreate } from "@/common/api/endpoints/cocreateApi";
 import { router } from "expo-router";
 import { useSetProjectByIdState } from "../RecoilStates/profileState";
 import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
-import { ChatType } from "../Chats/ChatHelper";
+import { ChatType } from "../Chats/chatHelper";
 import { ConnectionContext } from "@/app/main/_layout";
 
 type AssetOfferFormProps = {

@@ -5,37 +5,45 @@ import { useTheme } from "../Themes/theme";
 import Media from "../MediaViewer/Media";
 import { formatDistance, parseISO } from "date-fns";
 import { router } from "expo-router";
-import { useSetCurrentChatTargetIdState } from "../RecoilStates/currentChatTargetIdState";
-import { ChatTypeIdPair } from "./ChatHelper";
-import {
-  useLastMessagesByTargetAndChatTypeState
-} from "../RecoilStates/lastMessagesState";
+import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
+import { ChatTypeIdPair } from "./chatHelper";
+import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { fetchLastMessages } from "@/common/database/databaseHelper";
+import { AssetOfferDTO, EnquiryDTO, ProjectDTO } from "@/common/api/model";
 
 type ChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
   chatImage: string;
   chatName: string;
+  enquiryInformation?: EnquiryDTO;
+  projectInformation?: ProjectDTO;
+  assetOfferInformation?: AssetOfferDTO;
+  projectId?: number;
 };
 
 const ChatPreview: FC<ChatPreviewProps> = ({
   chatTargetIdTypePair,
   chatImage,
   chatName,
+  enquiryInformation,
+  projectInformation,
+  assetOfferInformation,
+  projectId
 }) => {
   const theme = useTheme();
 
-  const setChatTargetId = useSetCurrentChatTargetIdState();
+  const setCurrentChatData = useSetCurrentChatDataState();
+
   const database = useSQLiteContext();
 
   const [lastMessages, setLastMessages] =
     useLastMessagesByTargetAndChatTypeState(chatTargetIdTypePair);
 
   useEffect(() => {
-    if (!database) return;
     fetchLastMessages(database, chatTargetIdTypePair)
       .then((fetchedMessages) => {
+        console.log("Fetched messages:", fetchedMessages);
         setLastMessages(fetchedMessages);
       })
       .catch((error) => console.error("Error fetching messages:", error));
@@ -62,7 +70,15 @@ const ChatPreview: FC<ChatPreviewProps> = ({
         paddingHorizontal: 10,
       }}
       onPress={() => {
-        setChatTargetId(chatTargetIdTypePair);
+        setCurrentChatData({
+          chatName,
+          colors: [],
+          chatTypeIdPair: chatTargetIdTypePair,
+          assetOfferInformation,
+          enquiryInformation,
+          projectInformation,
+          projectId
+        });
         router.push("/main/chat");
       }}
     >

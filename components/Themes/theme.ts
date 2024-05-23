@@ -16,7 +16,7 @@ export const LightTheme: CustomTheme = {
     gray: "rgb(128, 128, 128)",
     grayer: "rgb(174, 174, 174)",
     iconGray: "rgb(151, 151, 151)",
-    lightGray: "rgb(220, 220, 220)",
+    lightGray: "rgb(200, 200, 200)",
     lightestGray: "rgb(244, 244, 244)",
     green: "rgb(56, 250, 152)",
     red: "rgb(251, 0, 0)",

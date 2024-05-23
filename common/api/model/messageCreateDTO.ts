@@ -13,6 +13,7 @@ export interface MessageCreateDTO {
   date?: string;
   id?: string;
   mediaType?: MediaType;
+  replyMessageId?: string | null;
   targetId?: number;
   uri?: string | null;
 }

@@ -1,12 +1,13 @@
 import { FC, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { ChatType, ChatTypeIdPair } from "./ChatHelper";
+import { StyleSheet, View, Text } from "react-native";
+import { ChatType, ChatTypeIdPair } from "./chatHelper";
 import { ProjectDTO } from "@/common/api/model";
 import GroupChatPreview from "./GroupChatPreview";
 import Swiper from "react-native-swiper";
 import { getProjectUsers } from "@/common/chat/chatHelper";
 import ChatPreview from "./ChatPreview";
 import { useUserIdValue } from "../RecoilStates/profileState";
+import { useTheme } from "../Themes/theme";
 
 type ProjectChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
@@ -17,6 +18,8 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
   chatTargetIdTypePair,
   project,
 }) => {
+  const theme = useTheme();
+
   const usersInProject = useMemo(() => {
     return getProjectUsers(project);
   }, [project]);
@@ -24,33 +27,46 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
   const userId = useUserIdValue();
 
   return (
-    <View
-      style={{
-        ...styles.container,
-      }}
-    >
-      <Swiper showsPagination={true} loop={false}>
-        <GroupChatPreview
-          chatTargetIdTypePair={chatTargetIdTypePair}
-          project={project}
-        />
+    <View>
+      <Text
+        style={{
+          ...theme.customFonts.primary.medium,
+          color: theme.colors.black,
+          paddingTop: 20,
+          paddingBottom: 10,
+        }}
+      >
+        Team Chat
+      </Text>
+      <View
+        style={{
+          ...styles.container,
+        }}
+      >
+        <Swiper showsPagination={true} loop={false}>
+          <GroupChatPreview
+            chatTargetIdTypePair={chatTargetIdTypePair}
+            project={project}
+            showImage={false}
+          />
 
-        <View>
-          {usersInProject
-            .filter((user) => user.userId !== userId)
-            .map((user) => (
-              <ChatPreview
-                chatImage="https://picsum.photos/200/300"
-                chatName={user.username || "N/A"}
-                chatTargetIdTypePair={{
-                  chatTargetId: user.userId || 0,
-                  chatType: ChatType.Enquiry,
-                }}
-                key={user.userId + "-chat-user"}
-              />
-            ))}
-        </View>
-      </Swiper>
+          <View>
+            {usersInProject
+              .filter((user) => user.userId !== userId)
+              .map((user) => (
+                <ChatPreview
+                  chatImage="https://picsum.photos/200/300"
+                  chatName={user.username || "N/A"}
+                  chatTargetIdTypePair={{
+                    chatTargetId: user.userId || 0,
+                    chatType: ChatType.Enquiry,
+                  }}
+                  key={user.userId + "-chat-user"}
+                />
+              ))}
+          </View>
+        </Swiper>
+      </View>
     </View>
   );
 };

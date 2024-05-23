@@ -1,6 +1,9 @@
+import Message from "@/components/Common/Messages/Message";
 import { MessageDTO } from "../api/model";
-import { IMessage } from "react-native-gifted-chat";
-import { decryptMessageAES, getDatabasKey } from "../encryption/encryptionHelper";
+import {
+  decryptMessageAES,
+  getDatabasKey,
+} from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
@@ -20,6 +23,16 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   await db.execAsync(
     `CREATE INDEX IF NOT EXISTS idx_messages_date ON messages (date DESC);`
   );
+
+  const resultSet = await db.getAllAsync(`PRAGMA table_info(messages);`);
+
+  const columnExists = resultSet.some(
+    (row: any) => row.name === "replyMessageId"
+  );
+
+  if (!columnExists) {
+    await db.execAsync(`ALTER TABLE messages ADD COLUMN replyMessageId TEXT;`);
+  }
 }
 
 export async function fetchLastMessages(
@@ -47,7 +60,7 @@ export async function fetchMessages(
   database: SQLiteDatabase,
   chatTargetIdTypePair: { chatTargetId: number; chatType: number },
   lastMessageDate?: string
-): Promise<MessageDTO[]> {
+): Promise<Message[]> {
   const aesKey = await getDatabasKey();
 
   if (!aesKey) throw new Error("AES key not found");
@@ -57,26 +70,53 @@ export async function fetchMessages(
   lastMessageDate = lastMessageDate || new Date().toISOString();
 
   const resultSet = await database.getAllAsync(
-    `SELECT * FROM messages WHERE targetId = ? AND chatType = ? AND date < ? ORDER BY date DESC LIMIT ?`,
-    [chatTargetIdTypePair.chatTargetId, chatTargetIdTypePair.chatType, lastMessageDate, limit]
+    `SELECT m.*, 
+      r.chatType as replyMessage_chatType, 
+      r.content as replyMessage_content, 
+      r.date as replyMessage_date, 
+      r.id as replyMessage_id, 
+      r.mediaType as replyMessage_mediaType, 
+      r.replyMessageId as replyMessage_replyMessageId, 
+      r.senderId as replyMessage_senderId, 
+      r.targetId as replyMessage_targetId, 
+      r.uri as replyMessage_uri
+    FROM messages m
+    LEFT JOIN messages r ON m.replyMessageId = r.id
+    WHERE m.targetId = ? AND m.chatType = ? AND m.date < ? 
+    ORDER BY m.date DESC 
+    LIMIT ?`,
+    [
+      chatTargetIdTypePair.chatTargetId,
+      chatTargetIdTypePair.chatType,
+      lastMessageDate,
+      limit,
+    ]
   );
 
-  const rows: MessageDTO[] = resultSet.map((row: any) => {
-    row.content = row.content ? decryptMessageAES(row.content, aesKey) : null;
-    return row as MessageDTO;
-  });
+  const rows: Message[] = resultSet.map((row: any) => (
+    
+    {
+    chatType: row.chatType,
+    content: row.content ? decryptMessageAES(row.content, aesKey) : null,
+    date: row.date,
+    id: row.id,
+    mediaType: row.mediaType,
+    replyMessageId: row.replyMessageId,
+    senderId: row.senderId,
+    targetId: row.targetId,
+    uri: row.uri,
+    replyMessage: {
+      chatType: row.replyMessage_chatType,
+      content: row.replyMessage_content ? decryptMessageAES(row.replyMessage_content, aesKey) : null,
+      date: row.replyMessage_date,
+      id: row.replyMessage_id,
+      mediaType: row.replyMessage_mediaType,
+      replyMessageId: row.replyMessage_replyMessageId,
+      senderId: row.replyMessage_senderId,
+      targetId: row.replyMessage_targetId,
+      uri: row.replyMessage_uri,
+    },
+  }));
 
   return rows;
-}
-export function convertMessageDTOToIMessage(message: MessageDTO): IMessage {
-  return {
-    _id: `${message.id}`,
-    text: message.content || "",
-    createdAt: new Date(message.date || ""),
-    user: {
-      _id: message.senderId || "unknown",
-    },
-    image: message.uri || undefined,
-    sent: true,
-  };
 }

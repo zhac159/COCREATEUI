@@ -3,7 +3,7 @@ import * as SecureStore from "expo-secure-store";
 import CryptoES from "crypto-es";
 import nacl from "tweetnacl";
 import { Buffer } from "buffer";
-import { ChatType } from "@/components/Chats/ChatHelper";
+import { ChatType } from "@/components/Chats/chatHelper";
 import { EncryptedKeyExchangeCreateDTO } from "../api/model";
 import { HubConnection } from "@microsoft/signalr";
 

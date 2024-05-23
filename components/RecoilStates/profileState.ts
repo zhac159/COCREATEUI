@@ -16,6 +16,7 @@ import {
 } from "recoil";
 import { selector } from "recoil";
 import { UserReviewDetails } from "../Common/Review/reviewHelper";
+import { useCallback } from "react";
 
 export const currentUserState = atom<UserDTO>({
   key: "userState",
@@ -193,22 +194,6 @@ export const useSetAssetByIdState = (id: number) =>
 export const useAssetByIdState = (id: number) =>
   useRecoilState(assetByIdSelector(id));
 
-export const addressSelector = selector({
-  key: "addressSelector",
-  get: ({ get }) => {
-    const user = get(currentUserState);
-    return user?.address;
-  },
-  set: ({ set, get }, newValue) => {
-    const user = get(currentUserState);
-    if (user) {
-      set(currentUserState, {
-        ...user,
-        address: newValue instanceof DefaultValue ? null : newValue,
-      });
-    }
-  },
-});
 
 // assetoffers 
 
@@ -232,6 +217,33 @@ export const assetOffersSelector = selector({
 export const useAssetOffersValue = () => useRecoilValue(assetOffersSelector);
 export const useSetAssetOffersState = () => useSetRecoilState(assetOffersSelector);
 export const useAssetOffersState = () => useRecoilState(assetOffersSelector);
+
+export const useAssetOfferById = () => {
+  const assetOffers = useAssetOffersValue();
+
+  const getAssetOfferById = useCallback((id: number) => {
+    return assetOffers.find(offer => offer.id === id);
+  }, [assetOffers]);
+
+  return getAssetOfferById;
+};
+
+export const addressSelector = selector({
+  key: "addressSelector",
+  get: ({ get }) => {
+    const user = get(currentUserState);
+    return user?.address;
+  },
+  set: ({ set, get }, newValue) => {
+    const user = get(currentUserState);
+    if (user) {
+      set(currentUserState, {
+        ...user,
+        address: newValue instanceof DefaultValue ? null : newValue,
+      });
+    }
+  },
+});
 
 export const useAddressValue = () => useRecoilValue(addressSelector);
 export const useSetAddressState = () => useSetRecoilState(addressSelector);

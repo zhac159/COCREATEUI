@@ -28,6 +28,7 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
 
   return (
     <BlurView
+     
       intensity={15}
       renderToHardwareTextureAndroid
       style={{

@@ -1599,7 +1599,8 @@
           "assetType",
           "description",
           "id",
-          "name"
+          "name",
+          "owner"
         ],
         "type": "object",
         "properties": {
@@ -2189,6 +2190,11 @@
           "date": {
             "type": "string",
             "format": "date-time"
+          },
+          "replyMessageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2225,6 +2231,11 @@
           "date": {
             "type": "string",
             "format": "date-time"
+          },
+          "replyMessageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3164,6 +3175,10 @@
         "additionalProperties": false
       },
       "UserInformationDTO": {
+        "required": [
+          "userId",
+          "username"
+        ],
         "type": "object",
         "properties": {
           "userId": {
@@ -3171,8 +3186,8 @@
             "format": "int32"
           },
           "username": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "publicKey": {
             "type": "string",

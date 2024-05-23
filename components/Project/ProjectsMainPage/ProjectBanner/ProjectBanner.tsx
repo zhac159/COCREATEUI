@@ -7,6 +7,7 @@ import CompleteProjectButton from "./CompleteProjectButton";
 import ProjectBannerFooter from "./ProjectBannerFooter";
 import { ProjectRoleDTO } from "@/common/api/model";
 import { Dispatch, SetStateAction } from "react";
+import { SelectedRole, bannerHeight } from "../projectMainPageHelper";
 
 type ProjectBannerProps = {
   id: number;
@@ -15,10 +16,8 @@ type ProjectBannerProps = {
   onEdit: (editMode: boolean) => void;
   uri: string | undefined | null;
   roles: ProjectRoleDTO[];
-  selectedRole: ProjectRoleDTO | null;
-  setSelectedRole: Dispatch<SetStateAction<ProjectRoleDTO | null>>;
-  selectAssetsMode: boolean;
-  setSelectAssetsMode: Dispatch<SetStateAction<boolean>>;
+  selectedRole: SelectedRole;
+  setSelectedRole: Dispatch<SetStateAction<SelectedRole>>;
 };
 
 const ProjectBanner: FC<ProjectBannerProps> = ({
@@ -30,42 +29,39 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
   roles,
   selectedRole,
   setSelectedRole,
-  selectAssetsMode,
-  setSelectAssetsMode,
 }) => {
   const theme = useTheme();
 
   return (
     <View style={styles.imageContainer} key={uri}>
-      <Media uri={uri} style={{ flex: 1 }}
-        onPress={() => { console.log("Media Pressed") }}
+      <Media
+        uri={uri}
+        style={{ flex: 1 }}
+        onPress={() => {
+          console.log("Media Pressed");
+        }}
       />
       <View
         style={{
           ...styles.content,
         }}
       >
-        <ProjectBannerHeader onCreate={onCreate} onEdit={onEdit} />
-        <View>
-          <CompleteProjectButton id={id} />
-          <Text
-            style={{
-              ...theme.customFonts.secondary.medium,
-              ...styles.name,
-              color: theme.colors.white,
-            }}
-          >
-            {name}
-          </Text>
-          <ProjectBannerFooter
-            id={id}
-            roles={roles}
-            selectedRole={selectedRole}
-            setSelectedRole={setSelectedRole}
-            selectAssetsMode={selectAssetsMode}
-            setSelectAssetsMode={setSelectAssetsMode}
-          />
-        </View>
+        <ProjectBannerHeader onCreate={onCreate} onEdit={onEdit} id={id} />
+        <Text
+          style={{
+            ...theme.customFonts.secondary.medium,
+            ...styles.name,
+            color: theme.colors.white,
+          }}
+        >
+          {name}
+        </Text>
+        <ProjectBannerFooter
+          id={id}
+          roles={roles}
+          selectedRole={selectedRole}
+          setSelectedRole={setSelectedRole}
+        />
       </View>
     </View>
   );
@@ -81,7 +77,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   imageContainer: {
-    height: 400,
+    height: bannerHeight,
     width: "100%",
   },
   name: {
@@ -102,28 +98,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    alignSelf: "flex-end",
-    alignContent: "center",
-  },
-  findAssetButton: {
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-  },
-  finishProjectButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignContent: "center",
-    alignItems: "center",
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    maxWidth: 170,
-    marginBottom: 10,
   },
 });

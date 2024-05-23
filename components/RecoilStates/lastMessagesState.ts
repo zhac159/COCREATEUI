@@ -7,7 +7,7 @@ import {
   selectorFamily,
   DefaultValue,
 } from "recoil";
-import { ChatTypeIdPair } from "../Chats/ChatHelper";
+import { ChatTypeIdPair } from "../Chats/chatHelper";
 
 export type LastMessages = {
   chatTypeIdPair: ChatTypeIdPair;
@@ -76,6 +76,10 @@ export const lastMessagesByTargetAndChatTypeState = selectorFamily<
 export const useLastMessagesByTargetAndChatTypeState = (
   chatTypeIdPair: ChatTypeIdPair
 ) => useRecoilState(lastMessagesByTargetAndChatTypeState(chatTypeIdPair));
+
+export const useLastMessagesByTargetAndChatTypeValue = (
+  chatTypeIdPair: ChatTypeIdPair
+) => useRecoilValue(lastMessagesByTargetAndChatTypeState(chatTypeIdPair));
 
 export const useSetLastMessagesByTargetAndChatTypeState = () => {
   const setLastMessagesState = useSetRecoilState(lastMessagesState);

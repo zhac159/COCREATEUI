@@ -4,15 +4,18 @@ import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { IconButton } from "react-native-paper";
 import { useRouter } from "expo-router";
+import CompleteProjectButton from "./CompleteProjectButton";
 
 type ProjectBannerHeaderProps = {
   onCreate: (createMode: boolean) => void;
   onEdit: (editMode: boolean) => void;
+  id: number;
 };
 
 const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
   onCreate,
   onEdit,
+  id,
 }) => {
   const theme = useTheme();
 
@@ -70,6 +73,7 @@ const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
             margin: 0,
           }}
         />
+        <CompleteProjectButton id={id} />
       </View>
     </View>
   );

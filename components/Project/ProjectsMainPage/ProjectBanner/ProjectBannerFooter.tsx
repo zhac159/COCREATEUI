@@ -4,14 +4,13 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { ProjectRoleDTO } from "@/common/api/model";
 import { Dispatch, SetStateAction } from "react";
 import ProjectRoleSelection from "../ProjectRoleSelection";
+import { SelectedRole } from "../projectMainPageHelper";
 
 type ProjectBannerFooterProps = {
   id: number;
   roles: ProjectRoleDTO[];
-  selectedRole: ProjectRoleDTO | null;
-  setSelectedRole: Dispatch<SetStateAction<ProjectRoleDTO | null>>;
-  selectAssetsMode: boolean;
-  setSelectAssetsMode: Dispatch<SetStateAction<boolean>>;
+  selectedRole: SelectedRole;
+  setSelectedRole: Dispatch<SetStateAction<SelectedRole>>;
 };
 
 const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({
@@ -19,8 +18,6 @@ const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({
   roles,
   selectedRole,
   setSelectedRole,
-  selectAssetsMode,
-  setSelectAssetsMode,
 }) => {
   const theme = useTheme();
 
@@ -33,11 +30,13 @@ const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({
       <TouchableOpacity
         style={{
           ...styles.findAssetButton,
-          backgroundColor: selectAssetsMode
+          backgroundColor: selectedRole.assetMode
             ? theme.colors.primary
             : theme.colors.secondary,
         }}
-        onPress={() => setSelectAssetsMode((state) => !state)}
+        onPress={() =>
+          setSelectedRole({assetMode: true})
+        }
       >
         <Text
           style={{

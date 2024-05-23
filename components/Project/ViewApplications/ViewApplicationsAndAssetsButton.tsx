@@ -6,18 +6,18 @@ import { StyleSheet } from "react-native";
 import { Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 
-type ViewApplicationsButtonProps = {
+type ViewApplicationsAndAssetsButtonProps = {
   onPress: () => void;
   assetMode?: boolean;
 };
 
-const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({
+const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> = ({
   onPress,
   assetMode,
 }) => {
   const theme = useTheme();
 
-  const router = useRouter();
+  const router = useRouter(); 
 
   const navigateToCompleteProjectForm = () => {
     router.navigate({
@@ -32,9 +32,11 @@ const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({
     <TouchableOpacity
       style={{
         ...styles.viewApplicationContainer,
-        backgroundColor: theme.colors.black,
+        backgroundColor: "rgb(200, 200, 200)",
       }}
-      onPress={onPress}
+      onPress={
+        assetMode ? navigateToCompleteProjectForm : onPress
+      } 
     >
       <Text
         style={{
@@ -43,7 +45,7 @@ const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({
           color: theme.colors.white,
         }}
       >
-        View Applications
+        {assetMode ? "View Assets" : "View Applications"}
       </Text>
       <FontAwesome6
         name="arrow-right"
@@ -56,7 +58,7 @@ const ViewApplicationsButton: FC<ViewApplicationsButtonProps> = ({
   );
 };
 
-export default ViewApplicationsButton;
+export default ViewApplicationsAndAssetsButton;
 
 const styles = StyleSheet.create({
   viewApplicationsText: {
@@ -71,7 +73,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 41,
+    width: "95%",
+    alignSelf: "center",
+    marginBottom: 20
   },
   viewApplicationsRightArrow: {
     paddingRight: 16,

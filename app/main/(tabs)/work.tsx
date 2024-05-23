@@ -6,7 +6,7 @@ import {
   useEnquiriesValue,
 } from "@/components/RecoilStates/profileState";
 import ChatPreview from "@/components/Chats/ChatPreview";
-import { ChatType } from "@/components/Chats/ChatHelper";
+import { ChatType } from "@/components/Chats/chatHelper";
 import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 
 export default function Work() {
@@ -45,28 +45,6 @@ export default function Work() {
       >
         Shortlisted
       </Text>
-      {shortlistedEnquiries &&
-        shortlistedEnquiries.map((enquiry) => (
-          <ChatPreview
-            chatImage="https://picsum.photos/200/300"
-            chatName={enquiry.projectManager?.username || "N/A"}
-            chatTargetIdTypePair={{
-              chatTargetId: enquiry.projectManager?.userId || 0,
-              chatType: ChatType.Enquiry,
-            }}
-            key={enquiry.id}
-          />
-        ))}
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "bold",
-          color: "black",
-          margin: 10,
-        }}
-      >
-        Work Offers
-      </Text>
       {assetOffers &&
         assetOffers.map((offer) => (
           <ChatPreview
@@ -77,6 +55,28 @@ export default function Work() {
               chatType: ChatType.AssetEnquiry,
             }}
             key={offer.id}
+          />
+        ))}
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "black",
+          margin: 10,
+        }}
+      >
+        Asset Offers
+      </Text>
+      {shortlistedEnquiries &&
+        shortlistedEnquiries.map((enquiry) => (
+          <ChatPreview
+            chatImage="https://picsum.photos/200/300"
+            chatName={enquiry.projectManager?.username || "N/A"}
+            chatTargetIdTypePair={{
+              chatTargetId: enquiry.projectManager?.userId || 0,
+              chatType: ChatType.Enquiry,
+            }}
+            key={enquiry.id}
           />
         ))}
     </View>

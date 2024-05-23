@@ -53,6 +53,7 @@ export default function LocationForm() {
             placeholder="Enter Location"
             minLength={2}
             fetchDetails={true}
+            
             onPress={(data, details = null) => {
               if (details == null) {
                 return;
@@ -65,8 +66,9 @@ export default function LocationForm() {
                 },
               });
             }}
+
             query={{
-              key: "AIzaSyDxcKLuYiGnKpesxd2Ifoz-aNzDXNk3B4g",
+              key: "AIzaSyAFNo96X4pNPMF8A7u8XwzrHPXagPsXU2Q",
               language: "en",
             }}
             styles={{
@@ -87,6 +89,7 @@ export default function LocationForm() {
                 backgroundColor: "whitw",
               },
             }}
+            
           />
         )}
       </View>

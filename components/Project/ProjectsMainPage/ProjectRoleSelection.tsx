@@ -3,11 +3,12 @@ import { useTheme } from "@/components/Themes/theme";
 import { Dispatch, FC, SetStateAction, useCallback, useRef } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
+import { SelectedRole } from "./projectMainPageHelper";
 
 type ProjectRoleSelectionProps = {
   roles: ProjectRoleDTO[];
-  selectedRole: ProjectRoleDTO | null;
-  setSelectedRole: Dispatch<SetStateAction<ProjectRoleDTO | null>>;
+  selectedRole: SelectedRole;
+  setSelectedRole: Dispatch<SetStateAction<SelectedRole>>;
 };
 
 const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
@@ -15,21 +16,20 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
   selectedRole,
   setSelectedRole,
 }) => {
-
-  roles = [...roles]
+  roles = [...roles];
 
   const theme = useTheme();
   const flatListRef = useRef<FlatList>(null);
 
   function isRoleSelected(projectRole: ProjectRoleDTO | null) {
-    if (!projectRole && !selectedRole) return true;
+    if (!projectRole && selectedRole.allRoles) return true;
     if (!projectRole || !selectedRole) return false;
-    return projectRole.id === selectedRole?.id;
+    return projectRole.id === selectedRole?.role?.id;
   }
 
   const handleRoleSelection = useCallback(
     (projectRole: ProjectRoleDTO | null) => {
-      setSelectedRole(projectRole);
+      setSelectedRole(projectRole ? { role: projectRole } : { allRoles: true });
       if (!roles || !projectRole) return;
       const index = roles.indexOf(projectRole);
 
@@ -44,15 +44,18 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
     [roles]
   );
 
-  if(!roles) return null;
+  if (!roles) return null;
 
   return (
     <FlatList<ProjectRoleDTO | null>
       ref={flatListRef}
       horizontal
-      data={[null, ...(roles)]}
+      data={[null, ...roles]}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ justifyContent: 'flex-start', alignItems: 'center'}}
+      contentContainerStyle={{
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
       renderItem={({ item: projectRole }) => (
         <TouchableOpacity
           onPress={() => {
@@ -103,7 +106,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-
-
-

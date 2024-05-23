@@ -31,7 +31,7 @@ import {
 import { EntityType } from "../../Account/Common/Media/EntityType";
 import CancelButton from "../Common/CancelButton";
 import { generateAndStoreSymmetricAesKey } from "@/common/encryption/encryptionHelper";
-import { ChatType } from "@/components/Chats/ChatHelper";
+import { ChatType } from "@/components/Chats/chatHelper";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 
 type ProjectCreateProps = {
