@@ -38,8 +38,8 @@ export const getAssetIcon = (assetType: AssetType): AssetIconNames => {
 export const assetStyles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    width: "65%",
-    height: "100%",
+    width: "68%",
+    height: "70%",
     borderRadius: 14,
     padding: 10,
     shadowColor: "#000",
@@ -47,9 +47,10 @@ export const assetStyles = StyleSheet.create({
       width: 0,
       height: 10,
     },
-    elevation: 5,
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    // elevation: 5,
+    // shadowOpacity: 0.1,
+    // shadowRadius: 4,
+    marginBottom: 10,
   },
   mainImage: {
     borderRadius: 7,
@@ -88,7 +89,7 @@ export const assetStyles = StyleSheet.create({
     paddingBottom: 0,
     paddingRight: "2%",
     borderTopLeftRadius: 7,
-    borderBottomRightRadius: 7,
+    borderTopRightRadius: 7,
   },
   description: {
     fontSize: 12,
@@ -108,7 +109,7 @@ export const assetStyles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 0,
     paddingRight: "2%",
-    height: "20%",
+    height: "15%",
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
   },

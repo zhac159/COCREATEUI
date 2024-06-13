@@ -1,5 +1,5 @@
 import { AssetOfferDTO } from "@/common/api/model";
-import { ChatType } from "@/components/Chats/chatHelper";
+import ChatType from "@/common/chat/chatType";
 import ChatPreview from "@/components/Chats/ChatPreview";
 import { useTheme } from "@/components/Themes/theme";
 import React, { FC } from "react";
@@ -20,7 +20,8 @@ const AssetOfferChats: FC<AssetOfferChatsProps> = ({ assetOffers, show }) => {
       <Text
         style={{
           ...theme.customFonts.primary.medium,
-          paddingBottom: 18
+          paddingBottom: 18,
+          paddingLeft: 10,
         }}
       >
         Offers

@@ -1,4 +1,3 @@
-import { MessageDTO } from "@/common/api/model";
 import {
   atom,
   useRecoilState,
@@ -8,10 +7,11 @@ import {
   DefaultValue,
 } from "recoil";
 import { ChatTypeIdPair } from "../Chats/chatHelper";
+import Message from "../Common/Messages/Message";
 
 export type LastMessages = {
   chatTypeIdPair: ChatTypeIdPair;
-  lastMessages: MessageDTO[];
+  lastMessages: Message[];
 };
 
 export const lastMessagesState = atom<LastMessages[]>({
@@ -25,7 +25,7 @@ export const useSetLastMessagesState = () =>
   useSetRecoilState(lastMessagesState);
 
 export const lastMessagesByTargetAndChatTypeState = selectorFamily<
-  MessageDTO[],
+  Message[],
   ChatTypeIdPair
 >({
   key: "lastMessagesByTargetAndChatTypeState",
@@ -84,7 +84,7 @@ export const useLastMessagesByTargetAndChatTypeValue = (
 export const useSetLastMessagesByTargetAndChatTypeState = () => {
   const setLastMessagesState = useSetRecoilState(lastMessagesState);
 
-  return (chatTypeIdPair: ChatTypeIdPair, newValue: MessageDTO) => {
+  return (chatTypeIdPair: ChatTypeIdPair, newValue: Message) => {
     setLastMessagesState((oldLastMessages) => {
       let found = false;
       const newLastMessagesState = oldLastMessages.map((message) => {

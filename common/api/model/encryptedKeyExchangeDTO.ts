@@ -7,12 +7,12 @@
 import type { ChatType } from './chatType';
 
 export interface EncryptedKeyExchangeDTO {
-  chatType?: ChatType;
-  encryptedSymmetricKey?: string | null;
+  chatType: ChatType;
+  encryptedSymmetricKey: string;
   groupChatId?: number | null;
-  id?: string;
-  nonce?: string | null;
-  publicKey?: string | null;
-  senderId?: number;
-  targetId?: number;
+  id: string;
+  nonce: string;
+  publicKey: string;
+  senderId: number;
+  targetId: number;
 }

@@ -1,35 +1,51 @@
-import { MessageCreateDTO, MessageDTO } from "@/common/api/model";
-import React, { FC, useState, useEffect, useRef } from "react";
+import { MessageCreateDTO } from "@/common/api/model";
+import React, { FC, useState, useRef, useCallback } from "react";
 import {
   FlatList,
   TextInput,
   View,
-  Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import BackgroundColourAnimation from "../Account/BackgroundColourAnimation";
 import ChatTextInput from "./ChatTextInput";
 import { BlurView } from "@react-native-community/blur";
 import Message from "../Common/Messages/Message";
-import { useRenderChatMessage } from "./ChatBubble";
+import { useRenderChatMessage } from "./MessageBubble";
+import MessageReaction from "../Common/Messages/MessageReaction";
 
 type ChatProps = {
   messages: Message[];
   handleLoadMessages: () => void;
+  handleLoadLaterMessages: () => void;
   handleSendMessage: (message: MessageCreateDTO) => void;
+  handleLoadMessagesAroundMessage: (message: Message) => void;
+  handleAddReaction: (message: MessageReaction) => void;
   userId: number;
+  getMedia: (index: number) => void;
 };
 
 const Chat: FC<ChatProps> = ({
   messages,
   handleLoadMessages,
+  handleLoadLaterMessages,
   handleSendMessage,
+  handleLoadMessagesAroundMessage,
+  handleAddReaction,
   userId,
+  getMedia,
 }) => {
   const flatListRef = useRef<FlatList<Message>>(null);
+
+  const [
+    onStartReachedCalledDuringMomentum,
+    setOnStartReachedCalledDuringMomentum,
+  ] = useState(false);
+
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(false);
 
   const [selectedMessage, setSelectedMessage] = useState<Message>();
 
@@ -40,13 +56,37 @@ const Chat: FC<ChatProps> = ({
     textInputRef.current?.focus();
   };
 
-  const renderItem = useRenderChatMessage(userId, handleSelectMessage);
+  const handleSelectReplyMessage = (message: Message) => {
+    handleLoadMessagesAroundMessage(message);
+    setTimeout(() => {
+      flatListRef.current?.scrollToIndex({
+        index: 14,
+        animated: true,
+      });
+    }, 200);
+  };
+
+  const renderItem = useRenderChatMessage(
+    userId,
+    handleSelectMessage,
+    handleSelectReplyMessage
+  );
+
+  const handleAddReactionAndClose = useCallback( async (messageReaction: MessageReaction) => {
+    await handleAddReaction(messageReaction);
+    textInputRef.current?.blur();
+    setSelectedMessage(undefined);
+  }, [handleAddReaction]);
+
+  const handleRenderItem = ({ item }: { item: Message }) => {
+    return renderItem({ item, showReactions: true });
+  };
+
+ 
 
   return (
     <View style={styles.container}>
-      <BackgroundColourAnimation />
       <FlatList
-        showsVerticalScrollIndicator={false}
         ref={flatListRef}
         contentContainerStyle={{
           paddingHorizontal: 15,
@@ -56,18 +96,33 @@ const Chat: FC<ChatProps> = ({
         }}
         data={messages}
         inverted
-        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        renderItem={handleRenderItem}
         keyExtractor={(item) => item.id!.toString()}
-        // onContentSizeChange={() =>
-        //   flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
-        // }
         scrollsToTop={false}
         maintainVisibleContentPosition={{
           minIndexForVisible: 0,
         }}
-        onEndReached={handleLoadMessages}
+        onEndReached={() => {
+          if (!onEndReachedCalledDuringMomentum) {
+            handleLoadMessages();
+            setOnEndReachedCalledDuringMomentum(true);
+          }
+        }}
+        onStartReached={() => {
+          if (!onStartReachedCalledDuringMomentum) {
+
+            handleLoadLaterMessages();
+            setOnStartReachedCalledDuringMomentum(true);
+          }
+        }}
+        onMomentumScrollBegin={() => {
+          setOnStartReachedCalledDuringMomentum(false);
+          setOnEndReachedCalledDuringMomentum(false);
+        }}
         initialNumToRender={15}
-        onEndReachedThreshold={0.5}
+        maxToRenderPerBatch={25}
+        updateCellsBatchingPeriod={40}
       />
       {selectedMessage && (
         <TouchableOpacity
@@ -88,7 +143,10 @@ const Chat: FC<ChatProps> = ({
         ref={textInputRef}
         renderItem={renderItem}
         selectedMessage={selectedMessage}
+        setSelectedMessage={setSelectedMessage}
         sendMessage={handleSendMessage}
+        addReaction={handleAddReactionAndClose}
+        getMedia={getMedia}
       />
     </View>
   );

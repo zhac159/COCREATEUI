@@ -60,7 +60,7 @@ const PortofolioContentTab = () => {
   const { mutate: updatePortofolioContent } = usePutApiUserPortofolio({
     mutation: {
       onSuccess: (data) => {
-        setPortofolioContents(data.portofolioContents);
+        setPortofolioContents(data.portofolioContents || []);
         setAboutYou(data.aboutYou);
       },
     },
@@ -140,7 +140,7 @@ const PortofolioContentTab = () => {
               multiline={true}
               value={newAboutYou}
               onChangeText={(text) => {
-                if (text.length <= 30) {
+                if (text.length <= 500) {
                   setNewAboutYou(text);
                 }
               }}

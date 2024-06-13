@@ -6,8 +6,8 @@ import {
   useEnquiriesValue,
 } from "@/components/RecoilStates/profileState";
 import ChatPreview from "@/components/Chats/ChatPreview";
-import { ChatType } from "@/components/Chats/chatHelper";
 import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
+import ChatType from "@/common/chat/chatType";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();

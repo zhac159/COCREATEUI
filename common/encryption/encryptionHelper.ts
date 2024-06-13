@@ -3,9 +3,9 @@ import * as SecureStore from "expo-secure-store";
 import CryptoES from "crypto-es";
 import nacl from "tweetnacl";
 import { Buffer } from "buffer";
-import { ChatType } from "@/components/Chats/chatHelper";
 import { EncryptedKeyExchangeCreateDTO } from "../api/model";
 import { HubConnection } from "@microsoft/signalr";
+import ChatType from "../chat/chatType";
 
 export function getAesKeyString(chatType: ChatType, targetId: number): string {
   return "CoCreate-" + chatType + "-" + targetId + "-Aes-Key";

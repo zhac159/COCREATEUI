@@ -5,17 +5,38 @@ import { IconButton } from "react-native-paper";
 import { useTheme } from "../Themes/theme";
 import { MessageCreateDTO, MessageDTO } from "@/common/api/model";
 import ChatReactionMessage from "./ChatReactionMessage";
+import Message from "../Common/Messages/Message";
+import MessageReaction from "../Common/Messages/MessageReaction";
 
 type ChatTextInputProps = {
   sendMessage: (message: MessageCreateDTO) => void;
-  renderItem: ({ item }: { item: MessageDTO }) => React.JSX.Element;
+  renderItem: ({
+    item,
+    showReactions,
+  }: {
+    item: Message;
+    showReactions: boolean;
+  }) => React.JSX.Element;
   selectedMessage?: MessageDTO;
+  setSelectedMessage: React.Dispatch<React.SetStateAction<Message | undefined>>;
+  addReaction: (message: MessageReaction) => void;
+  getMedia: (index: number) => void;
 };
 
 const ChatTextInput: React.ForwardRefRenderFunction<
   TextInput,
   ChatTextInputProps
-> = ({ sendMessage, selectedMessage, renderItem }, ref) => {
+> = (
+  {
+    sendMessage,
+    selectedMessage,
+    renderItem,
+    setSelectedMessage,
+    addReaction,
+    getMedia,
+  },
+  ref
+) => {
   const [text, setText] = useState("");
 
   const theme = useTheme();
@@ -26,18 +47,18 @@ const ChatTextInput: React.ForwardRefRenderFunction<
       replyMessageId: selectedMessage ? selectedMessage?.id : null,
     };
 
-    console.log("Sending message", message);
-    
     sendMessage(message);
+    setSelectedMessage(undefined);
     setText("");
   };
-  
+
   return (
     <View>
       <ChatReactionMessage
         message={selectedMessage}
         onSendMessage={sendMessage}
         renderItem={renderItem}
+        addReaction={addReaction}
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -64,7 +85,11 @@ const ChatTextInput: React.ForwardRefRenderFunction<
             if (text !== "") {
               handleSend();
             }
+            else{
+              getMedia(0);
+            }
           }}
+          
           style={{
             backgroundColor: theme.colors.black,
             margin: 0,

@@ -4,7 +4,7 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
-import { ChatTypeIdPair } from "../Chats/chatHelper";
+import { ChatMember, ChatTypeIdPair } from "../Chats/chatHelper";
 import { AssetOfferDTO, EnquiryDTO, ProjectDTO} from "@/common/api/model";
 
 export type CurrentChatData = {
@@ -15,6 +15,7 @@ export type CurrentChatData = {
   projectInformation?: ProjectDTO;
   assetOfferInformation?: AssetOfferDTO;
   projectId?: number;
+  chatMembers?: ChatMember[];
 };
 
 export const currentChatDataState = atom<CurrentChatData>({

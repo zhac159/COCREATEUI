@@ -1,11 +1,12 @@
 import { useUserIdValue } from "@/components/RecoilStates/profileState";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import "react-native-get-random-values";
 import { ConnectionContext } from "./_layout";
 
 import {
-  handleReceivedMessagesInChat,
-  useChatMessages,
+  useAddReaction,
+  useLoadMessages,
+  useLoadMessagesAroundMessage,
   useSendMessage,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
@@ -13,9 +14,12 @@ import { useGetMedia } from "@/components/Account/Common/Media/mediaHelper";
 import SendImagePortal from "@/components/Chats/SendImagePortal";
 import { useCurrentChatDataValue } from "@/components/RecoilStates/currentChatDataState";
 import Chat from "@/components/Chats/Chat";
-import ChatHeader from "@/components/Chats/CheatHeader";
+import ChatHeader from "@/components/Chats/ChatHeader/CheatHeader";
 import Message from "@/components/Common/Messages/Message";
 import { useLastMessagesByTargetAndChatTypeValue } from "@/components/RecoilStates/lastMessagesState";
+import MessageReaction from "@/components/Common/Messages/MessageReaction";
+import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
+import { useNewMessageReactionValue } from "@/components/RecoilStates/newMessageReactionState";
 
 export default function EnquiryChat() {
   const database = useSQLiteContext();
@@ -23,20 +27,44 @@ export default function EnquiryChat() {
   const currentChatDataValue = useCurrentChatDataValue();
   const userId = useUserIdValue();
 
-  const lastMessages = useLastMessagesByTargetAndChatTypeValue(currentChatDataValue.chatTypeIdPair)
-
-  console.log(lastMessages)
-
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris, true);
 
-  const loadMessages = useChatMessages(
-    database,
-    currentChatDataValue.chatTypeIdPair,
-    setMessages
+  const lastMessages = useLastMessagesByTargetAndChatTypeValue(
+    currentChatDataValue.chatTypeIdPair
   );
+
+  const newMessageReaction = useNewMessageReactionValue();
+
+  useEffect(() => {
+    if (newMessageReaction === null) return;
+
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.id === newMessageReaction.messageId
+          ? {
+              ...message,
+              reactions: [
+                ...(message.reactions || []),
+                { ...newMessageReaction, user: userId },
+              ],
+            }
+          : message
+      )
+    );
+  }, [newMessageReaction]);
+
+  useEffect(() => {
+    if (lastMessages[0] === undefined) return;
+    if (messages.length === 0) {
+      console.log("setting messages");
+      return;
+    }
+    if (lastMessages[0].id !== messages[0].id) {
+      setMessages([lastMessages[0], ...messages]);
+    }
+  }, [lastMessages]);
 
   const handleSendMessage = useSendMessage(
     connection,
@@ -46,32 +74,87 @@ export default function EnquiryChat() {
     setMessages
   );
 
+  const loadMessages = useLoadMessages(
+    database,
+    currentChatDataValue.chatTypeIdPair,
+    setMessages
+  );
+
+  const loadMessagesAroundMessage = useLoadMessagesAroundMessage(
+    database,
+    currentChatDataValue.chatTypeIdPair,
+    setMessages
+  );
+
+  const addReaction = useAddReaction(
+    connection,
+    database,
+    userId,
+    currentChatDataValue.chatTypeIdPair
+  );
+
+  const handleAddReaction = useCallback(
+    async (messageReaction: MessageReaction) => {
+      await addReaction(messageReaction);
+
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message.id === messageReaction.messageId
+            ? {
+                ...message,
+                reactions: [
+                  ...(message.reactions || []),
+                  { ...messageReaction, user: userId },
+                ],
+              }
+            : message
+        )
+      );
+    },
+    [addReaction, setMessages]
+  );
+
   const handleLoadMessages = useCallback(async () => {
     const lastmessage = messages[messages.length - 1];
+
     if (!lastmessage) return;
     const lastMessageDate = new Date(lastmessage.date!);
 
-    await loadMessages(lastMessageDate.toISOString());
+    lastMessageDate.setMilliseconds(lastMessageDate.getMilliseconds() - 10);
+
+    await loadMessages(true, lastMessageDate.toISOString());
   }, [loadMessages, messages]);
+
+  const handleLoadLaterMessages = useCallback(async () => {
+    const firstMessage = messages[0];
+    if (!firstMessage) return;
+
+    let firstMessageDate = new Date(firstMessage.date!);
+
+    firstMessageDate.setMilliseconds(firstMessageDate.getMilliseconds() + 10);
+
+    await loadMessages(false, firstMessageDate.toISOString());
+  }, [loadMessages, messages]);
+
+  const handleLoadMessagesAroundMessage = useCallback(
+    async (message: Message) => {
+      await loadMessagesAroundMessage(message);
+    },
+    [loadMessagesAroundMessage]
+  );
 
   useEffect(() => {
     const fetchMessages = async () => {
-      await loadMessages();
+      await loadMessages(true);
     };
     fetchMessages();
   }, []);
 
-  // useEffect(() => {
-  //   if (!connection || !database) return;
-  //   const cleanup = handleReceivedMessagesInChat(
-  //     connection,
-  //     currentChatDataValue.chatTypeIdPair,
-  //     setMessages
-  //   );
-  //   return cleanup;
-  // }, [connection, database]);
+  const momoizedBackgroundColourAnimation = useMemo(() => {
+    return <BackgroundColourAnimation />;
+  }, []);
 
-  if(connection === null) return (null)
+  if (connection === null) return null;
 
   if (uris.length > 0) {
     return (
@@ -84,63 +167,16 @@ export default function EnquiryChat() {
   }
 
   return (
-    // <GiftedChat
-    //   messages={messages}
-    //   loadEarlier={false}
-    //   listViewProps={{
-    //     onEndReached: () => {
-    //       handleLoadMessages();
-    //     },
-    //     onEndReachedThreshold: 0.5,
-    //   }}
-    //   onSend={(messages) => {
-    //     const message = convertIMessageToCreateMessageDTO(messages[0]);
-    //     handleSendMessage(message);
-    //   }}
-    //   renderAvatar={null}
-    //   user={{
-    //     _id: userId,
-    //   }}
-    //   renderBubble={(props) => (
-    //     <Bubble
-    //       {...props}
-    //       onPress={(context, message) => {
-    //         console.log("dsa")
-    //         console.log(message)
-    //       }}
-    //       renderTicks={() => <></>}
-    //     />
-    //   )}
-    //   renderMessageImage={(props) => (
-    //     <Media
-    //       uri={props.currentMessage?.image || ""}
-    //       style={{ width: 150, height: 50 }}
-    //     />
-    //   )}
-    //   messagesContainerStyle={{ paddingHorizontal: 10 }}
-    //   renderActions={(props) => (
-    //     <View>
-    //       <IconButton
-    //         onPress={() => getMedia(0)}
-    //         icon={() => <FontAwesome6 name="camera" size={18} solid />}
-    //         size={26}
-    //       />
-    //     </View>
-    //   )}
-    //   renderInputToolbar={(props) => (
-    //     <InputToolbar
-    //       {...props}
-    //       containerStyle={{ backgroundColor: "white" }}
-    //       renderComposer={(composerProps) => (
-    //         <Composer
-    //           {...composerProps}
-    //           textInputStyle={{ backgroundColor: "white" }}
-    //
     <>
+      {momoizedBackgroundColourAnimation}
       <Chat
         messages={messages}
         handleLoadMessages={handleLoadMessages}
+        handleLoadLaterMessages={handleLoadLaterMessages}
+        handleLoadMessagesAroundMessage={handleLoadMessagesAroundMessage}
         handleSendMessage={handleSendMessage}
+        handleAddReaction={handleAddReaction}
+        getMedia={getMedia}
         userId={userId}
       />
       <ChatHeader

@@ -9,7 +9,7 @@ import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState
 import { ChatTypeIdPair } from "./chatHelper";
 import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import { useSQLiteContext } from "expo-sqlite/next";
-import { fetchLastMessages } from "@/common/database/databaseHelper";
+import {  fetchMessages } from "@/common/database/databaseHelper";
 import { AssetOfferDTO, EnquiryDTO, ProjectDTO } from "@/common/api/model";
 
 type ChatPreviewProps = {
@@ -41,9 +41,8 @@ const ChatPreview: FC<ChatPreviewProps> = ({
     useLastMessagesByTargetAndChatTypeState(chatTargetIdTypePair);
 
   useEffect(() => {
-    fetchLastMessages(database, chatTargetIdTypePair)
+    fetchMessages(database, chatTargetIdTypePair, 3)
       .then((fetchedMessages) => {
-        console.log("Fetched messages:", fetchedMessages);
         setLastMessages(fetchedMessages);
       })
       .catch((error) => console.error("Error fetching messages:", error));
@@ -77,7 +76,13 @@ const ChatPreview: FC<ChatPreviewProps> = ({
           assetOfferInformation,
           enquiryInformation,
           projectInformation,
-          projectId
+          projectId,
+          chatMembers: [
+            {
+              userId: chatTargetIdTypePair.chatTargetId ,
+              username: chatName,
+            }
+          ],
         });
         router.push("/main/chat");
       }}

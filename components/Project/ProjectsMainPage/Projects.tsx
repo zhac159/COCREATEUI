@@ -13,7 +13,6 @@ import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
 import { EnquiryDTO } from "@/common/api/model";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
 import ProjectBanner from "./ProjectBanner/ProjectBanner";
-import { ChatType } from "@/components/Chats/chatHelper";
 import ViewApplications from "../ViewApplications/ViewApplications";
 import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 import { ScrollView } from "react-native-gesture-handler";
@@ -21,6 +20,7 @@ import AssetOfferChats from "./AssetOfferChats";
 import ShortlistedEnquiriesChats from "./ShortlistedEnquiriesChats";
 import { SelectedRole, bannerHeight } from "./projectMainPageHelper";
 import ViewApplicationsAndAssetsButton from "../ViewApplications/ViewApplicationsAndAssetsButton";
+import ChatType from "@/common/chat/chatType";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -125,19 +125,21 @@ const Projects: FC<ProjectsProps> = ({
         }}
         contentContainerStyle={{
           flexGrow: 1,
-          gap: 30
+          paddingBottom: 200,
+          paddingTop: 30,
         }}
       >
+        <ViewApplicationsAndAssetsButton
+          onPress={() => setShowApplications(true)}
+          assetMode={!!selectedRole.assetMode}
+        />
         <ProjectChatPreview
           chatTargetIdTypePair={{
             chatTargetId: projects![selectedProject].id!,
             chatType: ChatType.Project,
           }}
+          show={!selectedRole.assetMode}
           project={projects![selectedProject]}
-        />
-        <ViewApplicationsAndAssetsButton
-          onPress={() => setShowApplications(true)}
-          assetMode={!!selectedRole.assetMode}
         />
         <ShortlistedEnquiriesChats
           projectId={projects[selectedProject].id}

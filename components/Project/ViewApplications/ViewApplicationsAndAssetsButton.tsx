@@ -32,7 +32,7 @@ const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> 
     <TouchableOpacity
       style={{
         ...styles.viewApplicationContainer,
-        backgroundColor: "rgb(200, 200, 200)",
+        backgroundColor: theme.colors.black,
       }}
       onPress={
         assetMode ? navigateToCompleteProjectForm : onPress

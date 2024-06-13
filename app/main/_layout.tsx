@@ -1,7 +1,11 @@
 import { Stack, router, useRouter } from "expo-router";
 import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
-import { EncryptedKeyExchangeDTO, MessageDTO } from "@/common/api/model";
+import {
+  EncryptedKeyExchangeDTO,
+  MessageDTO,
+  MessageReactionDTO,
+} from "@/common/api/model";
 import { fetchTokenAndStartConnection } from "@/common/webSockets/webSocketsHelper";
 import {
   handleReceiveNewEnquiry,
@@ -9,6 +13,7 @@ import {
   handleReceiveEncryptedKeysExchange,
   handleReceivedMessages,
   handleUpdateCompleteProject,
+  handleReceiveMessagesReactions,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
@@ -19,7 +24,11 @@ import {
   useAssignedProjectsValue,
 } from "@/components/RecoilStates/profileState";
 import { JsStack } from "@/components/Common/JStack";
-import { TransitionPresets } from "@react-navigation/stack";
+import {
+  CardStyleInterpolators,
+  TransitionPresets,
+} from "@react-navigation/stack";
+import { useSetNewMessageReactionState } from "@/components/RecoilStates/newMessageReactionState";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
@@ -38,6 +47,8 @@ export default function HelperScreenNav() {
 
   const updateProjectComplete = useUpdateProjectComplete();
 
+  const setNewReactionMessage = useSetNewMessageReactionState();
+
   const database = useSQLiteContext();
 
   useEffect(() => {
@@ -55,6 +66,22 @@ export default function HelperScreenNav() {
     connection.on("ReceiveMessages", (messages: MessageDTO[]) => {
       handleReceivedMessages(connection, database, messages, setLastMessages);
     });
+  }, [connection, database]);
+
+  useEffect(() => {
+    if (!connection || !database) return;
+
+    connection.on(
+      "ReceiveMessagesReactions",
+      (messageReactions: MessageReactionDTO[]) => {
+        handleReceiveMessagesReactions(
+          connection,
+          database,
+          messageReactions,
+          setNewReactionMessage
+        );
+      }
+    );
   }, [connection, database]);
 
   useEffect(() => {
@@ -160,7 +187,30 @@ export default function HelperScreenNav() {
             gestureEnabled: true,
           }}
         />
-        <Stack.Screen name="chat" />
+        <JsStack.Screen
+          name="chat"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <JsStack.Screen
+          name="accountViewer"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <JsStack.Screen
+          name="groupChatDetails"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <JsStack.Screen
+          name="completedProject"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
         <Stack.Screen name="locationForm" />
       </JsStack>
     </ConnectionContext.Provider>

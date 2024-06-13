@@ -15,10 +15,10 @@ import {
 } from "@/common/api/endpoints/cocreateApi";
 import UserProfile from "@/components/Common/UserProfile/UserProfile";
 import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
-import { ChatType } from "@/components/Chats/chatHelper";
 import { ConnectionContext } from "@/app/main/_layout";
 import { IconButton } from "react-native-paper";
 import { useUpdateEnquiryShortlistedInProjects } from "@/components/RecoilStates/profileState";
+import ChatType from "@/common/chat/chatType";
 
 type ViewApplicationsProps = {
   enquiries: EnquiryDTO[];
@@ -73,7 +73,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
           cards={applicantsProfiles.userProfiles}
           renderCard={renderCard}
           containerStyle={{
-            backgroundColor: "black",
+            backgroundColor: "white",
             padding: 0,
           }}
           onSwiping={(x) => {

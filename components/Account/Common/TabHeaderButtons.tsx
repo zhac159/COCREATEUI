@@ -1,5 +1,7 @@
+import { useUserIdValue } from "@/components/RecoilStates/profileState";
 import { useTheme } from "@/components/Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { FC } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, IconButton, Text } from "react-native-paper";
@@ -24,6 +26,8 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
   showPlayButton = false,
 }) => {
   const theme = useTheme();
+
+  const userId = useUserIdValue();
 
   return (
     <View style={styles.buttonsContainer}>
@@ -67,7 +71,13 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
               )}
               size={26}
               onPress={() => {
-                console.log("Pressed");
+                router.navigate({
+                  pathname: "/main/accountViewer",
+                  params: {
+                    userId: userId,
+                  },
+                });
+                
               }}
               style={{
                 backgroundColor: theme.colors.black,

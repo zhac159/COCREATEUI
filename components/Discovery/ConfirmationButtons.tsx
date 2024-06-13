@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "../Themes/theme";
 import { BlurView } from "expo-blur";
+import { tabBarHeight } from "../Account/Common/getWindowDimensions";
 
 type ConfirmationButtonsProps = {
   onConfirm: () => void;
@@ -17,7 +18,7 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
 }) => {
   const theme = useTheme();
 
-  const opacity = swipingDistance / 5 / 100 + 0.11;
+  const opacity = swipingDistance / 5 / 100 + 0.33;
 
   return (
     <View style={styles.buttonsContainer}>
@@ -35,7 +36,7 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             width: 71,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba( 251, 0, 0," + (-opacity + 0.22) + ")",
+            backgroundColor: "rgba( 251, 0, 0," + (-opacity + 0.7) + ")",
           }}
           intensity={10}
         >
@@ -67,7 +68,7 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             justifyContent: "center",
             backgroundColor: "rgba(56, 250, 152, " + opacity + ")",
           }}
-          intensity={10}
+          intensity={30}
         >
           <View
             style={{
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: 25,
+    bottom: tabBarHeight - 40,
     alignSelf: "center",
     gap: 30,
   },

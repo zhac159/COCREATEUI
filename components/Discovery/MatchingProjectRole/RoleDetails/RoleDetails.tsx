@@ -4,7 +4,7 @@ import { useTheme } from "../../../Themes/theme";
 import RoleDetailIconTexts from "./RoleDetailIconTexts";
 import { SkillType } from "@/common/api/model";
 import RoleDetailCoinRole from "./RoleDetailCoinRole";
-import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
+import { tabBarHeight, windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 type RoleDetailsProps = {
   name: string;
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "flex-end",
     width: "100%",
-    height: windowHeight - 214,
+    height: windowHeight- tabBarHeight,
     paddingHorizontal: 30,
   },
   coinsRoleContainer: {

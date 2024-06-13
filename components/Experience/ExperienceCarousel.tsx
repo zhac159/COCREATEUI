@@ -16,7 +16,7 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
   renderItem,
 }) => {
   return (
-    <View style={{ flex: 1, overflow: "hidden" }}>
+    <View style={{ flex: 1, overflow: "hidden", gap: 10 }}>
       <Text
         style={{
           ...styles.experienceType,

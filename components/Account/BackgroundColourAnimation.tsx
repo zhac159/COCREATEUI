@@ -13,7 +13,7 @@ const BackgroundColourAnimation: FC<BackgroundColourAnimationProps> = ({
   hideBlur = false,
 }) => {
   const skills = useSkillsValue();
-
+  
   var colors = [];
 
   if (!skills) {

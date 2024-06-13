@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useTheme } from "../Themes/theme";
 import { Text, View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { BlurView } from "@react-native-community/blur";
+import { BlurView } from "expo-blur";
 
 type CoinsProps = {
   coins: number;
@@ -32,6 +32,7 @@ const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
             ...theme.customFonts.primary.large,
             ...styles.text,
             color: theme.colors.black,
+        
           }}
         >
           {coins}
@@ -62,9 +63,6 @@ const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
             {coins}
           </Text>
           <BlurView
-            blurType="ultraThinMaterialDark"
-            blurAmount={100}
-            reducedTransparencyFallbackColor="white"
             style={{
               backgroundColor: theme.colors.gray,
               marginRight: 10,

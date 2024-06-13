@@ -29,11 +29,16 @@ import type {
   EnquiryConfirmDTO,
   EnquiryCreateDTO,
   EnquiryDTO,
+  EnquiryRejectDTO,
   ExperienceCreateDTO,
   ExperienceDTO,
+  GetApiProjectCompletedParams,
+  GetApiUserGetProfileParams,
   LoginResponseDTO,
   MessageCreateDTO,
   MessageDTO,
+  MessageReactionCreateDTO,
+  MessageReactionDTO,
   PortofolioContentCreateDTO,
   PortofolioContentDTO,
   PortofolioContentGroupUpdateDTO,
@@ -41,6 +46,7 @@ import type {
   PrepareUploadDTO,
   PrepareUploadResponseDTO,
   ProjectCompleteDTO,
+  ProjectCompletedDTO,
   ProjectCreateDTO,
   ProjectDTO,
   ProjectRoleCompleteDTO,
@@ -60,6 +66,7 @@ import type {
   UserLoginDTO,
   UserPortofolioDTO,
   UserPortofolioUpdateDTO,
+  UserProfileDTO,
   UserProfilesDTO,
   UserPublicKeyUpdateDTO,
   UserUpdateDTO
@@ -442,6 +449,53 @@ export const getPutApiEnquiryShortlistEnquiryMutationOptions = <TError = ErrorTy
       return useMutation(mutationOptions);
     }
     
+export const putApiEnquiryRejectEnquiry = (
+    enquiryRejectDTO: EnquiryRejectDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/Enquiry/reject-enquiry`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: enquiryRejectDTO
+    },
+      );
+    }
+  
+
+
+export const getPutApiEnquiryRejectEnquiryMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiEnquiryRejectEnquiry>>, TError,{data: EnquiryRejectDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof putApiEnquiryRejectEnquiry>>, TError,{data: EnquiryRejectDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiEnquiryRejectEnquiry>>, {data: EnquiryRejectDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiEnquiryRejectEnquiry(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiEnquiryRejectEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof putApiEnquiryRejectEnquiry>>>
+    export type PutApiEnquiryRejectEnquiryMutationBody = EnquiryRejectDTO
+    export type PutApiEnquiryRejectEnquiryMutationError = ErrorType<unknown>
+
+    export const usePutApiEnquiryRejectEnquiry = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiEnquiryRejectEnquiry>>, TError,{data: EnquiryRejectDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPutApiEnquiryRejectEnquiryMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiEnquirySendMessage = (
     messageCreateDTO: MessageCreateDTO,
  ) => {
@@ -485,6 +539,53 @@ export const getPostApiEnquirySendMessageMutationOptions = <TError = ErrorType<u
 ) => {
 
       const mutationOptions = getPostApiEnquirySendMessageMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiEnquirySendMessageReaction = (
+    messageReactionCreateDTO: MessageReactionCreateDTO,
+ ) => {
+      
+      
+      return customInstance<MessageReactionDTO>(
+      {url: `/api/Enquiry/send-message-reaction`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: messageReactionCreateDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiEnquirySendMessageReactionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessageReaction>>, TError,{data: MessageReactionCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessageReaction>>, TError,{data: MessageReactionCreateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiEnquirySendMessageReaction>>, {data: MessageReactionCreateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiEnquirySendMessageReaction(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiEnquirySendMessageReactionMutationResult = NonNullable<Awaited<ReturnType<typeof postApiEnquirySendMessageReaction>>>
+    export type PostApiEnquirySendMessageReactionMutationBody = MessageReactionCreateDTO
+    export type PostApiEnquirySendMessageReactionMutationError = ErrorType<unknown>
+
+    export const usePostApiEnquirySendMessageReaction = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEnquirySendMessageReaction>>, TError,{data: MessageReactionCreateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiEnquirySendMessageReactionMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1060,6 +1161,63 @@ export const useGetApiProjectProjectId = <TData = Awaited<ReturnType<typeof getA
 
 
 
+export const getApiProjectCompleted = (
+    params?: GetApiProjectCompletedParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ProjectCompletedDTO>(
+      {url: `/api/Project/completed`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiProjectCompletedQueryKey = (params?: GetApiProjectCompletedParams,) => {
+    return [`/api/Project/completed`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetApiProjectCompletedQueryOptions = <TData = Awaited<ReturnType<typeof getApiProjectCompleted>>, TError = ErrorType<unknown>>(params?: GetApiProjectCompletedParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectCompleted>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiProjectCompletedQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiProjectCompleted>>> = ({ signal }) => getApiProjectCompleted(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProjectCompleted>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiProjectCompletedQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProjectCompleted>>>
+export type GetApiProjectCompletedQueryError = ErrorType<unknown>
+
+export const useGetApiProjectCompleted = <TData = Awaited<ReturnType<typeof getApiProjectCompleted>>, TError = ErrorType<unknown>>(
+ params?: GetApiProjectCompletedParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectCompleted>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiProjectCompletedQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 export const postApiProjectRole = (
     projectRoleCreateDTO: ProjectRoleCreateDTO,
  ) => {
@@ -1586,3 +1744,60 @@ export const getPostApiUserProfilesMutationOptions = <TError = ErrorType<unknown
       return useMutation(mutationOptions);
     }
     
+export const getApiUserGetProfile = (
+    params?: GetApiUserGetProfileParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<UserProfileDTO>(
+      {url: `/api/User/get-profile`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiUserGetProfileQueryKey = (params?: GetApiUserGetProfileParams,) => {
+    return [`/api/User/get-profile`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetApiUserGetProfileQueryOptions = <TData = Awaited<ReturnType<typeof getApiUserGetProfile>>, TError = ErrorType<unknown>>(params?: GetApiUserGetProfileParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUserGetProfile>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiUserGetProfileQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiUserGetProfile>>> = ({ signal }) => getApiUserGetProfile(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiUserGetProfile>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiUserGetProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUserGetProfile>>>
+export type GetApiUserGetProfileQueryError = ErrorType<unknown>
+
+export const useGetApiUserGetProfile = <TData = Awaited<ReturnType<typeof getApiUserGetProfile>>, TError = ErrorType<unknown>>(
+ params?: GetApiUserGetProfileParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUserGetProfile>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiUserGetProfileQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+

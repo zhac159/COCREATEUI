@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useTheme } from "../Themes/theme";
+import { router } from "expo-router";
+import StyledButton from "./StyledButton";
 
 type SeeProfileButtonProps = {
   userId: number | undefined;
@@ -9,33 +11,24 @@ type SeeProfileButtonProps = {
 const SeeProfileButton: FC<SeeProfileButtonProps> = ({ userId }) => {
   const theme = useTheme();
 
+  const handlePress = () => {
+    router.navigate({
+      pathname: "/main/accountViewer",
+      params: {
+        userId,
+      },
+    });
+  };
+
   return (
-    <TouchableOpacity
+    <StyledButton
+      onPress={handlePress}
+      text="See Profile"
       style={{
-        ...styles.container,
         backgroundColor: theme.colors.black,
       }}
-    >
-      <Text
-        style={{
-          ...theme.customFonts.primary.medium,
-          color: theme.colors.white,
-          fontSize: 18,
-        }}
-      >
-        See Profile
-      </Text>
-    </TouchableOpacity>
+    />
   );
 };
 
 export default SeeProfileButton;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    borderRadius: 40,
-    alignItems: "center",
-    paddingVertical: 10,
-  },
-});

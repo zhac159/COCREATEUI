@@ -67,6 +67,11 @@ const SkillsTab = () => {
         onDone={handleSubmit}
         showPlayButton={true}
       />
+      <View
+        style={{
+          gap: 60,
+        }}
+      >
       <SkillsList
         skills={skillsSelected}
         editMode={editMode}
@@ -78,6 +83,7 @@ const SkillsTab = () => {
         show={editMode}
         selectSkill={selectSkill}
       />
+      </View>
     </View>
   );
 };

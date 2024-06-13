@@ -3,14 +3,18 @@ import {
   EncryptedKeyExchangeDTO,
   EnquiryDTO,
   MessageDTO,
+  MessageReactionCreateDTO,
+  MessageReactionDTO,
   ProjectDTO,
   UserInformationDTO,
 } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
-import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
-import { IMessage } from "react-native-gifted-chat";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import {
+  addReactionsToMessages,
+  fetchMessageById,
   fetchMessages,
+  fetchMessagesAroundId,
 } from "../database/databaseHelper";
 import * as Crypto from "expo-crypto";
 import {
@@ -23,11 +27,16 @@ import {
 } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import * as SecureStore from "expo-secure-store";
-import { ChatType, ChatTypeIdPair } from "@/components/Chats/chatHelper";
+import { ChatTypeIdPair } from "@/components/Chats/chatHelper";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
 import { downloadFile, usePrepareAndUpload } from "../media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
 import Message from "@/components/Common/Messages/Message";
+import MessageReaction from "@/components/Common/Messages/MessageReaction";
+import { SetterOrUpdater } from "recoil";
+import ChatType from "./chatType";
+
+export const chatFetchLimit = 20;
 
 export async function handleReceiveEncryptedKeysExchange(
   connection: HubConnection,
@@ -36,51 +45,39 @@ export async function handleReceiveEncryptedKeysExchange(
   console.log("Received encrypted keys:", encryptedKeys);
 
   encryptedKeys.forEach(async (encryptedKey) => {
-    if (
-      encryptedKey.encryptedSymmetricKey &&
-      encryptedKey.nonce &&
-      encryptedKey.publicKey &&
-      encryptedKey.chatType !== undefined &&
-      encryptedKey.senderId
-    ) {
-      const decryptedKey = await decryptMessageDFH(
-        encryptedKey.encryptedSymmetricKey,
-        encryptedKey.nonce,
-        encryptedKey.publicKey
-      );
+    
+    const decryptedKey = await decryptMessageDFH(
+      encryptedKey.encryptedSymmetricKey,
+      encryptedKey.nonce,
+      encryptedKey.publicKey
+    );
 
-      console.log("Decrypted key:", decryptedKey);
+    console.log("Decrypted key:", decryptedKey);
 
-      const targetId = encryptedKey.groupChatId
-        ? encryptedKey.groupChatId
-        : encryptedKey.senderId;
+    const targetId = encryptedKey.groupChatId ?? encryptedKey.senderId;
 
-      console.log("Target id:", targetId);
-      console.log("Chat type:", encryptedKey.chatType);
+    console.log("Target id:", targetId);
+    console.log("Chat type:", encryptedKey.chatType);
 
-      await SecureStore.setItemAsync(
-        getAesKeyString(encryptedKey.chatType, targetId),
-        decryptedKey
-      );
-    }
+    await SecureStore.setItemAsync(
+      getAesKeyString(encryptedKey.chatType, targetId),
+      decryptedKey
+    );
   });
 
   const ids = encryptedKeys.map((encryptedKeys) => encryptedKeys.id);
   await connection.invoke("AknowledgeEncryptedKeyExchangeAsync", ids);
 
   connection.invoke("GetMessagesAsync");
+  connection.invoke("GetMessagesReactionsAsync");
 }
 
 export async function handleReceivedMessages(
   connection: HubConnection,
   db: SQLiteDatabase,
   messages: MessageDTO[],
-  setLastMessages: (
-    chatTypeIdPair: ChatTypeIdPair,
-    newValue: MessageDTO
-  ) => void
+  setLastMessages: (chatTypeIdPair: ChatTypeIdPair, newValue: Message) => void
 ): Promise<void> {
-
   if (!db) return;
 
   const aesKey = await getDatabasKey();
@@ -116,14 +113,10 @@ export async function handleReceivedMessages(
       ? decryptMessageAES(message.uri, symmetricAesKey)
       : null;
 
-    if (!decryptedContent) return;
 
-    setLastMessages(
-      { chatTargetId: chatTargetId, chatType: message.chatType },
-      { ...message, content: decryptedContent }
-    );
+    const repliedMessage = await fetchMessageById(db, message.replyMessageId);
 
-    const encryptedContent = message.content
+    const encryptedContent = message.content && decryptedContent
       ? encryptMessageAES(decryptedContent, aesKey)
       : null;
 
@@ -132,6 +125,16 @@ export async function handleReceivedMessages(
     if (decryptedUri) {
       uri = await downloadFile(decryptedUri);
     }
+
+    setLastMessages(
+      { chatTargetId: chatTargetId, chatType: message.chatType },
+      {
+        ...message,
+        content: decryptedContent,
+        replyMessage: repliedMessage,
+        uri,
+      }
+    );
 
     values.push(
       message.id !== undefined ? message.id : null,
@@ -142,7 +145,7 @@ export async function handleReceivedMessages(
       message.date !== undefined ? message.date : null,
       message.chatType !== undefined ? message.chatType : null,
       chatTargetId,
-      message.replyMessageId !== undefined ? message.replyMessageId : null,
+      message.replyMessageId !== undefined ? message.replyMessageId : null
     );
   }
 
@@ -158,129 +161,6 @@ export async function handleReceivedMessages(
 
   const ids = messages.map((message) => message.id);
   await connection.invoke("AknowledgeMessageAsync", ids);
-}
-
-export function handleReceivedMessagesInChat(
-  connection: HubConnection,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
-  setMessages: Dispatch<SetStateAction<MessageDTO[]>>
-): () => void {
-  const handleMessage = async (messages: MessageDTO[]) => {
-    var filteredMessages = messages.filter(
-      (message) =>
-        getChatId(message) === chatTargetIdTypePair.chatTargetId &&
-        message.chatType === chatTargetIdTypePair.chatType
-    );
-
-    const symmetricAesKey = await getSymmetricAesKey(
-      chatTargetIdTypePair.chatType,
-      chatTargetIdTypePair.chatTargetId
-    );
-
-    if (!symmetricAesKey) {
-      return;
-    }
-
-    var decryptedMessages = filteredMessages.map((message) => {
-      const decryptedContent = message.content
-        ? decryptMessageAES(message.content, symmetricAesKey)
-        : null;
-
-      const decryptedUri = message.uri
-        ? decryptMessageAES(message.uri, symmetricAesKey)
-        : null;
-
-      return {
-        ...message,
-        content: decryptedContent,
-        uri: decryptedUri,
-      };
-    });
-
-    setMessages((state) => [
-      ...decryptedMessages,
-      ...state,
-    ]);
-
-  };
-
-  connection.on("ReceiveMessages", handleMessage);
-
-  return () => {
-    connection.off("ReceiveMessages", handleMessage);
-  };
-}
-
-export async function sendMessage(
-  connection: HubConnection | null,
-  database: SQLiteDatabase | null,
-  userId: number,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: ChatType },
-  message: MessageCreateDTO,
-  upload: (uris: string[]) => Promise<string[]>
-): Promise<MessageDTO> {
-  if (!connection) {
-    throw new Error("Connection is not established");
-  }
-  if (!database) {
-    throw new Error("Database is not available");
-  }
-
-  const symmetricAesKey = await getSymmetricAesKey(
-    chatTargetIdTypePair.chatType,
-    chatTargetIdTypePair.chatTargetId
-  );
-  
-  if (!symmetricAesKey) throw new Error("Symmetric key not found");
-
-  const encryptedMessage = encryptMessageAES(
-    message.content ?? "",
-    symmetricAesKey
-  );
-
-  const aesKey = await getDatabasKey();
-  if (!aesKey) throw new Error("AES key not found");
-
-  const id: string = Crypto.randomUUID();
-
-  const url = message.uri ? await upload([message.uri]) : null;
-
-  const encryptedUri = encryptMessageAES(url ? url[0] : "", symmetricAesKey);
-
-  const messageCreateDTO: MessageCreateDTO = {
-    id,
-    content: encryptedMessage,
-    targetId: chatTargetIdTypePair.chatTargetId,
-    chatType: chatTargetIdTypePair.chatType,
-    date: new Date().toISOString(),
-    uri: url ? encryptedUri : null,
-    replyMessageId: message.replyMessageId,
-  };
-
-  try {
-    await database.runAsync(
-      `insert into messages (id, senderId, content, uri, mediaType, date, chatType, targetId) values (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        id,
-        userId,
-        encryptMessageAES(message.content ?? "", aesKey),
-        message.uri || null,
-        message.mediaType || null,
-        messageCreateDTO.date!,
-        chatTargetIdTypePair.chatType,
-        chatTargetIdTypePair.chatTargetId,
-      ]
-    );
-    connection.invoke("SendMessageAsync", messageCreateDTO);
-    return {
-      ...messageCreateDTO,
-      content: message.content,
-      uri: message.uri,
-      senderId: userId,
-    };
-  } catch (err) {
-    throw err;
-  }
 }
 
 export function getChatId(message: MessageDTO): number {
@@ -308,8 +188,6 @@ export function findUserById(
 }
 
 export function getProjectUsers(project: ProjectDTO): UserInformationDTO[] {
-  console.log("Project:", project);
-
   const usersInProject: UserInformationDTO[] = [];
 
   if (project.projectManager) {
@@ -356,6 +234,81 @@ export function handleUpdateCompleteProject(
   };
 }
 
+export async function sendMessage(
+  connection: HubConnection,
+  database: SQLiteDatabase,
+  userId: number,
+  chatTargetIdTypePair: { chatTargetId: number; chatType: ChatType },
+  message: MessageCreateDTO,
+  upload: (uris: string[]) => Promise<string[]>
+): Promise<Message> {
+  const symmetricAesKey = await getSymmetricAesKey(
+    chatTargetIdTypePair.chatType,
+    chatTargetIdTypePair.chatTargetId
+  );
+  if (!symmetricAesKey) throw new Error("Symmetric key not found");
+
+  const databaseAesKey = await getDatabasKey();
+  if (!databaseAesKey) throw new Error("AES key not found");
+
+  const encryptedMessage = encryptMessageAES(
+    message.content ?? "",
+    symmetricAesKey
+  );
+
+  const id: string = Crypto.randomUUID();
+
+  const url = message.uri ? await upload([message.uri]) : null;
+
+  const encryptedUri = encryptMessageAES(url ? url[0] : "", symmetricAesKey);
+
+  const date = new Date().toISOString();
+
+  try {
+    await database.runAsync(
+      `insert into messages (id, senderId, content, uri, mediaType, date, chatType, targetId, replyMessageId) values (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        userId,
+        encryptMessageAES(message.content ?? "", databaseAesKey),
+        message.uri || null,
+        message.mediaType || null,
+        date,
+        chatTargetIdTypePair.chatType,
+        chatTargetIdTypePair.chatTargetId,
+        message.replyMessageId || null,
+      ]
+    );
+
+    const messageCreateDTO: MessageCreateDTO = {
+      id,
+      content: encryptedMessage,
+      targetId: chatTargetIdTypePair.chatTargetId,
+      chatType: chatTargetIdTypePair.chatType,
+      date: date,
+      uri: url ? encryptedUri : null,
+      replyMessageId: message.replyMessageId,
+    };
+
+    connection.invoke("SendMessageAsync", messageCreateDTO);
+
+    const replyMessage = await fetchMessageById(
+      database,
+      messageCreateDTO.replyMessageId
+    );
+
+    return {
+      ...messageCreateDTO,
+      content: message.content,
+      uri: message.uri,
+      senderId: userId,
+      replyMessage: replyMessage,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
 export const useSendMessage = (
   connection: any,
   database: any,
@@ -383,13 +336,9 @@ export const useSendMessage = (
                 chatTargetId: messageDTO.targetId,
                 chatType: messageDTO.chatType,
               },
-              { ...messageDTO }
+              messageDTO
             );
           }
-          // setMessages((state: MessageDTO[]) => [
-          //   messageDTO,
-          //   ...state,
-          // ]);
         })
         .catch((error) => console.error("Error sending message:", error));
     },
@@ -404,24 +353,26 @@ export const useSendMessage = (
   );
 };
 
-export const useChatMessages = (
-  database: any,
-  chatTargetIdTypePair: any,
+export const useLoadMessages = (
+  database: SQLiteDatabase,
+  chatTargetIdTypePair: ChatTypeIdPair,
   setMessages: Dispatch<SetStateAction<Message[]>>
 ) => {
   const loadMessages = useCallback(
-    async (lastMessageDate?: string) => {
-      if (!database) return;
+    async (previous: boolean, lastMessageDate?: string) => {
       try {
         const fetchedMessages = await fetchMessages(
           database,
           chatTargetIdTypePair,
-          lastMessageDate
+          chatFetchLimit,
+          lastMessageDate,
+          previous
         );
-
-        if (fetchedMessages.length === 0) return;
-
-        setMessages((state) => [...state, ...fetchedMessages]);
+        if (previous) {
+          setMessages((state) => [...state, ...fetchedMessages]);
+        } else {
+          setMessages((state) => [...fetchedMessages.reverse(), ...state]);
+        }
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
@@ -431,13 +382,80 @@ export const useChatMessages = (
 
   return loadMessages;
 };
-export function convertIMessageToCreateMessageDTO(
-  message: IMessage,
-  uri?: string
-): MessageCreateDTO {
-  const messageCreateDTO: MessageCreateDTO = {
-    content: message.text,
-    uri: uri ?? null,
-  };
-  return messageCreateDTO;
+
+export const useLoadMessagesAroundMessage = (
+  database: SQLiteDatabase,
+  chatTargetIdTypePair: ChatTypeIdPair,
+  setMessages: Dispatch<SetStateAction<Message[]>>
+) => {
+  const loadMessagesAroundMessage = useCallback(
+    async (message: Message) => {
+      try {
+        const fetchedMessages = await fetchMessagesAroundId(
+          database,
+          message,
+          chatTargetIdTypePair,
+          chatFetchLimit
+        );
+
+        setMessages(fetchedMessages);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    },
+    [database, chatTargetIdTypePair, setMessages]
+  );
+
+  return loadMessagesAroundMessage;
+};
+
+export const useAddReaction = (
+  connection: HubConnection | null,
+  database: SQLiteDatabase,
+  userId: number,
+  chatTargetIdTypePair: ChatTypeIdPair
+) => {
+  return useCallback(
+    async (messageReaction: MessageReaction) => {
+      if (!connection) {
+        return;
+      }
+      try {
+        
+        const messageReactionCreateDTO: MessageReactionCreateDTO = {
+          messageId: messageReaction.messageId,
+          reaction: messageReaction.reaction,
+          chatType: chatTargetIdTypePair.chatType,
+          multiplier: messageReaction.multiplier,
+          targetId: chatTargetIdTypePair.chatTargetId,
+        };
+
+        connection.invoke("SendMessageReactionAsync", messageReactionCreateDTO);
+
+        messageReaction.userId = userId;
+
+        await addReactionsToMessages(database, [messageReaction]);
+      } catch (error) {
+        console.error("Error adding reaction:", error);
+      }
+    },
+    [connection, database, userId]
+  );
+};
+
+export async function handleReceiveMessagesReactions(
+  connection: HubConnection,
+  db: SQLiteDatabase,
+  messageReactions: MessageReactionDTO[],
+  setNewReactionMessage: SetterOrUpdater<MessageReaction | null>
+): Promise<void> {
+  if (!db) return;
+
+  setNewReactionMessage(messageReactions[0]);
+
+  console.log("Received message reactions:", messageReactions);
+
+  await addReactionsToMessages(db, messageReactions);
+
+  connection.invoke("AknowledgeMessageReactionsAsync");
 }

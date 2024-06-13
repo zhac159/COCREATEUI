@@ -10,21 +10,21 @@ import type { MediaDTO } from './mediaDTO';
 import type { SkillType } from './skillType';
 
 export interface ProjectRoleDTO {
-  address?: string | null;
+  address: string;
   assignee?: UserInformationDTO;
   completed?: boolean;
-  cost?: number;
-  description?: string | null;
-  effort?: number;
-  endDate?: string;
+  cost: number;
+  description: string;
+  effort: number;
+  endDate: string;
   enquiries?: EnquiryDTO[] | null;
-  id?: number;
-  keywords?: string[] | null;
-  latitude?: number;
-  longitude?: number;
+  id: number;
+  keywords: string[];
+  latitude: number;
+  longitude: number;
   medias?: MediaDTO[] | null;
-  name?: string | null;
+  name: string;
   remote?: boolean;
-  skillType?: SkillType;
-  startDate?: string;
+  skillType: SkillType;
+  startDate: string;
 }

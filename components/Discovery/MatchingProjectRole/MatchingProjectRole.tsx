@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   roleImage: {
     width: "100%",
-    height: windowHeight - tabBarHeight,
+    height: windowHeight,
     borderRadius: 17,
   },
   projectImages: {

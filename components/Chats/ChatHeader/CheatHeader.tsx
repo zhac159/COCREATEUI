@@ -1,13 +1,15 @@
-import { CurrentChatData } from "../RecoilStates/currentChatDataState";
+import { CurrentChatData } from "../../RecoilStates/currentChatDataState";
 import { FC } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
-import { useTheme } from "../Themes/theme";
+import { useTheme } from "../../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { windowWidth } from "../Account/Common/getWindowDimensions";
+import { windowWidth } from "../../Account/Common/getWindowDimensions";
 import ChatHeaderIconButtons from "./ChatHeaderIconButtons";
 import { HubConnection } from "@microsoft/signalr";
+import ChatHeaderText from "./ChatHeaderText";
+import { BlurView } from "expo-blur";
 
 type ChatHeaderProps = {
   currentChatData: CurrentChatData;
@@ -24,16 +26,12 @@ const ChatHeader: FC<ChatHeaderProps> = ({
 
   return (
     <View style={styles.container}>
-      {/* <BlurView style={styles.blurView} blurType="light" blurAmount={1} /> */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          bottom: 16,
-          paddingRight: 16,
-        }}
-      >
+      <BlurView
+        style={styles.blurView}        
+        intensity={100}
+        tint="light"
+      />
+      <View style={styles.content}>
         <View
           style={{
             flexDirection: "row",
@@ -57,15 +55,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
             }}
             size={26}
           />
-          <Text
-            style={{
-              ...theme.customFonts.secondary.medium,
-              fontSize: 25,
-              fontWeight: "400",
-            }}
-          >
-            {currentChatData.chatName}
-          </Text>
+          <ChatHeaderText currentChatData={currentChatData} />
         </View>
         <ChatHeaderIconButtons
           currentChatData={currentChatData}
@@ -87,6 +77,13 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "absolute",
     justifyContent: "flex-end",
+  },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    bottom: 16,
+    paddingRight: 16,
   },
   blurView: {
     width: windowWidth,

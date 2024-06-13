@@ -5,6 +5,7 @@ import { ExperienceType } from "./ExperienceType";
 import ProjectsCompleted from "./ProjectsCompleted";
 import ProjectRolesCompleted from "./ProjectRolesCompleted";
 import ExperienceCarousel from "./ExperienceCarousel";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 type ExperiencesProps = {
   experiences: ExperienceDTO[];
@@ -26,25 +27,41 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
   );
 
   const renderCompletedProjectsc = ({ item }: { item: ExperienceDTO }) => (
-    <ProjectsCompleted experience={item} />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        console.log(item);
+      }}
+    >
+      <ProjectsCompleted experience={item} />
+    </TouchableWithoutFeedback>
   );
 
   const renderCompletedProjectRoles = ({ item }: { item: ExperienceDTO }) => (
-    <ProjectRolesCompleted experience={item} />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        console.log(item);
+      }}
+    >
+      <ProjectRolesCompleted experience={item} />
+    </TouchableWithoutFeedback>
   );
 
   return (
     <View style={{ flex: 1, gap: 30 }}>
-      <ExperienceCarousel
-        experiences={completedProjects}
-        title="Commissioned"
-        renderItem={renderCompletedProjectsc}
-      />
-      <ExperienceCarousel
-        experiences={completedProjectRoles}
-        title="Work Experience"
-        renderItem={renderCompletedProjectRoles}
-      />
+      {completedProjects.length > 0 && (
+        <ExperienceCarousel
+          experiences={completedProjects}
+          title="Commissioned"
+          renderItem={renderCompletedProjectsc}
+        />
+      )}
+      {completedProjectRoles.length > 0 && (
+        <ExperienceCarousel
+          experiences={completedProjectRoles}
+          title="Work Experience"
+          renderItem={renderCompletedProjectRoles}
+        />
+      )}
     </View>
   );
 };

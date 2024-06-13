@@ -16,11 +16,19 @@ import PortofolioContentTab from "@/components/Account/PortofolioContents/Portof
 import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import ExperienceTab from "@/components/Experience/ExperienceTab";
+import { TabView, SceneMap } from "react-native-tab-view";
+
+const renderScene = SceneMap({
+  first: SkillsTab,
+  second: AssetTab,
+  third: PortofolioContentTab,
+  fourth: ExperienceTab,
+});
 
 export default function Account() {
   const currentUser = useCurrentUserValue();
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  // const [selectedTab, setSelectedTab] = useState(0);
 
   const buttonNames = ["Skills", "Assets", "Portofolio", "Experience"];
 
@@ -31,9 +39,13 @@ export default function Account() {
     setIsSticky((offsetY - windowHeight * 0.22 + 200) / 10);
   };
 
-  if (!currentUser) {
-    return null;
-  }
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "first", title: "First" },
+    { key: "second", title: "Second" },
+    { key: "third", title: "Third" },
+    { key: "fourth", title: "Fourth" },
+  ]);
 
   return (
     <>
@@ -45,6 +57,7 @@ export default function Account() {
           paddingBottom: 200,
           flex: 1,
         }}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
@@ -58,42 +71,19 @@ export default function Account() {
         />
         <TabButtons
           tabs={buttonNames}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
+          selectedTab={index}
+          setSelectedTab={setIndex}
           blur={isSticky}
         />
-        <View
-          style={{
-            ...styles.scene,
-            display: selectedTab !== 0 ? "none" : "flex",
-          }}
-        >
-          <SkillsTab />
-        </View>
-        <View
-          style={{
-            ...styles.scene,
-            display: selectedTab !== 1 ? "none" : "flex",
-          }}
-        >
-          <AssetTab />
-        </View>
-        <View
-          style={{
-            ...styles.scene,
-            display: selectedTab !== 2 ? "none" : "flex",
-          }}
-        >
-          <PortofolioContentTab />
-        </View>
-        <View
-          style={{
-            ...styles.scene,
-            display: selectedTab !== 3 ? "none" : "flex",
-          }}
-        >
-          <ExperienceTab />
-        </View>
+        <TabView
+          sceneContainerStyle={styles.scene}
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          renderTabBar={() => null}
+          animationEnabled={false}
+          swipeEnabled={false}
+        />
       </KeyboardAwareScrollView>
     </>
   );
@@ -102,7 +92,6 @@ export default function Account() {
 const styles = StyleSheet.create({
   scene: {
     flex: 1,
-    flexGrow: 1,
     backgroundColor: "transparent",
     paddingBottom: "20%",
     paddingTop: "2.3%",

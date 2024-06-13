@@ -1,8 +1,10 @@
 import * as ImagePicker from "expo-image-picker";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SetterOrUpdater } from "recoil";
 import { MediaType } from "./MediaType";
 import { MediaCreateDTO } from "@/common/api/model";
+import { SQLiteDatabase } from "expo-sqlite/next";
+import { fetchUrisByChatTargetIdTypePair } from "@/common/database/databaseHelper";
 
 const getContentType = (uri: string) => {
   if (uri.endsWith(".jpeg") || uri.endsWith(".jpg") || uri.endsWith(".png")) {
@@ -110,3 +112,26 @@ export const getMediaCreateDTOs = (urls: string[]) => {
     }) || []
   );
 };
+
+export function useFetchUrisByChatTargetIdTypePair(
+  database: SQLiteDatabase,
+  chatTargetIdTypePair: { chatTargetId: number; chatType: number }
+) {
+  const [uris, setUris] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchUrisByChatTargetIdTypePair(database, chatTargetIdTypePair)
+      .then((fetchedUris) => {
+        setUris(fetchedUris);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
+  return { uris, loading };
+}

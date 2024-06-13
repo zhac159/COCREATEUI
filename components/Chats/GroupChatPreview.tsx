@@ -5,10 +5,10 @@ import { useTheme } from "../Themes/theme";
 import Media from "../MediaViewer/Media";
 import { router } from "expo-router";
 import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
-import { ChatTypeIdPair } from "./chatHelper";
+import { ChatTypeIdPair, useGetProjectChatMembers } from "./chatHelper";
 import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import { useSQLiteContext } from "expo-sqlite/next";
-import { fetchLastMessages } from "@/common/database/databaseHelper";
+import { fetchMessages } from "@/common/database/databaseHelper";
 import { ProjectDTO } from "@/common/api/model";
 import GroupChatPreviewMessages from "./GroupChatPreviewMessages";
 import { findUserById } from "@/common/chat/chatHelper";
@@ -33,12 +33,12 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
   const [lastMessages, setLastMessages] =
     useLastMessagesByTargetAndChatTypeState(chatTargetIdTypePair);
 
+  const chatMembers = useGetProjectChatMembers(project);
+
   useEffect(() => {
-    fetchLastMessages(database, chatTargetIdTypePair).then(
-      (fetchedMessages) => {
-        setLastMessages(fetchedMessages);
-      }
-    );
+    fetchMessages(database, chatTargetIdTypePair, 3).then((fetchedMessages) => {
+      setLastMessages(fetchedMessages);
+    });
   }, [database]);
 
   return (
@@ -49,6 +49,7 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
           chatName: project.name,
           colors: [],
           chatTypeIdPair: chatTargetIdTypePair,
+          chatMembers: chatMembers,
         });
         router.push("/main/chat");
       }}

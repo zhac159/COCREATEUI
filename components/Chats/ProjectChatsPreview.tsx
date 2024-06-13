@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { ChatType, ChatTypeIdPair } from "./chatHelper";
+import { ChatTypeIdPair } from "./chatHelper";
 import { ProjectDTO } from "@/common/api/model";
 import GroupChatPreview from "./GroupChatPreview";
 import Swiper from "react-native-swiper";
@@ -8,15 +8,18 @@ import { getProjectUsers } from "@/common/chat/chatHelper";
 import ChatPreview from "./ChatPreview";
 import { useUserIdValue } from "../RecoilStates/profileState";
 import { useTheme } from "../Themes/theme";
+import ChatType from "@/common/chat/chatType";
 
 type ProjectChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
   project: ProjectDTO;
+  show?: boolean;
 };
 
 const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
   chatTargetIdTypePair,
   project,
+  show = true,
 }) => {
   const theme = useTheme();
 
@@ -26,6 +29,10 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
 
   const userId = useUserIdValue();
 
+  if (!show) {
+    return null;
+  }
+
   return (
     <View>
       <Text
@@ -34,6 +41,7 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
           color: theme.colors.black,
           paddingTop: 20,
           paddingBottom: 10,
+          paddingLeft: 10,
         }}
       >
         Team Chat

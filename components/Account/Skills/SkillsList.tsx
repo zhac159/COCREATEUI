@@ -1,7 +1,7 @@
 import { SkillDTO, SkillType } from "@/common/api/model";
 import { chunk, flatten, groupBy, map } from "lodash";
 import { FC } from "react";
-import {  View } from "react-native";
+import { View } from "react-native";
 import Skill from "./Skill";
 
 type SkillsListProps = {
@@ -31,7 +31,6 @@ const SkillsList: FC<SkillsListProps> = ({
         width: "100%",
         flexDirection: "column",
         gap: 20,
-        paddingBottom: "10%",
       }}
     >
       {skillChunks.map((skillChunk, index) => (

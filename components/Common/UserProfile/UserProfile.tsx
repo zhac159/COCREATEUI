@@ -13,6 +13,7 @@ import Experiences from "@/components/Experience/Experiences";
 import ReviewCarousel from "../Review/ReviewCarousel";
 import PortofolioContent from "@/components/Account/PortofolioContents/PortofolioContent";
 import SkillsList from "@/components/Account/Skills/SkillsList";
+import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 
 type UserProfileProps = {
   userProfile: UserProfileDTO;
@@ -21,74 +22,76 @@ type UserProfileProps = {
 const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
   const theme = useTheme();
 
-  console.log(userProfile);
-
   const useMemoizedExperiences = useMemo(
     () => (
-      <View
-        style={{ ...styles.container, backgroundColor: theme.colors.white }}
-      >
-        <ScrollView contentContainerStyle={{ ...styles.scrollContainer }}>
-          <TouchableWithoutFeedback>
-            <View
-              style={{
-                flex: 1,
-                gap: 50,
-                width: "90%",
-                alignSelf: "center",
-              }}
-            >
-              <UserProfileDetails
-                username={"AbithaMaha"}
-                rating={4.8}
-                rolesWorked={4}
-                projectsCommisioned={32}
-              />
-              <Experiences experiences={userProfile.experiences} />
-              {userProfile.portofolioContents[0] && (
-                <PortofolioContent
-                  editMode={false}
-                  portofolioContent={userProfile.portofolioContents[0]}
+      <>
+        <BackgroundColourAnimation />
+        <View style={{ ...styles.container, backgroundColor: "transparent" }}>
+          <ScrollView contentContainerStyle={{ ...styles.scrollContainer }}>
+            <TouchableWithoutFeedback>
+              <View>
+                <UserProfileDetails
+                  username={"AbithaMaha"}
+                  rating={4.8}
+                  rolesWorked={4}
+                  projectsCommisioned={32}
                 />
-              )}
-              <SkillsList skills={userProfile.skills} />
-              <Text
-                style={{
-                  ...theme.customFonts.primary.small,
-                }}
-              >
-                {userProfile.aboutYou}
-              </Text>
-              {userProfile.portofolioContents[1] && (
-                <PortofolioContent
-                  editMode={false}
-                  portofolioContent={userProfile.portofolioContents[0]}
-                />
-              )}
-              {userProfile.portofolioContents[2] && (
-                <PortofolioContent
-                  editMode={false}
-                  portofolioContent={userProfile.portofolioContents[0]}
-                />
-              )}
-              <ReviewCarousel
-                reviews={userProfile.reviewsReceived}
-                rating={userProfile.rating}
-                totalReviews={userProfile.totalReviews}
-              />
-              {userProfile.portofolioContents
-                .slice(3, 0)
-                .map((portofolioContent, index) => (
-                  <PortofolioContent
-                    key={index}
-                    editMode={false}
-                    portofolioContent={portofolioContent}
+                <View
+                  style={{
+                    flex: 1,
+                    gap: 50,
+                    width: "90%",
+                    alignSelf: "center",
+                    marginTop: 40,
+                  }}
+                >
+                  <Experiences experiences={userProfile.experiences} />
+                  {userProfile.portofolioContents[0] && (
+                    <PortofolioContent
+                      editMode={false}
+                      portofolioContent={userProfile.portofolioContents[0]}
+                    />
+                  )}
+                  <SkillsList skills={userProfile.skills} />
+                  <Text
+                    style={{
+                      ...theme.customFonts.primary.small,
+                    }}
+                  >
+                    {userProfile.aboutYou}
+                  </Text>
+                  {userProfile.portofolioContents[1] && (
+                    <PortofolioContent
+                      editMode={false}
+                      portofolioContent={userProfile.portofolioContents[0]}
+                    />
+                  )}
+                  {userProfile.portofolioContents[2] && (
+                    <PortofolioContent
+                      editMode={false}
+                      portofolioContent={userProfile.portofolioContents[0]}
+                    />
+                  )}
+                  <ReviewCarousel
+                    reviews={userProfile.reviewsReceived}
+                    rating={userProfile.rating}
+                    totalReviews={userProfile.totalReviews}
                   />
-                ))}
-            </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
-      </View>
+                  {userProfile.portofolioContents
+                    .slice(3, 0)
+                    .map((portofolioContent, index) => (
+                      <PortofolioContent
+                        key={index}
+                        editMode={false}
+                        portofolioContent={portofolioContent}
+                      />
+                    ))}
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </View>
+      </>
     ),
 
     [userProfile]
