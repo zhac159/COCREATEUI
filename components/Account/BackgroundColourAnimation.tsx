@@ -34,7 +34,7 @@ const BackgroundColourAnimation: FC<BackgroundColourAnimationProps> = ({
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      rotationValue = (rotationValue + 0.005) % 1;
+      rotationValue = (rotationValue + 0.00025) % 1;
       rotateAnim.setValue(rotationValue);
     }, 100);
 

@@ -1,10 +1,33 @@
-import React from "react";
 import { Tabs } from "expo-router";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
+import { useEffect, useState } from "react";
+import { Keyboard } from "react-native";
 
 export default function TabLayout() {
   const theme = useTheme();
+
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   return (
     <Tabs
@@ -12,6 +35,7 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: "rgba(55, 55, 55, 0.8)",
           position: "absolute",
+          display: keyboardVisible ? "none" : "flex",
           padding: 0,
           margin: 0,
           elevation: 0,
@@ -22,7 +46,7 @@ export default function TabLayout() {
           shadowOpacity: 0,
         },
       }}
-      sceneContainerStyle={{ backgroundColor: "transparent"}}
+      sceneContainerStyle={{ backgroundColor: "transparent" }}
     >
       <Tabs.Screen
         name="discovery"
@@ -59,7 +83,12 @@ export default function TabLayout() {
           headerTitle: "",
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => (
-            <FontAwesome6 name="user" size={24} color={focused ? theme.colors.primary:color} solid />
+            <FontAwesome6
+              name="user"
+              size={24}
+              color={focused ? theme.colors.primary : color}
+              solid
+            />
           ),
         }}
       />

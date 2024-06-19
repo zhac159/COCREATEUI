@@ -7,14 +7,23 @@ import {
   ViewStyle,
 } from "react-native";
 import { useTheme } from "../Themes/theme";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 type StyledButtonProps = {
   onPress: () => void;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   text: string;
+  icon?: string;
+  textColour?: string;
 };
 
-const StyledButton: FC<StyledButtonProps> = ({ onPress, style, text }) => {
+const StyledButton: FC<StyledButtonProps> = ({
+  onPress,
+  style,
+  text,
+  icon,
+  textColour,
+}) => {
   const theme = useTheme();
 
   return (
@@ -22,19 +31,30 @@ const StyledButton: FC<StyledButtonProps> = ({ onPress, style, text }) => {
       style={{
         ...styles.container,
         backgroundColor: theme.colors.black,
-        ...style as {},
+        ...(style as {}),
       }}
       onPress={onPress}
     >
       <Text
         style={{
           ...theme.customFonts.primary.medium,
-          color: theme.colors.white,
+          color: textColour ? textColour : theme.colors.white,
           fontSize: 18,
         }}
       >
         {text}
       </Text>
+      {icon ? (
+        <FontAwesome6
+          name={icon}
+          size={20}
+          solid
+          style={{
+            marginTop: 5,
+          }}
+          color={textColour ? textColour : theme.colors.white}
+        />
+      ) : null}
     </TouchableOpacity>
   );
 };
@@ -46,6 +66,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 40,
     alignItems: "center",
-    paddingVertical: 10,
+    alignSelf: "center",
+    paddingVertical: 8,
+    flexDirection: "row",
+    gap: 15,
   },
 });

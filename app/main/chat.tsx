@@ -20,6 +20,7 @@ import { useLastMessagesByTargetAndChatTypeValue } from "@/components/RecoilStat
 import MessageReaction from "@/components/Common/Messages/MessageReaction";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import { useNewMessageReactionValue } from "@/components/RecoilStates/newMessageReactionState";
+import { createAndExchangeKeysIfThereIsNoKey } from "@/common/encryption/encryptionHelper";
 
 export default function EnquiryChat() {
   const database = useSQLiteContext();
@@ -36,6 +37,24 @@ export default function EnquiryChat() {
   );
 
   const newMessageReaction = useNewMessageReactionValue();
+
+  useEffect(() => {
+    (async () => {
+
+      if (currentChatDataValue.targetPublicKey === null) return;
+      if (!currentChatDataValue.targetPublicKey) return;
+
+      console.log(currentChatDataValue.chatTypeIdPair.chatTargetId);
+
+      await createAndExchangeKeysIfThereIsNoKey(
+        currentChatDataValue.targetPublicKey,
+        currentChatDataValue.chatTypeIdPair.chatTargetId,
+        currentChatDataValue.chatTypeIdPair.chatType,
+        connection
+      );
+
+    })();
+  }, []);
 
   useEffect(() => {
     if (newMessageReaction === null) return;

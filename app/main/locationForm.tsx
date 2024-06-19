@@ -33,7 +33,6 @@ export default function LocationForm() {
       style={{
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "red",
       }}
     >
       <View
@@ -58,15 +57,15 @@ export default function LocationForm() {
               if (details == null) {
                 return;
               }
-              mutate({
-                data: {
-                  address: details.formatted_address,
-                  latitude: details.geometry.location.lat,
-                  longitude: details.geometry.location.lng,
-                },
-              });
+              console.log(details);
+              // mutate({
+              //   data: {
+              //     address: details.formatted_address,
+              //     latitude: details.geometry.location.lat,
+              //     longitude: details.geometry.location.lng,
+              //   },
+              // });
             }}
-
             query={{
               key: "AIzaSyAFNo96X4pNPMF8A7u8XwzrHPXagPsXU2Q",
               language: "en",

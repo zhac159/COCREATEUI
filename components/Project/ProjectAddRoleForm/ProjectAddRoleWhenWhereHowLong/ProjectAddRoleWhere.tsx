@@ -85,7 +85,6 @@ const ProjectAddRoleWhere: FC<ProjectAddRoleWhereProps> = ({
             minLength={2}
             fetchDetails={true}
             onPress={(data, details = null) => {
-              console.log("test");
               if (details == null) {
                 return;
               }

@@ -132,6 +132,7 @@ const Projects: FC<ProjectsProps> = ({
         <ViewApplicationsAndAssetsButton
           onPress={() => setShowApplications(true)}
           assetMode={!!selectedRole.assetMode}
+          projectId={projects[selectedProject].id}
         />
         <ProjectChatPreview
           chatTargetIdTypePair={{
@@ -139,7 +140,7 @@ const Projects: FC<ProjectsProps> = ({
             chatType: ChatType.Project,
           }}
           show={!selectedRole.assetMode}
-          project={projects![selectedProject]}
+          project={projects[selectedProject]}
         />
         <ShortlistedEnquiriesChats
           projectId={projects[selectedProject].id}

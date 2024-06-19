@@ -6,6 +6,7 @@ import ProjectsCompleted from "./ProjectsCompleted";
 import ProjectRolesCompleted from "./ProjectRolesCompleted";
 import ExperienceCarousel from "./ExperienceCarousel";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { router } from "expo-router";
 
 type ExperiencesProps = {
   experiences: ExperienceDTO[];
@@ -26,10 +27,15 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
     [experiences]
   );
 
-  const renderCompletedProjectsc = ({ item }: { item: ExperienceDTO }) => (
+  const renderCompletedProjects = ({ item }: { item: ExperienceDTO }) => (
     <TouchableWithoutFeedback
       onPress={() => {
-        console.log(item);
+        router.navigate({
+          pathname: "/main/completedProject",
+          params: {
+            projectId: 20,
+          },
+        });
       }}
     >
       <ProjectsCompleted experience={item} />
@@ -47,12 +53,12 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
   );
 
   return (
-    <View style={{ flex: 1, gap: 30 }}>
+    <View style={{  gap: 30 }}>
       {completedProjects.length > 0 && (
         <ExperienceCarousel
           experiences={completedProjects}
           title="Commissioned"
-          renderItem={renderCompletedProjectsc}
+          renderItem={renderCompletedProjects}
         />
       )}
       {completedProjectRoles.length > 0 && (

@@ -150,11 +150,11 @@ export function getNonce(): Uint8Array {
 
 export async function createAndExchangeKeys(
   receiverPublicKey: string,
-  receiverId: number,
+  targetId: number,
   chatType: ChatType,
   connection: HubConnection | null
 ): Promise<void> {
-  const aesKey = await generateAndStoreSymmetricAesKey(chatType, receiverId);
+  const aesKey = await generateAndStoreSymmetricAesKey(chatType, targetId);
 
   const nonce = getNonce();
   const encryptedKey = await encryptMessageDFH(
@@ -174,11 +174,26 @@ export async function createAndExchangeKeys(
     encryptedSymmetricKey: encryptedKey,
     nonce: toBase64(nonce),
     publicKey: toBase64(publicKey),
-    targetId: receiverId,
+    targetId,
   };
 
   await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);
 }
+
+export async function createAndExchangeKeysIfThereIsNoKey(
+  receiverPublicKey: string,
+  targetId: number,
+  chatType: ChatType,
+  connection: HubConnection | null
+): Promise<void> {
+  const aesKey = await getSymmetricAesKey(chatType, targetId);
+
+  console.log("aesKey", aesKey);
+
+  if (aesKey == null) {
+    await createAndExchangeKeys(receiverPublicKey, targetId, chatType, connection);
+  }
+} 
 
 export async function exchangeProjectKey(
   receiverPublicKey: string,

@@ -41,6 +41,7 @@ const AssetOfferChats: FC<AssetOfferChatsProps> = ({ assetOffers, show }) => {
             }}
             chatImage="https://picsum.photos/200/300"
             key={offer.id}
+            targetPublicKey={offer.asset?.owner?.publicKey}
             assetOfferInformation={offer}
           />
         ))}

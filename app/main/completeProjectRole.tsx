@@ -11,8 +11,8 @@ import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelper";
 import CompleteProjectUploadPhoto from "@/components/CompleteProject/CompleteProjectUploadPhoto";
 import CompleteProjectDescription from "@/components/CompleteProject/CompleteProjectDescription";
-import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfrimation";
 import NextButton from "@/components/Project/Common/NextButton";
+import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfirmation";
 
 export default function CompleteProjectRole() {
 

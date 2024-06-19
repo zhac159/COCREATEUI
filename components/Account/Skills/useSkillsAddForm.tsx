@@ -9,7 +9,7 @@ import { getRestOfSkills, mapSkillDTOToSkillUpdateDTO } from "./skillHelper";
 import TabHeaderButtons from "../Common/TabHeaderButtons";
 import { View } from "react-native";
 
-const SkillsTab = () => {
+const useSkillsAddForm = () => {
   const [skills, setSkills] = useSkillsState();
   const [restOfTheSkills, setRestOfTheSkills] = useState<SkillDTO[]>([]);
   const { mutate } = usePutApiUserSkills();
@@ -53,39 +53,30 @@ const SkillsTab = () => {
     }
   }, [skills]);
 
-  return (
+  const FormNode = (
     <View
       style={{
         flexGrow: 1,
         backgroundColor: "transparent",
         justifyContent: "flex-start",
+        gap: 60,
       }}
     >
-      <TabHeaderButtons
+      <SkillsList
+        skills={skillsSelected}
         editMode={editMode}
-        setEditMode={setEditMode}
-        onDone={handleSubmit}
-        showPlayButton={true}
+        deselectSkill={deselectSkill}
+        flipMode={editMode}
       />
-      <View
-        style={{
-          gap: 60,
-        }}
-      >
-        <SkillsList
-          skills={skillsSelected}
-          editMode={editMode}
-          deselectSkill={deselectSkill}
-          flipMode={editMode}
-        />
-        <SkillsAddMenu
-          restOfTheSkills={restOfTheSkills}
-          show={editMode}
-          selectSkill={selectSkill}
-        />
-      </View>
+      <SkillsAddMenu
+        restOfTheSkills={restOfTheSkills}
+        show={editMode}
+        selectSkill={selectSkill}
+      />
     </View>
   );
+
+  return { FormNode, handleSubmit };
 };
 
-export default SkillsTab;
+export default useSkillsAddForm;

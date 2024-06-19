@@ -9,11 +9,13 @@ import { TouchableOpacity } from "react-native";
 type ViewApplicationsAndAssetsButtonProps = {
   onPress: () => void;
   assetMode?: boolean;
+  projectId: number;
 };
 
 const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> = ({
   onPress,
   assetMode,
+  projectId
 }) => {
   const theme = useTheme();
 
@@ -23,7 +25,7 @@ const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> 
     router.navigate({
       pathname: "/main/assetFinder",
       params: {
-        projectId: 1,
+        projectId,
       },
     });
   };

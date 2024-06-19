@@ -7,7 +7,7 @@ import CompleteProjectUploadPhoto from "@/components/CompleteProject/CompletePro
 import { getAssignedRoles } from "@/components/CompleteProject/completedProjectHelper";
 import { ProjectCompleteDTO, ReviewCreateDTO } from "@/common/api/model";
 import CompleteProjectReviewAssignee from "@/components/CompleteProject/CompletedProjectReviewAssignee";
-import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfrimation";
+import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfirmation";
 import CompleteProjectDescription from "@/components/CompleteProject/CompleteProjectDescription";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";

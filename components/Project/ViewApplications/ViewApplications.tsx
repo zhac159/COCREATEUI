@@ -85,12 +85,12 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
                 enquiryId: enquiries[index].id,
               },
             });
-            createAndExchangeKeys(
-              enquiries[index].enquirer?.publicKey || "",
-              enquiries[index].enquirer?.userId || 0,
-              ChatType.Enquiry,
-              connection
-            );
+            // createAndExchangeKeys(
+            //   enquiries[index].enquirer?.publicKey || "",
+            //   enquiries[index].enquirer?.userId || 0,
+            //   ChatType.Enquiry,
+            //   connection
+            // );
             updateApplicationsToShortlisted(enquiries[index].id || 0);
           }}
           onSwipedAborted={() => setSwipingDistance(0)}

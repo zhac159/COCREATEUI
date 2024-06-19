@@ -28,9 +28,7 @@ const renderScene = SceneMap({
 export default function Account() {
   const currentUser = useCurrentUserValue();
 
-  // const [selectedTab, setSelectedTab] = useState(0);
-
-  const buttonNames = ["Skills", "Assets", "Portofolio", "Experience"];
+  const tabsNames = ["Skills", "Assets", "Portofolio", "Experience"];
 
   const [isSticky, setIsSticky] = useState(0);
 
@@ -40,6 +38,7 @@ export default function Account() {
   };
 
   const [index, setIndex] = useState(0);
+  
   const [routes] = useState([
     { key: "first", title: "First" },
     { key: "second", title: "Second" },
@@ -70,7 +69,7 @@ export default function Account() {
           blur={isSticky}
         />
         <TabButtons
-          tabs={buttonNames}
+          tabs={tabsNames}
           selectedTab={index}
           setSelectedTab={setIndex}
           blur={isSticky}

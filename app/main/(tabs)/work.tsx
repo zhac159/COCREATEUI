@@ -54,6 +54,7 @@ export default function Work() {
               chatTargetId: offer.project?.projectManager.userId || 0,
               chatType: ChatType.AssetEnquiry,
             }}
+            targetPublicKey={offer.project?.projectManager.publicKey}
             key={offer.id}
           />
         ))}
@@ -77,6 +78,7 @@ export default function Work() {
               chatType: ChatType.Enquiry,
             }}
             key={enquiry.id}
+            targetPublicKey={enquiry.projectManager?.publicKey}
           />
         ))}
     </View>

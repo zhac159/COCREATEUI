@@ -1,3 +1,39 @@
+import { useGetApiProjectCompleted } from "@/common/api/endpoints/cocreateApi";
+import CompletedProjectViewer from "@/components/CompleteProject/CompletedProjectViewer";
+import { useLocalSearchParams } from "expo-router";
+import { View, StyleSheet } from "react-native";
+
 export default function CompletedProject() {
-  return <></>;
+  const { projectId } = useLocalSearchParams<{
+    projectId: string;
+  }>();
+
+  const intId = parseInt(projectId);
+
+  const { data: completedProject } = useGetApiProjectCompleted({
+    projectId: intId,
+  });
+
+  if (!completedProject)
+    return (
+      <View
+        style={{
+          flex: 1,
+        }}
+      ></View>
+    );
+
+  return (
+    <View
+      style={styles.container}
+    >
+      <CompletedProjectViewer completedProject={completedProject} />
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

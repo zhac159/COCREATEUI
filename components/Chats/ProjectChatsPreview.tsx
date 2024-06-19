@@ -67,8 +67,9 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
                   chatName={user.username || "N/A"}
                   chatTargetIdTypePair={{
                     chatTargetId: user.userId || 0,
-                    chatType: ChatType.Enquiry,
+                    chatType: ChatType.ProjectColleague,
                   }}
+                  targetPublicKey={user.publicKey}
                   key={user.userId + "-chat-user"}
                 />
               ))}

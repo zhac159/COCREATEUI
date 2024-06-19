@@ -15,10 +15,10 @@ const FoundAssets: FC<FoundAssetsProps> = ({ assets, projectId }) => {
         <View
           style={{
             height: 370,
-            width: "100%"
+            width: "100%",
           }}
         >
-          <FoundAsset asset={asset}  projectId = {projectId}/>
+          <FoundAsset asset={asset} projectId={projectId} />
         </View>
       ))}
     </>

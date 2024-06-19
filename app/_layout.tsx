@@ -60,6 +60,7 @@ function RootLayoutNav() {
               <GestureHandlerRootView style={{ flex: 1 }}>
                 <Stack screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="index" options={{ headerShown: false }} />
+                  <Stack.Screen name="getStarted" options={{ headerShown: false }} />
                 </Stack>
                 <MediaViewerPortal />
               </GestureHandlerRootView>

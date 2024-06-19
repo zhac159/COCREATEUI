@@ -7,7 +7,7 @@ import TabHeaderButtons from "../Common/TabHeaderButtons";
 import { useState } from "react";
 import { useTheme } from "@/components/Themes/theme";
 import PortofolioContent from "./PortofolioContent";
-import NewPortofolioContentForm from "./NewPortofolioContentForm";
+import NewPortofolioContentForm from "./useNewPortofolioContentForm";
 import { PrepareUploadDTO } from "@/common/api/model";
 import { EntityType } from "../Common/Media/EntityType";
 import {
@@ -19,12 +19,16 @@ import {
   usePostApiPrepare,
   usePutApiUserPortofolio,
 } from "@/common/api/endpoints/cocreateApi";
+import useNewPortofolioContentForm from "./useNewPortofolioContentForm";
 
 const PortofolioContentTab = () => {
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
   const [uris, setUris] = useState<string[]>([]);
   const theme = useTheme();
+
+  const { FormNode: NewPortofolioContentForm, handleCreate } =
+    useNewPortofolioContentForm();
 
   const [aboutYou, setAboutYou] = useAboutYouState();
   const [newAboutYou, setNewAboutYou] = useState<string>(aboutYou || "");
@@ -115,7 +119,7 @@ const PortofolioContentTab = () => {
       }}
     >
       {createMode ? (
-        <NewPortofolioContentForm setCreateMode={setCreateMode} />
+        <View>NewPortofolioContentForm</View>
       ) : (
         <>
           <TabHeaderButtons

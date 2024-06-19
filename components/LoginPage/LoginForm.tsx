@@ -26,7 +26,7 @@ const LoginForm = () => {
   const { mutate, isLoading, error } = usePostApiLogin({
     mutation: {
       onSuccess: async (data) => {
-        setCurrentUser(data.user);
+        setCurrentUser(data.user!);
         const token = data.token;
         if (!token) {
           return;
@@ -47,7 +47,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data: UserLoginDTO) => {
-    console.log(data);
     mutate({ data });
   };
 

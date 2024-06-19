@@ -21,13 +21,12 @@ import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { Button } from "react-native-paper";
 
-type NewPortofolioContentFormProps = {
-  setCreateMode: Dispatch<SetStateAction<boolean>>;
-};
+// type NewPortofolioContentFormProps = {
+//   setCreateMode?: Dispatch<SetStateAction<boolean>>;
+// };
 
-const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
-  setCreateMode,
-}) => {
+const useNewPortofolioContentForm = (
+) => {
   const setPortofolioContents = useSetPortfolioContentsState();
 
   const userSkills = useSkillsValue();
@@ -56,7 +55,6 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
           return newState;
         });
         cachePortofolioContent(data);
-        setCreateMode(false);
       },
     },
   });
@@ -82,34 +80,12 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
 
   const theme = useTheme();
 
-  if (!userSkills) return null;
-
-  return (
+  const FormNode = (
     <View
       style={{
         gap: 50,
       }}
     >
-      <Button
-        style={{
-          ...NewPortofolioContentFormStyles.doneButton,
-          backgroundColor: theme.colors.primary,
-        }}
-        onPress={async () => {
-          await handleCreate();
-        }}
-      >
-        <Text
-          style={{
-            ...theme.customFonts.primary.medium,
-            color: theme.colors.white,
-            paddingHorizontal: 8,
-            paddingVertical: 2,
-          }}
-        >
-          {"Done"}
-        </Text>
-      </Button>
       <SkillsList
         skills={userSkills}
         editMode={false}
@@ -184,9 +160,11 @@ const NewPortofolioContentForm: FC<NewPortofolioContentFormProps> = ({
       />
     </View>
   );
+
+  return { FormNode, handleCreate };
 };
 
-export default NewPortofolioContentForm;
+export default useNewPortofolioContentForm;
 
 const NewPortofolioContentFormStyles = StyleSheet.create({
   mainImage: {

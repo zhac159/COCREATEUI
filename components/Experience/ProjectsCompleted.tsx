@@ -12,8 +12,6 @@ type ProjectsCompletedProps = {
 const ProjectsCompleted: FC<ProjectsCompletedProps> = ({ experience }) => {
   const theme = useTheme();
 
-  console.log(experience.project?.projectRoles);
-
   return (
     <View style={styles.imageContainer}>
       <Media

@@ -3,39 +3,62 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  Text,
 } from "react-native";
-import LoginForm from "@/components/LoginPage/LoginForm";
-import RegisterForm from "@/components/LoginPage/RegisterForm";
 import { useState } from "react";
-import { Button } from "react-native-paper";
+import { LoginType } from "@/components/LoginPage/loginFormHelper";
+import { useTheme } from "@/components/Themes/theme";
+import StyledButton from "@/components/Common/StyledButton";
+import { router } from "expo-router";
 
 const LoginPage = () => {
-  const [form, setForm] = useState("login");
+  const [form, setForm] = useState(LoginType.SignIn);
+
+  const theme = useTheme();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        {form === "login" ? <LoginForm /> : <RegisterForm />}
-        <View style={{ flexDirection: "row" }}>
-          <Button
-            mode="contained"
-            onPress={() => setForm("login")}
+        <View>
+          <Text
             style={{
-              marginRight: 10,
-              backgroundColor: form === "login" ? "blue" : "grey",
+              ...theme.customFonts.primary.medium,
+              fontWeight: "bold",
+              fontSize: 50,
+              lineHeight: 48,
             }}
           >
-            Login
-          </Button>
-          <Button
-            mode="contained"
-            onPress={() => setForm("register")}
+            Welcome to the
+          </Text>
+          <Text
             style={{
-              backgroundColor: form === "register" ? "blue" : "grey",
+              ...theme.customFonts.primary.medium,
+              fontWeight: "bold",
+              color: theme.colors.orange,
+              fontSize: 50,
+              lineHeight: 48,
             }}
           >
-            Register
-          </Button>
+            {"Future of\nCreative Work"}
+          </Text>
+        </View>
+        <View style={styles.buttonsContainer}>
+          <StyledButton
+            text="Sign In"
+            style={{ backgroundColor: theme.colors.black }}
+            onPress={() => setForm(LoginType.SignUp)}
+            icon="arrow-right"
+          />
+          <StyledButton
+            text="Get Started"
+            style={{ backgroundColor: theme.colors.orange }}
+            onPress={() =>
+              router.navigate({
+                pathname: "/getStarted",
+              })
+            }
+            icon="arrow-right"
+          />
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -45,8 +68,13 @@ const LoginPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    paddingVertical: "20%",
+    paddingHorizontal: "3%",
+    justifyContent: "space-between",
+  },
+  buttonsContainer: {
+    alignSelf: "center",
+    gap: 20,
   },
 });
 

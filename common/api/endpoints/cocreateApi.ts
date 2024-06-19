@@ -1105,62 +1105,6 @@ export const getPostApiProjectCompleteMutationOptions = <TError = ErrorType<unkn
       return useMutation(mutationOptions);
     }
     
-export const getApiProjectProjectId = (
-    projectId: number,
- signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<ProjectDTO>(
-      {url: `/api/Project/${projectId}`, method: 'GET', signal
-    },
-      );
-    }
-  
-
-export const getGetApiProjectProjectIdQueryKey = (projectId: number,) => {
-    return [`/api/Project/${projectId}`] as const;
-    }
-
-    
-export const getGetApiProjectProjectIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiProjectProjectId>>, TError = ErrorType<unknown>>(projectId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectProjectId>>, TError, TData>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiProjectProjectIdQueryKey(projectId);
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiProjectProjectId>>> = ({ signal }) => getApiProjectProjectId(projectId, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(projectId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProjectProjectId>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetApiProjectProjectIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProjectProjectId>>>
-export type GetApiProjectProjectIdQueryError = ErrorType<unknown>
-
-export const useGetApiProjectProjectId = <TData = Awaited<ReturnType<typeof getApiProjectProjectId>>, TError = ErrorType<unknown>>(
- projectId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectProjectId>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetApiProjectProjectIdQueryOptions(projectId,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-
-
-
 export const getApiProjectCompleted = (
     params?: GetApiProjectCompletedParams,
  signal?: AbortSignal
@@ -1207,6 +1151,62 @@ export const useGetApiProjectCompleted = <TData = Awaited<ReturnType<typeof getA
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getGetApiProjectCompletedQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+export const getApiProjectProjectId = (
+    projectId: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ProjectDTO>(
+      {url: `/api/Project/${projectId}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetApiProjectProjectIdQueryKey = (projectId: number,) => {
+    return [`/api/Project/${projectId}`] as const;
+    }
+
+    
+export const getGetApiProjectProjectIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiProjectProjectId>>, TError = ErrorType<unknown>>(projectId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectProjectId>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiProjectProjectIdQueryKey(projectId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiProjectProjectId>>> = ({ signal }) => getApiProjectProjectId(projectId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(projectId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProjectProjectId>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiProjectProjectIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProjectProjectId>>>
+export type GetApiProjectProjectIdQueryError = ErrorType<unknown>
+
+export const useGetApiProjectProjectId = <TData = Awaited<ReturnType<typeof getApiProjectProjectId>>, TError = ErrorType<unknown>>(
+ projectId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectProjectId>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiProjectProjectIdQueryOptions(projectId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

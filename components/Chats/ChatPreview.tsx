@@ -20,6 +20,7 @@ type ChatPreviewProps = {
   projectInformation?: ProjectDTO;
   assetOfferInformation?: AssetOfferDTO;
   projectId?: number;
+  targetPublicKey?: string | null;
 };
 
 const ChatPreview: FC<ChatPreviewProps> = ({
@@ -29,7 +30,8 @@ const ChatPreview: FC<ChatPreviewProps> = ({
   enquiryInformation,
   projectInformation,
   assetOfferInformation,
-  projectId
+  projectId,
+  targetPublicKey
 }) => {
   const theme = useTheme();
 
@@ -77,6 +79,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
           enquiryInformation,
           projectInformation,
           projectId,
+          targetPublicKey,
           chatMembers: [
             {
               userId: chatTargetIdTypePair.chatTargetId ,

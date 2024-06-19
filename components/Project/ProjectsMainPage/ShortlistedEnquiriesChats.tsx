@@ -39,6 +39,7 @@ const ShortlistedEnquiriesChats: FC<ShortlistedEnquiriesChatsProps> = ({
             chatImage="https://picsum.photos/200/300"
             key={enquiry.id}
             enquiryInformation={enquiry}
+            targetPublicKey={enquiry.enquirer?.publicKey}
           />
         ))}
     </View>

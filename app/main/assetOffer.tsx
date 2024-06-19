@@ -15,7 +15,7 @@ import AssetOfferForm from "@/components/AssetFinder/AssetOfferForm";
 export default function AssetOffer() {
   const theme = useTheme();
 
-  const interesteAsset = useInterestedAssetValue();
+  const interestedAsset = useInterestedAssetValue();
 
   const [showOfferForm, setShowOfferForm] = useState(false);
 
@@ -31,7 +31,7 @@ export default function AssetOffer() {
     );
   };
 
-  if (!interesteAsset) {
+  if (!interestedAsset) {
     return null;
   }
 
@@ -46,7 +46,7 @@ export default function AssetOffer() {
         width={windowWidth}
         vertical={false}
         loop={false}
-        data={interesteAsset.asset.medias}
+        data={interestedAsset.asset.medias}
         renderItem={renderItem}
         height={windowHeight * 0.5}
         panGestureHandlerProps={{
@@ -67,7 +67,7 @@ export default function AssetOffer() {
             fontSize: 25,
           }}
         >
-          {interesteAsset.asset.name}
+          {interestedAsset.asset.name}
         </Text>
         <Text
           style={{
@@ -75,7 +75,7 @@ export default function AssetOffer() {
             fontSize: 13,
           }}
         >
-          {interesteAsset.asset.description}
+          {interestedAsset.asset.description}
         </Text>
         <ButtonWithIcon
           text="Finish project"
@@ -84,8 +84,8 @@ export default function AssetOffer() {
         />
       </View>
       <AssetOfferForm
-        asset={interesteAsset.asset}
-        projectId={interesteAsset.projectId}
+        asset={interestedAsset.asset}
+        projectId={interestedAsset.projectId}
         show={showOfferForm}
       />
     </View>

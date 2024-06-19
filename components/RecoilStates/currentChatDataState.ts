@@ -16,6 +16,7 @@ export type CurrentChatData = {
   assetOfferInformation?: AssetOfferDTO;
   projectId?: number;
   chatMembers?: ChatMember[];
+  targetPublicKey?: string | null;
 };
 
 export const currentChatDataState = atom<CurrentChatData>({

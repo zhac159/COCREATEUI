@@ -38,11 +38,11 @@ const DurationPicker: FC<DurationPicker> = ({
           color: theme.colors.black,
           backgroundColor: "white",
         }}
-        value={duration.toString()}
+        value={hours ? (duration).toString() : (duration / 24).toString()}
         onChangeText={(text) =>
           setDuration(hours ? Number(text) : Number(text) * 24)
         }
-        keyboardType="numeric"
+        // keyboardType="defaut"
       />
       <View
         style={{

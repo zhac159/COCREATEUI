@@ -32,7 +32,6 @@ const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
             ...theme.customFonts.primary.large,
             ...styles.text,
             color: theme.colors.black,
-        
           }}
         >
           {coins}
@@ -83,6 +82,7 @@ const styles = StyleSheet.create({
   coins: {
     borderRadius: 25.5,
     paddingVertical: 4,
+    minWidth: 100,
     paddingLeft: 10,
     paddingRight: 12,
     alignItems: "center",
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   coinShadow: {
     zIndex: -1,
     borderRadius: 25.5,
+    minWidth: 100,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 5,

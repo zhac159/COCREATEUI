@@ -149,6 +149,10 @@ export const useChatIcons = (
       // Default behavior for unhandled chat types
       return [];
     },
+    [ChatType.ProjectColleague]: (currentChatData, userId) => {
+      // Default behavior for unhandled chat types
+      return [];
+    },
   };
 
   return useMemo(() => {

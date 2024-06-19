@@ -39,7 +39,7 @@ export const assetStyles = StyleSheet.create({
   container: {
     flexDirection: "column",
     width: "68%",
-    height: "70%",
+    height: 400,
     borderRadius: 14,
     padding: 10,
     shadowColor: "#000",
@@ -117,7 +117,6 @@ export const assetStyles = StyleSheet.create({
     position: "absolute",
     top: "-2%",
     right: "-3%",
-    backgroundColor: "red",
     borderRadius: 50,
     padding: 5,
   },

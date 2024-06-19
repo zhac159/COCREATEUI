@@ -7,6 +7,6 @@
 import type { UserDTO } from './userDTO';
 
 export interface LoginResponseDTO {
-  token?: string | null;
-  user?: UserDTO;
+  token: string;
+  user: UserDTO;
 }
