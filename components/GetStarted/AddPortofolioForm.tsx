@@ -4,12 +4,9 @@ import { useTheme } from "../Themes/theme";
 import useNewPortofolioContentForm from "../Account/PortofolioContents/useNewPortofolioContentForm";
 import StyledButton from "../Common/StyledButton";
 import { router } from "expo-router";
+import { FormPageProps } from "@/common/forms/formsHelper";
 
-type AddPortofolioFormProps = {
-  nextStep: () => void;
-};
-
-const AddPortofolioForm: FC<AddPortofolioFormProps> = ({ nextStep }) => {
+const AddPortofolioForm: FC<FormPageProps> = ({ nextStep }) => {
   const theme = useTheme();
 
   const { FormNode, handleCreate } = useNewPortofolioContentForm();
@@ -17,13 +14,10 @@ const AddPortofolioForm: FC<AddPortofolioFormProps> = ({ nextStep }) => {
   const handleNextStep = () => {
     handleCreate();
     router.navigate("main/(tabs)/account");
-
   };
 
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <Text
         style={{
           ...theme.customFonts.secondary.medium,

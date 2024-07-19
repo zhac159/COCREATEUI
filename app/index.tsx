@@ -5,14 +5,12 @@ import {
   View,
   Text,
 } from "react-native";
-import { useState } from "react";
-import { LoginType } from "@/components/LoginPage/loginFormHelper";
 import { useTheme } from "@/components/Themes/theme";
 import StyledButton from "@/components/Common/StyledButton";
 import { router } from "expo-router";
 
+
 const LoginPage = () => {
-  const [form, setForm] = useState(LoginType.SignIn);
 
   const theme = useTheme();
 
@@ -46,7 +44,11 @@ const LoginPage = () => {
           <StyledButton
             text="Sign In"
             style={{ backgroundColor: theme.colors.black }}
-            onPress={() => setForm(LoginType.SignUp)}
+            onPress={() =>
+              router.navigate({
+                pathname: "/signIn",
+              })
+            }
             icon="arrow-right"
           />
           <StyledButton

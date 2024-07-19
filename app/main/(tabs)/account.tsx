@@ -2,8 +2,6 @@ import {
   StyleSheet,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  Dimensions,
-  View,
 } from "react-native";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
 import { useState } from "react";
@@ -17,12 +15,14 @@ import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import ExperienceTab from "@/components/Experience/ExperienceTab";
 import { TabView, SceneMap } from "react-native-tab-view";
+import SettingsTab from "@/components/Account/Settings/SettingsTab";
 
 const renderScene = SceneMap({
   first: SkillsTab,
   second: AssetTab,
   third: PortofolioContentTab,
   fourth: ExperienceTab,
+  fifth: SettingsTab,
 });
 
 export default function Account() {
@@ -30,49 +30,45 @@ export default function Account() {
 
   const tabsNames = ["Skills", "Assets", "Portofolio", "Experience"];
 
-  const [isSticky, setIsSticky] = useState(0);
+  const [isSticky, setIsSticky] = useState(false);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    setIsSticky((offsetY - windowHeight * 0.22 + 200) / 10);
+    setIsSticky(offsetY > windowHeight * 0.22);
   };
 
   const [index, setIndex] = useState(0);
-  
+
   const [routes] = useState([
     { key: "first", title: "First" },
     { key: "second", title: "Second" },
     { key: "third", title: "Third" },
     { key: "fourth", title: "Fourth" },
+    { key: "fifth", title: "Fifth" },
   ]);
 
   return (
     <>
       <BackgroundColourAnimation />
       <KeyboardAwareScrollView
-        style={{
-          height: "100%",
-          width: "100%",
-          paddingBottom: 200,
-          flex: 1,
-        }}
+        keyboardShouldPersistTaps="handled"
+        style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
-        // onScroll={handleScroll}
+        onScroll={handleScroll}
       >
         <AccountMainInfo
           coins={currentUser.coins || 0}
-          username={currentUser.username || "username"}
-          rating={currentUser.rating || 0}
-          blur={isSticky}
+          username={currentUser.username}
+          rating={currentUser.rating}
         />
         <TabButtons
           tabs={tabsNames}
           selectedTab={index}
           setSelectedTab={setIndex}
-          blur={isSticky}
+          isSticky={isSticky}
         />
         <TabView
           sceneContainerStyle={styles.scene}
@@ -97,5 +93,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "3%",
     height: "100%",
     width: "100%",
+  },
+  container: {
+    height: "100%",
+    width: "100%",
+    flex: 1,
   },
 });

@@ -191,9 +191,14 @@ export async function createAndExchangeKeysIfThereIsNoKey(
   console.log("aesKey", aesKey);
 
   if (aesKey == null) {
-    await createAndExchangeKeys(receiverPublicKey, targetId, chatType, connection);
+    await createAndExchangeKeys(
+      receiverPublicKey,
+      targetId,
+      chatType,
+      connection
+    );
   }
-} 
+}
 
 export async function exchangeProjectKey(
   receiverPublicKey: string,
@@ -205,7 +210,7 @@ export async function exchangeProjectKey(
 
   if (projectKey == null) {
     console.log("no projectKey");
-    return
+    return;
   }
 
   const nonce = getNonce();
@@ -229,4 +234,11 @@ export async function exchangeProjectKey(
   };
 
   await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);
+}
+
+export async function hashPassword(password: string): Promise<string> {
+  return await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  );
 }

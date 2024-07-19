@@ -55,8 +55,11 @@ import type {
   ProjectRoleUpdateDTO,
   ProjectWithMatchingRolesListDTO,
   PutApiEnquiryShortlistEnquiryParams,
+  RedeemVoucherCodeDTO,
+  RedeemVoucherCodeResponseDTO,
   SkillDTO,
   SkillUpdateDTO,
+  UserChangePasswordDTO,
   UserCreateDTO,
   UserDTO,
   UserGetMatchingProjectRolesDTO,
@@ -69,7 +72,9 @@ import type {
   UserProfileDTO,
   UserProfilesDTO,
   UserPublicKeyUpdateDTO,
-  UserUpdateDTO
+  UserUpdateDTO,
+  UserUpdateEmailDTO,
+  UserVerifyEmailDTO
 } from '../model'
 import { customInstance } from '../mutator/custom-instance';
 import type { ErrorType } from '../mutator/custom-instance';
@@ -1801,3 +1806,236 @@ export const useGetApiUserGetProfile = <TData = Awaited<ReturnType<typeof getApi
 
 
 
+export const postApiUserVerifyEmail = (
+    userVerifyEmailDTO: UserVerifyEmailDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/User/verify-email`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userVerifyEmailDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiUserVerifyEmailMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserVerifyEmail>>, TError,{data: UserVerifyEmailDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserVerifyEmail>>, TError,{data: UserVerifyEmailDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserVerifyEmail>>, {data: UserVerifyEmailDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiUserVerifyEmail(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUserVerifyEmailMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserVerifyEmail>>>
+    export type PostApiUserVerifyEmailMutationBody = UserVerifyEmailDTO
+    export type PostApiUserVerifyEmailMutationError = ErrorType<unknown>
+
+    export const usePostApiUserVerifyEmail = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserVerifyEmail>>, TError,{data: UserVerifyEmailDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiUserVerifyEmailMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiUserResendVerificationEmail = (
+    
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/User/resend-verification-email`, method: 'POST'
+    },
+      );
+    }
+  
+
+
+export const getPostApiUserResendVerificationEmailMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserResendVerificationEmail>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserResendVerificationEmail>>, TError,void, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserResendVerificationEmail>>, void> = () => {
+          
+
+          return  postApiUserResendVerificationEmail()
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUserResendVerificationEmailMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserResendVerificationEmail>>>
+    
+    export type PostApiUserResendVerificationEmailMutationError = ErrorType<unknown>
+
+    export const usePostApiUserResendVerificationEmail = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserResendVerificationEmail>>, TError,void, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiUserResendVerificationEmailMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiUserUpdateEmail = (
+    userUpdateEmailDTO: UserUpdateEmailDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/User/update-email`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdateEmailDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiUserUpdateEmailMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserUpdateEmail>>, TError,{data: UserUpdateEmailDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserUpdateEmail>>, TError,{data: UserUpdateEmailDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserUpdateEmail>>, {data: UserUpdateEmailDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiUserUpdateEmail(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUserUpdateEmailMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserUpdateEmail>>>
+    export type PostApiUserUpdateEmailMutationBody = UserUpdateEmailDTO
+    export type PostApiUserUpdateEmailMutationError = ErrorType<unknown>
+
+    export const usePostApiUserUpdateEmail = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserUpdateEmail>>, TError,{data: UserUpdateEmailDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiUserUpdateEmailMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiUserChangePassword = (
+    userChangePasswordDTO: UserChangePasswordDTO,
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/User/change-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userChangePasswordDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiUserChangePasswordMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserChangePassword>>, TError,{data: UserChangePasswordDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserChangePassword>>, TError,{data: UserChangePasswordDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserChangePassword>>, {data: UserChangePasswordDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiUserChangePassword(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUserChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserChangePassword>>>
+    export type PostApiUserChangePasswordMutationBody = UserChangePasswordDTO
+    export type PostApiUserChangePasswordMutationError = ErrorType<unknown>
+
+    export const usePostApiUserChangePassword = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserChangePassword>>, TError,{data: UserChangePasswordDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiUserChangePasswordMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiVoucherCodeRedeem = (
+    redeemVoucherCodeDTO: RedeemVoucherCodeDTO,
+ ) => {
+      
+      
+      return customInstance<RedeemVoucherCodeResponseDTO>(
+      {url: `/api/VoucherCode/redeem`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: redeemVoucherCodeDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiVoucherCodeRedeemMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiVoucherCodeRedeem>>, TError,{data: RedeemVoucherCodeDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiVoucherCodeRedeem>>, TError,{data: RedeemVoucherCodeDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiVoucherCodeRedeem>>, {data: RedeemVoucherCodeDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiVoucherCodeRedeem(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiVoucherCodeRedeemMutationResult = NonNullable<Awaited<ReturnType<typeof postApiVoucherCodeRedeem>>>
+    export type PostApiVoucherCodeRedeemMutationBody = RedeemVoucherCodeDTO
+    export type PostApiVoucherCodeRedeemMutationError = ErrorType<unknown>
+
+    export const usePostApiVoucherCodeRedeem = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiVoucherCodeRedeem>>, TError,{data: RedeemVoucherCodeDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiVoucherCodeRedeemMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    

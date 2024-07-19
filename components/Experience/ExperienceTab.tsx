@@ -12,7 +12,7 @@ const ExperienceTab = () => {
   const reviewDetails = useReviewDetailsValue();
 
   return (
-    <View style={{ flex: 1, paddingVertical: 54, gap: 46 }}>
+    <View style={styles.container}>
       <Experiences experiences={experiences} />
       <ReviewCarousel
         reviews={reviewDetails.reviewsReceived}
@@ -32,4 +32,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: 20,
   },
+  container:{
+    flex: 1,
+    paddingVertical: 54,
+    gap: 46
+  }
 });

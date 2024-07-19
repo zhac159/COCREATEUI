@@ -8,21 +8,21 @@ type TabButtonsProps = {
   tabs: string[];
   selectedTab: number;
   setSelectedTab: (inx: number) => void;
-  blur: number;
+  isSticky: boolean;
 };
 
 const TabButtons: FC<TabButtonsProps> = ({
   tabs,
   selectedTab,
   setSelectedTab,
-  blur,
+  isSticky,
 }) => {
   const theme = useTheme();
 
   return (
     <BlurView
       style={{...styles.container, paddingTop: 55}}
-      intensity={blur}
+      intensity={isSticky ? 100 : 0}
     >
       {tabs.map((name, idx) => (
         <TouchableOpacity
@@ -60,10 +60,10 @@ const TabButtons: FC<TabButtonsProps> = ({
         icon="cog"
         size={20}
         onPress={() => {
-          console.log("Pressed");
+          setSelectedTab(4);
         }}
         style={styles.icon}
-        iconColor={theme.colors.black}
+        iconColor={selectedTab == 4 ? theme.colors.primary : theme.colors.black}
       />
     </BlurView>
   );

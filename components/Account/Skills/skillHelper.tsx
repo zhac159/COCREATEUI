@@ -141,6 +141,7 @@ export const getSkillIcon = (skill: Skills): IconNames => {
       return IconNames.Default;
   }
 };
+
 export const getSkillGroupColor = (
   group: SkillGroups,
   opacity: number = 1

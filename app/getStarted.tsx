@@ -1,7 +1,9 @@
+import { useFormWithStep } from "@/common/forms/formsHelper";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 import AddPortofolioForm from "@/components/GetStarted/AddPortofolioForm";
 import AddSkillForm from "@/components/GetStarted/AddSkillForm";
+import ConfirmEmailTokenForm from "@/components/GetStarted/ConfirmEmailTokenForm";
 import LocationForm from "@/components/GetStarted/LocationForm";
 import NameAndPasswordForm from "@/components/GetStarted/NameAndPasswordForm";
 import { useState } from "react";
@@ -9,14 +11,14 @@ import { Keyboard, TouchableWithoutFeedback, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function GetStarted() {
-  const [index, setIndex] = useState(0);
-
-  const forms = [
-    <NameAndPasswordForm nextStep={() => setIndex(index + 1)} />,
-    <LocationForm nextStep={() => setIndex(index + 1)} />,
-    <AddSkillForm nextStep={() => setIndex(index + 1)} />,
-    <AddPortofolioForm nextStep={() => setIndex(index + 1)} />,
-  ];
+  
+  const { form } = useFormWithStep([
+    <NameAndPasswordForm />,
+    <ConfirmEmailTokenForm />,
+    <LocationForm />,
+    <AddSkillForm />,
+    <AddPortofolioForm />,
+  ]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -25,7 +27,7 @@ export default function GetStarted() {
         keyboardShouldPersistTaps="handled"
       >
         <BackgroundColourAnimation />
-        {forms[index]}
+        {form}
       </KeyboardAwareScrollView>
     </TouchableWithoutFeedback>
   );

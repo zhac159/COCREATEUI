@@ -2,7 +2,7 @@ import {
   useSetPortfolioContentsState,
   useSkillsValue,
 } from "@/components/RecoilStates/profileState";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { View, TextInput, Text } from "react-native";
 import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
@@ -19,15 +19,12 @@ import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi"
 import { EntityType } from "../Common/Media/EntityType";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
-import { Button } from "react-native-paper";
+import { set } from "lodash";
 
-// type NewPortofolioContentFormProps = {
-//   setCreateMode?: Dispatch<SetStateAction<boolean>>;
-// };
-
-const useNewPortofolioContentForm = (
-) => {
+const useNewPortofolioContentForm = () => {
   const setPortofolioContents = useSetPortfolioContentsState();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const userSkills = useSkillsValue();
 
@@ -55,11 +52,16 @@ const useNewPortofolioContentForm = (
           return newState;
         });
         cachePortofolioContent(data);
+        setIsLoading(false);
+        setUris([]);
+        setDescription("");
+        setSkill(undefined);
       },
     },
   });
 
   const handleCreate = async () => {
+    setIsLoading(true);
     const uploadedUrls = await upload(uris);
     const newMedias: MediaCreateDTO[] = uploadedUrls.map((url) => {
       return {
@@ -161,7 +163,7 @@ const useNewPortofolioContentForm = (
     </View>
   );
 
-  return { FormNode, handleCreate };
+  return { FormNode, handleCreate, isLoading };
 };
 
 export default useNewPortofolioContentForm;

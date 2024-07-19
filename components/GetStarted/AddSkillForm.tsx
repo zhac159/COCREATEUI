@@ -1,22 +1,19 @@
 import React, { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import StyledButton from "../Common/StyledButton";
 import { useTheme } from "../Themes/theme";
 import useSkillsAddForm from "../Account/Skills/useSkillsAddForm";
+import { FormPageProps } from "@/common/forms/formsHelper";
 
-type AddSkillFormProps = {
-  nextStep: () => void;
-};
-
-const AddSkillForm: FC<AddSkillFormProps> = ({ nextStep }) => {
+const AddSkillForm: FC<FormPageProps> = ({ nextStep }) => {
   const theme = useTheme();
 
   const { handleSubmit, FormNode } = useSkillsAddForm();
 
   const handleNextStep = () => {
     handleSubmit();
-    nextStep();
-  }
+    nextStep?.();
+  };
 
   return (
     <View
@@ -25,8 +22,18 @@ const AddSkillForm: FC<AddSkillFormProps> = ({ nextStep }) => {
         flexGrow: 1,
         justifyContent: "space-between",
         paddingHorizontal: "2%",
+        gap: 50,
       }}
     >
+      <Text
+        style={{
+          ...theme.customFonts.secondary.medium,
+          fontWeight: "400",
+          fontSize: 40,
+        }}
+      >
+        What Are You Creative Skills?
+      </Text>
       {FormNode}
       <StyledButton text="Next" onPress={handleNextStep} icon="arrow-right" />
     </View>

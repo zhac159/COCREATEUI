@@ -6,6 +6,6 @@
  */
 
 export interface UserLoginDTO {
-  password?: string | null;
-  username?: string | null;
+  password: string;
+  username: string;
 }

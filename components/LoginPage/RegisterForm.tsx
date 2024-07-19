@@ -16,6 +16,7 @@ import {
   generateKeyPair,
   toBase64,
 } from "@/common/encryption/encryptionHelper";
+import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
 
 const RegisterForm = () => {
   const setCurrentUser = useSetCurrentUserState();
@@ -32,7 +33,7 @@ const RegisterForm = () => {
         if (!token) {
           return;
         }
-        SecureStore.setItemAsync("userToken", token);
+        SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, token);
         generateDatabaseKey();
 
         var publicKey = await generateKeyPair();

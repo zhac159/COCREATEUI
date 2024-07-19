@@ -8,28 +8,20 @@ import { useTheme } from "../Themes/theme";
 import StyledButton from "../Common/StyledButton";
 import { Controller, useForm } from "react-hook-form";
 import { UserLocationUpdateDTO } from "@/common/api/model";
+import { FormPageProps } from "@/common/forms/formsHelper";
 
-type LocationFormProps = {
-  nextStep: () => void;
-};
-
-const LocationForm: FC<LocationFormProps> = ({ nextStep }) => {
+const LocationForm: FC<FormPageProps> = ({ nextStep }) => {
   const theme = useTheme();
 
   const setAddress = useSetAddressState();
 
-  const {
-    setValue,
-    handleSubmit: handleSubmitForm,
-    control,
-    getValues,
-  } = useForm<UserLocationUpdateDTO>();
+  const { setValue, control, getValues } = useForm<UserLocationUpdateDTO>();
 
   const { mutate } = usePutApiUserLocation({
     mutation: {
       onSuccess: (data) => {
         setAddress(data.address);
-        nextStep();
+        nextStep?.();
       },
       onError: (error) => {
         console.log(error.code);

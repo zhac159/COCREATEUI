@@ -1,5 +1,7 @@
 import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 import * as SecureStore from "expo-secure-store";
+import BackEndErrors from "../enum/backEndErrors";
+import SecureStoreKeys from "../enum/secureStoreKeys";
 
 // export const AXIOS_INSTANCE = Axios.create({
 //   baseURL: "https://cocreateapi.azurewebsites.net",
@@ -12,7 +14,7 @@ export const AXIOS_INSTANCE = Axios.create({
 AXIOS_INSTANCE.interceptors.request.use(async (request) => {
   console.log("Starting Request", JSON.stringify(request, null, 2));
 
-  const token = await SecureStore.getItemAsync("userToken");
+  const token = await SecureStore.getItemAsync(SecureStoreKeys.USER_TOKEN);
 
   if (token) {
     request.headers.Authorization = `Bearer ${token}`;
@@ -28,8 +30,8 @@ export interface ApiResponse<T> {
 }
 
 export interface ResponseErrorType {
-  code: string | undefined;
-  message: string;
+  code: string;
+  message: BackEndErrors;
 }
 
 class CustomError extends Error {
@@ -41,7 +43,6 @@ class CustomError extends Error {
   }
 }
 
-
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
   const source = Axios.CancelToken.source();
   const promise = AXIOS_INSTANCE({
@@ -49,22 +50,24 @@ export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
     validateStatus: function (status) {
       return status < 500;
     },
-  }).then(
-    ({ data, status }: { data: ApiResponse<T>, status: number }) => {
+  })
+    .then(({ data, status }: { data: ApiResponse<T>; status: number }) => {
       console.log("Response", JSON.stringify(data, null, 2));
       if (!data.success) {
         throw new CustomError(data.error || "Unknown error", status.toString());
       }
       return data.data as T;
-    }
-  ).catch((error: AxiosError) => {
-    // Ensure the error is of type ResponseErrorType
-    const responseError: ResponseErrorType = {
-      code: 'code' in error ? error.code : error.response?.status.toString(),
-      message: error.message || "Unknown error"
-    };
-    throw responseError;
-  });
+    })
+    .catch((error: AxiosError) => {
+      console.log("Error", error.message);
+
+      const responseError: ResponseErrorType = {
+        code: error.code || "500",
+        message: BackEndErrors[error.message as keyof typeof BackEndErrors],
+      };
+
+      throw responseError;
+    });
 
   // @ts-ignore
   promise.cancel = () => {
@@ -76,4 +79,4 @@ export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
 
 export default customInstance;
 
-export interface ErrorType<Error> extends AxiosError<Error> {}
+export type ErrorType<ErrorData> = ResponseErrorType;

@@ -29,10 +29,10 @@ const PortofolioContent: FC<portofolioContentProps> = ({
   portofolioContent,
   editMode = false,
 }) => {
-  const uris = portofolioContent.medias?.map((media) => media.uri || "") || [];
-  const [activeIndex, setActiveIndex] = useState(0);
-  const carouselRef = useRef(null);
+  const uris = portofolioContent.medias?.map((media) => media.uri) || [];
   const setMediaViewer = useSetMediaViewerState();
+
+  const descriptionInputRef = useRef<TextInput>(null);
 
   const setPortofolioContent = useSetPortofolioContentByIdState(
     portofolioContent.id || 0
@@ -42,7 +42,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
   const cacheImages = useCacheImages();
 
   const fetchCachedUris = async (asset: PortofolioContentDTO) => {
-    var uris = asset.medias?.map((media) => media.uri || "") || [];
+    var uris = asset.medias?.map((media) => media.uri) || [];
 
     var result = await cacheImages(uris || []);
 
@@ -133,34 +133,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
           activeOffsetX: [-3, 3],
           failOffsetY: [-5, 5],
         }}
-        // onScrollIndexChanged={(index) => setActiveIndex(index)}
       />
-      {/* <Pagination
-        dotsLength={uris.length}
-        activeDotIndex={activeIndex}
-        containerStyle={{
-          position: "absolute",
-          bottom: 0,
-          marginBottom: 30,
-          alignSelf: "center",
-        }}
-        dotStyle={{
-          width: 13,
-          height: 13,
-          borderRadius: 15,
-          backgroundColor: theme.colors.white,
-          marginHorizontal: -2,
-        }}
-        inactiveDotStyle={{
-          width: 13,
-          height: 13,
-          borderRadius: 15,
-          backgroundColor: theme.colors.gray,
-          marginHorizontal: -2,
-        }}
-        inactiveDotOpacity={1}
-        inactiveDotScale={1}
-      /> */}
       <View
         style={{
           flexDirection: "row",
@@ -170,37 +143,29 @@ const PortofolioContent: FC<portofolioContentProps> = ({
         }}
       >
         <SkillIcon skillType={portofolioContent.skillType || 0} />
-        {editMode ? (
-          <TextInput
-            placeholder="Description..."
-            style={{
-              ...theme.customFonts.primary.small,
-              backgroundColor: theme.colors.lightGray,
-              borderRadius: 7,
-              paddingHorizontal: 5,
-              width: "80%",
-            }}
-            numberOfLines={1}
-            value={portofolioContent.description || ""}
-            onChangeText={(description) =>
-              setPortofolioContent((state) => ({
-                ...state,
-                description,
-              }))
-            }
-          />
-        ) : (
-          <Text
-            style={{
-              ...theme.customFonts.primary.small,
-              width: "80%",
-            }}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {portofolioContent.description || ""}
-          </Text>
-        )}
+        <TextInput
+          ref={descriptionInputRef}
+          placeholder="Description..."
+          style={{
+            ...theme.customFonts.primary.small,
+            backgroundColor: editMode ? theme.colors.lightGray : "transparent",
+            borderRadius: 7,
+            color: theme.colors.black,
+            paddingHorizontal: 5,
+            width: "80%",
+          }}
+          textAlignVertical={editMode ? "top" : "center"}
+          numberOfLines={editMode ? 5 : 2}
+          value={portofolioContent.description || ""}
+          onChangeText={(description) =>
+            setPortofolioContent((state) => ({
+              ...state,
+              description,
+            }))
+          }
+          editable={editMode}
+          multiline={true}
+        />
       </View>
     </View>
   );
@@ -232,7 +197,7 @@ export const styles = StyleSheet.create({
   deleteIconButton: {
     position: "absolute",
     zIndex: 100,
-    top: "-2%",
+    top: "0%",
     right: "-2%",
     backgroundColor: "red",
     borderRadius: 100,

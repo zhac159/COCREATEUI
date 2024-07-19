@@ -16,27 +16,25 @@ import { useSetCurrentUserState } from "../RecoilStates/profileState";
 import StyledButton from "../Common/StyledButton";
 import { FC } from "react";
 import * as Crypto from "expo-crypto";
+import { FormPageProps } from "@/common/forms/formsHelper";
+import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
 
-type NameAndPasswordFormProps = {
-  nextStep: () => void;
-};
-
-const NameAndPasswordForm: FC<NameAndPasswordFormProps> = ({ nextStep }) => {
+const NameAndPasswordForm: FC<FormPageProps> = ({ nextStep }) => {
   const theme = useTheme();
 
   const setCurrentUser = useSetCurrentUserState();
 
   const { mutate: setPublicKey } = usePutApiUserPublicKey();
 
-  const { mutate, isLoading, error } = usePostApiLoginRegister({
+  const { mutate } = usePostApiLoginRegister({
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user);
-        SecureStore.setItemAsync("userToken", data.token);
+        SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         generateDatabaseKey();
         var publicKey = await generateKeyPair();
         setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
-        nextStep();
+        nextStep?.();
       },
     },
   });
@@ -44,7 +42,6 @@ const NameAndPasswordForm: FC<NameAndPasswordFormProps> = ({ nextStep }) => {
   const { setValue, handleSubmit: handleSubmitForm } = useForm<UserCreateDTO>();
 
   const handleSubmit = async (userCreateDTO: UserCreateDTO) => {
-
     const hashedPassword = await Crypto.digestStringAsync(
       Crypto.CryptoDigestAlgorithm.SHA256,
       userCreateDTO.password

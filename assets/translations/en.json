@@ -1,0 +1,53 @@
+{
+  "hello": "Hello, World!",
+  "projects": {
+    "create-project": {
+      "title": "What is Your Project About?",
+      "title-placeholder": "Project Title...",
+      "title-tooltip": "The title should be a short description of your project like, 'period horror film' or 'jazz gig in central london' - it could also include the name of your project like 'Endagon - a series of phantasy hand-drawn graphics'.",
+      "description-placeholder": "Project Description...",
+      "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested."
+    }
+  },
+  "account": {
+    "menu-items": {
+      "vouchercode": "Enter Code",
+      "accountdetails": "Acount Details & Location"
+    },
+    "settings": {
+      "enter-code": {
+        "title": "Enter Code",
+        "code-placeholder": "Enter Code...",
+        "code-tooltip": "Enter your waiver code to receive credits down below."
+      },
+      "account-details-and-location": {
+        "change-password": {
+          "title": "Change Password:",
+          "old-password-placeholder": "Enter Old Password...",
+          "new-password-placeholder": "Enter New Password..."
+        },
+        "change-location": {
+          "title": "Location",
+          "location-placeholder": "Enter Location..."
+        },
+        "change-email": {
+          "title": "Email",
+          "email-placeholder": "Enter New Email..."
+        }
+      }
+    }
+  },
+  "login": {
+    "username": "Username",
+    "password": "Password"
+  },
+  "error": {
+    "username-not-found": "No user with this username found",
+    "invalid-password": "Invalid password for this user",
+    "invalid-voucher-code": "Invalid voucher code",
+    "same-password": "New password must be different from the old password"
+  },
+  "button": {
+    "submit": "Submit"
+  }
+}

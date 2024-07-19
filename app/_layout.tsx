@@ -1,3 +1,8 @@
+import '@formatjs/intl-pluralrules';
+import '@formatjs/intl-pluralrules/locale-data/en';
+import '../common/translations/i18n';
+import 'react-native-gesture-handler'
+
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -11,7 +16,7 @@ import MediaViewerPortal from "@/components/MediaViewer/MediaViewerPortal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SQLiteProvider } from "expo-sqlite/build/next/hooks";
 import { migrateDbIfNeeded } from "@/common/database/databaseHelper";
-import 'react-native-gesture-handler'
+
 
 export { ErrorBoundary } from "expo-router";
 
@@ -61,6 +66,7 @@ function RootLayoutNav() {
                 <Stack screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="index" options={{ headerShown: false }} />
                   <Stack.Screen name="getStarted" options={{ headerShown: false }} />
+                  <Stack.Screen name="signIn" options={{ headerShown: false }} />
                 </Stack>
                 <MediaViewerPortal />
               </GestureHandlerRootView>

@@ -10,38 +10,19 @@ import {
 } from "@/common/api/endpoints/cocreateApi";
 import { UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
-import {
-  generateDatabaseKey,
-  generateKeyPair,
-  toBase64,
-} from "@/common/encryption/encryptionHelper";
+import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
 
 const LoginForm = () => {
   const setCurrentUser = useSetCurrentUserState();
 
   const { setValue, handleSubmit } = useForm<UserLoginDTO>();
 
-  const { mutate: setPublicKey } = usePutApiUserPublicKey();
-
   const { mutate, isLoading, error } = usePostApiLogin({
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user!);
-        const token = data.token;
-        if (!token) {
-          return;
-        }
-        SecureStore.setItemAsync("userToken", token);
-
-        if (data.user?.address == null) {
-          router.replace("/main/locationForm");
-          return;
-        }
-
+        SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/account");
-      },
-      onError: (error) => {
-        console.log(error.code);
       },
     },
   });

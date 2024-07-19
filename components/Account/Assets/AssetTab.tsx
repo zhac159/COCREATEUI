@@ -14,9 +14,8 @@ const AssetTab = () => {
   const assetsLength = assets?.length || 0;
 
   const [assetType, setAssetType] = React.useState(0);
-  const [filteredAssets, setFilteredAssets] = React.useState<AssetDTO[]>(
-    assets || []
-  );
+  const [filteredAssets, setFilteredAssets] =
+    React.useState<AssetDTO[]>(assets);
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
 
@@ -24,7 +23,7 @@ const AssetTab = () => {
   const [create, setCreate] = useState<() => void>(() => null);
 
   useEffect(() => {
-    var newFilteredAssets = (assets || []).filter(
+    var newFilteredAssets = assets.filter(
       (asset) => asset.assetType === assetType
     );
     setFilteredAssets(newFilteredAssets);
@@ -40,7 +39,7 @@ const AssetTab = () => {
         setCreateMode={setCreateMode}
         onDone={() => (createMode ? create() : update())}
       />
-      <View style={{ flexDirection: "row", height: "100%"}}>
+      <View style={{ flexDirection: "row", height: "100%" }}>
         <AssetTypeSelector
           assetType={assetType}
           setAssetType={setAssetType}

@@ -174,13 +174,13 @@ const NewAssetForm: React.FC<NewAssetFormProps> = ({
             height: 1,
           }}
         />
-
         <TextInput
           style={{
             ...theme.customFonts.primary.small,
             ...assetStyles.descriptionTextInput,
             backgroundColor: theme.colors.lightestGray,
             color: theme.colors.black,
+            textAlignVertical: "top",
           }}
           multiline={true}
           value={description}
