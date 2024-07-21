@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 18,
     width: "100%",
-    backgroundColor: "transparent",
   },
   buttonLabel : {
     marginBottom: 5,

@@ -61,7 +61,7 @@ export default function Account() {
     <>
       <BackgroundColourAnimation />
       <Tabs.Container
-        headerContainerStyle={{ backgroundColor: "transparent" }}
+        headerContainerStyle={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}
         renderHeader={() => (
           <AccountMainInfo
             coins={currentUser.coins || 0}
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   scene: {
     paddingHorizontal: "3%",
     marginTop: 30,
-    marginBottom: 50,
+    paddingBottom: 200,
   },
   container: {
     height: "100%",

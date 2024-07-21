@@ -51,9 +51,8 @@ export default AccountMainInfo;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "transparent",
-    marginTop: 55,
-    height: Dimensions.get("window").height * 0.21,
+    paddingTop: 55,
+    height: Dimensions.get("window").height * 0.27,
     marginBottom: -55,
   },
   nameRatingContainer: {
