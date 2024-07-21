@@ -2,6 +2,7 @@ import {
   StyleSheet,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  View,
 } from "react-native";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
 import { useState } from "react";
@@ -16,6 +17,13 @@ import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnim
 import ExperienceTab from "@/components/Experience/ExperienceTab";
 import { TabView, SceneMap } from "react-native-tab-view";
 import SettingsTab from "@/components/Account/Settings/SettingsTab";
+import { Tabs } from "react-native-collapsible-tab-view";
+
+const HEADER_HEIGHT = 250;
+
+const Header = () => {
+  return <View style={styles.header} />;
+};
 
 const renderScene = SceneMap({
   first: SkillsTab,
@@ -50,7 +58,8 @@ export default function Account() {
   return (
     <>
       <BackgroundColourAnimation />
-      <KeyboardAwareScrollView
+      {/* <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
         style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -74,14 +83,42 @@ export default function Account() {
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={setIndex}
-          
           renderTabBar={() => null}
-          style={{ height: 1000 }}
-          // animationEnabled={false}
-          // swipeEnabled={false}
+          animationEnabled={false}
+          swipeEnabled={false}
         />
-        {/* <PortofolioContentTab /> */}
-      </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView> */}
+      <Tabs.Container
+        renderHeader={Header}
+        headerHeight={HEADER_HEIGHT} 
+        pagerProps={{ scrollEnabled: false  }}
+      >
+        <Tabs.Tab name="skills">
+          <Tabs.ScrollView>
+            <SkillsTab />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="assets">
+          <Tabs.ScrollView>
+            <AssetTab />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="portofolio">
+          <Tabs.ScrollView>
+            <PortofolioContentTab />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="experience">
+          <Tabs.ScrollView>
+            <ExperienceTab />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="settings">
+          <Tabs.ScrollView>
+            <SettingsTab />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+      </Tabs.Container>
     </>
   );
 }
@@ -99,6 +136,21 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
-    flex: 1
+    flex: 1,
+  },
+  box: {
+    height: 250,
+    width: "100%",
+  },
+  boxA: {
+    backgroundColor: "white",
+  },
+  boxB: {
+    backgroundColor: "#D8D8D8",
+  },
+  header: {
+    height: HEADER_HEIGHT,
+    width: "100%",
+    backgroundColor: "#2196f3",
   },
 });
