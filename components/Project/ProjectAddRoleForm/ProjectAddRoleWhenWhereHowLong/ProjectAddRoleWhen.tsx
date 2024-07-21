@@ -3,7 +3,6 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import projectAddRoleWhenWhereHowLongStyles from "./projectAddRoleWhenWhereHowLongStyles";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   Skills,
   getSkillGroupColor,

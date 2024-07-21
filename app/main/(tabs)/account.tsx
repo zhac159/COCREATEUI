@@ -51,7 +51,6 @@ export default function Account() {
     <>
       <BackgroundColourAnimation />
       <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
         style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -75,10 +74,13 @@ export default function Account() {
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={setIndex}
+          
           renderTabBar={() => null}
-          animationEnabled={false}
-          swipeEnabled={false}
+          style={{ height: 1000 }}
+          // animationEnabled={false}
+          // swipeEnabled={false}
         />
+        {/* <PortofolioContentTab /> */}
       </KeyboardAwareScrollView>
     </>
   );
@@ -97,6 +99,6 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
-    flex: 1,
+    flex: 1
   },
 });
