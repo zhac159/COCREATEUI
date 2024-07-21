@@ -1,5 +1,5 @@
 import { ProjectRoleDTO } from "@/common/api/model";
-import {
+import React, {
   Dispatch,
   FC,
   SetStateAction,
@@ -14,13 +14,13 @@ import { EnquiryDTO } from "@/common/api/model";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
 import ProjectBanner from "./ProjectBanner/ProjectBanner";
 import ViewApplications from "../ViewApplications/ViewApplications";
-import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
-import { ScrollView } from "react-native-gesture-handler";
 import AssetOfferChats from "./AssetOfferChats";
 import ShortlistedEnquiriesChats from "./ShortlistedEnquiriesChats";
 import { SelectedRole, bannerHeight } from "./projectMainPageHelper";
 import ViewApplicationsAndAssetsButton from "../ViewApplications/ViewApplicationsAndAssetsButton";
 import ChatType from "@/common/chat/chatType";
+import GroupChatPreview from "@/components/Chats/GroupChatPreview";
+import TeamMembersChats from "./TeamMembersChats";
 
 type ProjectsProps = {
   selectedProject: number;
@@ -104,8 +104,6 @@ const Projects: FC<ProjectsProps> = ({
       />
     );
 
-  // if (projects && !projects[selectedProject]) return <Text>Loading...</Text>;
-
   return (
     <View>
       <Carousel
@@ -119,14 +117,12 @@ const Projects: FC<ProjectsProps> = ({
           hitSlop: { top: 20, bottom: -250, left: 20, right: 20 },
         }}
       />
-      <ScrollView
+      <View
         style={{
-          height: Dimensions.get("window").height - 350,
-        }}
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: 200,
-          paddingTop: 30,
+          flex: 1,
+          paddingTop: "10%",
+          paddingHorizontal: "3%",
+          gap: 15,
         }}
       >
         <ViewApplicationsAndAssetsButton
@@ -134,24 +130,25 @@ const Projects: FC<ProjectsProps> = ({
           assetMode={!!selectedRole.assetMode}
           projectId={projects[selectedProject].id}
         />
-        <ProjectChatPreview
+        <GroupChatPreview
           chatTargetIdTypePair={{
-            chatTargetId: projects![selectedProject].id!,
+            chatTargetId: projects[selectedProject].id,
             chatType: ChatType.Project,
           }}
-          show={!selectedRole.assetMode}
+          useSecondImage
           project={projects[selectedProject]}
         />
+        <TeamMembersChats project={projects[selectedProject]} />
         <ShortlistedEnquiriesChats
           projectId={projects[selectedProject].id}
           enquiries={enquiriesToRender}
-          show={!!selectedRole.allRoles || !!selectedRole.role}
+          show={true}
         />
         <AssetOfferChats
           assetOffers={projects[selectedProject].assetOffers}
           show={!!selectedRole.assetMode}
         />
-      </ScrollView>
+      </View>
     </View>
   );
 };

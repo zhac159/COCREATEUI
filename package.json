@@ -8,7 +8,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "api": "orval --config ./orval.config.ts"
+    "api": "orval --config ./orval.config.ts",
+    "cleanapi": "powershell -Command \"(Get-Content ./common/api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./common/api/endpoints/cocreateApi.ts\""
   },
   "jest": {
     "preset": "jest-expo"

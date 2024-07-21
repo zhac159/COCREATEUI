@@ -4,6 +4,7 @@ import { Dispatch, FC, SetStateAction, useCallback, useRef } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
 import { SelectedRole } from "./projectMainPageHelper";
+import { useTranslation } from "react-i18next";
 
 type ProjectRoleSelectionProps = {
   roles: ProjectRoleDTO[];
@@ -17,6 +18,8 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
   setSelectedRole,
 }) => {
   roles = [...roles];
+  
+  const {t} = useTranslation();
 
   const theme = useTheme();
   const flatListRef = useRef<FlatList>(null);
@@ -77,7 +80,7 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
                 : theme.colors.black,
             }}
           >
-            {projectRole ? projectRole.name : "All"}
+            {projectRole ? projectRole.name : t("projects.view-projects.all-roles")}
           </Text>
         </TouchableOpacity>
       )}

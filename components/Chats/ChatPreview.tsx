@@ -2,15 +2,21 @@ import { FC, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useTheme } from "../Themes/theme";
-import Media from "../MediaViewer/Media";
 import { formatDistance, parseISO } from "date-fns";
 import { router } from "expo-router";
 import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
 import { ChatTypeIdPair } from "./chatHelper";
-import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import { useSQLiteContext } from "expo-sqlite/next";
-import {  fetchMessages } from "@/common/database/databaseHelper";
-import { AssetOfferDTO, EnquiryDTO, ProjectDTO } from "@/common/api/model";
+import { fetchMessages } from "@/common/database/databaseHelper";
+import {
+  AssetOfferDTO,
+  EnquiryDTO,
+  ProjectDTO,
+  SkillType,
+} from "@/common/api/model";
+import SkillIcon from "../Account/Skills/SkillIcon";
+import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
+import Media from "../MediaViewer/Media";
 
 type ChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
@@ -21,6 +27,7 @@ type ChatPreviewProps = {
   assetOfferInformation?: AssetOfferDTO;
   projectId?: number;
   targetPublicKey?: string | null;
+  skillType?: SkillType;
 };
 
 const ChatPreview: FC<ChatPreviewProps> = ({
@@ -31,7 +38,8 @@ const ChatPreview: FC<ChatPreviewProps> = ({
   projectInformation,
   assetOfferInformation,
   projectId,
-  targetPublicKey
+  targetPublicKey,
+  skillType,
 }) => {
   const theme = useTheme();
 
@@ -65,10 +73,12 @@ const ChatPreview: FC<ChatPreviewProps> = ({
     <TouchableOpacity
       style={{
         ...styles.container,
-        borderBottomColor: theme.colors.gray,
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 10,
+        borderTopColor: theme.colors.lightGray,
+        borderTopWidth: 1,
+        borderBottomColor: theme.colors.lightGray,
+        borderBottomWidth: 1,
       }}
       onPress={() => {
         setCurrentChatData({
@@ -82,21 +92,19 @@ const ChatPreview: FC<ChatPreviewProps> = ({
           targetPublicKey,
           chatMembers: [
             {
-              userId: chatTargetIdTypePair.chatTargetId ,
+              userId: chatTargetIdTypePair.chatTargetId,
               username: chatName,
-            }
+            },
           ],
         });
         router.push("/main/chat");
       }}
     >
-      <View>
-        <Media
-          uri={"https://picsum.photos/200/300"}
-          style={styles.image}
-          onPress={() => {}}
-        />
-      </View>
+      {skillType !== undefined ? (
+        <SkillIcon skillType={skillType} style={styles.image} />
+      ) : (
+        <Media uri={"https://picsum.photos/200/300"} style={styles.image} />
+      )}
       <View
         style={{
           flexDirection: "column",
@@ -151,11 +159,12 @@ export default ChatPreview;
 const styles = StyleSheet.create({
   container: {
     height: 88,
-    borderBottomWidth: 1,
+    gap: 5,
   },
   image: {
     width: 60,
     height: 60,
     borderRadius: 10,
+    marginBottom: 10,
   },
 });

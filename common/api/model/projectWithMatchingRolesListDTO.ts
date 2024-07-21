@@ -7,5 +7,5 @@
 import type { ProjectWithMatchingRoleDTO } from './projectWithMatchingRoleDTO';
 
 export interface ProjectWithMatchingRolesListDTO {
-  projectWithMatchingRoles?: ProjectWithMatchingRoleDTO[] | null;
+  projectWithMatchingRoles: ProjectWithMatchingRoleDTO[];
 }

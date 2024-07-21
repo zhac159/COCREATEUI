@@ -11,14 +11,14 @@ import type { ProjectRoleDTO } from './projectRoleDTO';
 import type { UserDTO } from './userDTO';
 
 export interface ExperienceDTO {
-  description?: string | null;
-  experienceType?: ExperienceType;
-  id?: number;
-  medias?: MediaDTO[] | null;
-  project?: ProjectDTO;
-  projectId?: number;
-  projectRole?: ProjectRoleDTO;
-  projectRoleId?: number;
-  user?: UserDTO;
-  userId?: number;
+  description: string;
+  experienceType: ExperienceType;
+  id: number;
+  medias: MediaDTO[];
+  project: ProjectDTO;
+  projectId: number;
+  projectRole: ProjectRoleDTO;
+  projectRoleId: number;
+  user: UserDTO;
+  userId: number;
 }

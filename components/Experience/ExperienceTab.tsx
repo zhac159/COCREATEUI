@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   container:{
     flex: 1,
-    paddingVertical: 54,
+    paddingVertical: 20,
     gap: 46
   }
 });

@@ -7,13 +7,17 @@ import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { tabBarHeight } from "../Common/getWindowDimensions";
 import { AccountDetailsAndLocation } from "./AccountDetailsAndLocation/AccountDetailsAndLocation";
+import { TermsAndConditions } from "./TermsAndConditions";
+import { FeedbackAndContact } from "./FeedbackAndContact";
 
 const SettingsTab = () => {
   const [active, setActive] = useState<SettingsMenuOptions>();
 
   const pages = {
+    [SettingsMenuOptions.termsandconditions]: <TermsAndConditions />,
     [SettingsMenuOptions.vouchercode]: <EnterCodePage />,
-    [SettingsMenuOptions.accountdetails]: <AccountDetailsAndLocation/>,
+    [SettingsMenuOptions.accountdetails]: <AccountDetailsAndLocation />,
+    [SettingsMenuOptions.feedbackandcontact]: <FeedbackAndContact />,
   };
 
   console.log(active);
@@ -25,14 +29,14 @@ const SettingsTab = () => {
       ) : (
         <View
           style={{
-            flex: 1
+            flex: 1,
           }}
         >
           <IconButton
             icon={() => (
               <FontAwesome6 name="chevron-left" size={18} color="black" solid />
             )}
-            style={{ margin: 0 }}
+            style={{ margin: 0, marginBottom: 20 }}
             onPress={() => setActive(undefined)}
           />
           {pages[active]}
@@ -52,7 +56,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingVertical: 54,
+    paddingVertical: 30,
     paddingBottom: tabBarHeight,
   },
 });

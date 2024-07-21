@@ -27,13 +27,15 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
     [experiences]
   );
 
+  console.log(completedProjects);
+
   const renderCompletedProjects = ({ item }: { item: ExperienceDTO }) => (
     <TouchableWithoutFeedback
       onPress={() => {
         router.navigate({
           pathname: "/main/completedProject",
           params: {
-            projectId: 20,
+            projectId: item.project?.id,
           },
         });
       }}
@@ -45,7 +47,12 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
   const renderCompletedProjectRoles = ({ item }: { item: ExperienceDTO }) => (
     <TouchableWithoutFeedback
       onPress={() => {
-        console.log(item);
+        router.navigate({
+          pathname: "/main/completedProject",
+          params: {
+            projectId: item.projectRole.projectId,
+          },
+        });
       }}
     >
       <ProjectRolesCompleted experience={item} />
@@ -53,7 +60,7 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
   );
 
   return (
-    <View style={{  gap: 30 }}>
+    <View style={{ gap: 30, flex: 1, width: "100%" }}>
       {completedProjects.length > 0 && (
         <ExperienceCarousel
           experiences={completedProjects}

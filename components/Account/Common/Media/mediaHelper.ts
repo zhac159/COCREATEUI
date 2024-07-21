@@ -18,7 +18,6 @@ const getContentType = (uri: string) => {
 };
 
 export const uploadFiles = async (sasUris: string[], files: string[]) => {
-  console.log("Uploading files to Azure");
 
   for (let i = 0; i < sasUris.length; i++) {
     const sasUri = sasUris[i];

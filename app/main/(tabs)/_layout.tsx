@@ -51,6 +51,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="discovery"
         options={{
+          lazy: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="compass" size={24} color={color} solid />

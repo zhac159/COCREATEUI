@@ -62,7 +62,6 @@ export default function HelperScreenNav() {
 
   useEffect(() => {
     if (!connection || !database) return;
-
     connection.on("ReceiveMessages", (messages: MessageDTO[]) => {
       handleReceivedMessages(connection, database, messages, setLastMessages);
     });

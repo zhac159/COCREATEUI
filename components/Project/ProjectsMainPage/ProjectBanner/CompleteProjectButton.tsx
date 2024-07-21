@@ -27,12 +27,12 @@ const CompleteProjectButton: FC<CompleteProjectButtonProps> = ({ id }) => {
   return (
     <IconButton
       icon={() => (
-        <FontAwesome6 name="check" size={18} color={theme.colors.black} solid />
+        <FontAwesome6 name="square-check" size={18} color={theme.colors.white} solid />
       )}
       onPress={navigateToCompleteProjectForm}
       size={30}
       style={{
-        backgroundColor: "gold",
+        backgroundColor: theme.colors.orange,
         margin: 0,
       }}
     />

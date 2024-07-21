@@ -16,6 +16,7 @@ import MessageReaction from "../Common/Messages/MessageReaction";
 
 type ChatProps = {
   messages: Message[];
+  userIdUsernameMap: Record<number, string>;
   handleLoadMessages: () => void;
   handleLoadLaterMessages: () => void;
   handleSendMessage: (message: MessageCreateDTO) => void;
@@ -23,10 +24,12 @@ type ChatProps = {
   handleAddReaction: (message: MessageReaction) => void;
   userId: number;
   getMedia: (index: number) => void;
+  showNames?: boolean;
 };
 
 const Chat: FC<ChatProps> = ({
   messages,
+  userIdUsernameMap,
   handleLoadMessages,
   handleLoadLaterMessages,
   handleSendMessage,
@@ -34,6 +37,7 @@ const Chat: FC<ChatProps> = ({
   handleAddReaction,
   userId,
   getMedia,
+  showNames,
 }) => {
   const flatListRef = useRef<FlatList<Message>>(null);
 
@@ -69,7 +73,9 @@ const Chat: FC<ChatProps> = ({
   const renderItem = useRenderChatMessage(
     userId,
     handleSelectMessage,
-    handleSelectReplyMessage
+    handleSelectReplyMessage,
+    userIdUsernameMap,
+    !!showNames
   );
 
   const handleAddReactionAndClose = useCallback( async (messageReaction: MessageReaction) => {

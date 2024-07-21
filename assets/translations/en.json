@@ -1,24 +1,67 @@
 {
   "hello": "Hello, World!",
+  "discovery":{
+    "no-projects": {
+      "title": "More projects will be here soon! ",
+      "description": "You're one of the first to test this app. People will be added continoulsy, so will  new projects. Check back in a couple of days or create your own project."
+    }
+  },
+  "work":{
+    "shortlisted": "Shortlisted",
+    "no-work-title": "Start working by applying to jobs",
+    "no-work-description": "You're one of the first to test this app. People will be added continoulsy, so will  new projects. Check back in a couple of days or create your own project."
+  },
   "projects": {
+    "view-projects": {  
+      "all-roles": "All Roles"
+    },
+    "default-page": {
+      "title": "Create your first project",
+      "description": "As a special part of this beta you have received some credits. Use them to collborate with other creatives to get your ideas off the ground or find tools you need.",
+      "your-projects": "Your Projects"
+    },
     "create-project": {
       "title": "What is Your Project About?",
       "title-placeholder": "Project Title...",
       "title-tooltip": "The title should be a short description of your project like, 'period horror film' or 'jazz gig in central london' - it could also include the name of your project like 'Endagon - a series of phantasy hand-drawn graphics'.",
       "description-placeholder": "Project Description...",
       "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested."
+    },
+    "add-role": {
+      "add-role-button": "Add Role",
+      "title": "Who Are You Looking For?",
+      "title-description-form-header": "What Is The Role About?",
+      "title-placeholder": "Role Title...",
+      "title-tooltip": "The title should be a short description of your project like 'period horror film' or 'jazz gig in central london' - it could also include the name of your project like 'Endagon - a series of phantasy hand-drawn graphics'.",
+      "description-placeholder": "Role Description...",
+      "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested."
+    },
+    "view-applications": {
+      "title": "Applications",
+      "no-applications-title": "Applications will soon appear here",
+      "no-applications-description": "You don't have any applications yet. Wait longer or offer more credits to make your project more appealing."
     }
   },
   "account": {
     "menu-items": {
       "vouchercode": "Enter Code",
-      "accountdetails": "Acount Details & Location"
+      "accountdetails": "Acount Details & Location",
+      "termsandconditions": "Terms & Conditions",
+      "feedbackandcontact": "Feedback & Contact"
     },
     "settings": {
+      "feedback-and-contact": {
+        "title": "Feedback & Contact",
+        "content": "For any questions, to report a problem or give feedback, please reach out to: nikolas.kunesch@kcl.ac.uk"
+      },
       "enter-code": {
         "title": "Enter Code",
         "code-placeholder": "Enter Code...",
         "code-tooltip": "Enter your waiver code to receive credits down below."
+      },
+      "term-and-conditions": {
+        "title": "Terms & Conditions",
+        "content": "By using this service you agree to the terms and conditions. You can read them here."
       },
       "account-details-and-location": {
         "change-password": {
@@ -48,6 +91,8 @@
     "same-password": "New password must be different from the old password"
   },
   "button": {
-    "submit": "Submit"
+    "submit": "Submit",
+    "next": "Next",
+    "complete": "Complete"
   }
 }

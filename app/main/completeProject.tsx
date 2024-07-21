@@ -15,7 +15,10 @@ import { usePostApiProjectComplete } from "@/common/api/endpoints/cocreateApi";
 import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelper";
 
 export default function CompleteProject() {
-  const upload = usePrepareAndUpload(EntityType.EXPERIENCE);
+  const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
+    EntityType.EXPERIENCE
+  );
+
   const router = useRouter();
 
   const params = useLocalSearchParams();

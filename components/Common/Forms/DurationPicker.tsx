@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
 } from "react-native";
 import { useTheme } from "../../Themes/theme";
@@ -42,7 +41,6 @@ const DurationPicker: FC<DurationPicker> = ({
         onChangeText={(text) =>
           setDuration(hours ? Number(text) : Number(text) * 24)
         }
-        // keyboardType="defaut"
       />
       <View
         style={{

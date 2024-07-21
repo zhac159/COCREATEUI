@@ -16,13 +16,13 @@ import { findUserById } from "@/common/chat/chatHelper";
 type GroupChatPreviewProps = {
   chatTargetIdTypePair: ChatTypeIdPair;
   project: ProjectDTO;
-  showImage: boolean;
+  useSecondImage?: boolean;
 };
 
 const GroupChatPreview: FC<GroupChatPreviewProps> = ({
   chatTargetIdTypePair,
   project,
-  showImage = true,
+  useSecondImage = false,
 }) => {
   const theme = useTheme();
 
@@ -55,34 +55,21 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
       }}
       style={{
         ...styles.container,
-        backgroundColor: !showImage ? theme.colors.lightGray : "transparent",
+        backgroundColor: theme.colors.white,
       }}
     >
-      {showImage && (
-        <Media
-          uri={
-            project.medias
-              ? project.medias[1].uri
-              : "https://picsum.photos/200/300  "
-          }
-          style={styles.image}
-          onPress={() => {}}
-        />
-      )}
+      <Media
+        uri={
+          project.medias[useSecondImage ? 1 : 0]?.uri ||
+          "https://picsum.photos/200/300"
+        }
+        style={styles.image}
+      />
       <View
         style={{
           ...styles.detailsContainer,
         }}
       >
-        <Text
-          style={{
-            ...theme.customFonts.secondary.medium,
-            fontSize: 20,
-            paddingBottom: 10,
-          }}
-        >
-          {project.name}
-        </Text>
         {[...lastMessages]
           .slice()
           .reverse()
@@ -102,14 +89,17 @@ export default GroupChatPreview;
 
 const styles = StyleSheet.create({
   image: {
-    width: "100%",
-    height: "100%",
+    width: 175,
+    height: 175,
     opacity: 1,
+    marginTop: 20,
     position: "absolute",
     pointerEvents: "none",
+    alignSelf: "center",
+    borderRadius: 100,
   },
   container: {
-    height: "100%",
+    height: 225,
   },
   detailsContainer: {
     padding: "3%",

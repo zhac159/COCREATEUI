@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import { useProjectValue } from "../../RecoilStates/profileState";
 import CancelButton from "../Common/CancelButton";
@@ -13,14 +14,21 @@ import { FC, useState } from "react";
 import ProjectAddRoleForm from "../ProjectAddRoleForm/ProjectAddRoleForm";
 import ProjectRole from "./ProjectRole";
 import { ProjectRoleDTO } from "@/common/api/model";
+import StyledButton from "@/components/Common/StyledButton";
+import { useTranslation } from "react-i18next";
 
 type ProjectAddRolesProps = {
   projectIndex: number;
   onCancel: () => void;
 };
 
-const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) => {
+const ProjectAddRoles: FC<ProjectAddRolesProps> = ({
+  projectIndex,
+  onCancel,
+}) => {
   const project = useProjectValue();
+
+  const { t } = useTranslation();
 
   const [addRole, setAddRole] = useState(false);
   const [editRole, setEditRole] = useState<ProjectRoleDTO>();
@@ -34,18 +42,17 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) =
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={{
-          flex: 1,
-          padding: 20,
-          gap: 25,
-          paddingTop: "20%",
-        }}
-      >
+      <View style={styles.container}>
         {!addRole && (
           <>
-            <CancelButton
+            <StyledButton
               onPress={onCancel}
+              text={t("button.complete")}
+              style={{
+                backgroundColor: theme.colors.darkerGray,
+                alignSelf: "flex-end",
+                borderRadius: 21,
+              }}
             />
             <Text
               style={{
@@ -54,27 +61,21 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) =
                 fontSize: 35,
               }}
             >
-              Who Are You Looking For?
+              {t("projects.add-role.title")}
             </Text>
-            {project &&
-              project[projectIndex] &&
-              project[projectIndex].projectRoles &&
-              project[projectIndex].projectRoles?.map((role) => {
-                return (
-                  <ProjectRole
-                    key={role.id}
-                    projectRole={role}
-                    handleEditRole={handleEditRole}
-                  />
-                );
-              })}
+            {project[projectIndex].projectRoles.map((role) => {
+              return (
+                <ProjectRole
+                  key={role.id}
+                  projectRole={role}
+                  handleEditRole={handleEditRole}
+                />
+              );
+            })}
             <TouchableOpacity
               style={{
+                ...styles.buttonContainer,
                 backgroundColor: theme.colors.primary,
-                borderRadius: 14,
-                justifyContent: "space-between",
-                flexDirection: "row",
-                alignItems: "center",
               }}
               onPress={() => {
                 setAddRole(true);
@@ -83,12 +84,8 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) =
               <Text
                 style={{
                   ...theme.customFonts.primary.medium,
+                  ...styles.addRoleText,
                   color: theme.colors.white,
-                  fontSize: 25,
-                  paddingTop: 17,
-                  paddingBottom: 17,
-                  paddingRight: 14,
-                  paddingLeft: 14,
                 }}
               >
                 Add Role
@@ -96,10 +93,8 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) =
               <FontAwesome6
                 name="arrow-right"
                 style={{
-                  paddingRight: 16,
-                  fontWeight: "bold",
+                  ...styles.icon,
                   color: theme.colors.white,
-                  fontSize: 25,
                 }}
               />
             </TouchableOpacity>
@@ -112,7 +107,7 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) =
               setAddRole(false);
             }}
             editRole={editRole}
-            projectId={project[projectIndex].id ?? 0}
+            projectId={project[projectIndex].id}
           />
         )}
       </View>
@@ -121,3 +116,30 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectIndex, onCancel }) =
 };
 
 export default ProjectAddRoles;
+
+const styles = StyleSheet.create({
+  addRoleText: {
+    fontSize: 25,
+    paddingTop: 17,
+    paddingBottom: 17,
+    paddingRight: 14,
+    paddingLeft: 14,
+  },
+  icon: {
+    paddingRight: 16,
+    fontWeight: "bold",
+    fontSize: 25,
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    gap: 25,
+    paddingTop: "20%",
+  },
+  buttonContainer: {
+    borderRadius: 14,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+});

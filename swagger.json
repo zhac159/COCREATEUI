@@ -1267,6 +1267,54 @@
         }
       }
     },
+    "/api/SeenMatches": {
+      "post": {
+        "tags": [
+          "SeenMatches"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeenMatchesCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeenMatchesCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeenMatchesCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeenMatchesDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeenMatchesDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeenMatchesDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/User/{userId}": {
       "get": {
         "tags": [
@@ -1866,6 +1914,35 @@
         }
       }
     },
+    "/api/User/get-authenticated-user": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/VoucherCode/redeem": {
       "post": {
         "tags": [
@@ -2452,6 +2529,18 @@
         "additionalProperties": false
       },
       "ExperienceDTO": {
+        "required": [
+          "description",
+          "experienceType",
+          "id",
+          "medias",
+          "project",
+          "projectId",
+          "projectRole",
+          "projectRoleId",
+          "user",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2459,8 +2548,8 @@
             "format": "int32"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "userId": {
             "type": "integer",
@@ -2473,8 +2562,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaDTO"
-            },
-            "nullable": true
+            }
           },
           "experienceType": {
             "$ref": "#/components/schemas/ExperienceType"
@@ -3200,6 +3288,7 @@
           "latitude",
           "longitude",
           "name",
+          "projectId",
           "skillType",
           "startDate"
         ],
@@ -3247,6 +3336,10 @@
           "address": {
             "minLength": 1,
             "type": "string"
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32"
           },
           "keywords": {
             "type": "array",
@@ -3363,6 +3456,10 @@
         "additionalProperties": false
       },
       "ProjectWithMatchingRoleDTO": {
+        "required": [
+          "project",
+          "projectRoleId"
+        ],
         "type": "object",
         "properties": {
           "projectRoleId": {
@@ -3376,14 +3473,16 @@
         "additionalProperties": false
       },
       "ProjectWithMatchingRolesListDTO": {
+        "required": [
+          "projectWithMatchingRoles"
+        ],
         "type": "object",
         "properties": {
           "projectWithMatchingRoles": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProjectWithMatchingRoleDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -3487,6 +3586,50 @@
           },
           "reviewerUser": {
             "$ref": "#/components/schemas/UserInformationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SeenMatchesCreateDTO": {
+        "type": "object",
+        "properties": {
+          "projectRoleId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SeenMatchesDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectRoleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SeenMatchesDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SeenMatchesDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

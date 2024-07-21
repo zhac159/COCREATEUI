@@ -382,7 +382,6 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
         )}
         {formStep === 5 && <ProjectAddRoleCost cost={cost} setCost={setCost} />}
         </View>
-
         <NextButton
           text={formStep === 5 ? "Finish Role" : "Next"}
           icon="arrow-right"

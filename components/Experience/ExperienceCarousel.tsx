@@ -16,7 +16,15 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
   renderItem,
 }) => {
   return (
-    <View style={{ flex: 1, overflow: "hidden", gap: 10 }}>
+    <View
+      style={{
+        flex: 1,
+        paddingTop: "10%",
+        width: "87%",
+        alignSelf: "center",
+        marginRight: 40,
+      }}
+    >
       <Text
         style={{
           ...styles.experienceType,
@@ -24,14 +32,6 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
       >
         {title}
       </Text>
-      <View
-        style={{
-          flex: 1,
-          alignSelf: "center",
-          width: "96%",
-          overflow: "hidden",
-        }}
-      >
       <Carousel
         width={windowWidth}
         vertical={false}
@@ -45,7 +45,6 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
           failOffsetY: [-5, 5],
         }}
       />
-      </View> 
     </View>
   );
 };

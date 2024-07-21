@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useState } from "react";
 import Projects from "@/components/Project/ProjectsMainPage/Projects";
 import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
+import NoProjectsPage from "@/components/Project/NoProjectsPage";
 
 export default function Project() {
   const [selectedProject, setSelectedProject] = useState(0);
@@ -15,13 +16,20 @@ export default function Project() {
   const projects = useProjectValue();
 
   function renderContent() {
-    if (projects.length === 0 || createMode) {
-      return <ProjectCreate onCancel={() => setCreateMode(false)} />;
+    if (projects.length === 0 && !createMode) {
+      return <NoProjectsPage setCreateMode={() => setCreateMode(true)} />;
     } else if (editMode) {
       return (
         <ProjectAddRoles
           projectIndex={selectedProject}
           onCancel={() => setEditMode(false)}
+        />
+      );
+    } else if (createMode) {
+      return (
+        <ProjectCreate
+          onCancel={() => setCreateMode(false)}
+          setEditMode={() => setEditMode(true)}
         />
       );
     } else {
@@ -38,15 +46,7 @@ export default function Project() {
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        paddingTop: 50,
-        paddingBottom: 200,
-        minHeight: windowHeight,
-        paddingHorizontal: "2%",
-        justifyContent: "space-between",
-        gap: 25,
-      }}
+      contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
       {renderContent()}
@@ -56,26 +56,10 @@ export default function Project() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    width: "100%",
-    padding: 0,
+    flexGrow: 1,
+    paddingBottom: 200,
+    minHeight: windowHeight,
+    justifyContent: "space-between",
+    gap: 25,
   },
 });
-
-{
-  /* {projects?.length === 0 || createMode ? (
-        <ProjectCreate onCancel={() => setCreateMode(false)} />
-      ) : editMode ? (
-        <ProjectAddRoles
-          projectIndex={selectedProject}
-          onCancel={() => setEditMode(false)}
-        />
-      ) : (
-        <Projects
-          selectedProject={selectedProject}
-          setSelectedProject={setSelectedProject}
-          setCreateMode={setCreateMode}
-          setEditMode={setEditMode}
-        />
-      )} */
-}

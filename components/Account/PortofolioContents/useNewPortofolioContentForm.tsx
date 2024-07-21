@@ -19,7 +19,6 @@ import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi"
 import { EntityType } from "../Common/Media/EntityType";
 import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
-import { set } from "lodash";
 
 const useNewPortofolioContentForm = () => {
   const setPortofolioContents = useSetPortfolioContentsState();
@@ -32,16 +31,18 @@ const useNewPortofolioContentForm = () => {
   const cachePortofolioContent = async (
     portofolioContent: PortofolioContentDTO
   ) => {
-    var uris = portofolioContent.medias?.map((media) => media.uri || "") || [];
+    var uris = portofolioContent.medias?.map((media) => media.uri);
     await cacheImages(uris || []);
   };
 
   const [description, setDescription] = useState<string>("");
-  const [skill, setSkill] = useState<SkillType>();
+  const [skill, setSkill] = useState<SkillType | undefined>(
+    userSkills[0]?.skillType
+  );
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris);
 
-  const upload = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
+  const {upload, isLoading: isUploadingImages} = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
 
   const { mutate: createPortofolioContent } = usePostApiPortofolioContent({
     mutation: {
@@ -55,7 +56,6 @@ const useNewPortofolioContentForm = () => {
         setIsLoading(false);
         setUris([]);
         setDescription("");
-        setSkill(undefined);
       },
     },
   });

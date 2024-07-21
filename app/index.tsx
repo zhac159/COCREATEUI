@@ -4,23 +4,29 @@ import {
   TouchableWithoutFeedback,
   View,
   Text,
+  ImageBackground,
 } from "react-native";
 import { useTheme } from "@/components/Themes/theme";
 import StyledButton from "@/components/Common/StyledButton";
 import { router } from "expo-router";
-
+import { windowHeight, windowWidth } from "@/components/Account/Common/getWindowDimensions";
+import BlackHalfOpacityBackdrop from "@/components/Common/BlackHalfOpacityBackdrop";
 
 const LoginPage = () => {
-
   const theme = useTheme();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <ImageBackground
+        source={require("../assets/images/backdrops/home-page-background.png")}
+        style={styles.container}
+      >
+        <BlackHalfOpacityBackdrop />
         <View>
           <Text
             style={{
               ...theme.customFonts.primary.medium,
+              color: theme.colors.white,
               fontWeight: "bold",
               fontSize: 50,
               lineHeight: 48,
@@ -34,7 +40,6 @@ const LoginPage = () => {
               fontWeight: "bold",
               color: theme.colors.orange,
               fontSize: 50,
-              lineHeight: 48,
             }}
           >
             {"Future of\nCreative Work"}
@@ -62,7 +67,7 @@ const LoginPage = () => {
             icon="arrow-right"
           />
         </View>
-      </View>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
@@ -77,6 +82,13 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     alignSelf: "center",
     gap: 20,
+  },
+  opacityContainer: {
+    width: windowWidth * 1.5,
+    height: windowHeight * 1.5,
+    position: "absolute",
+    backgroundColor: "black",
+    opacity: 0.5,
   },
 });
 

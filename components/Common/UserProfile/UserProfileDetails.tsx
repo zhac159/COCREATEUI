@@ -46,11 +46,11 @@ const UserProfileDetails: FC<UserProfileDetailsProps> = ({
       >
         <UserProfileDetailsNumbers value={rolesWorked} text={"Roles\nWorked"} />
         <UserProfileDetailsNumbers 
-          value={rolesWorked}
+          value={projectsCommisioned}
           text={"Project\nCommisioned"}
         />
         <UserProfileDetailsNumbers
-          value={rolesWorked}
+          value={rating}
           text={
             <FontAwesome6
               name="star"

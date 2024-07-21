@@ -14,11 +14,10 @@ import {
   usePutApiEnquiryShortlistEnquiry,
 } from "@/common/api/endpoints/cocreateApi";
 import UserProfile from "@/components/Common/UserProfile/UserProfile";
-import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
-import { ConnectionContext } from "@/app/main/_layout";
 import { IconButton } from "react-native-paper";
 import { useUpdateEnquiryShortlistedInProjects } from "@/components/RecoilStates/profileState";
-import ChatType from "@/common/chat/chatType";
+import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
+import NoApplicationsPage from "./NoApplicationsPage";
 
 type ViewApplicationsProps = {
   enquiries: EnquiryDTO[];
@@ -32,11 +31,9 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
   const updateApplicationsToShortlisted =
     useUpdateEnquiryShortlistedInProjects();
 
-  const connection = useContext(ConnectionContext);
-
   const [swipingDistance, setSwipingDistance] = useState(0);
 
-  const { mutate: getUserProfiles } = usePostApiUserProfiles({
+  const { mutate: getUserProfiles, isLoading } = usePostApiUserProfiles({
     mutation: {
       onSuccess: (data) => {
         setApplicantsProfiles(data);
@@ -85,12 +82,6 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
                 enquiryId: enquiries[index].id,
               },
             });
-            // createAndExchangeKeys(
-            //   enquiries[index].enquirer?.publicKey || "",
-            //   enquiries[index].enquirer?.userId || 0,
-            //   ChatType.Enquiry,
-            //   connection
-            // );
             updateApplicationsToShortlisted(enquiries[index].id || 0);
           }}
           onSwipedAborted={() => setSwipingDistance(0)}
@@ -107,8 +98,16 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     );
   }, [applicantsProfiles]);
 
-  if (!applicantsProfiles || !applicantsProfiles.userProfiles || applicantsProfiles.userProfiles.length === 0)
-    return <Text>Loading...</Text>;
+  if (!applicantsProfiles || isLoading)
+    return <LoadingBackdrop />;
+
+  if(applicantsProfiles.userProfiles.length === 0) {
+    return (
+      <NoApplicationsPage
+      turnBack={close}
+      />
+    )
+  }
 
   return (
     <>

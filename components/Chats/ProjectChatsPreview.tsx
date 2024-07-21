@@ -55,22 +55,20 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
           <GroupChatPreview
             chatTargetIdTypePair={chatTargetIdTypePair}
             project={project}
-            showImage={false}
           />
-
           <View>
             {usersInProject
-              .filter((user) => user.userId !== userId)
+              .filter((user) => user.userInformation.userId !== userId)
               .map((user) => (
                 <ChatPreview
                   chatImage="https://picsum.photos/200/300"
-                  chatName={user.username || "N/A"}
+                  chatName={user.userInformation.username}
                   chatTargetIdTypePair={{
-                    chatTargetId: user.userId || 0,
+                    chatTargetId: user.userInformation.userId,
                     chatType: ChatType.ProjectColleague,
                   }}
-                  targetPublicKey={user.publicKey}
-                  key={user.userId + "-chat-user"}
+                  targetPublicKey={user.userInformation.publicKey}
+                  key={user.userInformation.userId + "-chat-user"}
                 />
               ))}
           </View>

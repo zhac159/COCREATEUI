@@ -15,7 +15,7 @@ export type CurrentChatData = {
   projectInformation?: ProjectDTO;
   assetOfferInformation?: AssetOfferDTO;
   projectId?: number;
-  chatMembers?: ChatMember[];
+  chatMembers: ChatMember[];
   targetPublicKey?: string | null;
 };
 
@@ -24,6 +24,7 @@ export const currentChatDataState = atom<CurrentChatData>({
   default: {
     colors: [],
     chatName: "",
+    chatMembers: [],
     chatTypeIdPair: {
       chatTargetId: 0,
       chatType: 0,

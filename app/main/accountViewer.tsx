@@ -1,7 +1,7 @@
 import { useGetApiUserGetProfile } from "@/common/api/endpoints/cocreateApi";
+import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import UserProfile from "@/components/Common/UserProfile/UserProfile";
 import { useLocalSearchParams } from "expo-router";
-import { View, Text } from "react-native";
 
 export default function AccountViewer() {
 
@@ -12,9 +12,7 @@ export default function AccountViewer() {
 
   if (!userProfile || isLoading) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <LoadingBackdrop />
     );
   }
 

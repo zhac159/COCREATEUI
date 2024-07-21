@@ -7,6 +7,6 @@
 import type { ProjectDTO } from './projectDTO';
 
 export interface ProjectWithMatchingRoleDTO {
-  project?: ProjectDTO;
-  projectRoleId?: number;
+  project: ProjectDTO;
+  projectRoleId: number;
 }

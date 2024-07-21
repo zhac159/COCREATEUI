@@ -57,19 +57,22 @@ const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
             margin: 0,
           }}
         />
+        <View
+          style={{ width: "50%", backgroundColor: theme.colors.gray, height: 2, alignSelf: "center" }}
+        />
         <IconButton
           icon={() => (
             <FontAwesome6
               name="pen"
               size={18}
-              color={theme.colors.black}
+              color={theme.colors.white}
               solid
             />
           )}
           onPress={() => onEdit(true)}
           size={30}
           style={{
-            backgroundColor: theme.colors.white,
+            backgroundColor: theme.colors.black,
             margin: 0,
           }}
         />

@@ -28,6 +28,7 @@ const GroupChatMembersList: FC<GroupChatMembersListProps> = ({
     setCurrentChatData({
       chatName: ChatMember.username,
       colors: [],
+      chatMembers: groupChatMembers,
       chatTypeIdPair: {
         chatTargetId: ChatMember.userId,
         chatType: ChatType.Enquiry,
@@ -96,7 +97,7 @@ const GroupChatMembersList: FC<GroupChatMembersListProps> = ({
                   }}
                   text="Message"
                   style={{
-                    backgroundColor: theme.colors.gray,
+                    backgroundColor: theme.colors.primary,
                   }}
                 />
               )}

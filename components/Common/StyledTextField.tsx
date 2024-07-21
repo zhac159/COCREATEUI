@@ -41,14 +41,15 @@ const StyledTextField: FC<StyledTextFieldProps> = ({
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "flex-start",
             gap: 10,
+            paddingRight: "8%",
           }}
         >
           <FontAwesome6
             name="circle-info"
             size={24}
-            color={error ? theme.colors.red : theme.colors.black}
+            color={error ? theme.colors.red : theme.colors.gray}
           />
           <Text
             style={{

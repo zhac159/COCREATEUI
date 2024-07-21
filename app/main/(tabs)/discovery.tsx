@@ -1,10 +1,13 @@
 import {
   usePostApiEnquiryCreate,
+  usePostApiSeenMatches,
   usePostApiUserMatchingProjects,
 } from "@/common/api/endpoints/cocreateApi";
 import { ProjectWithMatchingRolesListDTO } from "@/common/api/model";
+import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
+import NoMatchingProjectsPage from "@/components/Discovery/NoMatchingProjectsPage";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text } from "react-native";
@@ -16,13 +19,16 @@ export default function Discovery() {
 
   const [swipingDistance, setSwipingDistance] = useState(0);
 
-  const { mutate: getMatchingProjects } = usePostApiUserMatchingProjects({
-    mutation: {
-      onSuccess: (data) => {
-        setMatchingProjects(data);
+  const { mutate: getMatchingProjects, isLoading } =
+    usePostApiUserMatchingProjects({
+      mutation: {
+        onSuccess: (data) => {
+          setMatchingProjects(data);
+        },
       },
-    },
-  });
+    });
+
+  const { mutate: seenMatchingProject } = usePostApiSeenMatches();
 
   const { mutate: createEnquiry } = usePostApiEnquiryCreate({
     mutation: {
@@ -42,13 +48,12 @@ export default function Discovery() {
       });
     }, [])
   );
-  
-  if (
-    !matchingProjects ||
-    !matchingProjects.projectWithMatchingRoles ||
-    matchingProjects.projectWithMatchingRoles.length === 0
-  )
-    return <Text>Loading...</Text>;
+
+  if (isLoading || !matchingProjects) return <LoadingBackdrop />;
+
+  if (matchingProjects.projectWithMatchingRoles.length === 0) {
+    return <NoMatchingProjectsPage />;
+  }
 
   return (
     <>
@@ -57,7 +62,6 @@ export default function Discovery() {
         renderCard={(matchingProject) => (
           <MatchingProject matchingProject={matchingProject} />
         )}
-        
         containerStyle={{
           backgroundColor: "black",
           padding: 0,
@@ -66,7 +70,16 @@ export default function Discovery() {
           setSwipingDistance(x);
         }}
         onSwipedAborted={() => setSwipingDistance(0)}
-        onSwiped={() => setSwipingDistance(0)}
+        onSwiped={(index) => {
+          setSwipingDistance(0),
+            seenMatchingProject({
+              data: {
+                projectRoleId:
+                  matchingProjects.projectWithMatchingRoles![index]
+                    .projectRoleId,
+              },
+            });
+        }}
         onSwipedRight={(index) => {
           createEnquiry({
             data: {

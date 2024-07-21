@@ -14,6 +14,7 @@ import ReviewCarousel from "../Review/ReviewCarousel";
 import PortofolioContent from "@/components/Account/PortofolioContents/PortofolioContent";
 import SkillsList from "@/components/Account/Skills/SkillsList";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
+import { useGetRolesCommissionedAndWorked } from "./userProfileHelper";
 
 type UserProfileProps = {
   userProfile: UserProfileDTO;
@@ -21,6 +22,11 @@ type UserProfileProps = {
 
 const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
   const theme = useTheme();
+
+  const { completedProjectRoles, completedProjects } =
+  useGetRolesCommissionedAndWorked(userProfile.experiences);
+
+  console.log(completedProjects);
 
   const useMemoizedExperiences = useMemo(
     () => (
@@ -31,19 +37,13 @@ const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
             <TouchableWithoutFeedback>
               <View>
                 <UserProfileDetails
-                  username={"AbithaMaha"}
-                  rating={4.8}
-                  rolesWorked={4}
-                  projectsCommisioned={32}
+                  username={userProfile.username}
+                  rating={userProfile.rating}
+                  rolesWorked={completedProjectRoles.length}
+                  projectsCommisioned={completedProjects.length}
                 />
                 <View
-                  style={{
-                    flex: 1,
-                    gap: 50,
-                    width: "90%",
-                    alignSelf: "center",
-                    marginTop: 40,
-                  }}
+                  style={styles.insideContainer}
                 >
                   <Experiences experiences={userProfile.experiences} />
                   {userProfile.portofolioContents[0] && (
@@ -125,4 +125,11 @@ const styles = StyleSheet.create({
     paddingTop: 31,
     gap: 50,
   },
+  insideContainer:{
+    flex: 1,
+    gap: 50,
+    width: "90%",
+    alignSelf: "center",
+    marginTop: 40,
+  }
 });

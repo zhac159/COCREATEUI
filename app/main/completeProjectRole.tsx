@@ -33,7 +33,7 @@ export default function CompleteProjectRole() {
     [assignedProjects]
   );
 
-  const upload = usePrepareAndUpload(EntityType.EXPERIENCE);
+  const {upload, isLoading: isUploadingImages} = usePrepareAndUpload(EntityType.EXPERIENCE);
 
   const [uris, setUris] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");

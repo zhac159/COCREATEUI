@@ -24,6 +24,7 @@ export interface ProjectRoleDTO {
   longitude: number;
   medias?: MediaDTO[] | null;
   name: string;
+  projectId: number;
   remote?: boolean;
   skillType: SkillType;
   startDate: string;

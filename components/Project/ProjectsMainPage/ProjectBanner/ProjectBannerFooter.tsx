@@ -27,7 +27,7 @@ const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({
         ...styles.footer,
       }}
     >
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           ...styles.findAssetButton,
           backgroundColor: selectedRole.assetMode
@@ -47,7 +47,7 @@ const ProjectBannerFooter: FC<ProjectBannerFooterProps> = ({
         >
           Assets
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View>
         <ProjectRoleSelection
           roles={roles}

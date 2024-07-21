@@ -28,12 +28,9 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
 
   return (
     <BlurView
-     
-      intensity={15}
-      renderToHardwareTextureAndroid
+      intensity={40}      
       style={{
         ...styles.container,
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
         alignSelf: userId === message.senderId ? "flex-end" : "flex-start",
       }}
     >
@@ -41,7 +38,7 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
         style={{
           ...theme.customFonts.primary.medium,
           fontSize: 13,
-          color: theme.colors.white,
+          color: theme.colors.black,
         }}
         numberOfLines={2}
         ellipsizeMode="tail"
@@ -60,7 +57,7 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
           style={{
             ...theme.customFonts.primary.medium,
             fontSize: 10,
-            color: theme.colors.white,
+            color: theme.colors.black,
           }}
         >
           {"test user"}
@@ -69,7 +66,7 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
           style={{
             ...theme.customFonts.primary.medium,
             fontSize: 10,
-            color: theme.colors.white,
+            color: theme.colors.black,
           }}
         >
           {formattedDate}
@@ -84,6 +81,7 @@ export default GroupChatPreviewMessages;
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
+    backgroundColor: "rgba(230, 230, 230, 0.8)",
     maxWidth: "80%",
     padding: 10,
     gap: 4,

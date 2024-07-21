@@ -10,6 +10,8 @@ type MessageBubbleProps = {
   userId: number;
   onPress: (message: Message) => void;
   showReactions: boolean;
+  userIdUsernameMap: Record<number, string>;
+  showName?: boolean;
 };
 
 type ReplyMessageBubbleProps = {
@@ -18,10 +20,12 @@ type ReplyMessageBubbleProps = {
   onPress: (message: Message) => void;
   onPressReply: (message: Message) => void;
   showReactions: boolean;
+  userIdUsernameMap: Record<number, string>;
+  showName?: boolean;
 };
 
 const MessageBubble: FC<MessageBubbleProps> = memo(
-  ({ item, userId, onPress, showReactions }) => {
+  ({ item, userId, onPress, showReactions, userIdUsernameMap, showName }) => {
     const theme = useTheme();
 
     const isCurrentUserSender = useMemo(
@@ -44,7 +48,7 @@ const MessageBubble: FC<MessageBubbleProps> = memo(
           style={{
             gap: 5,
           }}
-        > 
+        >
           {item.uri && (
             <Media
               style={{
@@ -59,6 +63,7 @@ const MessageBubble: FC<MessageBubbleProps> = memo(
           <Pressable
             style={{
               ...styles.messageContainer,
+              gap: 5,
               alignSelf: isCurrentUserSender ? "flex-end" : "flex-start",
               backgroundColor: isCurrentUserSender
                 ? theme.colors.primary
@@ -66,6 +71,18 @@ const MessageBubble: FC<MessageBubbleProps> = memo(
             }}
             onPress={() => onPress(item)}
           >
+            {showName && (
+              <Text
+                style={{
+                  ...theme.customFonts.primary.small,
+                  color: theme.colors.lightGray,
+                  alignSelf: "flex-start",
+                  fontSize: 12,
+                }}
+              >
+                {userIdUsernameMap[item.senderId!]}
+              </Text>
+            )}
             <Text
               style={{
                 color:
@@ -103,7 +120,15 @@ const MessageBubble: FC<MessageBubbleProps> = memo(
 );
 
 const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
-  ({ item, userId, onPress, onPressReply, showReactions }) => {
+  ({
+    item,
+    userId,
+    onPress,
+    onPressReply,
+    showReactions,
+    userIdUsernameMap,
+    showName,
+  }) => {
     const theme = useTheme();
 
     const isCurrentUserSender = useMemo(
@@ -142,7 +167,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
                 fontSize: 12,
               }}
             >
-              {item.replyMessage!.senderId}
+              {userIdUsernameMap[item.replyMessage!.senderId!]}
             </Text>
             <Text
               style={{
@@ -156,10 +181,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
           <Pressable
             style={{
               ...styles.replyMessageContainers,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 10,
+              gap: 5,
               backgroundColor: isCurrentUserSender
                 ? theme.colors.primary
                 : theme.colors.lightGray,
@@ -168,30 +190,51 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
             }}
             onPress={() => onPress(item)}
           >
-            <Text
+            {showName && (
+              <Text
+                style={{
+                  ...theme.customFonts.primary.small,
+                  color: theme.colors.lightGray,
+                  alignSelf: "flex-start",
+                  fontSize: 12,
+                }}
+              >
+                {userIdUsernameMap[item.senderId!]}
+              </Text>
+            )}
+            <View
               style={{
-                color: isCurrentUserSender
-                  ? theme.colors.white
-                  : theme.colors.black,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                justifyContent: "space-between",
               }}
             >
-              {item.content}
-            </Text>
-            <Text
-              style={{
-                fontSize: 8,
-                alignSelf: "flex-end",
-                color: isCurrentUserSender
-                  ? theme.colors.white
-                  : theme.colors.black,
-              }}
-            >
-              {new Date(item.date!).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })}
-            </Text>
+              <Text
+                style={{
+                  color: isCurrentUserSender
+                    ? theme.colors.white
+                    : theme.colors.black,
+                }}
+              >
+                {item.content}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 8,
+                  alignSelf: "flex-end",
+                  color: isCurrentUserSender
+                    ? theme.colors.white
+                    : theme.colors.black,
+                }}
+              >
+                {new Date(item.date!).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
+              </Text>
+            </View>
           </Pressable>
         </View>
         {showReactions && !isCurrentUserSender && (
@@ -231,7 +274,9 @@ const styles = StyleSheet.create({
 export const useRenderChatMessage = (
   userId: number,
   onPress: (message: Message) => void,
-  handleSelectMessageReply: (message: Message) => void
+  handleSelectMessageReply: (message: Message) => void,
+  userIdUsernameMap: Record<number, string>,
+  showName: boolean
 ) => {
   return useCallback(
     ({
@@ -249,6 +294,8 @@ export const useRenderChatMessage = (
             onPress={onPress}
             onPressReply={handleSelectMessageReply}
             showReactions={showReactions}
+            userIdUsernameMap={userIdUsernameMap}
+            showName={showName}
           />
         );
       }
@@ -258,6 +305,8 @@ export const useRenderChatMessage = (
           userId={userId}
           onPress={onPress}
           showReactions={showReactions}
+          userIdUsernameMap={userIdUsernameMap}
+          showName={showName}
         />
       );
     },

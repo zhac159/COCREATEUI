@@ -5,7 +5,7 @@ import {
 } from "@/components/Account/Skills/skillHelper";
 import { useTheme } from "@/components/Themes/theme";
 import { Dispatch, FC, SetStateAction } from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 type ProjectAddRoleSkillProps = {
   skill: Skills | undefined;
@@ -20,7 +20,11 @@ const ProjectAddRoleSkill: FC<ProjectAddRoleSkillProps> = ({
   const theme = useTheme();
 
   return (
-    <>
+    <View
+      style={{
+        marginBottom: "10%",
+      }}
+    >
       <Text
         style={{
           ...theme.customFonts.secondary.large,
@@ -39,7 +43,7 @@ const ProjectAddRoleSkill: FC<ProjectAddRoleSkillProps> = ({
         }}
         selectedSkill={skill}
       />
-    </>
+    </View>
   );
 };
 

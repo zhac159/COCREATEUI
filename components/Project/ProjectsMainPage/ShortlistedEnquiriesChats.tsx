@@ -4,6 +4,8 @@ import ChatPreview from "@/components/Chats/ChatPreview";
 import { View } from "react-native";
 import { useTheme } from "@/components/Themes/theme";
 import ChatType from "@/common/chat/chatType";
+import { useTranslation } from "react-i18next";
+import WorkTabHeaders from "@/components/Work/WorkTabHeaders";
 
 type ShortlistedEnquiriesChatsProps = {
   enquiries: EnquiryDTO[];
@@ -16,16 +18,12 @@ const ShortlistedEnquiriesChats: FC<ShortlistedEnquiriesChatsProps> = ({
   show,
   projectId,
 }) => {
-  const theme = useTheme();
-
+  const { t } = useTranslation();
   if (!show) return null;
 
   return (
-    <View
-      style={{
-        borderTopColor: theme.colors.gray,
-      }}
-    >
+    <View>
+      {enquiries.length > 0 && <WorkTabHeaders title={t("work.shortlisted")} />}
       {enquiries
         .filter((enquiry) => enquiry.shortlisted)
         .map((enquiry) => (

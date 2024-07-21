@@ -5,7 +5,6 @@ import { useTheme } from "../../Themes/theme";
 import Media from "../../MediaViewer/Media";
 import { ScrollView } from "react-native-gesture-handler";
 import {
-  tabBarHeight,
   windowHeight,
 } from "../../Account/Common/getWindowDimensions";
 import { LinearGradient } from "expo-linear-gradient";
@@ -42,7 +41,6 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
             >
               <View>
                 <Media
-                  onPress={() => console.log("pressed")}
                   uri={matchingRole?.medias?.[0].uri || ""}
                   style={styles.roleImage}
                 />

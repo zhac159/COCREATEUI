@@ -24,6 +24,7 @@ import type {
   AssetSearchDTO,
   AssetSearchResultDTO,
   AssetUpdateDTO,
+  
   EncryptedKeyExchangeCreateDTO,
   EncryptedKeyExchangeDTO,
   EnquiryConfirmDTO,
@@ -57,6 +58,8 @@ import type {
   PutApiEnquiryShortlistEnquiryParams,
   RedeemVoucherCodeDTO,
   RedeemVoucherCodeResponseDTO,
+  SeenMatchesCreateDTO,
+  SeenMatchesDTO,
   SkillDTO,
   SkillUpdateDTO,
   UserChangePasswordDTO,
@@ -1364,6 +1367,53 @@ export const getPostApiProjectRoleCompleteMutationOptions = <TError = ErrorType<
       return useMutation(mutationOptions);
     }
     
+export const postApiSeenMatches = (
+    seenMatchesCreateDTO: SeenMatchesCreateDTO,
+ ) => {
+      
+      
+      return customInstance<SeenMatchesDTO>(
+      {url: `/api/SeenMatches`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: seenMatchesCreateDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiSeenMatchesMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSeenMatches>>, TError,{data: SeenMatchesCreateDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiSeenMatches>>, TError,{data: SeenMatchesCreateDTO}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiSeenMatches>>, {data: SeenMatchesCreateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiSeenMatches(data,)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiSeenMatchesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiSeenMatches>>>
+    export type PostApiSeenMatchesMutationBody = SeenMatchesCreateDTO
+    export type PostApiSeenMatchesMutationError = ErrorType<unknown>
+
+    export const usePostApiSeenMatches = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiSeenMatches>>, TError,{data: SeenMatchesCreateDTO}, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiSeenMatchesMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const getApiUserUserId = (
     userId: number,
  signal?: AbortSignal
@@ -1988,6 +2038,51 @@ export const getPostApiUserChangePasswordMutationOptions = <TError = ErrorType<u
 ) => {
 
       const mutationOptions = getPostApiUserChangePasswordMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiUserGetAuthenticatedUser = (
+    
+ ) => {
+      
+      
+      return customInstance<UserDTO>(
+      {url: `/api/User/get-authenticated-user`, method: 'POST'
+    },
+      );
+    }
+  
+
+
+export const getPostApiUserGetAuthenticatedUserMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, TError,void, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, void> = () => {
+          
+
+          return  postApiUserGetAuthenticatedUser()
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiUserGetAuthenticatedUserMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>>
+    
+    export type PostApiUserGetAuthenticatedUserMutationError = ErrorType<unknown>
+
+    export const usePostApiUserGetAuthenticatedUser = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, TError,void, TContext>, }
+) => {
+
+      const mutationOptions = getPostApiUserGetAuthenticatedUserMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

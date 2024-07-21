@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import Asset from "./Asset";
 import { useAssetsValue } from "@/components/RecoilStates/profileState";
@@ -8,11 +8,14 @@ import TabHeaderButtons from "../Common/TabHeaderButtons";
 import AssetTypeSelector from "./AssetTypeSelector";
 import NewAssetForm from "./NewAssetForm";
 import { windowWidth } from "../Common/getWindowDimensions";
+import { useTheme } from "@/components/Themes/theme";
 
 const AssetTab = () => {
   const assets = useAssetsValue();
   const assetsLength = assets?.length || 0;
 
+  const theme = useTheme();
+  
   const [assetType, setAssetType] = React.useState(0);
   const [filteredAssets, setFilteredAssets] =
     React.useState<AssetDTO[]>(assets);
@@ -31,7 +34,7 @@ const AssetTab = () => {
 
   return (
     <>
-      <TabHeaderButtons
+      {/* <TabHeaderButtons
         editMode={editMode}
         setEditMode={setEditMode}
         disableEditMode={filteredAssets.length === 0}
@@ -88,7 +91,12 @@ const AssetTab = () => {
             }
           />
         )}
-      </View>
+      </View> */}
+      <Text
+        style={{
+          ...theme.customFonts.primary.large,
+        }}
+      >Comin Soon</Text>
     </>
   );
 };

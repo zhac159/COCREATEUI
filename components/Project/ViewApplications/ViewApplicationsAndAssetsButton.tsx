@@ -34,7 +34,7 @@ const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> 
     <TouchableOpacity
       style={{
         ...styles.viewApplicationContainer,
-        backgroundColor: theme.colors.black,
+        backgroundColor: theme.colors.lightGray,
       }}
       onPress={
         assetMode ? navigateToCompleteProjectForm : onPress
@@ -44,7 +44,7 @@ const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> 
         style={{
           ...styles.viewApplicationsText,
           ...theme.customFonts.primary.medium,
-          color: theme.colors.white,
+          color: theme.colors.black,
         }}
       >
         {assetMode ? "View Assets" : "View Applications"}
@@ -53,7 +53,7 @@ const ViewApplicationsAndAssetsButton: FC<ViewApplicationsAndAssetsButtonProps> 
         name="arrow-right"
         style={{
           ...styles.viewApplicationsRightArrow,
-          color: theme.colors.white,
+          color: theme.colors.black,
         }}
       />
     </TouchableOpacity>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    width: "95%",
+    width: "100%",
     alignSelf: "center",
     marginBottom: 20
   },

@@ -8,7 +8,7 @@ export const LightTheme: CustomTheme = {
     primary: "rgb(35, 68, 255)",
     black: "rgb(0, 0, 0)",
     lightBlack: "rgb(23, 23, 23)",
-    orange: "rgb(255, 87, 0)",
+    orange: "rgb(218, 165, 32)",
     white: "rgb(255, 255, 255)",
     darkestGray: "rgb(25, 25, 25)",
     darkerGray: "rgb(58, 58, 58)",

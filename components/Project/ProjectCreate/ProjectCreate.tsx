@@ -13,7 +13,6 @@ import {
   useGetMedia,
 } from "../../Account/Common/Media/mediaHelper";
 import Media from "../../MediaViewer/Media";
-import NextButton from "../Common/NextButton";
 import { useSetProjectState } from "../../RecoilStates/profileState";
 import { usePostApiProject } from "@/common/api/endpoints/cocreateApi";
 import { ProjectCreateDTO } from "@/common/api/model";
@@ -24,16 +23,18 @@ import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import ChatType from "@/common/chat/chatType";
 import { useTranslation } from "react-i18next";
 import StyledTextField from "@/components/Common/StyledTextField";
+import StyledButton from "@/components/Common/StyledButton";
 
 type ProjectCreateProps = {
   onCancel: () => void;
+  setEditMode: () => void;
 };
 
-const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
+const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel, setEditMode }) => {
   const { t } = useTranslation();
 
   const setProject = useSetProjectState();
-  const upload = usePrepareAndUpload(EntityType.PROJECT);
+  const {upload, isLoading: isUploadingImages} = usePrepareAndUpload(EntityType.PROJECT);
 
   const [uris, setUris] = useState<string[]>([]);
   const [title, setTitle] = useState<string>("");
@@ -43,15 +44,16 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
 
   const [showImages, setShowImages] = useState<boolean>(false);
 
-  const { mutate: createProject } = usePostApiProject({
+  const { mutate: createProject, isLoading } = usePostApiProject({
     mutation: {
       onSuccess: async (data) => {
         setProject((state) => {
-          const newState = [...(state || [])];
+          const newState = [...state];
           newState.push(data);
           return newState;
         });
         await generateAndStoreSymmetricAesKey(ChatType.Project, data.id!);
+        setEditMode();
         onCancel();
       },
     },
@@ -74,11 +76,7 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        style={{
-          flex: 1,
-          paddingHorizontal: "5%",
-          gap: 25,
-        }}
+        style={styles.container}
       >
         <CancelButton onPress={onCancel} />
         {!showImages && (
@@ -183,12 +181,13 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel }) => {
             </View>
           </>
         )}
-        <NextButton
-          text="Next"
+        <StyledButton
+          text={t("button.next")}
           icon="arrow-right"
           onPress={() => {
             showImages ? handleCreate() : setShowImages(true);
           }}
+          isLoading={isLoading || isUploadingImages}
         />
       </View>
     </TouchableWithoutFeedback>
@@ -215,5 +214,11 @@ const styles = StyleSheet.create({
   mainImage: {
     borderRadius: 7,
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: "5%",
+    paddingVertical: "10%",
+    gap: 25,
   },
 });

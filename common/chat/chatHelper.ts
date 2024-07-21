@@ -9,7 +9,7 @@ import {
   UserInformationDTO,
 } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import {
   addReactionsToMessages,
   fetchMessageById,
@@ -27,7 +27,7 @@ import {
 } from "../encryption/encryptionHelper";
 import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import * as SecureStore from "expo-secure-store";
-import { ChatTypeIdPair } from "@/components/Chats/chatHelper";
+import { ChatMember, ChatTypeIdPair } from "@/components/Chats/chatHelper";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
 import { downloadFile, usePrepareAndUpload } from "../media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
@@ -35,6 +35,7 @@ import Message from "@/components/Common/Messages/Message";
 import MessageReaction from "@/components/Common/Messages/MessageReaction";
 import { SetterOrUpdater } from "recoil";
 import ChatType from "./chatType";
+import UserInformationAndSkill from "@/components/Common/userInformationAndSkill";
 
 export const chatFetchLimit = 20;
 
@@ -45,7 +46,6 @@ export async function handleReceiveEncryptedKeysExchange(
   console.log("Received encrypted keys:", encryptedKeys);
 
   encryptedKeys.forEach(async (encryptedKey) => {
-    
     const decryptedKey = await decryptMessageDFH(
       encryptedKey.encryptedSymmetricKey,
       encryptedKey.nonce,
@@ -113,12 +113,12 @@ export async function handleReceivedMessages(
       ? decryptMessageAES(message.uri, symmetricAesKey)
       : null;
 
-
     const repliedMessage = await fetchMessageById(db, message.replyMessageId);
 
-    const encryptedContent = message.content && decryptedContent
-      ? encryptMessageAES(decryptedContent, aesKey)
-      : null;
+    const encryptedContent =
+      message.content && decryptedContent
+        ? encryptMessageAES(decryptedContent, aesKey)
+        : null;
 
     let uri: string | null = null;
 
@@ -187,15 +187,23 @@ export function findUserById(
   return null;
 }
 
-export function getProjectUsers(project: ProjectDTO): UserInformationDTO[] {
-  const usersInProject: UserInformationDTO[] = [];
+export function getProjectUsers(
+  project: ProjectDTO
+): UserInformationAndSkill[] {
+  const usersInProject: UserInformationAndSkill[] = [];
 
   if (project.projectManager) {
-    usersInProject.push(project.projectManager);
+    usersInProject.push({
+      userInformation: project.projectManager,
+    });
   }
 
-  for (const role of project.projectRoles || []) {
-    if (role.assignee) usersInProject.push(role.assignee);
+  for (const role of project.projectRoles) {
+    if (role.assignee)
+      usersInProject.push({
+        userInformation: role.assignee,
+        skill: role.skillType,
+      });
   }
 
   return usersInProject;
@@ -317,7 +325,11 @@ export const useSendMessage = (
   setMessages: any
 ) => {
   const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
-  const upload = usePrepareAndUpload(EntityType.CHATS, false);
+
+  const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
+    EntityType.CHATS,
+    false
+  );
 
   return useCallback(
     (message: MessageCreateDTO) => {
@@ -339,6 +351,7 @@ export const useSendMessage = (
               messageDTO
             );
           }
+          setMessages((prev: Message[]) => [messageDTO, ...prev]);
         })
         .catch((error) => console.error("Error sending message:", error));
     },
@@ -421,7 +434,6 @@ export const useAddReaction = (
         return;
       }
       try {
-        
         const messageReactionCreateDTO: MessageReactionCreateDTO = {
           messageId: messageReaction.messageId,
           reaction: messageReaction.reaction,
@@ -459,3 +471,17 @@ export async function handleReceiveMessagesReactions(
 
   connection.invoke("AknowledgeMessageReactionsAsync");
 }
+
+export const useGetUserIdUsernameMap = (users: ChatMember[]): Record<number, string> => {
+  const userIdUsernameMap = useMemo(() => {
+    const map: Record<number, string> = {};
+
+    users.forEach((user) => {
+      map[user.userId] = user.username;
+    });
+
+    return map;
+  }, [users]);
+
+  return userIdUsernameMap;
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import {
   useAssetOffersValue,
@@ -8,6 +8,10 @@ import {
 import ChatPreview from "@/components/Chats/ChatPreview";
 import ProjectChatPreview from "@/components/Chats/ProjectChatsPreview";
 import ChatType from "@/common/chat/chatType";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@/components/Themes/theme";
+import WorkTabHeaders from "@/components/Work/WorkTabHeaders";
+import NoWorkPage from "@/components/Work/NoWorkPage";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();
@@ -16,71 +20,67 @@ export default function Work() {
 
   const assetOffers = useAssetOffersValue();
 
-  if (!enquiries) return <Text>Loading...</Text>;
+  const { t } = useTranslation();
+
+  const theme = useTheme();
 
   const shortlistedEnquiries = enquiries.filter(
     (enquiry) => enquiry.shortlisted
   );
 
+  const noWork = useMemo(() => {
+    return assignedProjects.length === 0 && shortlistedEnquiries.length === 0;
+  }, [assignedProjects, shortlistedEnquiries]);
+
+  if (noWork) {
+    return <NoWorkPage />;
+  }
   return (
     <View style={styles.container}>
-      {assignedProjects &&
-        assignedProjects.map((project) => (
-          <ProjectChatPreview
-            chatTargetIdTypePair={{
-              chatTargetId: project.id || 0,
-              chatType: ChatType.Project,
-            }}
-            project={project}
-            key={project.id}
-          />
-        ))}
-      <Text
+      {assignedProjects.map((project) => (
+        <ProjectChatPreview
+          chatTargetIdTypePair={{
+            chatTargetId: project.id || 0,
+            chatType: ChatType.Project,
+          }}
+          project={project}
+          key={project.id}
+        />
+      ))}
+      <WorkTabHeaders title={t("work.shortlisted")} />
+      {shortlistedEnquiries.map((enquiry) => (
+        <ChatPreview
+          chatImage="https://picsum.photos/200/300"
+          chatName={enquiry.projectManager?.username || "N/A"}
+          chatTargetIdTypePair={{
+            chatTargetId: enquiry.projectManager?.userId || 0,
+            chatType: ChatType.Enquiry,
+          }}
+          key={enquiry.id}
+          targetPublicKey={enquiry.projectManager?.publicKey}
+        />
+      ))}
+      {/* {assetOffers.map((offer) => (
+        <ChatPreview
+          chatImage="https://picsum.photos/200/300"
+          chatName={offer.project?.projectManager.username || "N/A"}
+          chatTargetIdTypePair={{
+            chatTargetId: offer.project?.projectManager.userId || 0,
+            chatType: ChatType.AssetEnquiry,
+          }}
+          targetPublicKey={offer.project?.projectManager.publicKey}
+          key={offer.id}
+        />
+      ))} */}
+      {/* <Text
         style={{
           fontSize: 20,
           fontWeight: "bold",
           color: "black",
-          margin: 10,
-        }}
-      >
-        Shortlisted
-      </Text>
-      {assetOffers &&
-        assetOffers.map((offer) => (
-          <ChatPreview
-            chatImage="https://picsum.photos/200/300"
-            chatName={offer.project?.projectManager.username || "N/A"}
-            chatTargetIdTypePair={{
-              chatTargetId: offer.project?.projectManager.userId || 0,
-              chatType: ChatType.AssetEnquiry,
-            }}
-            targetPublicKey={offer.project?.projectManager.publicKey}
-            key={offer.id}
-          />
-        ))}
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "bold",
-          color: "black",
-          margin: 10,
         }}
       >
         Asset Offers
-      </Text>
-      {shortlistedEnquiries &&
-        shortlistedEnquiries.map((enquiry) => (
-          <ChatPreview
-            chatImage="https://picsum.photos/200/300"
-            chatName={enquiry.projectManager?.username || "N/A"}
-            chatTargetIdTypePair={{
-              chatTargetId: enquiry.projectManager?.userId || 0,
-              chatType: ChatType.Enquiry,
-            }}
-            key={enquiry.id}
-            targetPublicKey={enquiry.projectManager?.publicKey}
-          />
-        ))}
+      </Text> */}
     </View>
   );
 }
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     paddingVertical: "10%",
+    paddingHorizontal: "4%",
   },
   title: {
     fontSize: 20,
