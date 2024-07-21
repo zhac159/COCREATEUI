@@ -5,7 +5,7 @@ import {
   View,
 } from "react-native";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SkillsTab from "@/components/Account/Skills/SkillsTab";
 import AccountMainInfo from "@/components/Account/AccountMainInfo";
 import TabButtons from "@/components/Account/TabButtons";
@@ -17,7 +17,7 @@ import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnim
 import ExperienceTab from "@/components/Experience/ExperienceTab";
 import { TabView, SceneMap } from "react-native-tab-view";
 import SettingsTab from "@/components/Account/Settings/SettingsTab";
-import { Tabs } from "react-native-collapsible-tab-view";
+import { CollapsibleRef, Tabs } from "react-native-collapsible-tab-view";
 
 const HEADER_HEIGHT = 250;
 
@@ -35,6 +35,8 @@ const renderScene = SceneMap({
 
 export default function Account() {
   const currentUser = useCurrentUserValue();
+
+  const collapsibleRef = useRef<CollapsibleRef>(null);
 
   const tabsNames = ["Skills", "Assets", "Portofolio", "Experience"];
 
@@ -58,63 +60,66 @@ export default function Account() {
   return (
     <>
       <BackgroundColourAnimation />
-      {/* <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="handled"
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-        stickyHeaderIndices={[1]}
-        scrollEventThrottle={16}
-        onScroll={handleScroll}
-      >
-        <AccountMainInfo
-          coins={currentUser.coins || 0}
-          username={currentUser.username}
-          rating={currentUser.rating}
-        />
-        <TabButtons
-          tabs={tabsNames}
-          selectedTab={index}
-          setSelectedTab={setIndex}
-          isSticky={isSticky}
-        />
-        <TabView
-          sceneContainerStyle={styles.scene}
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          renderTabBar={() => null}
-          animationEnabled={false}
-          swipeEnabled={false}
-        />
-      </KeyboardAwareScrollView> */}
       <Tabs.Container
-        renderHeader={Header}
-        headerHeight={HEADER_HEIGHT} 
-        pagerProps={{ scrollEnabled: false  }}
+        headerContainerStyle={{ backgroundColor: "transparent" }}
+        renderHeader={() => (
+          <AccountMainInfo
+            coins={currentUser.coins || 0}
+            username={currentUser.username}
+            rating={currentUser.rating}
+          />
+        )}
+        renderTabBar={() => (
+          <TabButtons
+            tabs={tabsNames}
+            selectedTab={index}
+            setSelectedTab={(index) => {
+              collapsibleRef.current?.setIndex(index);
+              setIndex(index);
+            }}
+            isSticky={isSticky}
+          />
+        )}
+        ref={collapsibleRef}
+        pagerProps={{ scrollEnabled: false }}
       >
         <Tabs.Tab name="skills">
-          <Tabs.ScrollView>
+          <Tabs.ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scene}
+          >
             <SkillsTab />
           </Tabs.ScrollView>
         </Tabs.Tab>
         <Tabs.Tab name="assets">
-          <Tabs.ScrollView>
+          <Tabs.ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scene}
+          >
             <AssetTab />
           </Tabs.ScrollView>
         </Tabs.Tab>
         <Tabs.Tab name="portofolio">
-          <Tabs.ScrollView>
+          <Tabs.ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scene}
+          >
             <PortofolioContentTab />
           </Tabs.ScrollView>
         </Tabs.Tab>
         <Tabs.Tab name="experience">
-          <Tabs.ScrollView>
+          <Tabs.ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scene}
+          >
             <ExperienceTab />
           </Tabs.ScrollView>
         </Tabs.Tab>
         <Tabs.Tab name="settings">
-          <Tabs.ScrollView>
+          <Tabs.ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scene}
+          >
             <SettingsTab />
           </Tabs.ScrollView>
         </Tabs.Tab>
@@ -125,13 +130,9 @@ export default function Account() {
 
 const styles = StyleSheet.create({
   scene: {
-    flex: 1,
-    backgroundColor: "transparent",
-    paddingBottom: "20%",
-    paddingTop: "2.3%",
     paddingHorizontal: "3%",
-    height: "100%",
-    width: "100%",
+    marginTop: 30,
+    marginBottom: 50,
   },
   container: {
     height: "100%",
