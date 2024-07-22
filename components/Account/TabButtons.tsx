@@ -29,10 +29,9 @@ const TabButtons: FC<TabButtonsProps> = ({
           height: 350,
           marginTop: -240,
           width: "150%",
-          backgroundColor: theme.colors.white,
         }}
-        intensity={100}
-        tint="systemChromeMaterial"
+        intensity={80}
+        tint="light"
       />
       {tabs.map((name, idx) => (
         <TouchableOpacity

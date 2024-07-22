@@ -36,9 +36,9 @@ export default function TabLayout() {
           backgroundColor: "rgba(55, 55, 55, 0.8)",
           position: "absolute",
           display: keyboardVisible ? "none" : "flex",
-          padding: 0,
-          margin: 0,
-          elevation: 0,
+          // padding: 0,
+          // margin: 0,
+          // elevation: 0,
         },
         headerStyle: {
           height: 0,

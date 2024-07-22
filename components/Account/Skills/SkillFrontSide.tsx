@@ -69,6 +69,13 @@ const SkillFrontSide: FC<SkillFrontSideProps> = ({
             ...skillStyles.skillContainer,
             backgroundColor:
               selectedSkill === skill.skillType ? color : theme.colors.white,
+            shadowColor: "black",
+            shadowOffset: {
+              width: 10,
+              height: 10,
+              
+            },
+            elevation: 5,
           }}
         >
           <SkillIcon skillType={skill.skillType} />
