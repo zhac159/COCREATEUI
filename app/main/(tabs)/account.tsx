@@ -61,7 +61,7 @@ export default function Account() {
     <>
       <BackgroundColourAnimation />
       <Tabs.Container
-        headerContainerStyle={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+        headerContainerStyle={{ backgroundColor: "transparent" }}
         renderHeader={() => (
           <AccountMainInfo
             coins={currentUser.coins || 0}

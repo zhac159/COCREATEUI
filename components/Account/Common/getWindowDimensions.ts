@@ -4,4 +4,4 @@ export const windowHeight = Math.max(Dimensions.get("window").width, Dimensions.
 
 export const windowWidth = Math.min(Dimensions.get("window").width, Dimensions.get("window").height);
 
-export const tabBarHeight = 100;
+export const tabBarHeight = 80;

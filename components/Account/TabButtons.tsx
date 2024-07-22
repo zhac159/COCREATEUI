@@ -20,10 +20,20 @@ const TabButtons: FC<TabButtonsProps> = ({
   const theme = useTheme();
 
   return (
-    <BlurView
+    <View
       style={{...styles.container, paddingTop: 55}}
-      intensity={isSticky ? 100 : 0}
     >
+      <BlurView
+        style={{
+          position: "absolute",
+          height: 350,
+          marginTop: -240,
+          width: "150%",
+          backgroundColor: theme.colors.white,
+        }}
+        intensity={100}
+        tint="systemChromeMaterial"
+      />
       {tabs.map((name, idx) => (
         <TouchableOpacity
           key={idx}
@@ -65,7 +75,7 @@ const TabButtons: FC<TabButtonsProps> = ({
         style={styles.icon}
         iconColor={selectedTab == 4 ? theme.colors.primary : theme.colors.black}
       />
-    </BlurView>
+    </View>
   );
 };
 
@@ -79,6 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingBottom: 22,
     paddingRight: 16,
+    backgroundColor: "transparent",
     paddingLeft: 18,
     width: "100%",
   },
