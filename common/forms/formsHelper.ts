@@ -11,7 +11,6 @@ export const useFormWithStep = (forms: ReactElement<FormPageProps>[]) => {
         setIndex((currentIndex) => currentIndex + 1);
     };
 
-    // Automatically pass the nextStep function to all form components
     const formsWithNextStep = forms.map((form) =>
         cloneElement(form, { nextStep })
     );

@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useTheme } from "../../Themes/theme";
 
 type FromToDatePickerProps = {
@@ -117,13 +117,13 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
           </Text>
         </TouchableOpacity>
       </View>
-      <DateTimePickerModal
+      {/* <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirm}
         date={startDateEdit ? startDate : endDate}
         onCancel={hideDatePicker}
-      />
+      /> */}
     </View>
   );
 };

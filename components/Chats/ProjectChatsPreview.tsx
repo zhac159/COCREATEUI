@@ -35,17 +35,29 @@ const ProjectChatPreview: FC<ProjectChatPreviewProps> = ({
 
   return (
     <View>
-      <Text
-        style={{
-          ...theme.customFonts.primary.medium,
-          color: theme.colors.black,
-          paddingTop: 20,
-          paddingBottom: 10,
-          paddingLeft: 10,
-        }}
-      >
-        Team Chat
-      </Text>
+      <View style={styles.titleContainer}>
+        <View
+          style={{
+            ...styles.lines,
+            backgroundColor: theme.colors.grayer,
+          }}
+        />
+        <Text
+          style={{
+            ...theme.customFonts.secondary.medium,
+            ...styles.title,
+            color: theme.colors.black,
+          }}
+        >
+          {project.name}
+        </Text>
+        <View
+          style={{
+            ...styles.lines,
+            backgroundColor: theme.colors.grayer,
+          }}
+        />
+      </View>
       <View
         style={{
           ...styles.container,
@@ -83,5 +95,22 @@ export default ProjectChatPreview;
 const styles = StyleSheet.create({
   container: {
     height: 283,
+  },
+  lines: {
+    height: 1,
+    flex: 1,
+    marginBottom: 10,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontWeight: "400",
+    paddingBottom: 10,
+    fontSize: 20,
+    alignSelf: "center",
+    paddingHorizontal: 10,
   },
 });

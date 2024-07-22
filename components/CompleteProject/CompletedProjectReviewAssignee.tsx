@@ -6,8 +6,6 @@ import {
 import { FC, useState, useEffect } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useTheme } from "../Themes/theme";
-import SkillIcon from "../Account/Skills/SkillIcon";
-import { getSkill } from "../Account/Skills/skillHelper";
 import { Rating } from "react-native-ratings";
 import SkillTag from "../Account/Skills/SkillTag";
 

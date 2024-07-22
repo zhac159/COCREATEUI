@@ -3,6 +3,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
 import { useEffect, useState } from "react";
 import { Keyboard } from "react-native";
+import { tabBarHeight } from "@/components/Account/Common/getWindowDimensions";
 
 export default function TabLayout() {
   const theme = useTheme();
@@ -31,28 +32,31 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={(props) => ({
         tabBarStyle: {
-          backgroundColor: "rgba(55, 55, 55, 0.8)",
+          backgroundColor:
+            props.route.name !== "discovery"
+              ? theme.colors.tabBarLightColor
+              : theme.colors.tabBarDarkColor,
           position: "absolute",
           display: keyboardVisible ? "none" : "flex",
-          // padding: 0,
-          // margin: 0,
-          // elevation: 0,
+          padding: 0,
+          margin: 0,
+          elevation: 0,
+          height: tabBarHeight,
         },
         headerStyle: {
           height: 0,
           backgroundColor: "transparent",
           shadowOpacity: 0,
         },
-      }}
+      })}
       sceneContainerStyle={{ backgroundColor: "transparent" }}
     >
       <Tabs.Screen
         name="discovery"
         options={{
-          lazy: false,
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="compass" size={24} color={color} solid />
           ),
@@ -61,7 +65,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="work"
         options={{
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="dragon" size={24} color={color} solid />
           ),
@@ -70,8 +74,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="project"
         options={{
-          headerTitle: "",
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="lightbulb" size={24} color={color} solid />
           ),
@@ -81,7 +84,7 @@ export default function TabLayout() {
         name="account"
         options={{
           headerTitle: "",
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarIcon: ({ color, focused }) => (
             <FontAwesome6
               name="user"

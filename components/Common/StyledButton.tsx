@@ -19,6 +19,7 @@ type StyledButtonProps = {
   textColour?: string;
   isLoading?: boolean;
   success?: boolean;
+  disabled?: boolean;
 };
 
 const StyledButton: FC<StyledButtonProps> = ({
@@ -29,6 +30,7 @@ const StyledButton: FC<StyledButtonProps> = ({
   textColour,
   isLoading,
   success,
+  disabled
 }) => {
   const theme = useTheme();
 
@@ -55,7 +57,7 @@ const StyledButton: FC<StyledButtonProps> = ({
         : (style && 'backgroundColor' in style ? style.backgroundColor : theme.colors.primary),
       }}
       onPress={onPress}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
     >
       {isLoading ? (
         <Animated.View

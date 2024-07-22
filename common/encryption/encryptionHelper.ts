@@ -188,8 +188,6 @@ export async function createAndExchangeKeysIfThereIsNoKey(
 ): Promise<void> {
   const aesKey = await getSymmetricAesKey(chatType, targetId);
 
-  console.log("aesKey", aesKey);
-
   if (aesKey == null) {
     await createAndExchangeKeys(
       receiverPublicKey,

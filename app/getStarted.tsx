@@ -6,13 +6,15 @@ import AddSkillForm from "@/components/GetStarted/AddSkillForm";
 import ConfirmEmailTokenForm from "@/components/GetStarted/ConfirmEmailTokenForm";
 import LocationForm from "@/components/GetStarted/LocationForm";
 import NameAndPasswordForm from "@/components/GetStarted/NameAndPasswordForm";
-import { useState } from "react";
+import SurveyForm from "@/components/GetStarted/SurveyForm";
+import TermnsAndConditionsForm from "@/components/GetStarted/TermsAndConditionsForm";
 import { Keyboard, TouchableWithoutFeedback, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function GetStarted() {
-  
   const { form } = useFormWithStep([
+    <SurveyForm />,
+    <TermnsAndConditionsForm />,
     <NameAndPasswordForm />,
     <ConfirmEmailTokenForm />,
     <LocationForm />,

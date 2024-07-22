@@ -54,9 +54,6 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      [
-        "@config-plugins/react-native-webrtc"
-      ],
       "expo-router",
       "expo-secure-store"
     ],

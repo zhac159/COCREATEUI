@@ -10,7 +10,6 @@ import {
   useLoadMessagesAroundMessage,
   useSendMessage,
 } from "@/common/chat/chatHelper";
-import { useSQLiteContext } from "expo-sqlite/build/next/hooks";
 import { useGetMedia } from "@/components/Account/Common/Media/mediaHelper";
 import SendImagePortal from "@/components/Chats/SendImagePortal";
 import { useCurrentChatDataValue } from "@/components/RecoilStates/currentChatDataState";
@@ -22,8 +21,8 @@ import MessageReaction from "@/components/Common/Messages/MessageReaction";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import { useNewMessageReactionValue } from "@/components/RecoilStates/newMessageReactionState";
 import { createAndExchangeKeysIfThereIsNoKey } from "@/common/encryption/encryptionHelper";
-import { use } from "i18next";
 import ChatType from "@/common/chat/chatType";
+import { useSQLiteContext } from "expo-sqlite";
 
 export default function EnquiryChat() {
   const database = useSQLiteContext();

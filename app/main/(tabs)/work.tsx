@@ -32,6 +32,10 @@ export default function Work() {
     return assignedProjects.length === 0 && shortlistedEnquiries.length === 0;
   }, [assignedProjects, shortlistedEnquiries]);
 
+  const noShortlistedEnquiries = useMemo(() => {
+    return shortlistedEnquiries.length === 0;
+  }, [shortlistedEnquiries]);
+
   if (noWork) {
     return <NoWorkPage />;
   }
@@ -47,19 +51,23 @@ export default function Work() {
           key={project.id}
         />
       ))}
-      <WorkTabHeaders title={t("work.shortlisted")} />
-      {shortlistedEnquiries.map((enquiry) => (
-        <ChatPreview
-          chatImage="https://picsum.photos/200/300"
-          chatName={enquiry.projectManager?.username || "N/A"}
-          chatTargetIdTypePair={{
-            chatTargetId: enquiry.projectManager?.userId || 0,
-            chatType: ChatType.Enquiry,
-          }}
-          key={enquiry.id}
-          targetPublicKey={enquiry.projectManager?.publicKey}
-        />
-      ))}
+      {!noShortlistedEnquiries && (
+        <>
+          <WorkTabHeaders title={t("work.shortlisted")} />
+          {shortlistedEnquiries.map((enquiry) => (
+            <ChatPreview
+              chatImage="https://picsum.photos/200/300"
+              chatName={enquiry.projectManager?.username || "N/A"}
+              chatTargetIdTypePair={{
+                chatTargetId: enquiry.projectManager?.userId || 0,
+                chatType: ChatType.Enquiry,
+              }}
+              key={enquiry.id}
+              targetPublicKey={enquiry.projectManager?.publicKey}
+            />
+          ))}
+        </>
+      )}
       {/* {assetOffers.map((offer) => (
         <ChatPreview
           chatImage="https://picsum.photos/200/300"

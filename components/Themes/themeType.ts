@@ -67,6 +67,8 @@ interface CustomTheme extends Theme {
     green: string;
     red: string;
     lightBlue: string;
+    tabBarDarkColor: string;
+    tabBarLightColor: string;
   };
   customIcons: {
     small: {

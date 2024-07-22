@@ -10,28 +10,14 @@ import SkillsTab from "@/components/Account/Skills/SkillsTab";
 import AccountMainInfo from "@/components/Account/AccountMainInfo";
 import TabButtons from "@/components/Account/TabButtons";
 import AssetTab from "@/components/Account/Assets/AssetTab";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import PortofolioContentTab from "@/components/Account/PortofolioContents/PortofolioContentTab";
 import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import ExperienceTab from "@/components/Experience/ExperienceTab";
-import { TabView, SceneMap } from "react-native-tab-view";
 import SettingsTab from "@/components/Account/Settings/SettingsTab";
 import { CollapsibleRef, Tabs } from "react-native-collapsible-tab-view";
 
 const HEADER_HEIGHT = 250;
-
-const Header = () => {
-  return <View style={styles.header} />;
-};
-
-const renderScene = SceneMap({
-  first: SkillsTab,
-  second: AssetTab,
-  third: PortofolioContentTab,
-  fourth: ExperienceTab,
-  fifth: SettingsTab,
-});
 
 export default function Account() {
   const currentUser = useCurrentUserValue();
@@ -117,6 +103,7 @@ export default function Account() {
         </Tabs.Tab>
         <Tabs.Tab name="settings">
           <Tabs.ScrollView
+            keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scene}
           >

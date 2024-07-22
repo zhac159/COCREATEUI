@@ -75,8 +75,8 @@ const ChatPreview: FC<ChatPreviewProps> = ({
         ...styles.container,
         flexDirection: "row",
         alignItems: "center",
-        borderTopColor: theme.colors.lightGray,
-        borderTopWidth: 1,
+        // borderTopColor: theme.colors.lightGray,
+        // borderTopWidth: 1,
         borderBottomColor: theme.colors.lightGray,
         borderBottomWidth: 1,
       }}

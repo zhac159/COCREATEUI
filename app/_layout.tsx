@@ -14,8 +14,8 @@ import { Portal, Provider } from "react-native-paper";
 import { LightTheme } from "@/components/Themes/theme";
 import MediaViewerPortal from "@/components/MediaViewer/MediaViewerPortal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SQLiteProvider } from "expo-sqlite/build/next/hooks";
 import { migrateDbIfNeeded } from "@/common/database/databaseHelper";
+import { SQLiteProvider } from 'expo-sqlite';
 
 
 export { ErrorBoundary } from "expo-router";
