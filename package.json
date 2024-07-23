@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "api": "orval --config ./orval.config.ts",
-    "cleanapi": "powershell -Command \"(Get-Content ./common/api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./common/api/endpoints/cocreateApi.ts\""
+    "clean": "powershell -Command \"(Get-Content ./common/api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./common/api/endpoints/cocreateApi.ts\""
   },
   "jest": {
     "preset": "jest-expo"

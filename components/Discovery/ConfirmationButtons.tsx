@@ -7,16 +7,18 @@ type ConfirmationButtonsProps = {
   onConfirm: () => void;
   onCancel: () => void;
   swipingDistance: number;
+  lightTheme?: boolean;
 };
 
 const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
   onConfirm,
   onCancel,
   swipingDistance,
+  lightTheme,
 }) => {
   const theme = useTheme();
 
-  const opacity = (swipingDistance / 5 / 100) * 255;
+  const opacity = -((swipingDistance / 5 / 100) * 255);
 
   return (
     <View style={styles.buttonsContainer}>
@@ -29,13 +31,15 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             borderRadius: 400,
             marginTop: 0.2,
             justifyContent: "center",
-            backgroundColor: `rgb(${opacity + 20}, 0, 0)`,
+            backgroundColor: lightTheme
+              ? `rgb(220, ${220 - opacity}, ${220 - opacity})`
+              : `rgb(${opacity + 20}, 0, 0)`,
           }}
         >
           <FontAwesome6
             name="xmark"
             size={40}
-            color={`rgb(${255 - opacity}, 0, 0)`}
+            color={`rgb(${255}, ${opacity}, ${opacity})`}
           />
         </View>
         <View
@@ -45,8 +49,9 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             position: "absolute",
             borderRadius: 400,
             zIndex: -1,
-            backgroundColor: theme.colors.gray,
-            marginLeft: 0.6,
+            backgroundColor: theme.colors.darkGray,
+            marginLeft: 1.5,
+            marginBottom: 1,
           }}
         />
       </TouchableOpacity>
@@ -58,13 +63,15 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             alignItems: "center",
             borderRadius: 400,
             justifyContent: "center",
-            backgroundColor: `rgb(0, ${-opacity + 20}, 0)`,
+            backgroundColor: lightTheme
+              ? `rgb(${opacity + 220}, 220, ${opacity + 220})`
+              : `rgb(0, ${20 - opacity}, 0)`,
           }}
         >
           <FontAwesome6
             name="check"
             size={40}
-            color={`rgb(0, ${255 + opacity}, 0)`}
+            color={`rgb(${opacity}, ${255}, ${opacity})`}
           />
         </View>
         <View
@@ -75,7 +82,8 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             borderRadius: 400,
             zIndex: -1,
             backgroundColor: theme.colors.gray,
-            marginLeft: 0.6,
+            marginLeft: 1.5,
+            marginBottom: 1,
           }}
         />
       </TouchableOpacity>

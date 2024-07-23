@@ -7,138 +7,227 @@ import {
 
 export enum SkillGroups {
   Filmmaking,
-  VisualArts,
-  Fashion,
-  Writing,
-  PerformingArts,
-  Music,
+  Acting,
 }
 
 export enum Skills {
-  Programming,
-  Management,
-  Acting,
-  Painting,
-  Writing,
-  Singing,
-  Dancing,
-  Drawing,
-  Photography,
-  Directing,
-  Producing,
-  Editing,
-  Cinematography,
-  SoundEngineering,
-  SoundDesign,
-  SoundEditing,
-  GameDesign,
-  Composing,
+  Editor,
+  Director,
+  Producer,
+  Screenwriter,
+  Cinematographer,
+  SoundDesigner,
+  ProductionDesigner,
+  SpecialEffects,
+  ScriptSupervisor,
+  CastingDirector,
+  MakeupArtist,
+  CostumeDesigner,
+  BoomOperator,
+  PropsManager,
+  SoundMixer,
+  Runner,
+  ProductionAssistant,
+  Chreographer,
+  AssistantDirector,
+  CoProducer,
+  HairStylist,
+  Grip,
+  LocationManager,
+  SetDresser,
+  StoryBoardArtist,
+  Animator,
+  LeadActorScreen,
+  LeasAcressScreen,
+  Extra,
+  SupportingActorScreen,
+  SupportingActressScreen,
+  BackgroundActorActress,
+  VoiceActorActress,
+  StandIn,
+  Dancer,
+  LeadActorTheatre,
+  LeadActressTheatre,
+  MusicalTheatrePerformer,
+  SupportingActorTheatre,
+  SupportingActressTheatre,
+  ActorModel,
 }
 
 export const skillGroupMap = {
-  [Skills.Programming]: SkillGroups.Filmmaking,
-  [Skills.Management]: SkillGroups.Filmmaking,
-  [Skills.Acting]: SkillGroups.PerformingArts,
-  [Skills.Painting]: SkillGroups.VisualArts,
-  [Skills.Writing]: SkillGroups.Writing,
-  [Skills.Singing]: SkillGroups.Music,
-  [Skills.Dancing]: SkillGroups.PerformingArts,
-  [Skills.Drawing]: SkillGroups.VisualArts,
-  [Skills.Photography]: SkillGroups.VisualArts,
-  [Skills.Directing]: SkillGroups.Filmmaking,
-  [Skills.Producing]: SkillGroups.Filmmaking,
-  [Skills.Editing]: SkillGroups.Filmmaking,
-  [Skills.Cinematography]: SkillGroups.Filmmaking,
-  [Skills.SoundEngineering]: SkillGroups.Music,
-  [Skills.SoundDesign]: SkillGroups.Music,
-  [Skills.SoundEditing]: SkillGroups.Music,
-  [Skills.GameDesign]: SkillGroups.Filmmaking,
-  [Skills.Composing]: SkillGroups.Music,
+  [Skills.Editor]: SkillGroups.Filmmaking,
+  [Skills.Director]: SkillGroups.Filmmaking,
+  [Skills.Producer]: SkillGroups.Filmmaking,
+  [Skills.Screenwriter]: SkillGroups.Filmmaking,
+  [Skills.Cinematographer]: SkillGroups.Filmmaking,
+  [Skills.SoundDesigner]: SkillGroups.Filmmaking,
+  [Skills.ProductionDesigner]: SkillGroups.Filmmaking,
+  [Skills.SpecialEffects]: SkillGroups.Filmmaking,
+  [Skills.ScriptSupervisor]: SkillGroups.Filmmaking,
+  [Skills.CastingDirector]: SkillGroups.Filmmaking,
+  [Skills.MakeupArtist]: SkillGroups.Filmmaking,
+  [Skills.CostumeDesigner]: SkillGroups.Filmmaking,
+  [Skills.BoomOperator]: SkillGroups.Filmmaking,
+  [Skills.PropsManager]: SkillGroups.Filmmaking,
+  [Skills.SoundMixer]: SkillGroups.Filmmaking,
+  [Skills.Runner]: SkillGroups.Filmmaking,
+  [Skills.ProductionAssistant]: SkillGroups.Filmmaking,
+  [Skills.Chreographer]: SkillGroups.Filmmaking,
+  [Skills.AssistantDirector]: SkillGroups.Filmmaking,
+  [Skills.CoProducer]: SkillGroups.Filmmaking,
+  [Skills.HairStylist]: SkillGroups.Filmmaking,
+  [Skills.Grip]: SkillGroups.Filmmaking,
+  [Skills.LocationManager]: SkillGroups.Filmmaking,
+  [Skills.SetDresser]: SkillGroups.Filmmaking,
+  [Skills.StoryBoardArtist]: SkillGroups.Filmmaking,
+  [Skills.Animator]: SkillGroups.Filmmaking,
+  [Skills.LeadActorScreen]: SkillGroups.Acting,
+  [Skills.LeasAcressScreen]: SkillGroups.Acting,
+  [Skills.Extra]: SkillGroups.Acting,
+  [Skills.SupportingActorScreen]: SkillGroups.Acting,
+  [Skills.SupportingActressScreen]: SkillGroups.Acting,
+  [Skills.BackgroundActorActress]: SkillGroups.Acting,
+  [Skills.VoiceActorActress]: SkillGroups.Acting,
+  [Skills.StandIn]: SkillGroups.Acting,
+  [Skills.Dancer]: SkillGroups.Acting,
+  [Skills.LeadActorTheatre]: SkillGroups.Acting,
+  [Skills.LeadActressTheatre]: SkillGroups.Acting,
+  [Skills.MusicalTheatrePerformer]: SkillGroups.Acting,
+  [Skills.SupportingActorTheatre]: SkillGroups.Acting,
+  [Skills.SupportingActressTheatre]: SkillGroups.Acting,
+  [Skills.ActorModel]: SkillGroups.Acting,
 };
 
 const skillsToStringMapping: { [index: number]: string } = {
-  [Skills.Programming]: "Programming",
-  [Skills.Management]: "Management",
-  [Skills.Acting]: "Acting",
-  [Skills.Painting]: "Painting",
-  [Skills.Writing]: "Writing",
-  [Skills.Singing]: "Singing",
-  [Skills.Dancing]: "Dancing",
-  [Skills.Drawing]: "Drawing",
-  [Skills.Photography]: "Photography",
-  [Skills.Directing]: "Directing",
-  [Skills.Producing]: "Producing",
-  [Skills.Editing]: "Editing",
-  [Skills.Cinematography]: "Cinematography",
-  [Skills.SoundEngineering]: "Sound Engineering",
-  [Skills.SoundDesign]: "Sound Design",
-  [Skills.SoundEditing]: "Sound Editing",
-  [Skills.GameDesign]: "Game Design",
-  [Skills.Composing]: "Composing",
+  [Skills.Editor]: "Editor",
+  [Skills.Director]: "Director",
+  [Skills.Producer]: "Producer",
+  [Skills.Screenwriter]: "Screenwriter",
+  [Skills.Cinematographer]: "Cinematographer",
+  [Skills.SoundDesigner]: "Sound Designer",
+  [Skills.ProductionDesigner]: "Production Designer",
+  [Skills.SpecialEffects]: "Special Effects",
+  [Skills.ScriptSupervisor]: "Script Supervisor",
+  [Skills.CastingDirector]: "Casting Director",
+  [Skills.MakeupArtist]: "Makeup Artist",
+  [Skills.CostumeDesigner]: "Costume Designer",
+  [Skills.BoomOperator]: "Boom Operator",
+  [Skills.PropsManager]: "Peops Manager",
+  [Skills.SoundMixer]: "Sound Mixer",
+  [Skills.Runner]: "Runner",
+  [Skills.ProductionAssistant]: "Production Assistant",
+  [Skills.Chreographer]: "Chreographer",
+  [Skills.AssistantDirector]: "Assistant Director",
+  [Skills.CoProducer]: "Co-Producer",
+  [Skills.HairStylist]: "Hair Stylist",
+  [Skills.Grip]: "Grip",
+  [Skills.LocationManager]: "Location Manager",
+  [Skills.SetDresser]: "Set Dresser",
+  [Skills.StoryBoardArtist]: "Story Board Artist",
+  [Skills.Animator]: "Animator",
+  [Skills.LeadActorScreen]: "Lead Actor (Screen)",
+  [Skills.LeasAcressScreen]: "Lead Actress (Screen)",
+  [Skills.Extra]: "Extra",
+  [Skills.SupportingActorScreen]: "Supporting Actor (Screen)",
+  [Skills.SupportingActressScreen]: "Supporting Actress (Screen)",
+  [Skills.BackgroundActorActress]: "Background Actor/Actress",
+  [Skills.VoiceActorActress]: "Voice Actor/Actress",
+  [Skills.StandIn]: "Stand-In",
+  [Skills.Dancer]: "Dancer",
+  [Skills.LeadActorTheatre]: "Lead Actor (Theatre)",
+  [Skills.LeadActressTheatre]: "Lead Actress (Theatre)",
+  [Skills.MusicalTheatrePerformer]: "Musical Theatre Performer",
+  [Skills.SupportingActorTheatre]: "Supporting Actor (Theatre)",
+  [Skills.SupportingActressTheatre]: "Supporting Actress (Theatre)",
+  [Skills.ActorModel]: "Actor/Model",
 };
 
-export enum IconNames {
-  Programming = "music",
-  Management = "music",
-  Acting = "music",
-  Painting = "music",
-  Writing = "music",
-  Singing = "music",
-  Dancing = "music",
-  Drawing = "music",
-  Photography = "camera",
-  Directing = "music",
-  Producing = "music",
-  Editing = "music",
-  Cinematography = "camera",
-  SoundEngineering = "volume-high",
-  SoundDesign = "record-vinyl",
-  SoundEditing = "headphones",
-  GameDesign = "music",
-  Default = "camera",
-  Composing = "music",
-}
-
-export const getSkillIcon = (skill: Skills): IconNames => {
+export const getSkillIcon = (skill: Skills): string => {
   switch (skill) {
-    case Skills.Programming:
-      return IconNames.Programming;
-    case Skills.Management:
-      return IconNames.Management;
-    case Skills.Acting:
-      return IconNames.Acting;
-    case Skills.Painting:
-      return IconNames.Painting;
-    case Skills.Writing:
-      return IconNames.Writing;
-    case Skills.Singing:
-      return IconNames.Singing;
-    case Skills.Dancing:
-      return IconNames.Dancing;
-    case Skills.Drawing:
-      return IconNames.Drawing;
-    case Skills.Photography:
-      return IconNames.Photography;
-    case Skills.Directing:
-      return IconNames.Directing;
-    case Skills.Producing:
-      return IconNames.Producing;
-    case Skills.Editing:
-      return IconNames.Editing;
-    case Skills.Cinematography:
-      return IconNames.Cinematography;
-    case Skills.SoundEngineering:
-      return IconNames.SoundEngineering;
-    case Skills.SoundDesign:
-      return IconNames.SoundDesign;
-    case Skills.SoundEditing:
-      return IconNames.SoundEditing;
-    case Skills.GameDesign:
-      return IconNames.GameDesign;
-    case Skills.Composing:
-      return IconNames.Composing;
+    case Skills.Editor:
+      return "scissors";
+    case Skills.Director:
+      return "bullhorn";
+    case Skills.Producer:
+      return "list-check";
+    case Skills.Screenwriter:
+      return "quote-right";
+    case Skills.Cinematographer:
+      return "video";
+    case Skills.SoundDesigner:
+      return "file-audio";
+    case Skills.ProductionDesigner:
+      return "pencil";
+    case Skills.SpecialEffects:
+      return "burst";
+    case Skills.ScriptSupervisor:
+      return "book";
+    case Skills.CastingDirector:
+      return "person-chalkboard";
+    case Skills.MakeupArtist:
+      return "paintbrush";
+    case Skills.CostumeDesigner:
+      return "shirt";
+    case Skills.BoomOperator:
+      return "microphone-lines";
+    case Skills.PropsManager:
+      return "glasses";
+    case Skills.SoundMixer:
+      return "sliders";
+    case Skills.Runner:
+      return "handshake-angle";
+    case Skills.ProductionAssistant:
+      return "clipboard-list";
+    case Skills.Chreographer:
+      return "arrow-right-arrow-left";
+    case Skills.AssistantDirector:
+      return "bullhorn";
+    case Skills.CoProducer:
+      return "list-check";
+    case Skills.HairStylist:
+      return "person-rays";
+    case Skills.Grip:
+      return "camera-rotate";
+    case Skills.LocationManager:
+      return "location-dot";
+    case Skills.SetDresser:
+      return "house";
+    case Skills.StoryBoardArtist:
+      return "users-viewfinder";
+    case Skills.Animator:
+      return "palette";
+    case Skills.LeadActorScreen:
+      return "person-rays";
+    case Skills.LeasAcressScreen:
+      return "person-rays";
+    case Skills.Extra:
+      return "people-group";
+    case Skills.SupportingActorScreen:
+      return "person";
+    case Skills.SupportingActressScreen:
+      return "person";
+    case Skills.BackgroundActorActress:
+      return "person-half-dress";
+    case Skills.VoiceActorActress:
+      return "microphone-lines";
+    case Skills.StandIn:
+      return "person-circle-plus";
+    case Skills.Dancer:
+      return "person-walking";
+    case Skills.LeadActorTheatre:
+      return "person-rays";
+    case Skills.LeadActressTheatre:
+      return "person-rays";
+    case Skills.MusicalTheatrePerformer:
+      return "guitar";
+    case Skills.SupportingActorTheatre:
+      return "person";
+    case Skills.SupportingActressTheatre:
+      return "person";
+    case Skills.ActorModel:
+      return "star";
     default:
-      return IconNames.Default;
+      return "users";
   }
 };
 
@@ -146,29 +235,17 @@ export const getSkillGroupColor = (
   group: SkillGroups,
   opacity: number = 1
 ): string => {
-  var colour: string = ""; // Black
+  var colour: string = "";
 
   switch (group) {
     case SkillGroups.Filmmaking:
-      colour = "#FF0000"; // Red
+      colour = "#2344FF";
       break;
-    case SkillGroups.VisualArts:
-      colour = "#00FF00"; // Green
-      break;
-    case SkillGroups.Fashion:
-      colour = "#0000FF"; // Blue
-      break;
-    case SkillGroups.Writing:
-      colour = "#FFFF00"; // Yellow
-      break;
-    case SkillGroups.PerformingArts:
-      colour = "#FFA500"; // Orange
-      break;
-    case SkillGroups.Music:
-      colour = "#FF00FF"; // Magenta
+    case SkillGroups.Acting:
+      colour = "#00B4D8";
       break;
     default:
-      colour = "#000000"; // Black
+      colour = "#2344FF";
   }
 
   const r = parseInt(colour.slice(1, 3), 16);

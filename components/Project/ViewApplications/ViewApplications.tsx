@@ -1,10 +1,10 @@
 import {
   EnquiryDTO,
+  ProjectWithMatchingRoleDTO,
   UserProfileDTO,
   UserProfilesDTO,
 } from "@/common/api/model";
-import { FC, useCallback, useContext, useMemo } from "react";
-import { Text } from "react-native";
+import { FC, useCallback, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import Swiper from "react-native-deck-swiper";
@@ -25,6 +25,8 @@ type ViewApplicationsProps = {
 };
 
 const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
+  const swiperRef = useRef<Swiper<UserProfileDTO>>(null);
+
   const [applicantsProfiles, setApplicantsProfiles] =
     useState<UserProfilesDTO>();
 
@@ -67,6 +69,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     return (
       applicantsProfiles && (
         <Swiper
+          ref={swiperRef}
           cards={applicantsProfiles.userProfiles}
           renderCard={renderCard}
           containerStyle={{
@@ -98,15 +101,10 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     );
   }, [applicantsProfiles]);
 
-  if (!applicantsProfiles || isLoading)
-    return <LoadingBackdrop />;
+  if (!applicantsProfiles || isLoading) return <LoadingBackdrop />;
 
-  if(applicantsProfiles.userProfiles.length === 0) {
-    return (
-      <NoApplicationsPage
-      turnBack={close}
-      />
-    )
+  if (applicantsProfiles.userProfiles.length === 0) {
+    return <NoApplicationsPage turnBack={close} />;
   }
 
   return (
@@ -118,8 +116,13 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
       />
       {memoizedSwiper}
       <ConfirmationButtons
-        onConfirm={() => console.log("confirm")}
-        onCancel={() => console.log("cancel")}
+        lightTheme
+        onConfirm={() => {
+          swiperRef?.current?.swipeRight();
+        }}
+        onCancel={() => {
+          swiperRef?.current?.swipeLeft();
+        }}
         swipingDistance={swipingDistance}
       />
     </>
