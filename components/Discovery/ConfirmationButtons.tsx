@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "../Themes/theme";
-import { BlurView } from "expo-blur";
 
 type ConfirmationButtonsProps = {
   onConfirm: () => void;
@@ -21,22 +20,16 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
 
   return (
     <View style={styles.buttonsContainer}>
-      <TouchableOpacity
-        style={{
-          borderRadius: 400,
-          height: 71,
-          width: 71,
-          overflow: "hidden",
-        }}
-        onPress={onCancel}
-      >
+      <TouchableOpacity onPress={onCancel}>
         <View
           style={{
             height: 71,
             width: 71,
             alignItems: "center",
+            borderRadius: 400,
+            marginTop: 0.2,
             justifyContent: "center",
-            backgroundColor: `rgb(${opacity}, 0, 0)`,
+            backgroundColor: `rgb(${opacity + 20}, 0, 0)`,
           }}
         >
           <FontAwesome6
@@ -45,23 +38,27 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             color={`rgb(${255 - opacity}, 0, 0)`}
           />
         </View>
+        <View
+          style={{
+            height: 71,
+            width: 71,
+            position: "absolute",
+            borderRadius: 400,
+            zIndex: -1,
+            backgroundColor: theme.colors.gray,
+            marginLeft: 0.6,
+          }}
+        />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          borderRadius: 400,
-          height: 71,
-          width: 71,
-          overflow: "hidden",
-        }}
-        onPress={onConfirm}
-      >
+      <TouchableOpacity onPress={onConfirm}>
         <View
           style={{
             height: 71,
             width: 71,
             alignItems: "center",
+            borderRadius: 400,
             justifyContent: "center",
-            backgroundColor: `rgb(0, ${-opacity}, 0)`,
+            backgroundColor: `rgb(0, ${-opacity + 20}, 0)`,
           }}
         >
           <FontAwesome6
@@ -70,6 +67,17 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             color={`rgb(0, ${255 + opacity}, 0)`}
           />
         </View>
+        <View
+          style={{
+            height: 71,
+            width: 71,
+            position: "absolute",
+            borderRadius: 400,
+            zIndex: -1,
+            backgroundColor: theme.colors.gray,
+            marginLeft: 0.6,
+          }}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -83,6 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     bottom: "7%",
     alignSelf: "center",
+    paddingHorizontal: 20,
     gap: 30,
   },
 });

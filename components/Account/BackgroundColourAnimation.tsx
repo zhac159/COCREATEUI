@@ -71,7 +71,7 @@ const BackgroundColourAnimation: FC<BackgroundColourAnimationProps> = ({
         }}
       >
         <Animated.Image
-          source={require("../../assets/images/blue.png")}
+          source={require("../../assets/images/backgroundColurs/blue.png")}
           style={{
             width: 700,
             height: 1000,
@@ -81,7 +81,7 @@ const BackgroundColourAnimation: FC<BackgroundColourAnimationProps> = ({
           }}
         />
         <Animated.Image
-          source={require("../../assets/images/cyan.png")}
+          source={require("../../assets/images/backgroundColurs/cyan.png")}
           style={{
             width: 800,
             height: 1100,
