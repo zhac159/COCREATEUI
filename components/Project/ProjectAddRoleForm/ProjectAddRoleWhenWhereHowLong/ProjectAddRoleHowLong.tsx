@@ -11,8 +11,8 @@ import {
 import DurationPicker from "@/components/Common/Forms/DurationPicker";
 
 type ProjectAddRoleHowLongProps = {
-  effort: number;
-  setEffort: Dispatch<SetStateAction<number>>;
+  effort: string;
+  setEffort: Dispatch<SetStateAction<string>>;
   hours: boolean;
   setHours: Dispatch<SetStateAction<boolean>>;
   skill: Skills | undefined;

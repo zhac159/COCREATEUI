@@ -74,11 +74,12 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
   const [endDate, setEndDate] = useState<Date>(
     editRole?.endDate ? new Date(editRole?.endDate) : new Date()
   );
-  const [effort, setEffort] = useState<number>(editRole?.effort || 0);
+  const [effort, setEffort] = useState<string>("1");
+  
   const [hours, setHours] = useState<boolean>(
     editRole?.effort ? editRole?.effort > 23 : false
   );
-  const [cost, setCost] = useState<number>(editRole?.cost || 0);
+  const [cost, setCost] = useState<number>();
   const [longitude, setLongitude] = useState<number>(editRole?.longitude || 0);
   const [latitude, setLatitude] = useState<number>(editRole?.latitude || 0);
   const [address, setAddress] = useState<string>(editRole?.address || "");
@@ -178,7 +179,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
               keywords: keywords.split(",").map((keyword) => keyword.trim()),
               startDate: startDate.toISOString(),
               endDate: endDate.toISOString(),
-              effort: effort * (hours ? 1 : 24),
+              effort: Number(effort) * (hours ? 1 : 24),
               cost: cost,
               longitude: longitude,
               latitude: latitude,
@@ -209,7 +210,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
               keywords: keywords.split(",").map((keyword) => keyword.trim()),
               startDate: startDate.toISOString(),
               endDate: endDate.toISOString(),
-              effort: effort * (hours ? 1 : 24),
+              effort: Number(effort) * (hours ? 1 : 24),
               cost: cost,
               longitude: longitude,
               latitude: latitude,
@@ -256,7 +257,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
         keywords: keywords.split(",").map((keyword) => keyword.trim()),
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        effort: effort * (hours ? 1 : 24),
+        effort: Number(effort) * (hours ? 1 : 24),
         cost: cost,
         longitude: longitude,
         latitude: latitude,

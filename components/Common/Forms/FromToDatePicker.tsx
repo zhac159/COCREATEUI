@@ -1,12 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme } from "../../Themes/theme";
+import DatePicker from "react-native-date-picker";
 
 type FromToDatePickerProps = {
   startDate: Date;
@@ -23,25 +18,43 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [fromDate, setFromDate] = useState<string>("");
-  const [toDate, setToDate] = useState<string>("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [startDateEdit, setStartDateEdit] = useState(true);
 
-  const handleDateChange = (
-    value: string,
-    setDate: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    // Allow only digits and auto-format as MM/DD/YYYY
-    const formattedValue = value
-      .replace(/^(\d{2})(\d{2})(\d{4})$/, "$1/$2/$3")
-      .replace(/[^0-9]/g, "")
-      .substring(0, 8);
+  const showDatePicker = (isStartDate: boolean) => {
+    setDatePickerVisibility(true);
+    setStartDateEdit(isStartDate);
+  };
 
-    setDate(formattedValue);
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    startDateEdit ? setStartDate(date) : setEndDate(date);
+    hideDatePicker();
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.datePicker}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: "5%",
+        alignSelf: "center",
+        height: "50%",
+        justifyContent: "space-between",
+        gap: 10,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 11,
+          width: "50%",
+        }}
+      >
         <Text
           style={{
             ...theme.customFonts.primary.medium,
@@ -51,15 +64,33 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
         >
           From
         </Text>
-        <TextInput
-          style={{ width: "100%" }}
-          value={fromDate}
-          onChangeText={(value) => handleDateChange(value, setFromDate)}
-          placeholder="MM/DD/YYYY"
-          keyboardType="numeric"
-        />
+        <TouchableOpacity
+          onPress={() => showDatePicker(true)}
+          style={{
+            ...theme.customFonts.primary.medium,
+            backgroundColor: theme.colors.lightGray,
+            borderRadius: 7,
+            padding: 10,
+            width: "70%",
+          }}
+        >
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+            }}
+          >
+            {startDate.toLocaleDateString()}
+          </Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.datePicker}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 11,
+          width: "50%",
+        }}
+      >
         <Text
           style={{
             ...theme.customFonts.primary.medium,
@@ -69,28 +100,37 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
         >
           To
         </Text>
-        <TextInput
-          value={toDate}
-          onChangeText={(value) => handleDateChange(value, setToDate)}
-          placeholder="MM/DD/YYYY"
-          keyboardType="numeric"
-        />
+        <TouchableOpacity
+          onPress={() => showDatePicker(false)}
+          style={{
+            ...theme.customFonts.primary.medium,
+            width: "70%",
+            backgroundColor: theme.colors.lightGray,
+            borderRadius: 7,
+            padding: 10,
+          }}
+        >
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+            }}
+          >
+            {endDate.toLocaleDateString()}
+          </Text>
+        </TouchableOpacity>
       </View>
+      <DatePicker
+        date={startDateEdit ? startDate : endDate}
+        mode="date"
+        open={isDatePickerVisible}
+        modal
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
     </View>
   );
 };
 
 export default FromToDatePicker;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: "5%",
-    justifyContent: "space-between",
-  },
-  datePicker: {
-    flex: 1,
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});

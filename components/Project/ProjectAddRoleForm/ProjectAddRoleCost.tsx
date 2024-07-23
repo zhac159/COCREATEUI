@@ -1,11 +1,12 @@
+import Coins from "@/components/Common/Coins";
 import { useCoinsValue } from "@/components/RecoilStates/profileState";
 import { useTheme } from "@/components/Themes/theme";
 import { Dispatch, FC, SetStateAction } from "react";
 import { Text, StyleSheet, TextInput, View } from "react-native";
 
 type ProjectAddRoleCostProps = {
-  cost: number;
-  setCost: Dispatch<SetStateAction<number>>;
+  cost?: number;
+  setCost: Dispatch<SetStateAction<number | undefined>>;
 };
 
 const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
@@ -51,14 +52,7 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
         >
           Credits Available:
         </Text>
-        <Text
-          style={{
-            ...theme.customFonts.primary.medium,
-            fontSize: 22,
-          }}
-        >
-          {availableCoins}
-        </Text>
+        <Coins coins={availableCoins || 0} showShadow={false} />
       </View>
       <View
         style={{
@@ -81,7 +75,7 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
         >
           Offer:
         </Text>
-        <TextInput
+        {/* <TextInput
           style={{
             ...theme.customFonts.primary.medium,
             color: theme.colors.white,
@@ -89,8 +83,15 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
             minWidth: "5%",
           }}
           keyboardType="numeric"
-          value={cost.toString()}
+          value={cost ? cost.toString() : ""}
           onChangeText={(text) => setCost(Number(text))}
+        /> */}
+        <Coins
+          coins={cost || 0}
+          showShadow={false}
+          setCoins={(coins: number) => {
+            setCost(coins);
+          }}
         />
       </View>
     </>

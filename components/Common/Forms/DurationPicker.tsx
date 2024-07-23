@@ -8,8 +8,8 @@ import {
 import { useTheme } from "../../Themes/theme";
 
 type DurationPicker = {
-  duration: number;
-  setDuration: Dispatch<SetStateAction<number>>;
+  duration: string;
+  setDuration: Dispatch<SetStateAction<string>>;
   hours: boolean;
   setHours: Dispatch<SetStateAction<boolean>>;
 };
@@ -31,15 +31,16 @@ const DurationPicker: FC<DurationPicker> = ({
       }}
     >
       <TextInput
+        inputMode="numeric"
         style={{
           ...theme.customFonts.primary.medium,
           ...styles.formTextInput,
           color: theme.colors.black,
-          backgroundColor: "white",
+          backgroundColor: theme.colors.lightGray
         }}
-        value={hours ? (duration).toString() : (duration / 24).toString()}
+        value={duration}
         onChangeText={(text) =>
-          setDuration(hours ? Number(text) : Number(text) * 24)
+          setDuration(text)
         }
       />
       <View

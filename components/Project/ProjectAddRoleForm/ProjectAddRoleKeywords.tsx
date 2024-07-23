@@ -1,7 +1,13 @@
-import { Skills, getSkillGroupColor, skillGroupMap } from "@/components/Account/Skills/skillHelper";
+import {
+  Skills,
+  getSkillGroupColor,
+  skillGroupMap,
+} from "@/components/Account/Skills/skillHelper";
+import StyledTextField from "@/components/Common/StyledTextField";
 import { useTheme } from "@/components/Themes/theme";
 import { Dispatch, FC, SetStateAction } from "react";
-import { Text, StyleSheet, TextInput } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Text, StyleSheet, TextInput, View } from "react-native";
 
 type ProjectAddRoleKeywordsProps = {
   keywords: string;
@@ -15,12 +21,20 @@ const ProjectAddRoleKeywords: FC<ProjectAddRoleKeywordsProps> = ({
   skill,
 }) => {
   const theme = useTheme();
-
+  const { t } = useTranslation();
   const skillGroupType = skillGroupMap[skill || 0];
-  const color = skill === undefined ? theme.colors.lightestGray:getSkillGroupColor(skillGroupType, 0.12);
+  const color =
+    skill === undefined
+      ? theme.colors.lightestGray
+      : getSkillGroupColor(skillGroupType, 0.12);
 
   return (
-    <>
+    <View
+      style={{
+        gap: 50,
+        marginBottom: 50,
+      }}
+    >
       <Text
         style={{
           ...theme.customFonts.secondary.large,
@@ -28,35 +42,31 @@ const ProjectAddRoleKeywords: FC<ProjectAddRoleKeywordsProps> = ({
           fontSize: 35,
         }}
       >
-        Add Keywords
+        {t("projects.add-role.keywords-title")}
       </Text>
-      <Text
-        style={{
-          ...theme.customFonts.primary.medium,
-          fontWeight: "500",
-          fontSize: 14,
+      <StyledTextField
+        textInputProps={{
+          style: {
+            ...theme.customFonts.primary.medium,
+            ...styles.titleTextInput,
+            color: theme.colors.black,
+            backgroundColor: color,
+            textAlignVertical: "top",
+          },
+          numberOfLines: 14,
+          multiline: true,
+          value: keywords,
+          onChangeText: (text) => {
+            if (text.length <= 30) {
+              setKeywords(text);
+            }
+          },
+          placeholder: t("projects.add-role.keywords-placeholder"),
         }}
-      >
-        What is Your Project About
-      </Text>
-      <TextInput
-        style={{
-          ...theme.customFonts.primary.medium,
-          ...styles.titleTextInput,
-          color: theme.colors.black,
-          backgroundColor: color,
-        }}
-        numberOfLines={14}
-        multiline={true}
-        value={keywords}
-        onChangeText={(text) => {
-          if (text.length <= 30) {
-            setKeywords(text);
-          }
-        }}
-        placeholder="Add, Keywords, Separated By, Commas"
+        editable={true}
+        tooltip={t("projects.add-role.keywords-tooltip")}
       />
-    </>
+    </View>
   );
 };
 

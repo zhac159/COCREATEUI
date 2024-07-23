@@ -3,14 +3,21 @@ import { useTheme } from "../Themes/theme";
 import { Text, View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
+import StyledTextField from "./StyledTextField";
 
 type CoinsProps = {
-  coins: number;
+  coins?: number;
   viewStyle?: StyleProp<ViewStyle>;
   showShadow?: boolean;
+  setCoins?: (coins: number) => void;
 };
 
-const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
+const Coins: FC<CoinsProps> = ({
+  coins,
+  viewStyle,
+  showShadow = true,
+  setCoins,
+}) => {
   const theme = useTheme();
   return (
     <View style={viewStyle}>
@@ -27,15 +34,31 @@ const Coins: FC<CoinsProps> = ({ coins, viewStyle, showShadow = true }) => {
           color={theme.colors.black}
           regular={true}
         />
-        <Text
-          style={{
-            ...theme.customFonts.primary.large,
-            ...styles.text,
-            color: theme.colors.black,
-          }}
-        >
-          {coins}
-        </Text>
+        {setCoins ? (
+          <StyledTextField
+            editable={true}
+            value={coins ? coins.toString() : ""}
+            textInputProps={{
+              keyboardType: "numeric",
+              onChangeText: (text) => setCoins(Number(text)),
+              style: {
+                ...theme.customFonts.primary.large,
+                ...styles.text,
+                color: theme.colors.black,
+              },
+            }}
+          />
+        ) : (
+          <Text
+            style={{
+              ...theme.customFonts.primary.large,
+              ...styles.text,
+              color: theme.colors.black,
+            }}
+          >
+            {coins}
+          </Text>
+        )}
       </View>
       {showShadow && (
         <View
@@ -107,7 +130,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "bold",
-    letterSpacing: 1.7,
     fontSize: 30,
     textAlign: "center",
   },

@@ -11,8 +11,8 @@ type ProjectAddRoleWhenWhereHowLongProps = {
   setStartDate: Dispatch<SetStateAction<Date>>;
   endDate: Date;
   setEndDate: Dispatch<SetStateAction<Date>>;
-  effort: number;
-  setEffort: Dispatch<SetStateAction<number>>;
+  effort: string;
+  setEffort: Dispatch<SetStateAction<string>>;
   hours: boolean;
   setHours: Dispatch<SetStateAction<boolean>>;
   longitude: number;
