@@ -23,7 +23,6 @@ const CompleteProjectUploadPhoto: FC<CompleteProjectUploadPhotoProps> = ({
           ...theme.customFonts.secondary.large,
           fontWeight: "400",
           fontSize: 35,
-          marginBottom: 10,
         }}
       >
         Upload Project Images
@@ -33,7 +32,7 @@ const CompleteProjectUploadPhoto: FC<CompleteProjectUploadPhotoProps> = ({
           ...theme.customFonts.primary.small,
           fontWeight: "500",
           fontSize: 14,
-          marginBottom: 50,
+          paddingVertical: "2%",
         }}
       >
         Upload up to two pictures and videos of your project. This would ideally be the finished product, but could also just be progress evidence or BTS from the production.

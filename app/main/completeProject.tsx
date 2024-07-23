@@ -13,6 +13,7 @@ import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
 import { usePostApiProjectComplete } from "@/common/api/endpoints/cocreateApi";
 import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelper";
+import StyledButton from "@/components/Common/StyledButton";
 
 export default function CompleteProject() {
   const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
@@ -107,7 +108,16 @@ export default function CompleteProject() {
           <CompletedProjectConfirmation project={project} />
         )}
       </View>
-      <NextButton
+      {/* <NextButton
+        text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
+        icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
+        onPress={() => {
+          formStep === lastFormStepIndex
+            ? handleCompleteProject()
+            : setFormStep((prev) => prev + 1);
+        }}
+      /> */}
+      <StyledButton
         text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
         icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
         onPress={() => {
@@ -123,9 +133,9 @@ export default function CompleteProject() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
-    paddingBottom: 30,
-    paddingTop: "20%",
+    // justifyContent: "space-between",
+    paddingBottom: "20%",
+    paddingTop: "5%",
     paddingHorizontal: 29,
   },
   title: {

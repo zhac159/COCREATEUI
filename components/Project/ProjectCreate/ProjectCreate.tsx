@@ -184,6 +184,9 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel, setEditMode }) => {
         <StyledButton
           text={t("button.next")}
           icon="arrow-right"
+          style={{
+            marginTop: "auto",
+          }}
           onPress={() => {
             showImages ? handleCreate() : setShowImages(true);
           }}
@@ -220,5 +223,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     paddingVertical: "10%",
     gap: 25,
+    justifyContent: "space-between",
   },
 });

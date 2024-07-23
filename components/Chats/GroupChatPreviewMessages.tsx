@@ -27,11 +27,19 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
   }
 
   return (
+    <View
+    style={{
+      alignSelf: userId === message.senderId ? "flex-end" : "flex-start",
+      overflow: "hidden",
+      ...styles.container,
+    }}
+    >
     <BlurView
-      intensity={40}      
+      intensity={80}
+      tint="regular"
       style={{
-        ...styles.container,
-        alignSelf: userId === message.senderId ? "flex-end" : "flex-start",
+        padding: 10,
+        gap: 4,
       }}
     >
       <Text
@@ -73,6 +81,7 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
         </Text>
       </View>
     </BlurView>
+    </View>
   );
 };
 
@@ -81,9 +90,7 @@ export default GroupChatPreviewMessages;
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
-    backgroundColor: "rgba(230, 230, 230, 0.8)",
+    backgroundColor: "transparent",
     maxWidth: "80%",
-    padding: 10,
-    gap: 4,
   },
 });

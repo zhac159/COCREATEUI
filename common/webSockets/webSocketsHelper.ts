@@ -9,7 +9,7 @@ export async function fetchTokenAndStartConnection() {
     throw new Error("Token not found");
   }
   const connection = new HubConnectionBuilder()
-    .withUrl("http://192.168.1.92:5000/chatHub", {
+    .withUrl("https://wecreatex.azurewebsites.net/chatHub", {
       accessTokenFactory: () => token,
     })
     .withAutomaticReconnect()
