@@ -110,8 +110,10 @@ const CompletedProjectViewer: FC<CompletedProjectViewerProps> = ({
           Team
         </Text>
         {completedProject.projectRoles.map((role) => (
-          <View>
-            <TeamMemberPreview key={role.id} otherRole={role} />
+          <View
+            key={role.id}
+          >
+            <TeamMemberPreview  otherRole={role} />
             <Coins coins={role.cost} showShadow={false} />
             <Divider
             style={{

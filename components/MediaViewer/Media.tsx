@@ -37,7 +37,7 @@ const Media: React.FC<MediaProps> = ({
     router.push("/main/portofolioModal");
   };
 
-  if(!onPress) onPress = () => handleSelectMedia(uri || "");
+  if (!onPress) onPress = () => handleSelectMedia(uri || "");
 
   return (
     <>
@@ -104,16 +104,26 @@ const Media: React.FC<MediaProps> = ({
           </View>
         ) : (
           <View style={[style, { overflow: "hidden" }]}>
-            <Image
-              source={{
-                uri: uri || "https://via.placeholder.com/150",
-              }}
-              contentFit="cover"
-              style={{
-                height: "100%",
-                width: "100%",
-              }}
-            />
+            {uri ? (
+              <Image
+                source={{
+                  uri: uri,
+                }}
+                contentFit="cover"
+                style={{
+                  height: "100%",
+                  width: "100%",
+                }}
+              />
+            ) : (
+              <View
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  backgroundColor: theme.colors.lightGray,
+                }}
+              />
+            )}
             {editMode ? (
               <View
                 style={{

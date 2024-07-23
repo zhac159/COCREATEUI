@@ -92,11 +92,11 @@ const AssetTab = () => {
           />
         )}
       </View> */}
-      <Text
+      {/* <Text
         style={{
           ...theme.customFonts.primary.large,
         }}
-      >Comin Soon</Text>
+      >Comin Soon</Text> */}
     </>
   );
 };
