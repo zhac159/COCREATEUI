@@ -104,6 +104,8 @@ const Projects: FC<ProjectsProps> = ({
       />
     );
 
+  if (projects.length === 0) return <View></View>;
+
   return (
     <View>
       <Carousel
