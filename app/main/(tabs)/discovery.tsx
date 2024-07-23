@@ -46,8 +46,8 @@ export default function Discovery() {
     useCallback(() => {
       getMatchingProjects({
         data: {
-          distance: discoverFilters.maxDistance,
-          effort: discoverFilters.maxWorkCommitment,
+          distance: 10000,
+          effort: 1000000,
         },
       });
     }, [])

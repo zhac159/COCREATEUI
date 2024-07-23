@@ -48,6 +48,7 @@ export default function Account() {
       <BackgroundColourAnimation />
       <Tabs.Container
         headerContainerStyle={{ backgroundColor: "transparent" }}
+        snapThreshold={0.5}
         renderHeader={() => (
           <AccountMainInfo
             coins={currentUser.coins || 0}
@@ -55,19 +56,26 @@ export default function Account() {
             rating={currentUser.rating}
           />
         )}
-        renderTabBar={() => (
+        onTabChange={(data) => console.log(data)}
+        renderTabBar={(state) => (
           <TabButtons
             tabs={tabsNames}
             selectedTab={index}
             setSelectedTab={(index) => {
               collapsibleRef.current?.setIndex(index);
               setIndex(index);
+              console.log(state);
             }}
             isSticky={isSticky}
           />
         )}
+        pagerProps={
+          {
+            scrollEnabled: false,
+          }
+        }
+        onIndexChange={(index) => console.log(index)}
         ref={collapsibleRef}
-        pagerProps={{ scrollEnabled: false }}
       >
         <Tabs.Tab name="skills">
           <Tabs.ScrollView
