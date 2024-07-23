@@ -72,11 +72,11 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
                 name={matchingProject?.project?.name || "N/A"}
                 description={matchingProject?.project?.description || "N/A"}
               />
-              <Media
+              {/* <Media
                 onPress={() => console.log("pressed")}
                 uri={matchingProject?.project?.medias?.[1].uri || ""}
                 style={styles.projectImages}
-              />
+              /> */}
               <ProjectManagerPreview
                 userInfo={matchingProject?.project?.projectManager}
               />

@@ -3,18 +3,22 @@ import {
   usePostApiSeenMatches,
   usePostApiUserMatchingProjects,
 } from "@/common/api/endpoints/cocreateApi";
-import { ProjectWithMatchingRolesListDTO } from "@/common/api/model";
+import {
+  ProjectWithMatchingRoleDTO,
+  ProjectWithMatchingRolesListDTO,
+} from "@/common/api/model";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
 import NoMatchingProjectsPage from "@/components/Discovery/NoMatchingProjectsPage";
 import { useDiscoveryFiltersValue } from "@/components/RecoilStates/discoveryFilters";
 import { useFocusEffect } from "expo-router";
-import React, { useCallback, useState } from "react";
+import React, { LegacyRef, useCallback, useRef, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
 export default function Discovery() {
+  const swiperRef = useRef<Swiper<ProjectWithMatchingRoleDTO>>(null);
 
   const discoverFilters = useDiscoveryFiltersValue();
 
@@ -62,6 +66,7 @@ export default function Discovery() {
   return (
     <>
       <Swiper
+        ref={swiperRef}
         cards={matchingProjects.projectWithMatchingRoles}
         renderCard={(matchingProject) => (
           <MatchingProject matchingProject={matchingProject} />
@@ -74,25 +79,25 @@ export default function Discovery() {
           setSwipingDistance(x);
         }}
         onSwipedAborted={() => setSwipingDistance(0)}
-        onSwiped={(index) => {
-          setSwipingDistance(0),
-            seenMatchingProject({
-              data: {
-                projectRoleId:
-                  matchingProjects.projectWithMatchingRoles![index]
-                    .projectRoleId,
-              },
-            });
-        }}
-        onSwipedRight={(index) => {
-          createEnquiry({
-            data: {
-              projectRoleId:
-                matchingProjects.projectWithMatchingRoles![index].projectRoleId,
-              enquiryMessage: "Hello, I am interested in your project",
-            },
-          });
-        }}
+        // onSwiped={(index) => {
+        //   setSwipingDistance(0),
+        //     seenMatchingProject({
+        //       data: {
+        //         projectRoleId:
+        //           matchingProjects.projectWithMatchingRoles![index]
+        //             .projectRoleId,
+        //       },
+        //     });
+        // }}
+        // onSwipedRight={(index) => {
+        //   createEnquiry({
+        //     data: {
+        //       projectRoleId:
+        //         matchingProjects.projectWithMatchingRoles![index].projectRoleId,
+        //       enquiryMessage: "Hello, I am interested in your project",
+        //     },
+        //   });
+        // }}
         verticalSwipe={false}
         cardVerticalMargin={0}
         cardHorizontalMargin={0}
@@ -101,8 +106,12 @@ export default function Discovery() {
         disableBottomSwipe
       />
       <ConfirmationButtons
-        onConfirm={() => console.log("confirm")}
-        onCancel={() => console.log("cancel")}
+        onConfirm={() => {
+          swiperRef?.current?.swipeRight();
+        }}
+        onCancel={() => {
+          swiperRef?.current?.swipeLeft();
+        }}
         swipingDistance={swipingDistance}
       />
     </>

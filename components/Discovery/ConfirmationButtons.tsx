@@ -3,7 +3,6 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "../Themes/theme";
 import { BlurView } from "expo-blur";
-import { tabBarHeight } from "../Account/Common/getWindowDimensions";
 
 type ConfirmationButtonsProps = {
   onConfirm: () => void;
@@ -18,7 +17,7 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
 }) => {
   const theme = useTheme();
 
-  const opacity = swipingDistance / 5 / 100 + 0.33;
+  const opacity = (swipingDistance / 5 / 100) * 255;
 
   return (
     <View style={styles.buttonsContainer}>
@@ -29,28 +28,23 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
           width: 71,
           overflow: "hidden",
         }}
+        onPress={onCancel}
       >
-        <BlurView
+        <View
           style={{
             height: 71,
             width: 71,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba( 251, 0, 0," + (-opacity + 0.7) + ")",
+            backgroundColor: `rgb(${opacity}, 0, 0)`,
           }}
-          intensity={10}
         >
-          <View
-            style={{
-              position: "absolute",
-              paddingTop: 11,
-              paddingRight: 1,
-            }}
-          >
-            <FontAwesome6 name="xmark" size={38} color={theme.colors.black} />
-          </View>
-          <FontAwesome6 name="xmark" size={40} color={theme.colors.red} />
-        </BlurView>
+          <FontAwesome6
+            name="xmark"
+            size={40}
+            color={`rgb(${255 - opacity}, 0, 0)`}
+          />
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={{
@@ -59,28 +53,23 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
           width: 71,
           overflow: "hidden",
         }}
+        onPress={onConfirm}
       >
-        <BlurView
+        <View
           style={{
             height: 71,
             width: 71,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba(56, 250, 152, " + opacity + ")",
+            backgroundColor: `rgb(0, ${-opacity}, 0)`,
           }}
-          intensity={30}
         >
-          <View
-            style={{
-              position: "absolute",
-              paddingTop: 11,
-              paddingRight: 1,
-            }}
-          >
-            <FontAwesome6 name="check" size={38} color={theme.colors.black} />
-          </View>
-          <FontAwesome6 name="check" size={40} color={theme.colors.green} />
-        </BlurView>
+          <FontAwesome6
+            name="check"
+            size={40}
+            color={`rgb(0, ${255 + opacity}, 0)`}
+          />
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -92,7 +81,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: tabBarHeight - 40,
+    bottom: "7%",
     alignSelf: "center",
     gap: 30,
   },
