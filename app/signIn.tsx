@@ -27,9 +27,10 @@ export default function SignIn() {
   const { mutate, isLoading, error } = usePostApiLogin({
     mutation: {
       onSuccess: async (data) => {
-        setCurrentUser(data.user!);
+        setCurrentUser(data.user);
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/account");
+        
       },
     },
   });

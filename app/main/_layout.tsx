@@ -1,4 +1,4 @@
-import { Stack, router, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
 import {
@@ -180,6 +180,14 @@ export default function HelperScreenNav() {
         />
         <JsStack.Screen
           name="assetOffer"
+          options={{
+            ...TransitionPresets.ModalPresentationIOS,
+            presentation: "modal",
+            gestureEnabled: true,
+          }}
+        />
+        <JsStack.Screen
+          name="discoveryFiltersModal"
           options={{
             ...TransitionPresets.ModalPresentationIOS,
             presentation: "modal",

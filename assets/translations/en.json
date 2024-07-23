@@ -16,6 +16,26 @@
         "8": "I understand that I might be approached for an interview.",
         "9": "I have read the Information Sheet, the Terms and Conditions and the Consent Form and I accept the terms and conditions and consent to take part in the research"
       }
+    },
+    "survey": {
+      "markers":{
+        "1": "Not at all true",
+        "4": "Somewhat true",
+        "7": "Very true"
+      },
+      "title": "Please rate 10 research statements (max 1 min) and collect your credits after.",
+      "opinions":{
+        "1": "I enjoy filmmaking and/or acting very much.",
+        "2": "Filmmaking and/or acting is fun to do.",
+        "3": "I would describe filmmaking and/or acting as very interesting.",
+        "4": "While I am making films and/or acting, I am thinking about how much I enjoy it.",
+        "5": "I think I am quite good at filmmaking and/or acting.",
+        "6": "I am satisfied with my creative performance.",
+        "7": "I believe filmmaking and/or acting is valuable to me.",
+        "8": "I think filmmaking and/or acting are important.",
+        "9": "I put a lot of effort into filmmaking and/or acting.",
+        "10": "It is important to me to do well in filmmaking and/or acting."
+      }
     }
   },
   "discovery": {

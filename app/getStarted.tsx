@@ -13,10 +13,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function GetStarted() {
   const { form } = useFormWithStep([
-    <SurveyForm />,
-    <TermnsAndConditionsForm />,
     <NameAndPasswordForm />,
     <ConfirmEmailTokenForm />,
+    <TermnsAndConditionsForm />,
+    <SurveyForm />,
     <LocationForm />,
     <AddSkillForm />,
     <AddPortofolioForm />,

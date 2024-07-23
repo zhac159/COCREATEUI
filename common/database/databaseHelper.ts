@@ -3,10 +3,10 @@ import {
   decryptMessageAES,
   getDatabasKey,
 } from "../encryption/encryptionHelper";
-import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import { MediaType } from "@/components/Account/Common/Media/MediaType";
 import MessageReaction from "@/components/Common/Messages/MessageReaction";
 import ChatType from "../chat/chatType";
+import { SQLiteDatabase } from "expo-sqlite";
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
 

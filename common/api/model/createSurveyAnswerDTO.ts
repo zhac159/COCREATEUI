@@ -5,7 +5,10 @@
  * OpenAPI spec version: v1
  */
 
-export interface UserGetProfilesDTO {
+export interface CreateSurveyAnswerDTO {
   /** @nullable */
-  userIds?: number[] | null;
+  answer?: string | null;
+  questionId?: number;
+  surveyId?: number;
+  userId?: number;
 }

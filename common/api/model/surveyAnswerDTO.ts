@@ -5,8 +5,11 @@
  * OpenAPI spec version: v1
  */
 
-export interface SeenMatchesDTO {
+export interface SurveyAnswerDTO {
+  /** @nullable */
+  answer?: string | null;
   id?: number;
-  projectRoleId?: number;
+  questionId?: number;
+  surveyId?: number;
   userId?: number;
 }

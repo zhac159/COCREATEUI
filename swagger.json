@@ -1315,6 +1315,54 @@
         }
       }
     },
+    "/api/SurveyAnswer/create-list": {
+      "post": {
+        "tags": [
+          "SurveyAnswer"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSurveyAnswerListDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSurveyAnswerListDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSurveyAnswerListDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyAnswerListDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyAnswerListDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyAnswerListDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/User/{userId}": {
       "get": {
         "tags": [
@@ -2310,6 +2358,41 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "CreateSurveyAnswerDTO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "surveyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "answer": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSurveyAnswerListDTO": {
+        "type": "object",
+        "properties": {
+          "surveyAnswers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateSurveyAnswerDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "Emoji": {
         "enum": [
@@ -3744,6 +3827,61 @@
             "items": {
               "type": "string"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SurveyAnswerDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "surveyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "answer": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SurveyAnswerListDTO": {
+        "type": "object",
+        "properties": {
+          "surveyAnswers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SurveyAnswerDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SurveyAnswerListDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SurveyAnswerListDTO"
+          },
+          "error": {
+            "type": "string",
             "nullable": true
           }
         },

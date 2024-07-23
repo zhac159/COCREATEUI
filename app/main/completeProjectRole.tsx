@@ -5,7 +5,10 @@ import { View, Text } from "react-native-animatable";
 import { useMemo, useState } from "react";
 import { ProjectRoleCompleteDTO, ReviewCreateDTO } from "@/common/api/model";
 import CompleteProjectReviewAssignee from "@/components/CompleteProject/CompletedProjectReviewAssignee";
-import { useAssignedProjectsState, useUserIdValue } from "@/components/RecoilStates/profileState";
+import {
+  useAssignedProjectsState,
+  useUserIdValue,
+} from "@/components/RecoilStates/profileState";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelper";
@@ -15,15 +18,14 @@ import NextButton from "@/components/Project/Common/NextButton";
 import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfirmation";
 
 export default function CompleteProjectRole() {
-
   const params = useLocalSearchParams();
   const projectId = parseInt(params.projectId as string, 10);
   const userId = useUserIdValue();
-  
+
   const router = useRouter();
 
   const [formStep, setFormStep] = useState(0);
-  
+
   const [assignedProjects, setAssignedProjects] = useAssignedProjectsState();
   const assignedProject = useMemo(
     () =>
@@ -33,7 +35,9 @@ export default function CompleteProjectRole() {
     [assignedProjects]
   );
 
-  const {upload, isLoading: isUploadingImages} = usePrepareAndUpload(EntityType.EXPERIENCE);
+  const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
+    EntityType.EXPERIENCE
+  );
 
   const [uris, setUris] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");
@@ -55,9 +59,11 @@ export default function CompleteProjectRole() {
     const urls = await upload(uris);
     const createMedias = getMediaCreateDTOs(urls);
 
-    const assignedRole = assignedProject!.projectRoles!.find((pr) => pr.assignee?.userId === userId);
+    const assignedRole = assignedProject!.projectRoles!.find(
+      (pr) => pr.assignee?.userId === userId
+    );
 
-    if(!assignedRole) return;
+    if (!assignedRole) return;
 
     const projectRoleCompleteDTO: ProjectRoleCompleteDTO = {
       id: assignedRole.id,

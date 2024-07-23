@@ -4,10 +4,10 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { UserProfilesDTO } from './userProfilesDTO';
+import type { SurveyAnswerListDTO } from './surveyAnswerListDTO';
 
-export interface UserProfilesDTOAPIResponse {
-  data?: UserProfilesDTO;
+export interface SurveyAnswerListDTOAPIResponse {
+  data?: SurveyAnswerListDTO;
   /** @nullable */
   error?: string | null;
   success?: boolean;

@@ -17,8 +17,8 @@ export default function GroupChatDetails() {
     groupChatId: string;
   }>();
 
-  const chatMembers: ChatMember[] = JSON.parse(members);
-  const intGroupChatId = parseInt(groupChatId);
+  const chatMembers: ChatMember[] = JSON.parse(members!);
+  const intGroupChatId = parseInt(groupChatId!);
 
   return (
     <ScrollView

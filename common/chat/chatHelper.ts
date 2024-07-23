@@ -25,7 +25,6 @@ import {
   getSymmetricAesKey,
   decryptMessageAES,
 } from "../encryption/encryptionHelper";
-import { SQLiteDatabase } from "expo-sqlite/build/next/SQLiteDatabase";
 import * as SecureStore from "expo-secure-store";
 import { ChatMember, ChatTypeIdPair } from "@/components/Chats/chatHelper";
 import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
@@ -36,6 +35,7 @@ import MessageReaction from "@/components/Common/Messages/MessageReaction";
 import { SetterOrUpdater } from "recoil";
 import ChatType from "./chatType";
 import UserInformationAndSkill from "@/components/Common/userInformationAndSkill";
+import { SQLiteDatabase } from "expo-sqlite";
 
 export const chatFetchLimit = 20;
 

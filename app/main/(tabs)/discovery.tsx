@@ -8,12 +8,16 @@ import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
 import NoMatchingProjectsPage from "@/components/Discovery/NoMatchingProjectsPage";
+import { useDiscoveryFiltersValue } from "@/components/RecoilStates/discoveryFilters";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
 export default function Discovery() {
+
+  const discoverFilters = useDiscoveryFiltersValue();
+
   const [matchingProjects, setMatchingProjects] =
     useState<ProjectWithMatchingRolesListDTO>();
 
@@ -42,8 +46,8 @@ export default function Discovery() {
     useCallback(() => {
       getMatchingProjects({
         data: {
-          distance: 100,
-          effort: 1000000,
+          distance: discoverFilters.maxDistance,
+          effort: discoverFilters.maxWorkCommitment,
         },
       });
     }, [])
