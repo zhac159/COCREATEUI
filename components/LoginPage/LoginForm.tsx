@@ -11,6 +11,7 @@ import {
 import { UserLoginDTO } from "@/common/api/model";
 import * as SecureStore from "expo-secure-store";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
+import { generateDatabaseKey } from "@/common/encryption/encryptionHelper";
 
 const LoginForm = () => {
   const setCurrentUser = useSetCurrentUserState();
@@ -21,6 +22,7 @@ const LoginForm = () => {
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user!);
+        generateDatabaseKey();
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/account");
       },

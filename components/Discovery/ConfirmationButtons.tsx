@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: "7%",
+    bottom: "10%",
     alignSelf: "center",
     paddingHorizontal: 20,
     gap: 30,

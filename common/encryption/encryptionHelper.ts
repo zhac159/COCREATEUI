@@ -46,11 +46,14 @@ export function decryptMessageAES(message: string, passphrase: string): string {
 }
 
 export async function generateDatabaseKey(): Promise<string> {
-  const databaseKey = await generateAESKey();
-
-  await SecureStore.setItemAsync("CoCreate-Local-Aes-Key", databaseKey);
-
-  return databaseKey;
+  const existingKey = await SecureStore.getItemAsync("CoCreate-Local-Aes-Key");
+  if (existingKey) {
+    return existingKey;
+  } else {
+    const databaseKey = await generateAESKey();
+    await SecureStore.setItemAsync("CoCreate-Local-Aes-Key", databaseKey);
+    return databaseKey;
+  }
 }
 
 export async function getDatabasKey(): Promise<string | null> {

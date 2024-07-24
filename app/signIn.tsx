@@ -14,7 +14,7 @@ import StyledButton from "@/components/Common/StyledButton";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import StyledTextField from "@/components/Common/StyledTextField";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
-import { hashPassword } from "@/common/encryption/encryptionHelper";
+import { generateDatabaseKey, hashPassword } from "@/common/encryption/encryptionHelper";
 
 export default function SignIn() {
   const theme = useTheme();
@@ -28,6 +28,7 @@ export default function SignIn() {
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user);
+        generateDatabaseKey();
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/account");
         

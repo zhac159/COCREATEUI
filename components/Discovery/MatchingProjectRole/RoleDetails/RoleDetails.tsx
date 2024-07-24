@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "flex-end",
     width: "100%",
-    height: windowHeight* 0.85,
+    height: windowHeight* 0.78,
     paddingHorizontal: 30,
   },
   coinsRoleContainer: {
