@@ -27,9 +27,11 @@ const useNewPortofolioContentForm = () => {
   const userSkills = useSkillsValue();
 
   const [description, setDescription] = useState<string>("");
+
   const [skill, setSkill] = useState<SkillType | undefined>(
-    userSkills[0].skillType
+    userSkills[0] ? userSkills[0].skillType : undefined
   );
+  
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris);
 
@@ -38,7 +40,7 @@ const useNewPortofolioContentForm = () => {
     isLoading: isUploadingImages,
     filesUploadingStatus,
   } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
-  
+
   const { mutate: createPortofolioContent, isLoading: isLoadingCreating } =
     usePostApiPortofolioContent({
       mutation: {
@@ -149,7 +151,16 @@ const useNewPortofolioContentForm = () => {
         />
       </View>
     ),
-    [uris, description, skill, userSkills, theme, getMedia, upload, filesUploadingStatus]
+    [
+      uris,
+      description,
+      skill,
+      userSkills,
+      theme,
+      getMedia,
+      upload,
+      filesUploadingStatus,
+    ]
   );
 
   return {
