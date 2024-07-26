@@ -81,6 +81,7 @@ export default function Account() {
           <Tabs.ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scene}
+            automaticallyAdjustKeyboardInsets
           >
             <SkillsTab />
           </Tabs.ScrollView>
@@ -89,6 +90,7 @@ export default function Account() {
           <Tabs.ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scene}
+            automaticallyAdjustKeyboardInsets
           >
             <AssetTab />
           </Tabs.ScrollView>
@@ -97,6 +99,7 @@ export default function Account() {
           <Tabs.ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scene}
+            automaticallyAdjustKeyboardInsets
           >
             <PortofolioContentTab />
           </Tabs.ScrollView>
@@ -105,6 +108,7 @@ export default function Account() {
           <Tabs.ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scene}
+            automaticallyAdjustKeyboardInsets
           >
             <ExperienceTab />
           </Tabs.ScrollView>
@@ -112,6 +116,7 @@ export default function Account() {
         <Tabs.Tab name="settings">
           <Tabs.ScrollView
             keyboardShouldPersistTaps="handled"
+            automaticallyAdjustKeyboardInsets
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scene}
           >

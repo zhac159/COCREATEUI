@@ -14,7 +14,7 @@ import StyledButton from "@/components/Common/StyledButton";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import StyledTextField from "@/components/Common/StyledTextField";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
-import { hashPassword } from "@/common/encryption/encryptionHelper";
+import { generateDatabaseKey, hashPassword } from "@/common/encryption/encryptionHelper";
 import { useTranslation } from "react-i18next";
 import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";

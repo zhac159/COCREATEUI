@@ -14,7 +14,7 @@ PODS:
   - EXJSONUtils (0.13.1)
   - EXManifests (0.14.3):
     - ExpoModulesCore
-  - EXNotifications (0.28.11):
+  - EXNotifications (0.28.12):
     - ExpoModulesCore
   - Expo (51.0.22):
     - ExpoModulesCore
@@ -1307,6 +1307,8 @@ PODS:
   - React-Mapbuffer (0.74.3):
     - glog
     - React-debug
+  - react-native-background-upload (6.6.0):
+    - React
   - react-native-blur (4.4.0):
     - DoubleConversion
     - glog
@@ -1765,6 +1767,7 @@ DEPENDENCIES:
   - React-jsitracing (from `../node_modules/react-native/ReactCommon/hermes/executor/`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-background-upload (from `../node_modules/react-native-background-upload`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
@@ -1942,6 +1945,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-background-upload:
+    :path: "../node_modules/react-native-background-upload"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-blurhash:
@@ -2026,7 +2031,7 @@ SPEC CHECKSUMS:
   EXImageLoader: ab589d67d6c5f2c33572afea9917304418566334
   EXJSONUtils: 30c17fd9cc364d722c0946a550dfbf1be92ef6a4
   EXManifests: c1fab4c3237675e7b0299ea8df0bcb14baca4f42
-  EXNotifications: de36c78b4423a8dc10c770820fdc0e326590fb00
+  EXNotifications: 3e0ca8264c1d41b1b7452b623f32eaa157db5b98
   Expo: 8b7948e45627e848c2d7b6be7cf5851a505aef19
   expo-dev-client: d24806e84d072563b0a26537c22ec902443e77d6
   expo-dev-launcher: 9ec4a77189b7ba5340c26399885887bec84e71f2
@@ -2084,6 +2089,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 6b3c8c98313642140530f93c46f5a6ca4530b446
   React-logger: fa92ba4d3a5d39ac450f59be2a3cec7b099f0304
   React-Mapbuffer: 9f68550e7c6839d01411ac8896aea5c868eff63a
+  react-native-background-upload: 7c608537f87106c93530a3a19a853afd55466823
   react-native-blur: a2acf22fd7bd13621df5e0b1c130b81adea7009c
   react-native-blurhash: 7031a663457f0fe23e5ec273f61e435bed0b5b91
   react-native-date-picker: 6891317e850deae5b53d51355226e07a495aba61
