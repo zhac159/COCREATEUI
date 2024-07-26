@@ -15,26 +15,28 @@ import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnim
 import StyledTextField from "@/components/Common/StyledTextField";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
 import { hashPassword } from "@/common/encryption/encryptionHelper";
+import { useTranslation } from "react-i18next";
+import { IconButton } from "react-native-paper";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 export default function SignIn() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const setCurrentUser = useSetCurrentUserState();
 
   const { handleSubmit, control } = useForm<UserLoginDTO>();
 
-  
   const { mutate, isLoading, error } = usePostApiLogin({
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user);
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/account");
-        
       },
     },
   });
-  
+
   const onSubmit = async (userLoginDTO: UserLoginDTO) => {
     const hashedPassword = await hashPassword(userLoginDTO.password);
     mutate({
@@ -52,9 +54,18 @@ export default function SignIn() {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        <View
-          style={styles.formContainer}
-        >
+        <IconButton
+          icon={() => (
+            <FontAwesome6
+              name="chevron-left"
+              color={theme.colors.black}
+              size={30}
+            />
+          )}
+          size={30}
+          style={{ position: "absolute", top: "10%", left: "1%" }}
+        />
+        <View style={styles.formContainer}>
           <View>
             <Text
               style={{
@@ -63,7 +74,7 @@ export default function SignIn() {
                 fontSize: 40,
               }}
             >
-              Username
+              {t("sign-in.username-email")}
             </Text>
             <Controller
               control={control}
@@ -82,7 +93,7 @@ export default function SignIn() {
                   value={value}
                 />
               )}
-              name="username"
+              name="usernameOrEmail"
               rules={{ required: true }}
               defaultValue=""
             />
@@ -95,7 +106,7 @@ export default function SignIn() {
                 fontSize: 40,
               }}
             >
-              Password
+              {t("sign-in.password")}
             </Text>
             <Controller
               control={control}
@@ -115,9 +126,11 @@ export default function SignIn() {
                     onChangeText: onChange,
                     value: value,
                   }}
+                  tooltip={t("sign-in.password-tool-tip")}
                   error={error?.message}
                 />
               )}
+              
               name="password"
               rules={{ required: true }}
               defaultValue=""
@@ -140,7 +153,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 75,
     minHeight: windowHeight,
-    paddingHorizontal: "2%",
+    paddingHorizontal: "5%",
     justifyContent: "space-between",
     gap: 25,
   },

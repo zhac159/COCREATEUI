@@ -1,5 +1,14 @@
 {
   "hello": "Hello, World!",
+  "welcome-page" :{
+    "title-1": "Welcome to the",
+    "title-2": "future of creative work"
+  },
+  "sign-in":{
+    "username-email" : "Username / Email",
+    "password" : "Password",
+    "password-tool-tip":"If you forgot your password, please email springRiseLimited@outlook.com"
+  },
   "get-started": {
     "terms-and-conditions": {
       "title": "This app is part of a research project",

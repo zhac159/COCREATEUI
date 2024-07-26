@@ -21,7 +21,7 @@ const Rating: FC<RatingProps> = ({ rating, white = false }) => {
           color:  white ? theme.colors.white:theme.colors.black,
         }}
       >
-        {"4.8"}
+        {rating}
       </Text>
       <FontAwesome6 name="star" size={13} color={white ? theme.colors.white:theme.colors.black} solid />
     </View>

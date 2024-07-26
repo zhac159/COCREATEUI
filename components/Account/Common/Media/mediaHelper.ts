@@ -5,6 +5,12 @@ import { MediaType } from "./MediaType";
 import { MediaCreateDTO } from "@/common/api/model";
 import { SQLiteDatabase } from "expo-sqlite/next";
 import { fetchUrisByChatTargetIdTypePair } from "@/common/database/databaseHelper";
+import Upload, { UploadOptions } from "react-native-background-upload";
+import { Platform } from "react-native";
+import * as FileSystem from "expo-file-system";
+import { get } from "lodash";
+import { router } from "expo-router";
+import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
 
 const getContentType = (uri: string) => {
   if (uri.endsWith(".jpeg") || uri.endsWith(".jpg") || uri.endsWith(".png")) {
@@ -18,35 +24,36 @@ const getContentType = (uri: string) => {
 };
 
 export const uploadFiles = async (sasUris: string[], files: string[]) => {
+  const uploadPromises = sasUris.map(async (sasUri, index) => {
+    let file = files[index];
 
-  for (let i = 0; i < sasUris.length; i++) {
-    const sasUri = sasUris[i];
-    const file = files[i];
-
-    const response = await fetch(file);
-    const blob = await response.blob();
-
-    let azureResponse;
-    let attempts = 0;
-    const maxAttempts = 3;
+    if (Platform.OS === "android" && file.startsWith("file://")) {
+      const contentUri = await FileSystem.getContentUriAsync(file);
+      file = contentUri;
+    }
 
     console.log(`Uploading ${file} to ${sasUri}`);
 
+    const options: UploadOptions = {
+      url: sasUri,
+      path: file,
+      method: "PUT",
+      customUploadId: files[index],
+      type: "raw",
+      headers: {
+        "content-type": getContentType(file),
+        "x-ms-blob-type": "BlockBlob",
+      },
+    };
+
+    let attempts = 0;
+    const maxAttempts = 3;
+
     while (attempts < maxAttempts) {
       try {
-        azureResponse = await fetch(sasUri, {
-          method: "PUT",
-          body: blob,
-          headers: {
-            "Content-Type": getContentType(file),
-            "x-ms-blob-type": "BlockBlob",
-          },
-        });
+        await Upload.startUpload(options);
 
-        if (azureResponse.ok) {
-          console.log(`Uploaded ${file} to ${sasUri}`);
-          break;
-        }
+        break;
       } catch (error) {
         console.error(`Attempt ${attempts + 1} failed with error: ${error}`);
       }
@@ -56,8 +63,19 @@ export const uploadFiles = async (sasUris: string[], files: string[]) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     }
-  }
+
+    if (attempts === maxAttempts) {
+      console.error(`Failed to upload ${file} after ${maxAttempts} attempts`);
+    }
+  });
+
+  await Promise.all(uploadPromises);
+  console.log("All uploads completed");
 };
+
+export function getFilenameFromPath(filePath: string): string {
+  return filePath.substring(filePath.lastIndexOf("/") + 1);
+}
 
 export const useGetMedia = (
   setUpdatedUris: SetterOrUpdater<string[]>,
@@ -134,3 +152,40 @@ export function useFetchUrisByChatTargetIdTypePair(
 
   return { uris, loading };
 }
+
+export function getMediaCreateDTOsFromUris(uris: string[]): MediaCreateDTO[] {
+  return uris.map((uri) => {
+    return {
+      uri,
+      mediaType: getMediaTypeFromUri(uri),
+    };
+  });
+}
+
+// const handleSelectMedia = (uri: string) => {
+//   setMediaViewer((state) => ({
+//     visible: false,
+//     selectedImageIndex: 0,
+//     uris: [uri],
+//   }));
+//   router.push("/main/portofolioModal");
+// };
+
+export const useSelectMedia = (uri: string | undefined | null) => {
+  const setMediaViewer = useSetMediaViewerState();
+
+  if(!uri) {
+    return () => null;
+  }
+
+  const handleSelectMedia = () => {
+    setMediaViewer((state) => ({
+      visible: false,
+      selectedImageIndex: 0,
+      uris: [uri],
+    }));
+    router.push("/main/portofolioModal");
+  };
+
+  return handleSelectMedia;
+};

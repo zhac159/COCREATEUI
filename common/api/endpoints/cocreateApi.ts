@@ -2282,31 +2282,31 @@ const {mutation: mutationOptions} = options ?? {};
       return useMutation(mutationOptions);
     }
     
-export const postApiUserGetAuthenticatedUser = (
+export const postApiUserAuthenticateToken = (
     
  ) => {
       
       
       return customInstance<UserDTO>(
-      {url: `/api/User/get-authenticated-user`, method: 'POST'
+      {url: `/api/User/authenticate-token`, method: 'POST'
     },
       );
     }
   
 
 
-export const getPostApiUserGetAuthenticatedUserMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, TError,void, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, TError,void, TContext> => {
+export const getPostApiUserAuthenticateTokenMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserAuthenticateToken>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiUserAuthenticateToken>>, TError,void, TContext> => {
 const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, void> = () => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiUserAuthenticateToken>>, void> = () => {
           
 
-          return  postApiUserGetAuthenticatedUser()
+          return  postApiUserAuthenticateToken()
         }
 
         
@@ -2314,20 +2314,20 @@ const {mutation: mutationOptions} = options ?? {};
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiUserGetAuthenticatedUserMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>>
+    export type PostApiUserAuthenticateTokenMutationResult = NonNullable<Awaited<ReturnType<typeof postApiUserAuthenticateToken>>>
     
-    export type PostApiUserGetAuthenticatedUserMutationError = ErrorType<unknown>
+    export type PostApiUserAuthenticateTokenMutationError = ErrorType<unknown>
 
-    export const usePostApiUserGetAuthenticatedUser = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>, TError,void, TContext>, }
+    export const usePostApiUserAuthenticateToken = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserAuthenticateToken>>, TError,void, TContext>, }
 ): UseMutationResult<
-        Awaited<ReturnType<typeof postApiUserGetAuthenticatedUser>>,
+        Awaited<ReturnType<typeof postApiUserAuthenticateToken>>,
         TError,
         void,
         TContext
       > => {
 
-      const mutationOptions = getPostApiUserGetAuthenticatedUserMutationOptions(options);
+      const mutationOptions = getPostApiUserAuthenticateTokenMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

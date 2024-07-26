@@ -28,9 +28,6 @@ export const customFormData = (body: Record<string, any>): FormData => {
         }
       });
     }
-    // if (/FileSrcs\.\d+$/.test(key)) {
-    //   formData.append(key.replace(/\.(\d+)$/, ''), body[key]);
-    // }
     else {
       formData.append(key, body[key]);
     }

@@ -78,7 +78,6 @@ const PortofolioContentTab = () => {
         const sasURIs = data.sasURIs;
 
         if (sasURIs) {
-          
           setUris((state) => {
             uploadFiles(data.sasURIs || [], state);
             return state;
@@ -87,7 +86,7 @@ const PortofolioContentTab = () => {
           const cleanUris = sasURIs.map((uri) => getCleanUrl(uri || ""));
 
           let index = 0;
-          
+
           const newPortofolioContents = portofolioContents.map((content) => {
             return {
               ...content,
@@ -118,7 +117,7 @@ const PortofolioContentTab = () => {
     setCreateMode(false);
   };
 
-  if (createMode) {
+  if (createMode || createIsLoading) {
     return (
       <View style={styles.container}>
         <View>

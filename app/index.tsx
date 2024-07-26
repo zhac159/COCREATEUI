@@ -9,11 +9,34 @@ import {
 import { useTheme } from "@/components/Themes/theme";
 import StyledButton from "@/components/Common/StyledButton";
 import { router } from "expo-router";
-import { windowHeight, windowWidth } from "@/components/Account/Common/getWindowDimensions";
+import {
+  windowHeight,
+  windowWidth,
+} from "@/components/Account/Common/getWindowDimensions";
 import BlackHalfOpacityBackdrop from "@/components/Common/BlackHalfOpacityBackdrop";
+import { usePostApiUserAuthenticateToken } from "@/common/api/endpoints/cocreateApi";
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
   const theme = useTheme();
+
+  const { t } = useTranslation();
+
+  const { mutate: authenticate, isLoading } = usePostApiUserAuthenticateToken({
+    mutation: {
+      onSuccess: (data) => {
+        router.replace("/main/(tabs)/account");
+      },
+    },
+  });
+
+  // useEffect(() => {
+  //   authenticate();
+  // }, []);
+
+  // if (isLoading) {
+  //   return <LoadingBackdrop />;
+  // }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -32,7 +55,7 @@ const LoginPage = () => {
               lineHeight: 48,
             }}
           >
-            Welcome to the
+            {t("welcome-page.title-1")}
           </Text>
           <Text
             style={{
@@ -40,9 +63,10 @@ const LoginPage = () => {
               fontWeight: "bold",
               color: theme.colors.orange,
               fontSize: 50,
+              lineHeight: 48,
             }}
           >
-            {"Future of\nCreative Work"}
+            {t("welcome-page.title-2")}
           </Text>
         </View>
         <View style={styles.buttonsContainer}>
@@ -50,7 +74,7 @@ const LoginPage = () => {
             text="Sign In"
             style={{ backgroundColor: theme.colors.black }}
             onPress={() =>
-              router.navigate({
+              router.replace({
                 pathname: "/signIn",
               })
             }

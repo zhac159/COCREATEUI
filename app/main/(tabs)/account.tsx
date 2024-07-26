@@ -24,7 +24,7 @@ export default function Account() {
 
   const collapsibleRef = useRef<CollapsibleRef>(null);
 
-  const tabsNames = ["Skills", "Assets", "Portofolio", "Experience"];
+  const tabsNames = ["Skills", "Assets", "Portfolio", "Experience"];
 
   const [isSticky, setIsSticky] = useState(false);
 

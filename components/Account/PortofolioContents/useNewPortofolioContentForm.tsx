@@ -2,122 +2,92 @@ import {
   useSetPortfolioContentsState,
   useSkillsValue,
 } from "@/components/RecoilStates/profileState";
-import { useState } from "react";
-import { View, TextInput, Text } from "react-native";
+import { useMemo, useState } from "react";
+import { View, TextInput } from "react-native";
 import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
 import { StyleSheet } from "react-native";
-import { getMediaTypeFromUri, useGetMedia } from "../Common/Media/mediaHelper";
-import { useTheme } from "@/components/Themes/theme";
 import {
-  MediaCreateDTO,
-  PortofolioContentCreateDTO,
-  PortofolioContentDTO,
-  SkillType,
-} from "@/common/api/model";
+  getMediaCreateDTOsFromUris,
+  useGetMedia,
+} from "../Common/Media/mediaHelper";
+import { useTheme } from "@/components/Themes/theme";
+import { PortofolioContentCreateDTO, SkillType } from "@/common/api/model";
 import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi";
 import { EntityType } from "../Common/Media/EntityType";
-import { useCacheImages } from "@/components/MediaViewer/mediaViewerHelper";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 
 const useNewPortofolioContentForm = () => {
+  const theme = useTheme();
+
   const setPortofolioContents = useSetPortfolioContentsState();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const userSkills = useSkillsValue();
 
-  const cacheImages = useCacheImages();
-  const cachePortofolioContent = async (
-    portofolioContent: PortofolioContentDTO
-  ) => {
-    var uris = portofolioContent.medias?.map((media) => media.uri);
-    await cacheImages(uris || []);
-  };
-
   const [description, setDescription] = useState<string>("");
   const [skill, setSkill] = useState<SkillType | undefined>(
-    userSkills[0]?.skillType
+    userSkills[0].skillType
   );
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris);
 
-  const {upload, isLoading: isUploadingImages} = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
-
-  const { mutate: createPortofolioContent } = usePostApiPortofolioContent({
-    mutation: {
-      onSuccess: (data) => {
-        setPortofolioContents((state) => {
-          const newState = [...(state || [])];
-          newState.push(data);
-          return newState;
-        });
-        cachePortofolioContent(data);
-        setIsLoading(false);
-        setUris([]);
-        setDescription("");
+  const {
+    upload,
+    isLoading: isUploadingImages,
+    filesUploadingStatus,
+  } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
+  
+  const { mutate: createPortofolioContent, isLoading: isLoadingCreating } =
+    usePostApiPortofolioContent({
+      mutation: {
+        onSuccess: (data) => {
+          setPortofolioContents((state) => {
+            const newState = [data, ...state];
+            return newState;
+          });
+          setIsLoading(false);
+          setDescription("");
+        },
       },
-    },
-  });
+    });
 
   const handleCreate = async () => {
     setIsLoading(true);
     const uploadedUrls = await upload(uris);
-    const newMedias: MediaCreateDTO[] = uploadedUrls.map((url) => {
-      return {
-        uri: url,
-        mediaType: getMediaTypeFromUri(url),
-      };
-    });
-
     const NewPortofolioContent: PortofolioContentCreateDTO = {
-      medias: newMedias,
+      medias: getMediaCreateDTOsFromUris(uploadedUrls),
       description: description,
       skillType: skill,
       order: 10,
     };
-
     createPortofolioContent({ data: NewPortofolioContent });
   };
 
-  const theme = useTheme();
-
-  const FormNode = (
-    <View
-      style={{
-        gap: 50,
-      }}
-    >
-      <SkillsList
-        skills={userSkills}
-        editMode={false}
-        selectSkill={(skill) => setSkill(skill.skillType)}
-        deselectSkill={() => null}
-        selectedSkill={skill}
-      />
+  const FormNode = useMemo(
+    () => (
       <View
         style={{
-          flex: 1,
-          height: 407,
-          padding: 10,
-          borderRadius: 7,
-          backgroundColor: theme.colors.lightGray,
+          gap: 50,
         }}
       >
+        <SkillsList
+          skills={userSkills}
+          editMode={false}
+          selectSkill={(skill) => setSkill(skill.skillType)}
+          deselectSkill={() => null}
+          selectedSkill={skill}
+        />
         <View
           style={{
             flex: 1,
+            height: 407,
+            padding: 10,
             borderRadius: 7,
+            backgroundColor: theme.colors.lightGray,
           }}
         >
-          <Media
-            onPress={() => getMedia(0)}
-            uri={uris[0]}
-            style={NewPortofolioContentFormStyles.mainImage}
-            editMode={true}
-          />
-        </View>
-        <View style={NewPortofolioContentFormStyles.smallImagesContainer}>
           <View
             style={{
               flex: 1,
@@ -125,45 +95,68 @@ const useNewPortofolioContentForm = () => {
             }}
           >
             <Media
-              onPress={() => getMedia(1)}
-              uri={uris[1]}
-              style={NewPortofolioContentFormStyles.smallImage}
+              onPress={() => getMedia(0)}
+              loadingState={filesUploadingStatus?.get(uris[0])}
+              uri={uris[0]}
+              style={NewPortofolioContentFormStyles.mainImage}
               editMode={true}
             />
           </View>
-          <View
-            style={{
-              flex: 1,
-              borderRadius: 7,
-            }}
-          >
-            <Media
-              onPress={() => getMedia(2)}
-              uri={uris[2]}
-              style={NewPortofolioContentFormStyles.smallImage}
-              editMode={true}
-            />
+          <View style={NewPortofolioContentFormStyles.smallImagesContainer}>
+            <View
+              style={{
+                flex: 1,
+                borderRadius: 7,
+              }}
+            >
+              <Media
+                onPress={() => getMedia(1)}
+                loadingState={filesUploadingStatus?.get(uris[1])}
+                uri={uris[1]}
+                style={NewPortofolioContentFormStyles.smallImage}
+                editMode={true}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                borderRadius: 7,
+              }}
+            >
+              <Media
+                onPress={() => getMedia(2)}
+                loadingState={filesUploadingStatus?.get(uris[2])}
+                uri={uris[2]}
+                style={NewPortofolioContentFormStyles.smallImage}
+                editMode={true}
+              />
+            </View>
           </View>
         </View>
+        <TextInput
+          placeholder="Description..."
+          style={{
+            ...theme.customFonts.primary.small,
+            backgroundColor: theme.colors.lightGray,
+            padding: 10,
+            borderRadius: 7,
+            height: 100,
+            textAlignVertical: "top",
+          }}
+          multiline={true}
+          value={description}
+          onChangeText={setDescription}
+        />
       </View>
-      <TextInput
-        placeholder="Description..."
-        style={{
-          ...theme.customFonts.primary.small,
-          backgroundColor: theme.colors.lightGray,
-          padding: 10,
-          borderRadius: 7,
-          height: 100,
-          textAlignVertical: "top",
-        }}
-        multiline={true}
-        value={description}
-        onChangeText={setDescription}
-      />
-    </View>
+    ),
+    [uris, description, skill, userSkills, theme, getMedia, upload, filesUploadingStatus]
   );
 
-  return { FormNode, handleCreate, isLoading };
+  return {
+    FormNode,
+    handleCreate,
+    isLoading: isLoading || isUploadingImages || isLoadingCreating,
+  };
 };
 
 export default useNewPortofolioContentForm;

@@ -1,4 +1,11 @@
-import { StyleSheet, View, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { useProjectState } from "@/components/RecoilStates/profileState";
@@ -78,55 +85,48 @@ export default function CompleteProject() {
   if (!project) return <Text>Loading...</Text>;
 
   return (
-    <View style={styles.container}>
-      <View>
-        {formStep === 0 && (
-          <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
-        )}
-        {formStep === 1 && (
-          <CompleteProjectDescription
-            description={description}
-            setDescription={setDescription}
-          />
-        )}
-        {assignesProjectRoles.map(
-          (role, index) =>
-            formStep === index + 2 && (
-              <CompleteProjectReviewAssignee
-                key={index}
-                roleSkill={role.skillType!}
-                reviewed={role.assignee!}
-                onReviewChange={(review) => {
-                  const newReviews = [...reviews];
-                  newReviews[index] = review;
-                  setReviews(newReviews);
-                }}
-              />
-            )
-        )}
-        {formStep === lastFormStepIndex && (
-          <CompletedProjectConfirmation project={project} />
-        )}
-      </View>
-      {/* <NextButton
-        text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
-        icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
-        onPress={() => {
-          formStep === lastFormStepIndex
-            ? handleCompleteProject()
-            : setFormStep((prev) => prev + 1);
-        }}
-      /> */}
-      <StyledButton
-        text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
-        icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
-        onPress={() => {
-          formStep === lastFormStepIndex
-            ? handleCompleteProject()
-            : setFormStep((prev) => prev + 1);
-        }}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView style={styles.container}>
+        <View>
+          {formStep === 0 && (
+            <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
+          )}
+          {formStep === 1 && (
+            <CompleteProjectDescription
+              description={description}
+              setDescription={setDescription}
+            />
+          )}
+          {assignesProjectRoles.map(
+            (role, index) =>
+              formStep === index + 2 && (
+                <CompleteProjectReviewAssignee
+                  key={index}
+                  roleSkill={role.skillType!}
+                  reviewed={role.assignee!}
+                  onReviewChange={(review) => {
+                    const newReviews = [...reviews];
+                    newReviews[index] = review;
+                    setReviews(newReviews);
+                  }}
+                />
+              )
+          )}
+          {formStep === lastFormStepIndex && (
+            <CompletedProjectConfirmation project={project} />
+          )}
+        </View>
+        <StyledButton
+          text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
+          icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
+          onPress={() => {
+            formStep === lastFormStepIndex
+              ? handleCompleteProject()
+              : setFormStep((prev) => prev + 1);
+          }}
+        />
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 

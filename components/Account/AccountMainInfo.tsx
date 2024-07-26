@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     alignSelf: "flex-start",
     left: "6.5%",
-    top: "15.4%",
   },
   ratingContainer: {
     flexDirection: "row",

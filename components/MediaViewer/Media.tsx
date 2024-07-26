@@ -1,12 +1,13 @@
 import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Image } from "expo-image";
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { TapGestureHandler, State } from "react-native-gesture-handler";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Video } from "expo-av";
+import { ResizeMode, Video } from "expo-av";
 import { addOpactity, useTheme } from "../Themes/theme";
 import { useSetMediaViewerState } from "./mediaViewerState";
 import { router } from "expo-router";
+import * as Progress from "react-native-progress";
 
 type MediaProps = {
   onPress?: () => void;
@@ -14,18 +15,22 @@ type MediaProps = {
   style: StyleProp<ViewStyle>;
   editMode?: boolean;
   backgroundColor?: string;
+  loadingState?: number;
 };
 
 const Media: React.FC<MediaProps> = ({
   onPress,
   uri,
   style,
-  editMode = false,
+  editMode,
   backgroundColor,
+  loadingState,
 }) => {
   const theme = useTheme();
 
   const setMediaViewer = useSetMediaViewerState();
+
+  onPress = onPress ? onPress : () => handleSelectMedia(uri || "");
 
   const handleSelectMedia = (uri: string) => {
     setMediaViewer((state) => ({
@@ -33,11 +38,71 @@ const Media: React.FC<MediaProps> = ({
       selectedImageIndex: 0,
       uris: [uri],
     }));
-
     router.push("/main/portofolioModal");
   };
 
-  if (!onPress) onPress = () => handleSelectMedia(uri || "");
+  const isMediaVideo = useMemo(
+    () => uri?.endsWith(".mp4") || uri?.endsWith(".mov"),
+    [uri]
+  );
+
+  const EditModeOverlay = useMemo(() => {
+    if (!editMode || loadingState !== undefined) return null;
+    return (
+      <View
+        style={{
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+          backgroundColor: addOpactity(theme.colors.lightGray, 0.5),
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute",
+            backgroundColor: theme.colors.grayer,
+            borderRadius: 50,
+            padding: 13,
+          }}
+          onPress={() => {
+            onPress();
+          }}
+        >
+          <FontAwesome6 name="image" size={30} color={theme.colors.white} />
+        </TouchableOpacity>
+      </View>
+    );
+  }, [editMode, loadingState]);
+
+  const LoadingOverlay = useMemo(() => {
+    if (loadingState === undefined) return null;
+
+    return (
+      <View
+        style={{
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+          backgroundColor: addOpactity(theme.colors.black, 0.5),
+        }}
+      >
+        <Progress.Circle
+          size={50}
+          progress={loadingState / 100}
+          showsText={false}
+          color={theme.colors.white}
+        />
+      </View>
+    );
+  }, [loadingState]);
+
+  if (!uri) return <View style={style}>{EditModeOverlay}</View>;
 
   return (
     <>
@@ -48,114 +113,42 @@ const Media: React.FC<MediaProps> = ({
           }
         }}
       >
-        {uri?.endsWith(".mp4") || uri?.endsWith(".mov") ? (
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            }}
-          >
+        {isMediaVideo ? (
+          <View style={[style, { overflow: "hidden" }]}>
             <Video
               source={{ uri }}
               rate={1.0}
               volume={1.0}
               isMuted={false}
+              resizeMode={ResizeMode.COVER}
               videoStyle={{
                 opacity: editMode ? 0.5 : 1,
               }}
+              
               shouldPlay
               isLooping
-              style={style}
+              style={{
+                height: "100%",
+                width: "100%",
+              }}
             />
-            {editMode ? (
-              <View
-                style={{
-                  position: "absolute",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                  width: "100%",
-                  backgroundColor: backgroundColor || theme.colors.lightGray,
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: theme.colors.grayer,
-                    borderRadius: 50,
-                    padding: 13,
-                  }}
-                  onPress={() => {
-                    onPress();
-                  }}
-                >
-                  <FontAwesome6
-                    name="image"
-                    size={30}
-                    color={theme.colors.white}
-                  />
-                </TouchableOpacity>
-              </View>
-            ) : null}
+            {EditModeOverlay}
+            {LoadingOverlay}
           </View>
         ) : (
           <View style={[style, { overflow: "hidden" }]}>
-            {uri ? (
-              <Image
-                source={{
-                  uri: uri,
-                }}
-                contentFit="cover"
-                style={{
-                  height: "100%",
-                  width: "100%",
-                }}
-              />
-            ) : (
-              <View
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  backgroundColor: theme.colors.lightGray,
-                }}
-              />
-            )}
-            {editMode ? (
-              <View
-                style={{
-                  position: "absolute",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                  width: "100%",
-                  backgroundColor: addOpactity(theme.colors.lightGray, 0.5),
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    position: "absolute",
-                    backgroundColor: theme.colors.grayer,
-                    borderRadius: 50,
-                    padding: 13,
-                  }}
-                  onPress={() => {
-                    onPress();
-                  }}
-                >
-                  <FontAwesome6
-                    name="image"
-                    size={30}
-                    color={theme.colors.white}
-                  />
-                </TouchableOpacity>
-              </View>
-            ) : null}
+            <Image
+              source={{
+                uri: uri,
+              }}
+              contentFit="cover"
+              style={{
+                height: "100%",
+                width: "100%",
+              }}
+            />
+            {EditModeOverlay}
+            {LoadingOverlay}
           </View>
         )}
       </TapGestureHandler>
@@ -163,4 +156,4 @@ const Media: React.FC<MediaProps> = ({
   );
 };
 
-export default Media;
+export default memo(Media);

@@ -9,5 +9,5 @@ export interface UserLoginDTO {
   /** @minLength 1 */
   password: string;
   /** @minLength 1 */
-  username: string;
+  usernameOrEmail: string;
 }

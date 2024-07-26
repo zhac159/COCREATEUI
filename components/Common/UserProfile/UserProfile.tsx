@@ -26,7 +26,6 @@ const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
   const { completedProjectRoles, completedProjects } =
   useGetRolesCommissionedAndWorked(userProfile.experiences);
 
-  console.log(completedProjects);
 
   const useMemoizedExperiences = useMemo(
     () => (

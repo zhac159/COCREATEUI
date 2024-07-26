@@ -1962,7 +1962,7 @@
         }
       }
     },
-    "/api/User/get-authenticated-user": {
+    "/api/User/authenticate-token": {
       "post": {
         "tags": [
           "User"
@@ -4189,11 +4189,11 @@
       "UserLoginDTO": {
         "required": [
           "password",
-          "username"
+          "usernameOrEmail"
         ],
         "type": "object",
         "properties": {
-          "username": {
+          "usernameOrEmail": {
             "minLength": 1,
             "type": "string"
           },

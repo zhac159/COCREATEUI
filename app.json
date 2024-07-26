@@ -19,7 +19,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "This app requires access to your photo library to save images.",
-        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to display images."
+        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to display images.",
+        "UIBackgroundModes": ["fetch", "processing"]
       },
       "bitcode": false,
       "bundleIdentifier": "cocreate.test"
