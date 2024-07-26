@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import ChatTextInput from "./ChatTextInput";
 import { BlurView } from "@react-native-community/blur";
@@ -91,7 +92,9 @@ const Chat: FC<ChatProps> = ({
  
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}
+      behavior="padding"
+    >
       <FlatList
         ref={flatListRef}
         contentContainerStyle={{
@@ -154,7 +157,7 @@ const Chat: FC<ChatProps> = ({
         addReaction={handleAddReactionAndClose}
         getMedia={getMedia}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

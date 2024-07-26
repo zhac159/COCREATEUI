@@ -31,6 +31,7 @@ export default function SignIn() {
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user);
+        generateDatabaseKey();
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/account");
       },

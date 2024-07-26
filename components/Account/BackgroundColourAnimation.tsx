@@ -94,7 +94,7 @@ const BackgroundColourAnimation: FC<BackgroundColourAnimationProps> = ({
       {!hideBlur && (
         <BlurView
           style={{
-            height: "100%",
+            height: "150%",
             width: "100%",
             position: "absolute",
             backgroundColor: "white",

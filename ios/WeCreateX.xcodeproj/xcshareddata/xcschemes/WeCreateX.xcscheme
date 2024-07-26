@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "testproject.app"
-               BlueprintName = "testproject"
-               ReferencedContainer = "container:testproject.xcodeproj">
+               BuildableName = "WeCreateX.app"
+               BlueprintName = "WeCreateX"
+               ReferencedContainer = "container:WeCreateX.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "testprojectTests.xctest"
-               BlueprintName = "testprojectTests"
-               ReferencedContainer = "container:testproject.xcodeproj">
+               BuildableName = "WeCreateXTests.xctest"
+               BlueprintName = "WeCreateXTests"
+               ReferencedContainer = "container:WeCreateX.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "testproject.app"
-            BlueprintName = "testproject"
-            ReferencedContainer = "container:testproject.xcodeproj">
+            BuildableName = "WeCreateX.app"
+            BlueprintName = "WeCreateX"
+            ReferencedContainer = "container:WeCreateX.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "testproject.app"
-            BlueprintName = "testproject"
-            ReferencedContainer = "container:testproject.xcodeproj">
+            BuildableName = "WeCreateX.app"
+            BlueprintName = "WeCreateX"
+            ReferencedContainer = "container:WeCreateX.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

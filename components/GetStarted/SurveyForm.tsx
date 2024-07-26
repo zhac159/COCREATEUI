@@ -67,6 +67,9 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
 
     console.log(submission);
 
+
+
+
     submitSurvey({
       data: submission,
     });
@@ -87,7 +90,10 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
           opinionIndex={parseInt(key)}
         />
       )),
-    []
+    [
+      questionValues,
+      setQuestionValues,
+    ]
   );
 
   return (

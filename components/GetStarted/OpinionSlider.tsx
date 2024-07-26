@@ -61,7 +61,6 @@ const OpinionSlider: FC<OpinionSliderProps> = ({
                 fontWeight: "400",
                 fontSize: 19,
                 marginTop: 55,
-                marginLeft: 5,
               }}
             >
               {int + 1}
@@ -77,6 +76,8 @@ const OpinionSlider: FC<OpinionSliderProps> = ({
                   marginTop: 90,
                   width: 70,
                   textAlign: "center",
+                  marginRight: 10,
+
                 }}
               >
                 {t(`get-started.survey.markers.${(int + 1).toString() as "1"}`)}
