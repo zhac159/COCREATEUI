@@ -17,14 +17,14 @@ const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
 
   return (
     <BlurView
-      tint={darkMode ? "dark" : "light"}
-      style={{
+    tint="light"
+    style={{
         width: "100%",
         paddingTop: 14,
         paddingBottom: 20,
         minHeight: 80,
         position: "absolute",
-        backgroundColor: darkMode ? "#393939" : "#fff",
+        // backgroundColor: darkMode ? "#393939" : "#fff",
         top: windowHeight -80,
         zIndex: 100,
         opacity: 0.8,

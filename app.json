@@ -25,6 +25,7 @@
           "wecreatex.background-task.fetch"
         ]
       },
+      "buildNumber": "2",
       "bitcode": false,
       "bundleIdentifier": "WeCreateX"
     },
