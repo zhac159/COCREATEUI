@@ -22,10 +22,8 @@ type UserProfileProps = {
 
 const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
   const theme = useTheme();
-
   const { completedProjectRoles, completedProjects } =
   useGetRolesCommissionedAndWorked(userProfile.experiences);
-
 
   const useMemoizedExperiences = useMemo(
     () => (
@@ -62,13 +60,13 @@ const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
                   {userProfile.portofolioContents[1] && (
                     <PortofolioContent
                       editMode={false}
-                      portofolioContent={userProfile.portofolioContents[0]}
+                      portofolioContent={userProfile.portofolioContents[1]}
                     />
                   )}
                   {userProfile.portofolioContents[2] && (
                     <PortofolioContent
                       editMode={false}
-                      portofolioContent={userProfile.portofolioContents[0]}
+                      portofolioContent={userProfile.portofolioContents[2]}
                     />
                   )}
                   <ReviewCarousel
@@ -77,7 +75,7 @@ const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
                     totalReviews={userProfile.totalReviews}
                   />
                   {userProfile.portofolioContents
-                    .slice(3, 0)
+                    .slice(3)
                     .map((portofolioContent, index) => (
                       <PortofolioContent
                         key={index}
@@ -129,6 +127,5 @@ const styles = StyleSheet.create({
     gap: 50,
     width: "90%",
     alignSelf: "center",
-    marginTop: 40,
   }
 });

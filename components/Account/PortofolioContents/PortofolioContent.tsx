@@ -1,13 +1,6 @@
 import { PortofolioContentDTO } from "@/common/api/model";
-import { FC, useEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import Carousel from "react-native-reanimated-carousel";
+import { FC, useEffect, useMemo, useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
 import { router } from "expo-router";
@@ -19,20 +12,28 @@ import { useDeleteApiPortofolioContentId } from "@/common/api/endpoints/cocreate
 import { useSetPortofolioContentByIdState } from "@/components/RecoilStates/profileState";
 import * as ImagePicker from "expo-image-picker";
 import SkillIcon from "../Skills/SkillIcon";
+import StyledTextField from "@/components/Common/StyledTextField";
+import StyledCarousel from "@/components/Common/StyledCarousel";
 
 type portofolioContentProps = {
   portofolioContent: PortofolioContentDTO;
   editMode?: boolean;
+  filesUploadingStatus?: Map<string, number> | null | undefined;
 };
 
 const PortofolioContent: FC<portofolioContentProps> = ({
   portofolioContent,
   editMode = false,
+  filesUploadingStatus,
 }) => {
-  const uris = portofolioContent.medias?.map((media) => media.uri) || [];
-  const setMediaViewer = useSetMediaViewerState();
+  const [indicator, setIndicator] = useState(0);
 
-  const descriptionInputRef = useRef<TextInput>(null);
+  const uris = useMemo(
+    () => portofolioContent.medias?.map((media) => media.uri) || [],
+    [portofolioContent.medias]
+  );
+
+  const setMediaViewer = useSetMediaViewerState();
 
   const setPortofolioContent = useSetPortofolioContentByIdState(
     portofolioContent.id || 0
@@ -68,6 +69,13 @@ const PortofolioContent: FC<portofolioContentProps> = ({
     });
   };
 
+  const handleOnChangeText = (text: string) => {
+    setPortofolioContent((state) => ({
+      ...state,
+      description: text,
+    }));
+  };
+
   const handlePress = (index: number) => {
     if (editMode) {
       handleUpdatePhoto(index);
@@ -82,6 +90,7 @@ const PortofolioContent: FC<portofolioContentProps> = ({
 
     router.push("/main/portofolioModal");
   };
+
   const theme = useTheme();
 
   const { mutate: deletePortofolioContent } = useDeleteApiPortofolioContentId({
@@ -92,6 +101,23 @@ const PortofolioContent: FC<portofolioContentProps> = ({
     },
   });
 
+  const deleteButton = useMemo(() => {
+    if (!editMode) return null;
+    return (
+      <TouchableOpacity
+        style={styles.deleteIconButton}
+        onPress={() => {
+          deletePortofolioContent({
+            id: portofolioContent.id || 0,
+          });
+        }}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <FontAwesome6 name="minus" size={15} color="white" />
+      </TouchableOpacity>
+    );
+  }, [portofolioContent, editMode]);
+
   const renderItem = ({ item, index }: { item: any; index: number }) => (
     <View style={styles.imageContainer} key={index}>
       <Media
@@ -99,22 +125,35 @@ const PortofolioContent: FC<portofolioContentProps> = ({
         style={{ flex: 1, borderRadius: 14 }}
         onPress={() => handlePress(index)}
         editMode={editMode}
+        loadingState={filesUploadingStatus?.get(uris[index])}
       />
-      {editMode && (
-        <TouchableOpacity
-          style={styles.deleteIconButton}
-          onPress={() => {
-            deletePortofolioContent({
-              id: portofolioContent.id || 0,
-            });
-          }}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <FontAwesome6 name="minus" size={15} color="white" />
-        </TouchableOpacity>
-      )}
+      {deleteButton}
     </View>
   );
+
+  const mainContent = () => {
+    if (uris.length > 0) {
+      return (
+        <StyledCarousel
+          width={windowWidth}
+          data={uris}
+          renderItem={renderItem}
+        />
+      );
+    }
+    return (
+      <View
+        style={{
+          backgroundColor: theme.colors.lightGray,
+          height: 483,
+          width: "110%",
+          borderRadius: 14,
+        }}
+      >
+        {deleteButton}
+      </View>
+    );
+  };
 
   useEffect(() => {
     fetchCachedUris(portofolioContent);
@@ -122,49 +161,18 @@ const PortofolioContent: FC<portofolioContentProps> = ({
 
   return (
     <View style={styles.container}>
-      <Carousel
-        width={windowWidth}
-        vertical={false}
-        loop={false}
-        data={uris}
-        renderItem={renderItem}
-        height={500}
-        panGestureHandlerProps={{
-          activeOffsetX: [-3, 3],
-          failOffsetY: [-5, 5],
-        }}
-      />
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 15,
-        }}
-      >
+      {mainContent()}
+      <View style={styles.skillAndDescriptionContainer}>
         <SkillIcon skillType={portofolioContent.skillType || 0} />
-        <TextInput
-          ref={descriptionInputRef}
-          placeholder="Description..."
-          style={{
-            ...theme.customFonts.primary.small,
-            backgroundColor: editMode ? theme.colors.lightGray : "transparent",
-            borderRadius: 7,
-            color: theme.colors.black,
-            paddingHorizontal: 5,
-            width: "80%",
-          }}
-          textAlignVertical={editMode ? "top" : "center"}
-          numberOfLines={editMode ? 5 : 2}
-          value={portofolioContent.description || ""}
-          onChangeText={(description) =>
-            setPortofolioContent((state) => ({
-              ...state,
-              description,
-            }))
-          }
+        <StyledTextField
           editable={editMode}
-          multiline={true}
+          onChangeText={handleOnChangeText}
+          value={portofolioContent.description || ""}
+          textInputProps={{
+            style: {
+              width: "95%",
+            },
+          }}
         />
       </View>
     </View>
@@ -194,5 +202,18 @@ export const styles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 100,
     padding: 7,
+  },
+  textInput: {
+    borderRadius: 7,
+    paddingHorizontal: 5,
+    width: "100%",
+    alignSelf: "flex-start",
+    textAlignVertical: "top",
+  },
+  skillAndDescriptionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 0,
+    gap: 10,
   },
 });

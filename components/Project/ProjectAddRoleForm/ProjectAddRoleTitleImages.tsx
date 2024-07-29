@@ -30,7 +30,11 @@ const ProjectAddRoleImages: FC<ProjectAddRoleImagesProps> = ({
       : getSkillGroupColor(skillGroupType, 0.12);
 
   return (
-    <>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <Text
         style={{
           ...theme.customFonts.secondary.large,
@@ -43,7 +47,6 @@ const ProjectAddRoleImages: FC<ProjectAddRoleImagesProps> = ({
       <View
         style={{
           borderRadius: 7,
-          height: "50%",
         }}
       >
         <Media
@@ -54,7 +57,7 @@ const ProjectAddRoleImages: FC<ProjectAddRoleImagesProps> = ({
           backgroundColor={color}
         />
       </View>
-    </>
+    </View>
   );
 };
 
@@ -76,5 +79,7 @@ const styles = StyleSheet.create({
   mainImage: {
     borderRadius: 7,
     flex: 1,
+    minHeight: 400,
+    marginVertical: "20%",
   },
 });

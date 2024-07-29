@@ -1991,6 +1991,35 @@
         }
       }
     },
+    "/api/User/account": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/VoucherCode/redeem": {
       "post": {
         "tags": [
@@ -2956,6 +2985,12 @@
         "additionalProperties": false
       },
       "PortofolioContentDTO": {
+        "required": [
+          "description",
+          "id",
+          "medias",
+          "skillType"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2963,8 +2998,8 @@
             "format": "int32"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "skillType": {
             "$ref": "#/components/schemas/SkillType"
@@ -2973,8 +3008,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false

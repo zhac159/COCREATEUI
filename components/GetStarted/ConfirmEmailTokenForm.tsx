@@ -65,7 +65,7 @@ export default ConfirmEmailTokenForm;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: "2%",
+    paddingHorizontal: "5%",
     flexGrow: 1,
     justifyContent: "space-between",
   },

@@ -112,7 +112,7 @@ const skillsToStringMapping: { [index: number]: string } = {
   [Skills.MakeupArtist]: "Makeup Artist",
   [Skills.CostumeDesigner]: "Costume Designer",
   [Skills.BoomOperator]: "Boom Operator",
-  [Skills.PropsManager]: "Peops Manager",
+  [Skills.PropsManager]: "Props Manager",
   [Skills.SoundMixer]: "Sound Mixer",
   [Skills.Runner]: "Runner",
   [Skills.ProductionAssistant]: "Production Assistant",

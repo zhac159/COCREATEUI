@@ -21,7 +21,7 @@ const AddSkillForm: FC<FormPageProps> = ({ nextStep }) => {
         flex: 1,
         flexGrow: 1,
         justifyContent: "space-between",
-        paddingHorizontal: "2%",
+        paddingHorizontal: "5%",
         gap: 50,
       }}
     >

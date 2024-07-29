@@ -38,13 +38,7 @@ export default function Discovery() {
 
   const { mutate: seenMatchingProject } = usePostApiSeenMatches();
 
-  const { mutate: createEnquiry } = usePostApiEnquiryCreate({
-    mutation: {
-      onSuccess: (data) => {
-        console.log(data);
-      },
-    },
-  });
+  const { mutate: createEnquiry } = usePostApiEnquiryCreate();
 
   useFocusEffect(
     useCallback(() => {

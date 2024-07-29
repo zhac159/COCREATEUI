@@ -1,4 +1,5 @@
 import { useGetApiProjectCompleted } from "@/common/api/endpoints/cocreateApi";
+import GoBackButton from "@/components/Common/goBackButton";
 import CompletedProjectViewer from "@/components/CompleteProject/CompletedProjectViewer";
 import { useLocalSearchParams } from "expo-router";
 import { View, StyleSheet } from "react-native";
@@ -8,7 +9,7 @@ export default function CompletedProject() {
     projectId: string;
   }>();
 
-  const intId = parseInt(projectId);
+  const intId = parseInt(projectId as string, 10);
 
   const { data: completedProject } = useGetApiProjectCompleted({
     projectId: intId,
@@ -24,9 +25,8 @@ export default function CompletedProject() {
     );
 
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
+      <GoBackButton />
       <CompletedProjectViewer completedProject={completedProject} />
     </View>
   );

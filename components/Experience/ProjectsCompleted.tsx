@@ -16,8 +16,11 @@ const ProjectsCompleted: FC<ProjectsCompletedProps> = ({ experience }) => {
     <View style={styles.imageContainer}>
       <Media
         uri={experience.medias![0].uri}
-        style={{ flex: 1, borderRadius: 14 }}
-        onPress={() => {}}
+        style={{
+          flex: 1,
+          borderRadius: 14,
+          pointerEvents: "none",
+        }}
       />
       <View
         style={{
@@ -28,11 +31,14 @@ const ProjectsCompleted: FC<ProjectsCompletedProps> = ({ experience }) => {
         <View
           style={{
             flexDirection: "row",
-            gap: 20
+            gap: 20,
           }}
         >
           <RoleDetailIconTexts icon={"location-dot"} text={"London"} />
-          <RoleDetailIconTexts icon={"calendar"} text={"17th Apr. - 18th Apr."} />
+          <RoleDetailIconTexts
+            icon={"calendar"}
+            text={"17th Apr. - 18th Apr."}
+          />
         </View>
         <Text
           style={{
@@ -78,6 +84,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 33,
     paddingHorizontal: 20,
-    gap: 14
+    gap: 14,
   },
 });

@@ -7,6 +7,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import Carousel from "react-native-reanimated-carousel";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
 import Review from "./Review";
+import { useTranslation } from "react-i18next";
 
 type ReviewCarouselProps = {
   reviews: ReviewDTO[];
@@ -20,10 +21,15 @@ const ReviewCarousel: FC<ReviewCarouselProps> = ({
   totalReviews,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const renderReview = ({ item }: { item: ReviewDTO }) => (
     <Review review={item} />
   );
+
+  if (reviews.length === 0) {
+   return null;
+  }
 
   return (
     <View
@@ -64,7 +70,7 @@ const ReviewCarousel: FC<ReviewCarouselProps> = ({
           valueStyle={{
             color: theme.colors.darkGray,
           }}
-          text={"Reviews"}
+          text={t("account.experience.reviews.title")}
         />
       </View>
       <View

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePostApiPrepare } from "../api/endpoints/cocreateApi";
 import { EntityType, PrepareUploadDTO } from "../api/model";
 import {
@@ -23,14 +23,29 @@ const debounce = (func: Function, wait: number) => {
 
 export const usePrepareAndUpload = (
   entityType: EntityType,
+  onUploaded?: (urls: string[]) => void,
   cleanUrl = true
 ) => {
   const { mutate: prepareUpload, isLoading } = usePostApiPrepare();
+
+  const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
 
   const [filesUploadingStatus, setFilesUploadingStatus] = useState<Map<
     string,
     number
   > | null>();
+
+  const previousFilesUploadingStatus = useRef(filesUploadingStatus);
+
+  useEffect(() => {
+    if (
+      previousFilesUploadingStatus.current !== null &&
+      filesUploadingStatus === null
+    ) {
+      onUploaded?.(uploadedUrls);
+    }
+    previousFilesUploadingStatus.current = filesUploadingStatus;
+  }, [filesUploadingStatus, onUploaded]);
 
   const checkAndSetFilesUploadingStatus = (uploadId: string) => {
     if (!filesUploadingStatus) return;
@@ -50,7 +65,6 @@ export const usePrepareAndUpload = (
   }, 5);
 
   const debouncedCompleteFilesUploadingStatus = (data: CompletedData) => {
-    console.log("completed", data.id);
     checkAndSetFilesUploadingStatus(data.id);
   };
 
@@ -106,9 +120,11 @@ export const usePrepareAndUpload = (
             onSuccess: async (data) => {
               const sasURIs = data.sasURIs;
               if (sasURIs) {
+                const cleanUrls = sasURIs.map((uri) => getCleanUrl(uri));
+                setUploadedUrls(cleanUrls);
                 await uploadFiles(sasURIs, uris);
                 resolve(
-                  sasURIs.map((uri) => (cleanUrl ? getCleanUrl(uri) : uri))
+                  cleanUrl ? cleanUrls : sasURIs.map((uri) => getCleanUrl(uri))
                 );
               }
             },

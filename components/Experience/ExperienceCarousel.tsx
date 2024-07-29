@@ -23,6 +23,7 @@ const ExperienceCarousel: FC<ExperienceCarouselProps> = ({
         width: "87%",
         alignSelf: "center",
         marginRight: 40,
+        gap: 25,
       }}
     >
       <Text

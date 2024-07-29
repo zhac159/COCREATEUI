@@ -7,14 +7,10 @@ import { useRouter } from "expo-router";
 import CompleteProjectButton from "./CompleteProjectButton";
 
 type ProjectBannerHeaderProps = {
-  onCreate: (createMode: boolean) => void;
-  onEdit: (editMode: boolean) => void;
   id: number;
 };
 
 const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
-  onCreate,
-  onEdit,
   id,
 }) => {
   const theme = useTheme();
@@ -50,7 +46,7 @@ const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
               solid
             />
           )}
-          onPress={() => onCreate(true)}
+          onPress={() => router.navigate("/main/createProject")}
           size={30}
           style={{
             backgroundColor: theme.colors.primary,
@@ -58,7 +54,12 @@ const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
           }}
         />
         <View
-          style={{ width: "50%", backgroundColor: theme.colors.gray, height: 2, alignSelf: "center" }}
+          style={{
+            width: "50%",
+            backgroundColor: theme.colors.gray,
+            height: 2,
+            alignSelf: "center",
+          }}
         />
         <IconButton
           icon={() => (
@@ -69,7 +70,14 @@ const ProjectBannerHeader: FC<ProjectBannerHeaderProps> = ({
               solid
             />
           )}
-          onPress={() => onEdit(true)}
+          onPress={() => {
+            router.navigate({
+              pathname: "/main/editProject",
+              params: {
+                projectId: id,
+              },
+            });
+          }}
           size={30}
           style={{
             backgroundColor: theme.colors.black,

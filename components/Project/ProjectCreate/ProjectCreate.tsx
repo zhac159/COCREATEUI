@@ -24,17 +24,17 @@ import ChatType from "@/common/chat/chatType";
 import { useTranslation } from "react-i18next";
 import StyledTextField from "@/components/Common/StyledTextField";
 import StyledButton from "@/components/Common/StyledButton";
+import { router } from "expo-router";
 
-type ProjectCreateProps = {
-  onCancel: () => void;
-  setEditMode: () => void;
-};
+type ProjectCreateProps = {};
 
-const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel, setEditMode }) => {
+const ProjectCreate: FC<ProjectCreateProps> = () => {
   const { t } = useTranslation();
 
   const setProject = useSetProjectState();
-  const {upload, isLoading: isUploadingImages} = usePrepareAndUpload(EntityType.PROJECT);
+  const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
+    EntityType.PROJECT
+  );
 
   const [uris, setUris] = useState<string[]>([]);
   const [title, setTitle] = useState<string>("");
@@ -52,18 +52,20 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel, setEditMode }) => {
           newState.push(data);
           return newState;
         });
-        await generateAndStoreSymmetricAesKey(ChatType.Project, data.id!);
-        setEditMode();
-        onCancel();
+        await generateAndStoreSymmetricAesKey(ChatType.Project, data.id);
+        router.navigate({
+          pathname: "/main/editProject",
+          params: {
+            projectId: data.id,
+          },
+        });
       },
     },
   });
 
   const handleCreate = async () => {
     const urls = await upload(uris);
-
     const newMedias = getMediaCreateDTOs(urls);
-
     const NewProject: ProjectCreateDTO = {
       medias: newMedias,
       description: description,
@@ -75,10 +77,8 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel, setEditMode }) => {
   const theme = useTheme();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={styles.container}
-      >
-        <CancelButton onPress={onCancel} />
+      <View style={styles.container}>
+        <CancelButton onPress={() => router.back()} />
         {!showImages && (
           <View
             style={{
@@ -184,9 +184,6 @@ const ProjectCreate: FC<ProjectCreateProps> = ({ onCancel, setEditMode }) => {
         <StyledButton
           text={t("button.next")}
           icon="arrow-right"
-          style={{
-            marginTop: "auto",
-          }}
           onPress={() => {
             showImages ? handleCreate() : setShowImages(true);
           }}
@@ -221,7 +218,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: "5%",
-    paddingVertical: "10%",
+    paddingTop: "10%",
     gap: 25,
     justifyContent: "space-between",
   },

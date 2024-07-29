@@ -27,8 +27,6 @@ const Experiences: FC<ExperiencesProps> = ({ experiences }) => {
     [experiences]
   );
 
-  console.log(completedProjects);
-
   const renderCompletedProjects = ({ item }: { item: ExperienceDTO }) => (
     <TouchableWithoutFeedback
       onPress={() => {

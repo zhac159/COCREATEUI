@@ -76,9 +76,7 @@ const CompletedProjectViewer: FC<CompletedProjectViewerProps> = ({
           color: theme.colors.white,
         }}
       >
-        {
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        }
+        {completedProject.description}
       </Text>
       <Carousel
         width={windowWidth}
@@ -110,15 +108,13 @@ const CompletedProjectViewer: FC<CompletedProjectViewerProps> = ({
           Team
         </Text>
         {completedProject.projectRoles.map((role) => (
-          <View
-            key={role.id}
-          >
-            <TeamMemberPreview  otherRole={role} />
+          <View key={role.id}>
+            <TeamMemberPreview otherRole={role} />
             <Coins coins={role.cost} showShadow={false} />
             <Divider
-            style={{
-              marginVertical: 30,
-            }}
+              style={{
+                marginVertical: 30,
+              }}
             />
           </View>
         ))}
@@ -133,12 +129,12 @@ const styles = StyleSheet.create({
   scrollContainer: {},
   title: {
     position: "absolute",
-    top: windowHeight - tabBarHeight,
+    top: windowHeight * 0.8,
     alignSelf: "center",
     color: "white",
     fontWeight: "400",
   },
-  projectImage: {
+  projectImage: { 
     width: "100%",
     height: windowHeight + tabBarHeight,
     borderRadius: 17,

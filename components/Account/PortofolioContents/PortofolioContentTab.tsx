@@ -21,12 +21,33 @@ import {
 import useNewPortofolioContentForm from "./useNewPortofolioContentForm";
 import StyledButton from "@/components/Common/StyledButton";
 import StyledTextField from "@/components/Common/StyledTextField";
+import { useTranslation } from "react-i18next";
+import {
+  applyNewUrlsToPortofolioContents,
+  getUpdatedImages,
+} from "./portofolioContentHelper";
+import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 
 const PortofolioContentTab = () => {
+  const theme = useTheme();
+
+  const { t } = useTranslation();
+
+  const {
+    upload,
+    filesUploadingStatus,
+    isLoading: isFilesUploadingLoading,
+  } = usePrepareAndUpload(
+    EntityType.PORTOFOLIOCONTENT,
+    (urls) => {
+      setEditMode(false);
+    }
+  );
+
+
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
-  const [uris, setUris] = useState<string[]>([]);
-  const theme = useTheme();
+
 
   const {
     FormNode: NewPortofolioContentForm,
@@ -40,77 +61,28 @@ const PortofolioContentTab = () => {
   const [portofolioContents, setPortofolioContents] =
     usePortfolioContentsState();
 
-  const handleUpdatePortofolioContent = () => {
-    const newUris: string[] = [];
-
-    if (!portofolioContents) return;
-
-    portofolioContents.forEach((content) => {
-      content.medias?.forEach((media) => {
-        if (media.uri && !media.uri.startsWith("http")) {
-          newUris.push(media.uri);
-        }
-      });
-    });
-
-    const prepareUploadDTOs: PrepareUploadDTO[] = newUris.map((uri) => ({
-      entity: EntityType.PORTOFOLIOCONTENT,
-      mediaType: getMediaTypeFromUri(uri),
-    }));
-
-    prepareUpload({ data: prepareUploadDTOs });
-
-    setEditMode(false);
-  };
-
   const { mutate: updatePortofolioContent } = usePutApiUserPortofolio({
     mutation: {
       onSuccess: (data) => {
-        setPortofolioContents(data.portofolioContents || []);
         setAboutYou(data.aboutYou);
       },
     },
   });
 
-  const { mutate: prepareUpload } = usePostApiPrepare({
-    mutation: {
-      onSuccess: async (data) => {
-        const sasURIs = data.sasURIs;
-
-        if (sasURIs) {
-          setUris((state) => {
-            uploadFiles(data.sasURIs || [], state);
-            return state;
-          });
-
-          const cleanUris = sasURIs.map((uri) => getCleanUrl(uri || ""));
-
-          let index = 0;
-
-          const newPortofolioContents = portofolioContents.map((content) => {
-            return {
-              ...content,
-              medias: content.medias?.map((media) => {
-                if (!media.uri.startsWith("http")) {
-                  const newMedia = { ...media, uri: cleanUris[index] };
-                  index++;
-                  return newMedia;
-                }
-                return media;
-              }),
-            };
-          });
-
-          updatePortofolioContent({
-            data: {
-              aboutYou: newAboutYou,
-              portofolioContents: newPortofolioContents,
-            },
-          });
-        }
+  const handleUpdatePortofolioContent = async () => {
+    const newUris = getUpdatedImages(portofolioContents);
+    const uploadedFilesUrls = await upload(newUris);
+    const updatedPortofolioContents = applyNewUrlsToPortofolioContents(
+      portofolioContents,
+      uploadedFilesUrls
+    );
+    updatePortofolioContent({
+      data: {
+        aboutYou: newAboutYou,
+        portofolioContents: updatedPortofolioContents,
       },
-    },
-  });
+    });
+  };
 
   const handleCreate = async () => {
     await submitCreate();
@@ -120,19 +92,18 @@ const PortofolioContentTab = () => {
   if (createMode || createIsLoading) {
     return (
       <View style={styles.container}>
-        <View>
-          <StyledButton
-            text="Done"
-            onPress={handleCreate}
-            style={{
-              alignSelf: "flex-end",
-              backgroundColor: theme.colors.primary,
-              marginVertical: 10,
-            }}
-            isLoading={createIsLoading}
-          />
-          {NewPortofolioContentForm}
-        </View>
+        <StyledButton
+          text="Done"
+          onPress={handleCreate}
+          style={{
+            alignSelf: "flex-end",
+            backgroundColor: theme.colors.primary,
+            marginTop: 10,
+            marginBottom: "15%",
+          }}
+          isLoading={createIsLoading}
+        />
+        {NewPortofolioContentForm}
       </View>
     );
   }
@@ -147,39 +118,34 @@ const PortofolioContentTab = () => {
         disableEditMode={false}
         createMode={createMode}
         onDone={handleUpdatePortofolioContent}
+        isLoading={isFilesUploadingLoading}
       />
       <StyledTextField
         editable={editMode}
         value={newAboutYou}
+        href
+        onChangeText={setNewAboutYou}
+        fontSize={20}
         textInputProps={{
-          style: {
-            ...theme.customFonts.primary.medium,
-            ...styles.titleTextInput,
-            color: theme.colors.black,
-            backgroundColor: theme.colors.lightestGray,
-          },
-          numberOfLines: 14,
+          placeholder: t("account.portfolio.add-description-placeholder"),
           multiline: true,
-          onChangeText: (text) => {
-            if (text.length <= 500) {
-              setNewAboutYou(text);
-            }
-          },
+          numberOfLines: 5,
         }}
-        textProps={{
-          style: {
-            ...theme.customFonts.primary.small,
-            ...styles.titleText,
-          },
-          numberOfLines: 14,
-          ellipsizeMode: "tail",
-        }}
+        textProps={
+          {
+              style:{
+                paddingLeft: "2%",
+              }
+            
+          }
+        }
       />
       {portofolioContents.map((content, index) => (
         <PortofolioContent
           key={index}
           portofolioContent={content}
           editMode={editMode}
+          filesUploadingStatus={filesUploadingStatus}
         />
       ))}
     </View>

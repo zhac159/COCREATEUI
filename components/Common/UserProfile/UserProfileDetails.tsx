@@ -9,6 +9,7 @@ import {
 import { useTheme } from "../../Themes/theme";
 import UserProfileDetailsNumbers from "./UserProfileDetailsNumbers";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 type UserProfileDetailsProps = {
   username: string;
@@ -24,6 +25,7 @@ const UserProfileDetails: FC<UserProfileDetailsProps> = ({
   projectsCommisioned,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <View style={{ ...styles.container }}>
@@ -44,10 +46,13 @@ const UserProfileDetails: FC<UserProfileDetailsProps> = ({
           width: "65%",
         }}
       >
-        <UserProfileDetailsNumbers value={rolesWorked} text={"Roles\nWorked"} />
-        <UserProfileDetailsNumbers 
+        <UserProfileDetailsNumbers
+          value={rolesWorked}
+          text={t("account.account-viewer.roles-worked")}
+        />
+        <UserProfileDetailsNumbers
           value={projectsCommisioned}
-          text={"Project\nCommisioned"}
+          text={t("account.account-viewer.projects-commissioned")}
         />
         <UserProfileDetailsNumbers
           value={rating}

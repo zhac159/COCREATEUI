@@ -33,7 +33,7 @@ export default function SignIn() {
         setCurrentUser(data.user);
         generateDatabaseKey();
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
-        router.replace("/main/(tabs)/account");
+        router.replace("/main/(tabs)/discovery");
       },
     },
   });
@@ -63,6 +63,7 @@ export default function SignIn() {
               size={30}
             />
           )}
+          onPress={() => router.replace("/")}
           size={30}
           style={{ position: "absolute", top: "10%", left: "1%" }}
         />

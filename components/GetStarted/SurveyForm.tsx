@@ -65,11 +65,6 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
       return surveyAnswer;
     });
 
-    console.log(submission);
-
-
-
-
     submitSurvey({
       data: submission,
     });

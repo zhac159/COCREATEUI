@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from "react-native";
 import { useProjectValue } from "../../RecoilStates/profileState";
-import CancelButton from "../Common/CancelButton";
 import { useTheme } from "../../Themes/theme";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FC, useState } from "react";
@@ -16,19 +15,19 @@ import ProjectRole from "./ProjectRole";
 import { ProjectRoleDTO } from "@/common/api/model";
 import StyledButton from "@/components/Common/StyledButton";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
 
 type ProjectAddRolesProps = {
-  projectIndex: number;
-  onCancel: () => void;
+  projectId: number;
 };
 
-const ProjectAddRoles: FC<ProjectAddRolesProps> = ({
-  projectIndex,
-  onCancel,
-}) => {
-  const project = useProjectValue();
+const ProjectAddRoles: FC<ProjectAddRolesProps> = ({projectId}) => {
+  const projects = useProjectValue();
 
   const { t } = useTranslation();
+  
+  const project = projects.find((project) => project.id === projectId); 
+
 
   const [addRole, setAddRole] = useState(false);
   const [editRole, setEditRole] = useState<ProjectRoleDTO>();
@@ -40,13 +39,17 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({
 
   const theme = useTheme();
 
+  if(!project) {
+    return null;
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         {!addRole && (
           <>
             <StyledButton
-              onPress={onCancel}
+              onPress={() => router.navigate("/main/(tabs)/project")}
               text={t("button.complete")}
               style={{
                 backgroundColor: theme.colors.darkerGray,
@@ -63,7 +66,7 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({
             >
               {t("projects.add-role.title")}
             </Text>
-            {project[projectIndex].projectRoles.map((role) => {
+            {project.projectRoles.map((role) => {
               return (
                 <ProjectRole
                   key={role.id}
@@ -100,14 +103,14 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({
             </TouchableOpacity>
           </>
         )}
-        {addRole && project && (
+        {addRole && (
           <ProjectAddRoleForm
             exitForm={() => {
               setEditRole(undefined);
               setAddRole(false);
             }}
             editRole={editRole}
-            projectId={project[projectIndex].id}
+            projectId={projectId}
           />
         )}
       </View>

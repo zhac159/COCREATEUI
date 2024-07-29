@@ -14,7 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function GetStarted() {
   const { form } = useFormWithStep([
     <NameAndPasswordForm />,
-    <ConfirmEmailTokenForm />,
+    // <ConfirmEmailTokenForm />,
     <TermnsAndConditionsForm />,
     <SurveyForm />,
     <LocationForm />,

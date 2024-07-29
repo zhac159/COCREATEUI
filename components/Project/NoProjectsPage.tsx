@@ -9,6 +9,7 @@ import { useTheme } from "../Themes/theme";
 import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
 import BlackHalfOpacityBackdrop from "../Common/BlackHalfOpacityBackdrop";
+import { router } from "expo-router";
 
 type NoProjectsPageProps = {
   setCreateMode: () => void;
@@ -51,7 +52,7 @@ const NoProjectsPage: FC<NoProjectsPageProps> = ({ setCreateMode }) => {
                 solid
               />
             )}
-            onPress={() => setCreateMode()}
+            onPress={() => router.navigate("/main/createProject")}
             size={30}
             style={{
               backgroundColor: theme.colors.primary,

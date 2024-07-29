@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { BlurView } from "@react-native-community/blur";
 import { useTheme } from "../Themes/theme";
 import FromToDatePicker from "../Common/Forms/FromToDatePicker";
 import DurationPicker from "../Common/Forms/DurationPicker";
@@ -19,6 +18,7 @@ import { useSetProjectByIdState } from "../RecoilStates/profileState";
 import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
 import { ConnectionContext } from "@/app/main/_layout";
 import ChatType from "@/common/chat/chatType";
+import { BlurView } from "expo-blur";
 
 type AssetOfferFormProps = {
   asset: AssetDTO;
@@ -100,9 +100,8 @@ const AssetOfferForm: FC<AssetOfferFormProps> = ({
           bottom: 0,
           right: 0,
         }}
-        blurType="regular"
-        blurAmount={10}
-        reducedTransparencyFallbackColor="white"
+        tint="regular"
+        intensity={10}
       />
       <View
         style={{
@@ -157,12 +156,12 @@ const AssetOfferForm: FC<AssetOfferFormProps> = ({
           >
             {"For"}
           </Text>
-          <DurationPicker
+          {/* <DurationPicker
             duration={duration}
             setDuration={setDuration}
             hours={hours}
             setHours={setHours}
-          />
+          /> */}
         </View>
         <View
           style={{

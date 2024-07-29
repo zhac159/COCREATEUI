@@ -10,10 +10,10 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import ChatTextInput from "./ChatTextInput";
-import { BlurView } from "@react-native-community/blur";
 import Message from "../Common/Messages/Message";
 import { useRenderChatMessage } from "./MessageBubble";
 import MessageReaction from "../Common/Messages/MessageReaction";
+import { BlurView } from "expo-blur";
 
 type ChatProps = {
   messages: Message[];
@@ -97,12 +97,7 @@ const Chat: FC<ChatProps> = ({
     >
       <FlatList
         ref={flatListRef}
-        contentContainerStyle={{
-          paddingHorizontal: 15,
-          gap: 15,
-          paddingBottom: 160,
-          paddingTop: 20,
-        }}
+        contentContainerStyle={styles.fltListContainer}
         data={messages}
         inverted
         showsVerticalScrollIndicator={false}
@@ -143,8 +138,8 @@ const Chat: FC<ChatProps> = ({
         >
           <BlurView
             style={StyleSheet.absoluteFill}
-            blurType="dark"
-            blurAmount={10}
+            tint="dark"
+            intensity={10}
           />
         </TouchableOpacity>
       )}
@@ -164,6 +159,12 @@ const Chat: FC<ChatProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  fltListContainer:{
+    paddingHorizontal: 15,
+    gap: 15,
+    paddingBottom: 160,
+    paddingTop: 20,
   },
   messageContainer: {
     flexDirection: "row",

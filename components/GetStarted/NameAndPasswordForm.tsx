@@ -18,6 +18,9 @@ import { FC } from "react";
 import * as Crypto from "expo-crypto";
 import { FormPageProps } from "@/common/forms/formsHelper";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
+import { IconButton } from "react-native-paper";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const NameAndPasswordForm: FC<FormPageProps> = ({ nextStep }) => {
   const theme = useTheme();
@@ -26,7 +29,7 @@ const NameAndPasswordForm: FC<FormPageProps> = ({ nextStep }) => {
 
   const { mutate: setPublicKey } = usePutApiUserPublicKey();
 
-  const { mutate } = usePostApiLoginRegister({
+  const { mutate, isLoading } = usePostApiLoginRegister({
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user);
@@ -57,9 +60,23 @@ const NameAndPasswordForm: FC<FormPageProps> = ({ nextStep }) => {
 
   return (
     <View style={styles.container}>
+      <IconButton
+        icon={() => (
+          <FontAwesome6
+            name="chevron-left"
+            color={theme.colors.black}
+            size={30}
+          />
+        )}
+        onPress={() => router.replace("/")}
+        size={30}
+        style={{ position: "absolute", left: "1%" }}
+      />
       <View
         style={{
           gap: 75,
+          justifyContent: "center",
+          flexGrow: 1,
         }}
       >
         <View style={styles.formEntryContainer}>
@@ -131,6 +148,7 @@ const NameAndPasswordForm: FC<FormPageProps> = ({ nextStep }) => {
       </View>
       <StyledButton
         text="Next"
+        isLoading={isLoading}
         onPress={handleSubmitForm(handleSubmit)}
         icon="arrow-right"
       />
@@ -142,7 +160,7 @@ export default NameAndPasswordForm;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: "2%",
+    paddingHorizontal: "5%",
     flexGrow: 1,
     justifyContent: "space-between",
   },

@@ -12,8 +12,6 @@ import { SelectedRole, bannerHeight } from "../projectMainPageHelper";
 type ProjectBannerProps = {
   id: number;
   name: string | undefined | null;
-  onCreate: (createMode: boolean) => void;
-  onEdit: (editMode: boolean) => void;
   uri: string | undefined | null;
   roles: ProjectRoleDTO[];
   selectedRole: SelectedRole;
@@ -23,8 +21,6 @@ type ProjectBannerProps = {
 const ProjectBanner: FC<ProjectBannerProps> = ({
   id,
   name,
-  onCreate,
-  onEdit,
   uri,
   roles,
   selectedRole,
@@ -37,16 +33,13 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
       <Media
         uri={uri}
         style={{ flex: 1 }}
-        onPress={() => {
-          console.log("Media Pressed");
-        }}
       />
       <View
         style={{
           ...styles.content,
         }}
       >
-        <ProjectBannerHeader onCreate={onCreate} onEdit={onEdit} id={id} />
+        <ProjectBannerHeader id={id} />
         <Text
           style={{
             ...theme.customFonts.secondary.medium,

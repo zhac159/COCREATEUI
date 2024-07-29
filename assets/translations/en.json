@@ -97,7 +97,24 @@
       "vouchercode": "Enter Code",
       "accountdetails": "Acount Details & Location",
       "termsandconditions": "Terms & Conditions",
-      "feedbackandcontact": "Feedback & Contact"
+      "feedbackandcontact": "Feedback & Contact",
+      "delete": "Delete Account"
+    },
+    "account-viewer":{
+      "projects-commissioned": "Project(s)\nCommissioned",
+      "roles-worked": "Role(s)\nWorked"
+    },
+    "experience": {
+      "reviews": {
+        "title": "Review(s)",
+        "no-reviews-title": "No Reviews Yet",
+        "no-reviews-description": "You don't have any reviews yet. Ask your clients to leave a review after you've finished a project."
+      }
+    },
+    "portfolio": {
+      "about-you-placeholder": "About You...",
+      "add-description-placeholder": "Description...",
+      "description": "Your portfolio is a collection of all the projects you have worked on. It is a great way to show off your skills and experience to potential employers."
     },
     "settings": {
       "feedback-and-contact": {
@@ -127,6 +144,10 @@
           "title": "Email",
           "email-placeholder": "Enter New Email..."
         }
+      },
+      "delete":{
+        "title": "Delete Account",
+        "description": "Are you sure you want to delete your account? This action cannot be undone."
       }
     }
   },
@@ -143,6 +164,7 @@
   "button": {
     "submit": "Submit",
     "next": "Next",
-    "complete": "Complete"
+    "complete": "Complete",
+    "delete": "Delete"
   }
 }

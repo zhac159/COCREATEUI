@@ -3,13 +3,13 @@ import * as SecureStore from "expo-secure-store";
 import BackEndErrors from "../enum/backEndErrors";
 import SecureStoreKeys from "../enum/secureStoreKeys";
 
-export const AXIOS_INSTANCE = Axios.create({
-  baseURL: "https://wecreatex.azurewebsites.net",
-});
-
 // export const AXIOS_INSTANCE = Axios.create({
-//   baseURL: "http://192.168.1.92:5000",
+//   baseURL: "https://wecreatex.azurewebsites.net",
 // });
+
+export const AXIOS_INSTANCE = Axios.create({
+  baseURL: "http://192.168.1.92:5000",
+});
 
 AXIOS_INSTANCE.interceptors.request.use(async (request) => {
   console.log("Starting Request", JSON.stringify(request, null, 2));

@@ -44,7 +44,7 @@ const LoginForm = () => {
           borderWidth: 1,
           width: 200,
         }}
-        onChangeText={(text) => setValue("username", text)}
+        onChangeText={(text) => setValue("usernameOrEmail", text)}
       />
       <Text>Password:</Text>
       <TextInput

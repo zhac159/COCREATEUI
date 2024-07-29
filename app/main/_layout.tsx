@@ -207,6 +207,12 @@ export default function HelperScreenNav() {
           }}
         />
         <JsStack.Screen
+          name="createProject"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <JsStack.Screen
           name="groupChatDetails"
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

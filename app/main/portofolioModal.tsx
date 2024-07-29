@@ -1,25 +1,39 @@
-import { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { Video } from "expo-av";
+import { useEffect, useState } from "react";
+import { View} from "react-native";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS, Video } from 'expo-av';
 import { Image } from "expo-image";
 import { Carousel } from "react-native-snap-carousel";
 import { useMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
-import * as ScreenOrientation from 'expo-screen-orientation';
+import * as ScreenOrientation from "expo-screen-orientation";
 import { windowWidth } from "@/components/Account/Common/getWindowDimensions";
+import { useTheme } from "@/components/Themes/theme";
+import GoBackButton from "@/components/Common/goBackButton";
 
 export default function PotofolioModal() {
   const [mediaViewer, mediaViewerState] = useMediaViewerState();
   const [key, setKey] = useState(Math.random());
-
+  const theme = useTheme();
   const selectedImageIndex = mediaViewer.selectedImageIndex;
 
   const uris = mediaViewer.uris;
 
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-    setKey(Math.random()); 
+    (async () => {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+        interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+        interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+        playThroughEarpieceAndroid: true,
+      });
+    })();
   }, []);
-  
+
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    setKey(Math.random());
+  }, []);
+
   const renderItem = ({ item, index }: { item: any; index: number }) => {
     const uri = item as string;
     return (
@@ -31,8 +45,8 @@ export default function PotofolioModal() {
       >
         {uri?.endsWith(".mp4") ? (
           <Video
-            source={{ uri }}
-            rate={1.0}
+          source={{ uri: "https://www.w3schools.com/html/mov_bbb.mp4" }}
+          rate={1.0}
             volume={1.0}
             shouldPlay
             useNativeControls
@@ -40,7 +54,7 @@ export default function PotofolioModal() {
             style={{ flex: 1, marginVertical: "20%" }}
           />
         ) : (
-          <Image source={{ uri }} style={{ flex: 1 }} />
+          <Image source={{ uri }} style={{ flex: 1 }} contentFit="contain" />
         )}
       </View>
     );
@@ -54,8 +68,9 @@ export default function PotofolioModal() {
         backgroundColor: "black",
       }}
     >
+      <GoBackButton/>
       <Carousel
-        key={key} 
+        key={key}
         vertical={false}
         data={uris}
         hasParallaxImages

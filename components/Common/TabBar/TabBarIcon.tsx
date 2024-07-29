@@ -28,7 +28,7 @@ const TabBarIcon: FC<TabBarIconProps> = ({ routeName, focused, darkMode }) => {
       case "discovery":
         return "compass";
       case "work":
-        return "dragon";
+        return "bolt";
       case "project":
         return "lightbulb";
       case "account":
@@ -45,10 +45,11 @@ const TabBarIcon: FC<TabBarIconProps> = ({ routeName, focused, darkMode }) => {
         gap: 6,
       }}
     >
-      <FontAwesome6 name={icon} size={24} color={color} />
+      <FontAwesome6 name={icon} size={20} color={color} />
       <Text
         style={{
           ...theme.customFonts.primary.small,
+          fontSize: 11,
           fontWeight: "600",
           color: color,
         }}

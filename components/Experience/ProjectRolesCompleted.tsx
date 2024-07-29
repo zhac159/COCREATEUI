@@ -19,7 +19,6 @@ const ProjectRolesCompleted: FC<ProjectRolesCompletedProps> = ({
       <Media
         uri={experience.medias![0].uri}
         style={{ flex: 1, borderRadius: 14 }}
-        onPress={() => {}}
       />
       <SkillTag
         skill={experience.projectRole?.skillType}
@@ -74,6 +73,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 10,
     overflow: "hidden",
+    pointerEvents: "none",
   },
   details: {
     position: "absolute",

@@ -9,7 +9,6 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { useProjectState } from "@/components/RecoilStates/profileState";
-import NextButton from "@/components/Project/Common/NextButton";
 import CompleteProjectUploadPhoto from "@/components/CompleteProject/CompleteProjectUploadPhoto";
 import { getAssignedRoles } from "@/components/CompleteProject/completedProjectHelper";
 import { ProjectCompleteDTO, ReviewCreateDTO } from "@/common/api/model";
@@ -21,6 +20,7 @@ import { EntityType } from "@/components/Account/Common/Media/EntityType";
 import { usePostApiProjectComplete } from "@/common/api/endpoints/cocreateApi";
 import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelper";
 import StyledButton from "@/components/Common/StyledButton";
+import GoBackButton from "@/components/Common/goBackButton";
 
 export default function CompleteProject() {
   const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
@@ -87,6 +87,7 @@ export default function CompleteProject() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView style={styles.container}>
+        <GoBackButton />
         <View>
           {formStep === 0 && (
             <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />

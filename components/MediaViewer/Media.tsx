@@ -1,9 +1,15 @@
-import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
+import {
+  ActivityIndicator,
+  StyleProp,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import { Image } from "expo-image";
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { TapGestureHandler, State } from "react-native-gesture-handler";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { ResizeMode, Video } from "expo-av";
+import { AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { addOpactity, useTheme } from "../Themes/theme";
 import { useSetMediaViewerState } from "./mediaViewerState";
 import { router } from "expo-router";
@@ -15,6 +21,7 @@ type MediaProps = {
   style: StyleProp<ViewStyle>;
   editMode?: boolean;
   backgroundColor?: string;
+  mute?: boolean;
   loadingState?: number;
 };
 
@@ -23,14 +30,23 @@ const Media: React.FC<MediaProps> = ({
   uri,
   style,
   editMode,
+  mute = true,
   backgroundColor,
   loadingState,
 }) => {
   const theme = useTheme();
 
+  const [downloadingSate, setDownloadingState] = useState(false);
+
   const setMediaViewer = useSetMediaViewerState();
 
   onPress = onPress ? onPress : () => handleSelectMedia(uri || "");
+
+  const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+    if (status.isLoaded && status.isPlaying) {
+      setDownloadingState(false);
+    }
+  };
 
   const handleSelectMedia = (uri: string) => {
     setMediaViewer((state) => ({
@@ -48,6 +64,7 @@ const Media: React.FC<MediaProps> = ({
 
   const EditModeOverlay = useMemo(() => {
     if (!editMode || loadingState !== undefined) return null;
+
     return (
       <View
         style={{
@@ -78,7 +95,26 @@ const Media: React.FC<MediaProps> = ({
     );
   }, [editMode, loadingState]);
 
-  const LoadingOverlay = useMemo(() => {
+  const DownloadingOverlay = useMemo(() => {
+    if (!downloadingSate) return null;
+
+    return (
+      <View
+        style={{
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+          backgroundColor: addOpactity(theme.colors.black, 0.5),
+        }}
+      >
+        <ActivityIndicator size="large" color="#FFFFFF" />
+      </View>
+    );
+  }, [downloadingSate]);
+
+  const UploadingOverlay = useMemo(() => {
     if (loadingState === undefined) return null;
 
     return (
@@ -102,7 +138,12 @@ const Media: React.FC<MediaProps> = ({
     );
   }, [loadingState]);
 
-  if (!uri) return <View style={style}>{EditModeOverlay}</View>;
+  if (!uri)
+    return (
+      <View style={{ ...(style as {}), backgroundColor: backgroundColor ?? theme.colors.white }}>
+        {EditModeOverlay}
+      </View>
+    );
 
   return (
     <>
@@ -118,14 +159,15 @@ const Media: React.FC<MediaProps> = ({
             <Video
               source={{ uri }}
               rate={1.0}
-              volume={1.0}
+              volume={mute ? 0 : 1.0}
               isMuted={false}
               resizeMode={ResizeMode.COVER}
               videoStyle={{
                 opacity: editMode ? 0.5 : 1,
               }}
-              
-              shouldPlay
+              onLoadStart={() => setDownloadingState(true)}
+              onLoad={handlePlaybackStatusUpdate}
+              shouldPlay = {false}
               isLooping
               style={{
                 height: "100%",
@@ -133,13 +175,19 @@ const Media: React.FC<MediaProps> = ({
               }}
             />
             {EditModeOverlay}
-            {LoadingOverlay}
+            {UploadingOverlay}
           </View>
         ) : (
           <View style={[style, { overflow: "hidden" }]}>
             <Image
               source={{
                 uri: uri,
+              }}
+              onLoadStart={() => {
+                setDownloadingState(true);
+              }}
+              onLoadEnd={() => {
+                setDownloadingState(false);
               }}
               contentFit="cover"
               style={{
@@ -148,7 +196,8 @@ const Media: React.FC<MediaProps> = ({
               }}
             />
             {EditModeOverlay}
-            {LoadingOverlay}
+            {UploadingOverlay}
+            {DownloadingOverlay}
           </View>
         )}
       </TapGestureHandler>

@@ -14,16 +14,18 @@ type TabHeaderButtonsProps = {
   setCreateMode?: (createMode: boolean) => void;
   onDone: () => void;
   showPlayButton?: boolean;
+  isLoading?: boolean;
 };
 
 const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
-  editMode = false,
-  disableEditMode = false,
+  editMode,
+  disableEditMode,
   setEditMode = () => null,
-  createMode = false,
+  createMode,
   setCreateMode = undefined,
   onDone,
-  showPlayButton = false,
+  showPlayButton,
+  isLoading,
 }) => {
   const theme = useTheme();
 
@@ -43,7 +45,9 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
               setEditMode(!editMode);
             }}
             style={{
-              backgroundColor: disableEditMode? theme.colors.gray: theme.colors.primary,
+              backgroundColor: disableEditMode
+                ? theme.colors.gray
+                : theme.colors.primary,
               margin: 0,
               padding: 0,
             }}
@@ -77,7 +81,6 @@ const TabHeaderButtons: FC<TabHeaderButtonsProps> = ({
                     userId: userId,
                   },
                 });
-                
               }}
               style={{
                 backgroundColor: theme.colors.black,
@@ -125,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: "2%",
     paddingRight: "2%",
-    paddingBottom: "5%",
+    marginBottom: "15%",
     gap: 16,
   },
 });

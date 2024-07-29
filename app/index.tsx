@@ -25,7 +25,7 @@ const LoginPage = () => {
   const { mutate: authenticate, isLoading } = usePostApiUserAuthenticateToken({
     mutation: {
       onSuccess: (data) => {
-        router.replace("/main/(tabs)/account");
+        router.replace("/main/(tabs)/discovery");
       },
     },
   });

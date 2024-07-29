@@ -9,7 +9,13 @@ import {
   UserInformationDTO,
 } from "../api/model";
 import { MessageCreateDTO } from "../api/model";
-import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import {
   addReactionsToMessages,
   fetchMessageById,
@@ -43,7 +49,6 @@ export async function handleReceiveEncryptedKeysExchange(
   connection: HubConnection,
   encryptedKeys: EncryptedKeyExchangeDTO[]
 ): Promise<void> {
-  console.log("Received encrypted keys:", encryptedKeys);
 
   encryptedKeys.forEach(async (encryptedKey) => {
     const decryptedKey = await decryptMessageDFH(
@@ -52,12 +57,7 @@ export async function handleReceiveEncryptedKeysExchange(
       encryptedKey.publicKey
     );
 
-    console.log("Decrypted key:", decryptedKey);
-
     const targetId = encryptedKey.groupChatId ?? encryptedKey.senderId;
-
-    console.log("Target id:", targetId);
-    console.log("Chat type:", encryptedKey.chatType);
 
     await SecureStore.setItemAsync(
       getAesKeyString(encryptedKey.chatType, targetId),
@@ -66,6 +66,7 @@ export async function handleReceiveEncryptedKeysExchange(
   });
 
   const ids = encryptedKeys.map((encryptedKeys) => encryptedKeys.id);
+  
   await connection.invoke("AknowledgeEncryptedKeyExchangeAsync", ids);
 
   connection.invoke("GetMessagesAsync");
@@ -242,6 +243,22 @@ export function handleUpdateCompleteProject(
   };
 }
 
+function useWebSocketConnection<T>(
+  connection: HubConnection,
+  identifier: string,
+  onReceive: (data: T) => void
+): void {
+  useEffect(() => {
+    connection.on(identifier, onReceive);
+
+    return () => {
+      connection.off(identifier, onReceive);
+    };
+  }, [connection, identifier, onReceive]);
+}
+
+export default useWebSocketConnection;
+
 export async function sendMessage(
   connection: HubConnection,
   database: SQLiteDatabase,
@@ -328,6 +345,7 @@ export const useSendMessage = (
 
   const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
     EntityType.CHATS,
+    () => {},
     false
   );
 
@@ -472,7 +490,9 @@ export async function handleReceiveMessagesReactions(
   connection.invoke("AknowledgeMessageReactionsAsync");
 }
 
-export const useGetUserIdUsernameMap = (users: ChatMember[]): Record<number, string> => {
+export const useGetUserIdUsernameMap = (
+  users: ChatMember[]
+): Record<number, string> => {
   const userIdUsernameMap = useMemo(() => {
     const map: Record<number, string> = {};
 

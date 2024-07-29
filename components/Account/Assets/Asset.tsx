@@ -135,7 +135,6 @@ const Asset: React.FC<AssetProps> = ({
         name: name,
         description: description,
       };
-      console.log(updatedAsset);
       updateAsset({ data: updatedAsset });
     } else {
       const prepareUploadSubmission: PrepareUploadDTO[] =

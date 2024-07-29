@@ -33,7 +33,7 @@ const LocationForm: FC<FormPageProps> = ({ nextStep }) => {
     <View
       style={{
         flex: 1,
-        paddingHorizontal: "2%",
+        paddingHorizontal: "5%",
         justifyContent: "space-between",
       }}
     >

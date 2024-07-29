@@ -16,10 +16,12 @@ import { PortofolioContentCreateDTO, SkillType } from "@/common/api/model";
 import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi";
 import { EntityType } from "../Common/Media/EntityType";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
+import { useTranslation } from "react-i18next";
+import StyledTextField from "@/components/Common/StyledTextField";
 
 const useNewPortofolioContentForm = () => {
   const theme = useTheme();
-
+  const { t } = useTranslation();
   const setPortofolioContents = useSetPortfolioContentsState();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,7 @@ const useNewPortofolioContentForm = () => {
   const [skill, setSkill] = useState<SkillType | undefined>(
     userSkills[0] ? userSkills[0].skillType : undefined
   );
-  
+
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris);
 
@@ -135,19 +137,14 @@ const useNewPortofolioContentForm = () => {
             </View>
           </View>
         </View>
-        <TextInput
-          placeholder="Description..."
-          style={{
-            ...theme.customFonts.primary.small,
-            backgroundColor: theme.colors.lightGray,
-            padding: 10,
-            borderRadius: 7,
-            height: 100,
-            textAlignVertical: "top",
-          }}
-          multiline={true}
-          value={description}
+        <StyledTextField
+          editable={true}
           onChangeText={setDescription}
+          textInputProps={{
+            placeholder: t("account.portfolio.add-description-placeholder"),
+            multiline: true,
+            numberOfLines: 5,
+          }}
         />
       </View>
     ),

@@ -56,15 +56,13 @@ export default function Account() {
             rating={currentUser.rating}
           />
         )}
-        onTabChange={(data) => console.log(data)}
-        renderTabBar={(state) => (
+        renderTabBar={() => (
           <TabButtons
             tabs={tabsNames}
             selectedTab={index}
             setSelectedTab={(index) => {
               collapsibleRef.current?.setIndex(index);
               setIndex(index);
-              console.log(state);
             }}
             isSticky={isSticky}
           />
@@ -74,7 +72,6 @@ export default function Account() {
             scrollEnabled: false,
           }
         }
-        onIndexChange={(index) => console.log(index)}
         ref={collapsibleRef}
       >
         <Tabs.Tab name="skills">

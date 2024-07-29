@@ -1,7 +1,5 @@
 import { StyleSheet } from "react-native";
 import { useProjectValue } from "@/components/RecoilStates/profileState";
-import ProjectCreate from "@/components/Project/ProjectCreate/ProjectCreate";
-import ProjectAddRoles from "@/components/Project/EditProjects/ProjectAddRoles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useState } from "react";
 import Projects from "@/components/Project/ProjectsMainPage/Projects";
@@ -15,33 +13,8 @@ export default function Project() {
 
   const projects = useProjectValue();
 
-  function renderContent() {
-    if (projects.length === 0 && !createMode) {
-      return <NoProjectsPage setCreateMode={() => setCreateMode(true)} />;
-    } else if (editMode) {
-      return (
-        <ProjectAddRoles
-          projectIndex={selectedProject}
-          onCancel={() => setEditMode(false)}
-        />
-      );
-    } else if (createMode) {
-      return (
-        <ProjectCreate
-          onCancel={() => setCreateMode(false)}
-          setEditMode={() => setEditMode(true)}
-        />
-      );
-    } else {
-      return (
-        <Projects
-          selectedProject={selectedProject}
-          setSelectedProject={setSelectedProject}
-          setCreateMode={setCreateMode}
-          setEditMode={setEditMode}
-        />
-      );
-    }
+  if (projects.length === 0) {
+    return <NoProjectsPage setCreateMode={() => setCreateMode(true)} />;
   }
 
   return (
@@ -49,7 +22,8 @@ export default function Project() {
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
-      {renderContent()}
+      <Projects
+      />
     </KeyboardAwareScrollView>
   );
 }
@@ -57,7 +31,7 @@ export default function Project() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    paddingBottom: 200,
+    paddingBottom: 120,
     minHeight: windowHeight,
     justifyContent: "space-between",
     gap: 25,

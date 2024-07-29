@@ -21,9 +21,6 @@ export default function LocationForm() {
         router.replace("/main/(tabs)/account");
         setAddress(data.address);
       },
-      onError: (error) => {
-        console.log(error.code);
-      },
     },
   });
 
@@ -57,14 +54,6 @@ export default function LocationForm() {
               if (details == null) {
                 return;
               }
-              console.log(details);
-              // mutate({
-              //   data: {
-              //     address: details.formatted_address,
-              //     latitude: details.geometry.location.lat,
-              //     longitude: details.geometry.location.lng,
-              //   },
-              // });
             }}
             query={{
               key: "AIzaSyAFNo96X4pNPMF8A7u8XwzrHPXagPsXU2Q",

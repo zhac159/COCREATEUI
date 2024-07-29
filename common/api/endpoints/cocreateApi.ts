@@ -2332,6 +2332,56 @@ const {mutation: mutationOptions} = options ?? {};
       return useMutation(mutationOptions);
     }
     
+export const deleteApiUserAccount = (
+    
+ ) => {
+      
+      
+      return customInstance<Boolean>(
+      {url: `/api/User/account`, method: 'DELETE'
+    },
+      );
+    }
+  
+
+
+export const getDeleteApiUserAccountMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUserAccount>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiUserAccount>>, TError,void, TContext> => {
+const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiUserAccount>>, void> = () => {
+          
+
+          return  deleteApiUserAccount()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiUserAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiUserAccount>>>
+    
+    export type DeleteApiUserAccountMutationError = ErrorType<unknown>
+
+    export const useDeleteApiUserAccount = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUserAccount>>, TError,void, TContext>, }
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiUserAccount>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteApiUserAccountMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiVoucherCodeRedeem = (
     redeemVoucherCodeDTO: RedeemVoucherCodeDTO,
  ) => {

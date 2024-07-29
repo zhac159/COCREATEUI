@@ -9,6 +9,7 @@ import { tabBarHeight } from "../Common/getWindowDimensions";
 import { AccountDetailsAndLocation } from "./AccountDetailsAndLocation/AccountDetailsAndLocation";
 import { TermsAndConditions } from "./TermsAndConditions";
 import { FeedbackAndContact } from "./FeedbackAndContact";
+import { DeleteAccountPage } from "./DeleteAccountPage";
 
 const SettingsTab = () => {
   const [active, setActive] = useState<SettingsMenuOptions>();
@@ -18,9 +19,8 @@ const SettingsTab = () => {
     [SettingsMenuOptions.vouchercode]: <EnterCodePage />,
     [SettingsMenuOptions.accountdetails]: <AccountDetailsAndLocation />,
     [SettingsMenuOptions.feedbackandcontact]: <FeedbackAndContact />,
+    [SettingsMenuOptions.delete]: <DeleteAccountPage />,
   };
-
-  console.log(active);
 
   return (
     <View style={styles.container}>

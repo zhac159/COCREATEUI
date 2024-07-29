@@ -38,7 +38,7 @@ export default AddPortofolioForm;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: "2%",
+    paddingHorizontal: "5%",
     gap: 50,
   },
   buttonsContainer: {
