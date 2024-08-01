@@ -6,9 +6,11 @@ import {
 } from "recoil";
 import { ChatMember, ChatTypeIdPair } from "../Chats/chatHelper";
 import { AssetOfferDTO, EnquiryDTO, ProjectDTO} from "@/common/api/model";
+import ChatType from "@/common/chat/chatType";
 
 export type CurrentChatData = {
-  chatTypeIdPair: ChatTypeIdPair;
+  chatType: ChatType;
+  chatId: string;
   chatName: string;
   colors: string[];
   enquiryInformation?: EnquiryDTO;
@@ -23,12 +25,10 @@ export const currentChatDataState = atom<CurrentChatData>({
   key: "currentChatDataState",
   default: {
     colors: [],
+    chatId: "1",
+    chatType: 0,
     chatName: "",
     chatMembers: [],
-    chatTypeIdPair: {
-      chatTargetId: 0,
-      chatType: 0,
-    },
   },
 });
 

@@ -15,7 +15,7 @@ import {
 } from "@/common/api/endpoints/cocreateApi";
 import UserProfile from "@/components/Common/UserProfile/UserProfile";
 import { IconButton } from "react-native-paper";
-import { useUpdateEnquiryShortlistedInProjects } from "@/components/RecoilStates/profileState";
+import { useSetProjectState } from "@/components/RecoilStates/profileState";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import NoApplicationsPage from "./NoApplicationsPage";
 
@@ -30,8 +30,31 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
   const [applicantsProfiles, setApplicantsProfiles] =
     useState<UserProfilesDTO>();
 
-  const updateApplicationsToShortlisted =
-    useUpdateEnquiryShortlistedInProjects();
+  const setProjects = useSetProjectState();
+
+  const handleUpdateShortlistedEnquiry = (enquiryId: number) => {
+    setProjects((projects) => {
+      const newProjects = projects.map((project) => {
+        if (!project.projectRoles) return project;
+
+        const newProjectRoles = project.projectRoles.map((role) => {
+          if (!role.enquiries) return role;
+
+          const newEnquiries = role.enquiries.map((enquiry) => {
+            if (enquiry.id !== enquiryId) return enquiry;
+
+            return { ...enquiry, shortlisted: true };
+          });
+
+          return { ...role, enquiries: newEnquiries };
+        });
+
+        return { ...project, projectRoles: newProjectRoles };
+      });
+      return newProjects;
+    });
+  };
+
 
   const [swipingDistance, setSwipingDistance] = useState(0);
 
@@ -85,7 +108,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
                 enquiryId: enquiries[index].id,
               },
             });
-            updateApplicationsToShortlisted(enquiries[index].id || 0);
+            handleUpdateShortlistedEnquiry(enquiries[index].id);
           }}
           onSwipedAborted={() => setSwipingDistance(0)}
           onSwiped={() => setSwipingDistance(0)}

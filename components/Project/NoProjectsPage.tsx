@@ -12,10 +12,9 @@ import BlackHalfOpacityBackdrop from "../Common/BlackHalfOpacityBackdrop";
 import { router } from "expo-router";
 
 type NoProjectsPageProps = {
-  setCreateMode: () => void;
 };
 
-const NoProjectsPage: FC<NoProjectsPageProps> = ({ setCreateMode }) => {
+const NoProjectsPage: FC<NoProjectsPageProps> = () => {
   const theme = useTheme();
   const { t } = useTranslation();
 

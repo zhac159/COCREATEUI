@@ -51,7 +51,7 @@ const ProjectAddRoleWhere: FC<ProjectAddRoleWhereProps> = ({
   const color =
     skill === undefined
       ? theme.colors.lightestGray
-      : getSkillGroupColor(skillGroupType, 0.12);
+      : getSkillGroupColor(skillGroupType, 0.2);
 
   return (
     <>

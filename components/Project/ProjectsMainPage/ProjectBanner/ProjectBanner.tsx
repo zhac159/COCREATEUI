@@ -8,6 +8,7 @@ import ProjectBannerFooter from "./ProjectBannerFooter";
 import { ProjectRoleDTO } from "@/common/api/model";
 import { Dispatch, SetStateAction } from "react";
 import { SelectedRole, bannerHeight } from "../projectMainPageHelper";
+import { LinearGradient } from "expo-linear-gradient";
 
 type ProjectBannerProps = {
   id: number;
@@ -30,9 +31,11 @@ const ProjectBanner: FC<ProjectBannerProps> = ({
 
   return (
     <View style={styles.imageContainer} key={uri}>
-      <Media
-        uri={uri}
-        style={{ flex: 1 }}
+      <Media uri={uri} style={{ flex: 1 }} />
+      <LinearGradient
+        colors={["transparent", "black"]}
+        locations={[0.5, 0.95]}
+        style={StyleSheet.absoluteFillObject}
       />
       <View
         style={{

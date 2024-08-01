@@ -27,7 +27,7 @@ type ReplyMessageBubbleProps = {
 const MessageBubble: FC<MessageBubbleProps> = memo(
   ({ item, userId, onPress, showReactions, userIdUsernameMap, showName }) => {
     const theme = useTheme();
-
+    
     const isCurrentUserSender = useMemo(
       () => item.senderId === userId,
       [item.senderId, userId]
@@ -41,7 +41,7 @@ const MessageBubble: FC<MessageBubbleProps> = memo(
           gap: 5,
         }}
       >
-        {showReactions && isCurrentUserSender && (
+        {showReactions && isCurrentUserSender && item.reactions && (
           <MessageReactions reactions={item.reactions} />
         )}
         <View
@@ -60,58 +60,64 @@ const MessageBubble: FC<MessageBubbleProps> = memo(
               uri={item.uri}
             />
           )}
-          <Pressable
-            style={{
-              ...styles.messageContainer,
-              gap: 5,
-              alignSelf: isCurrentUserSender ? "flex-end" : "flex-start",
-              backgroundColor: isCurrentUserSender
-                ? theme.colors.primary
-                : theme.colors.lightGray,
-            }}
-            onPress={() => onPress(item)}
-          >
-            {showName && (
+          {item.content && (
+            <Pressable
+              style={{
+                ...styles.messageContainer,
+                gap: 5,
+                alignSelf: isCurrentUserSender ? "flex-end" : "flex-start",
+                backgroundColor: isCurrentUserSender
+                  ? theme.colors.primary
+                  : theme.colors.lightGray,
+              }}
+              onPress={() => onPress(item)}
+            >
+              {showName && (
+                <Text
+                  style={{
+                    ...theme.customFonts.primary.small,
+                    color: isCurrentUserSender
+                      ? theme.colors.lightGray
+                      : theme.colors.black,
+                    alignSelf: "flex-start",
+                    fontSize: 14,
+                  }}
+                >
+                  {userIdUsernameMap[item.senderId]}
+                </Text>
+              )}
               <Text
                 style={{
-                  ...theme.customFonts.primary.small,
-                  color: theme.colors.lightGray,
-                  alignSelf: "flex-start",
-                  fontSize: 12,
+                  ...theme.customFonts.primary.medium,
+                  fontWeight: "400",
+                  fontSize: 17,
+                  color: isCurrentUserSender
+                    ? theme.colors.white
+                    : theme.colors.black,
                 }}
               >
-                {userIdUsernameMap[item.senderId!]}
+                {item.content}
               </Text>
-            )}
-            <Text
-              style={{
-                color:
-                  item.senderId === userId
-                    ? theme.colors.white
-                    : theme.colors.black,
-              }}
-            >
-              {item.content}
-            </Text>
-            <Text
-              style={{
-                fontSize: 8,
-                alignSelf: "flex-end",
-                color:
-                  item.senderId === userId
-                    ? theme.colors.white
-                    : theme.colors.black,
-              }}
-            >
-              {new Date(item.date!).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })}
-            </Text>
-          </Pressable>
+              <Text
+                style={{
+                  fontSize: 10,
+                  alignSelf: "flex-end",
+                  color:
+                    item.senderId === userId
+                      ? theme.colors.white
+                      : theme.colors.black,
+                }}
+              >
+                {new Date(item.date!).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
+              </Text>
+            </Pressable>
+          )}
         </View>
-        {showReactions && !isCurrentUserSender && (
+        {showReactions && !isCurrentUserSender && item.reactions && (
           <MessageReactions reactions={item.reactions} />
         )}
       </View>
@@ -144,7 +150,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
           gap: 5,
         }}
       >
-        {showReactions && isCurrentUserSender && (
+        {showReactions && isCurrentUserSender && item.reactions && (
           <MessageReactions reactions={item.reactions} />
         )}
         <View>
@@ -164,15 +170,19 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
               style={{
                 ...theme.customFonts.primary.small,
                 alignSelf: "flex-start",
-                fontSize: 12,
+                fontSize: 16,
               }}
             >
               {userIdUsernameMap[item.replyMessage!.senderId!]}
             </Text>
             <Text
               style={{
-                ...theme.customFonts.primary.small,
-                alignSelf: "flex-end",
+                ...theme.customFonts.primary.medium,
+                fontWeight: "400",
+                fontSize: 17,
+                color: isCurrentUserSender
+                  ? theme.colors.white
+                  : theme.colors.black,
               }}
             >
               {item.replyMessage!.content}
@@ -196,7 +206,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
                   ...theme.customFonts.primary.small,
                   color: theme.colors.lightGray,
                   alignSelf: "flex-start",
-                  fontSize: 12,
+                  fontSize: 16,
                 }}
               >
                 {userIdUsernameMap[item.senderId!]}
@@ -212,6 +222,9 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
             >
               <Text
                 style={{
+                  ...theme.customFonts.primary.medium,
+                  fontWeight: "400",
+                  fontSize: 17,
                   color: isCurrentUserSender
                     ? theme.colors.white
                     : theme.colors.black,
@@ -221,7 +234,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
               </Text>
               <Text
                 style={{
-                  fontSize: 8,
+                  fontSize: 10,
                   alignSelf: "flex-end",
                   color: isCurrentUserSender
                     ? theme.colors.white
@@ -237,7 +250,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
             </View>
           </Pressable>
         </View>
-        {showReactions && !isCurrentUserSender && (
+        {showReactions && !isCurrentUserSender && item.reactions && (
           <MessageReactions reactions={item.reactions} />
         )}
       </View>

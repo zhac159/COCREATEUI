@@ -11,14 +11,16 @@ import { Divider } from "react-native-paper";
 export default function GroupChatDetails() {
   const theme = useTheme();
 
-  const { name, members, groupChatId } = useLocalSearchParams<{
+  const { name, members, chatId,  projectId} = useLocalSearchParams<{
     name: string;
     members: string;
-    groupChatId: string;
+    chatId: string;
+    projectId: string;
   }>();
 
+  const projectIdInt = parseInt(projectId!);
+
   const chatMembers: ChatMember[] = JSON.parse(members!);
-  const intGroupChatId = parseInt(groupChatId!);
 
   return (
     <ScrollView
@@ -43,7 +45,7 @@ export default function GroupChatDetails() {
           backgroundColor: theme.colors.black,
         }}
       />
-      <GroupChatMembersList groupChatMembers={chatMembers} />
+      <GroupChatMembersList groupChatMembers={chatMembers} groupChatId={chatId!} projectId={projectIdInt} />
       <Divider
         style={{
           marginVertical: 30,
@@ -66,7 +68,7 @@ export default function GroupChatDetails() {
         }}
       />
 
-      <GroupChatMediaList groupChatId={intGroupChatId} />
+      <GroupChatMediaList groupChatId={chatId!} />
     </ScrollView>
   );
 }

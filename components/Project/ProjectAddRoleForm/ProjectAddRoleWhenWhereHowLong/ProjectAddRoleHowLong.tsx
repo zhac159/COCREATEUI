@@ -31,7 +31,7 @@ const ProjectAddRoleHowLong: FC<ProjectAddRoleHowLongProps> = ({
   const color =
     skill === undefined
       ? theme.colors.lightestGray
-      : getSkillGroupColor(skillGroupType, 0.12);
+      : getSkillGroupColor(skillGroupType, 0.2);
 
   return (
     <>
@@ -62,6 +62,7 @@ const ProjectAddRoleHowLong: FC<ProjectAddRoleHowLongProps> = ({
           setDuration={setEffort}
           hours={hours}
           setHours={setHours}
+          colour={color}
         />
       </View>
     </>

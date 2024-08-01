@@ -9,7 +9,7 @@ import ChatType from "../chat/chatType";
 import { SQLiteDatabase } from "expo-sqlite";
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
-
+  
   await db.execAsync(`create table if not exists messages (
     id TEXT PRIMARY KEY NOT NULL,
     senderId INTEGER NOT NULL,
@@ -17,13 +17,15 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
     uri TEXT,
     mediaType INTEGER,
     date TEXT NOT NULL,
-    chatType INTEGER NOT NULL,
-    targetId INTEGER NOT NULL
+    chatId TEXT NOT NULL,
+    replyMessageId TEXT
   );`);
+  
 
   await db.execAsync(
-    `create index if not exists idx_messages_targetId_chatType on messages (targetId, chatType);`
+    `create index if not exists idx_messages_chatId on messages (chatId);`
   );
+
   await db.execAsync(
     `CREATE INDEX IF NOT EXISTS idx_messages_date ON messages (date DESC);`
   );
@@ -42,20 +44,9 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   await db.execAsync(`
   CREATE INDEX IF NOT EXISTS idx_messageReactions_messageId ON messageReactions (messageId);
 `);
-
-  const resultSet = await db.getAllAsync(`PRAGMA table_info(messages);`);
-
-  const columnExists = resultSet.some(
-    (row: any) => row.name === "replyMessageId"
-  );
-
-  if (!columnExists) {
-    await db.execAsync(`ALTER TABLE messages ADD COLUMN replyMessageId TEXT;`);
-  }
 }
 
 type Row = {
-  chatType: ChatType | undefined;
   content: string | null;
   date: string;
   id: string;
@@ -63,10 +54,12 @@ type Row = {
   replyMessageId: string | null;
   senderId: number;
   targetId: number;
+  chatId: string;
   uri: string | null;
-  replyMessage_chatType: ChatType | undefined;
+  replyMessage_chatType: ChatType;
   replyMessage_content: string | null;
   replyMessage_date: string;
+  replyMessage_chatId: string;
   replyMessage_id: string;
   replyMessage_mediaType: MediaType | undefined;
   replyMessage_replyMessageId: string | null;
@@ -77,17 +70,17 @@ type Row = {
 
 function rowToMessage(row: Row, aesKey: string): Message {
   return {
-    chatType: row.chatType,
     content: row.content ? decryptMessageAES(row.content, aesKey) : null,
     date: row.date,
     id: row.id,
+    chatId: row.chatId,
     mediaType: row.mediaType,
     replyMessageId: row.replyMessageId,
     senderId: row.senderId,
     targetId: row.targetId,
     uri: row.uri,
     replyMessage: {
-      chatType: row.replyMessage_chatType,
+      chatId: row.replyMessage_chatId,
       content: row.replyMessage_content
         ? decryptMessageAES(row.replyMessage_content, aesKey)
         : null,
@@ -141,7 +134,7 @@ export async function addReactionsToMessages(
 
 export async function fetchMessages(
   database: SQLiteDatabase,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
+  chatId: string,
   limit: number,
   lastMessageDate?: string,
   previous: boolean = true
@@ -157,23 +150,21 @@ export async function fetchMessages(
 
   const messageRows: Row[] = await database.getAllAsync(
     `SELECT m.*, 
-      r.chatType as replyMessage_chatType, 
+      r.chatId as replyMessage_chatId, 
       r.content as replyMessage_content, 
       r.date as replyMessage_date, 
       r.id as replyMessage_id, 
       r.mediaType as replyMessage_mediaType, 
       r.replyMessageId as replyMessage_replyMessageId, 
       r.senderId as replyMessage_senderId, 
-      r.targetId as replyMessage_targetId, 
       r.uri as replyMessage_uri
     FROM messages m
     LEFT JOIN messages r ON m.replyMessageId = r.id
-    WHERE m.targetId = ? AND m.chatType = ? AND m.date ${comparisonOperator} ? 
+    WHERE m.chatId = ?  AND m.date ${comparisonOperator} ? 
     ORDER BY m.date ${order} 
     LIMIT ?`,
     [
-      chatTargetIdTypePair.chatTargetId,
-      chatTargetIdTypePair.chatType,
+      chatId,
       lastMessageDate,
       limit,
     ]
@@ -230,7 +221,7 @@ export async function fetchMessageById(
 export async function fetchMessagesAroundId(
   database: SQLiteDatabase,
   message: Message,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number },
+  chatId: string,
   limit: number
 ): Promise<Message[]> {
   const aesKey = await getDatabasKey();
@@ -241,14 +232,13 @@ export async function fetchMessagesAroundId(
 
   const resultSetBefore: Row[] = await database.getAllAsync(
     `SELECT m.*, 
-      r.chatType as replyMessage_chatType, 
+      r.chatId as replyMessage_chatId,
       r.content as replyMessage_content, 
       r.date as replyMessage_date, 
       r.id as replyMessage_id, 
       r.mediaType as replyMessage_mediaType, 
       r.replyMessageId as replyMessage_replyMessageId, 
       r.senderId as replyMessage_senderId, 
-      r.targetId as replyMessage_targetId, 
       r.uri as replyMessage_uri
     FROM messages m
     LEFT JOIN messages r ON m.replyMessageId = r.id
@@ -260,14 +250,13 @@ export async function fetchMessagesAroundId(
 
   const resultSetAfter: Row[] = await database.getAllAsync(
     `SELECT m.*, 
-      r.chatType as replyMessage_chatType, 
+      r.chatId as replyMessage_chatId,
       r.content as replyMessage_content, 
       r.date as replyMessage_date, 
       r.id as replyMessage_id, 
       r.mediaType as replyMessage_mediaType, 
       r.replyMessageId as replyMessage_replyMessageId, 
       r.senderId as replyMessage_senderId, 
-      r.targetId as replyMessage_targetId, 
       r.uri as replyMessage_uri
     FROM messages m
     LEFT JOIN messages r ON m.replyMessageId = r.id
@@ -289,15 +278,14 @@ export async function fetchMessagesAroundId(
 
 export async function fetchUrisByChatTargetIdTypePair(
   database: SQLiteDatabase,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number }
+  chatId: string
 ): Promise<string[]> {
-  const { chatTargetId, chatType } = chatTargetIdTypePair;
 
   const resultSet: Row[] = await database.getAllAsync(
     `SELECT m.uri 
     FROM messages m
-    WHERE m.targetId = ? AND m.chatType = ?`,
-    [chatTargetId, chatType]
+    WHERE m.chatId = ?`,
+    [chatId]
   );
 
   const uris: string[] = [];
@@ -309,6 +297,6 @@ export async function fetchUrisByChatTargetIdTypePair(
   });
 
   console.log(uris);
-  
+
   return uris;
 }

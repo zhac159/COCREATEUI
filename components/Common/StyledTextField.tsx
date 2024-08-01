@@ -8,7 +8,7 @@ import {
   StyleProp,
   TextStyle,
 } from "react-native";
-import { FC } from "react";
+import { FC, Ref } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "../Themes/theme";
 import { useTranslation } from "react-i18next";
@@ -25,6 +25,7 @@ type StyledTextFieldProps = {
   error?: BackEndErrors;
   onChangeText?: (text: string) => void;
   href?: boolean;
+  textInputRef?: Ref<TextInput>;
 };
 
 const StyledTextField: FC<StyledTextFieldProps> = ({
@@ -37,6 +38,7 @@ const StyledTextField: FC<StyledTextFieldProps> = ({
   error,
   onChangeText,
   href,
+  textInputRef
 }) => {
   const theme = useTheme();
 
@@ -73,6 +75,7 @@ const StyledTextField: FC<StyledTextFieldProps> = ({
             defaultTextInputStyles,
             textInputProps?.style,
           ])}
+          ref={textInputRef}
           value={value}
         />
       );

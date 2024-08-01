@@ -15,13 +15,14 @@ const ChatHeaderText: FC<ChatHeaderTextProps> = ({ currentChatData }) => {
 
   const handleChatHeaderPress = () => {
     if (currentChatData.chatMembers) {
-      if (currentChatData.chatTypeIdPair.chatType === ChatType.Project) {
+      if (currentChatData.chatType === ChatType.Project) {
         router.navigate({
           pathname: "/main/groupChatDetails",
           params: {
             members: JSON.stringify(currentChatData.chatMembers),
             name: currentChatData.chatName,
-            groupChatId: currentChatData.chatTypeIdPair.chatTargetId,
+            chatId: currentChatData.chatId,
+            projectId: currentChatData.projectInformation?.id,
           },
         });
       } else {

@@ -36,7 +36,7 @@ const AssetFinderWrapper: FC<AssetFinderWrapperProps> = ({ children, close, goBa
         )}
         {close && (
           <IconButton
-            icon={() => <FontAwesome6 name="x" size={18} solid />}
+            icon={() => <FontAwesome6 name="xmark" size={18} solid />}
             size={26}
             onPress={close}
             style={{

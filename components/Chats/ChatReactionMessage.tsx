@@ -6,15 +6,16 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Emoji, emojiAnimations } from "@/assets/emojis/emojisHelper";
 import LottieView from "lottie-react-native";
 import MessageReaction from "../Common/Messages/MessageReaction";
+import Message from "../Common/Messages/Message";
 
 type ChatReactionMessageProps = {
-  message?: MessageDTO;
+  message?: Message;
   onSendMessage: (message: MessageCreateDTO) => void;
   renderItem: ({
     item,
     showReactions,
   }: {
-    item: MessageDTO;
+    item: Message;
     showReactions: boolean;
   }) => React.JSX.Element;
   addReaction: (message: MessageReaction) => void;

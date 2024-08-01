@@ -8,10 +8,12 @@ import type { UserInformationDTO } from './userInformationDTO';
 
 export interface EnquiryDTO {
   enquirer?: UserInformationDTO;
+  /** @minLength 1 */
+  enquiryMessage: string;
+  id: number;
   /** @nullable */
-  enquiryMessage?: string | null;
-  id?: number;
+  projectId?: number | null;
   projectManager?: UserInformationDTO;
-  projectRoleId?: number;
-  shortlisted?: boolean;
+  projectRoleId: number;
+  shortlisted: boolean;
 }

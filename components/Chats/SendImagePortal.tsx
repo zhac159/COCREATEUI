@@ -53,7 +53,7 @@ const SendImagePortal: FC<SendImagePortalProps> = ({
         style={{ right: 0, top: "5%", alignSelf: "flex-end" }}
         onPress={() => setUris([])}
         size={30}
-        icon={() => <FontAwesome6 name="x" size={30} />}
+        icon={() => <FontAwesome6 name="xmark" size={30} />}
       />
       <View style={styles.textInputContainer}>
         <TextInput

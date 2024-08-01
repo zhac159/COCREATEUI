@@ -14,85 +14,93 @@ import { useGetMedia } from "@/components/Account/Common/Media/mediaHelper";
 import SendImagePortal from "@/components/Chats/SendImagePortal";
 import { useCurrentChatDataValue } from "@/components/RecoilStates/currentChatDataState";
 import Chat from "@/components/Chats/Chat";
-import ChatHeader from "@/components/Chats/ChatHeader/CheatHeader";
 import Message from "@/components/Common/Messages/Message";
-import { useLastMessagesByTargetAndChatTypeValue } from "@/components/RecoilStates/lastMessagesState";
+import { useLastMessagesByChatIdValue } from "@/components/RecoilStates/lastMessagesState";
 import MessageReaction from "@/components/Common/Messages/MessageReaction";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import { useNewMessageReactionValue } from "@/components/RecoilStates/newMessageReactionState";
 import { createAndExchangeKeysIfThereIsNoKey } from "@/common/encryption/encryptionHelper";
 import ChatType from "@/common/chat/chatType";
 import { useSQLiteContext } from "expo-sqlite";
+import ChatHeader from "@/components/Chats/ChatHeader/CheatHeader";
 
 export default function EnquiryChat() {
   const database = useSQLiteContext();
-  const connection = useContext(ConnectionContext);
+  const connection = useContext(ConnectionContext)!;
   const currentChatDataValue = useCurrentChatDataValue();
+
+  const showNames = useMemo(() => {
+    return currentChatDataValue.chatType === ChatType.Project;
+  }, [currentChatDataValue]);
+
+  const momoizedBackgroundColourAnimation = useMemo(() => {
+    return <BackgroundColourAnimation />;
+  }, []);
+
+
+  const targetId = useMemo(() => {
+    if (currentChatDataValue.chatType === ChatType.Project && currentChatDataValue.projectId) {
+      return currentChatDataValue.projectId;
+    }
+    return currentChatDataValue.chatMembers[0].userId;
+  }, [currentChatDataValue.chatMembers]);
+
   const userId = useUserIdValue();
 
   const userIdUsernameMap = useGetUserIdUsernameMap(
     currentChatDataValue.chatMembers
   );
 
+  console.log("userIdUsernameMap", userIdUsernameMap);
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris, true);
 
-  const lastMessages = useLastMessagesByTargetAndChatTypeValue(
-    currentChatDataValue.chatTypeIdPair
+  const lastMessages = useLastMessagesByChatIdValue(
+    currentChatDataValue.chatId
   );
-
+  
   const newMessageReaction = useNewMessageReactionValue();
 
   useEffect(() => {
     (async () => {
-      if (currentChatDataValue.targetPublicKey === null) return;
-      if (!currentChatDataValue.targetPublicKey) return;
+      console.log("currentChatDataValue", currentChatDataValue);
+      if (
+        !connection ||
+        !currentChatDataValue.chatMembers[0] ||
+        !currentChatDataValue.chatMembers[0].publicKey
+      )
+        return;
 
       await createAndExchangeKeysIfThereIsNoKey(
-        currentChatDataValue.targetPublicKey,
-        currentChatDataValue.chatTypeIdPair.chatTargetId,
-        currentChatDataValue.chatTypeIdPair.chatType,
+        currentChatDataValue.chatMembers[0].publicKey,
+        currentChatDataValue.chatMembers[0].userId,
+        currentChatDataValue.chatId,
         connection
       );
     })();
   }, []);
 
-  useEffect(() => {
-    if (newMessageReaction === null) return;
-
-    setMessages((prevMessages) =>
-      prevMessages.map((message) =>
-        message.id === newMessageReaction.messageId
-          ? {
-              ...message,
-              reactions: [
-                ...(message.reactions || []),
-                { ...newMessageReaction, user: userId },
-              ],
-            }
-          : message
-      )
-    );
-  }, [newMessageReaction]);
-
   const handleSendMessage = useSendMessage(
     connection,
     database,
     userId,
-    currentChatDataValue.chatTypeIdPair,
+    targetId,
+    currentChatDataValue.chatType,
+    currentChatDataValue.chatId,
     setMessages
   );
 
   const loadMessages = useLoadMessages(
     database,
-    currentChatDataValue.chatTypeIdPair,
+    currentChatDataValue.chatId,
     setMessages
   );
 
   const loadMessagesAroundMessage = useLoadMessagesAroundMessage(
     database,
-    currentChatDataValue.chatTypeIdPair,
+    currentChatDataValue.chatId,
     setMessages
   );
 
@@ -100,7 +108,9 @@ export default function EnquiryChat() {
     connection,
     database,
     userId,
-    currentChatDataValue.chatTypeIdPair
+    currentChatDataValue.chatType,
+    targetId,
+    currentChatDataValue.chatId
   );
 
   const handleAddReaction = useCallback(
@@ -172,13 +182,25 @@ export default function EnquiryChat() {
     }
   }, [lastMessages]);
 
-  const showNames = useMemo(() => {
-    return currentChatDataValue.chatTypeIdPair.chatType === ChatType.Project;
-  }, [currentChatDataValue]);
 
-  const momoizedBackgroundColourAnimation = useMemo(() => {
-    return <BackgroundColourAnimation />;
-  }, []);
+  
+  useEffect(() => {
+    if (newMessageReaction === null) return;
+
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.id === newMessageReaction.messageId
+          ? {
+              ...message,
+              reactions: [
+                ...(message.reactions || []),
+                { ...newMessageReaction, user: userId },
+              ],
+            }
+          : message
+      )
+    );
+  }, [newMessageReaction]);
 
   if (connection === null) return null;
 

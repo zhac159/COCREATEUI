@@ -10,13 +10,18 @@ import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState
 import ChatType from "@/common/chat/chatType";
 import { router } from "expo-router";
 import { useUserIdValue } from "../RecoilStates/profileState";
+import { getChatId } from "@/common/chat/chatHelper";
 
 type GroupChatMembersListProps = {
   groupChatMembers: ChatMember[];
+  groupChatId: string;
+  projectId: number;
 };
 
 const GroupChatMembersList: FC<GroupChatMembersListProps> = ({
   groupChatMembers,
+  groupChatId,
+  projectId,
 }) => {
   const theme = useTheme();
 
@@ -29,10 +34,13 @@ const GroupChatMembersList: FC<GroupChatMembersListProps> = ({
       chatName: ChatMember.username,
       colors: [],
       chatMembers: groupChatMembers,
-      chatTypeIdPair: {
-        chatTargetId: ChatMember.userId,
-        chatType: ChatType.Enquiry,
-      },
+      chatType: ChatType.ProjectColleague,
+      chatId: getChatId(
+        ChatType.ProjectColleague,
+        projectId,
+        userId,
+        ChatMember.userId
+      ),
     });
     router.push("/main/chat");
   };

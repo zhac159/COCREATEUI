@@ -18,8 +18,8 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
   setSelectedRole,
 }) => {
   roles = [...roles];
-  
-  const {t} = useTranslation();
+
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const flatListRef = useRef<FlatList>(null);
@@ -75,12 +75,12 @@ const ProjectRoleSelection: FC<ProjectRoleSelectionProps> = ({
             style={{
               ...theme.customFonts.primary.medium,
               ...styles.buttonLabel,
-              color: isRoleSelected(projectRole)
-                ? theme.colors.white
-                : theme.colors.black,
+              color: theme.colors.white,
             }}
           >
-            {projectRole ? projectRole.name : t("projects.view-projects.all-roles")}
+            {projectRole
+              ? projectRole.name
+              : t("projects.view-projects.all-roles")}
           </Text>
         </TouchableOpacity>
       )}

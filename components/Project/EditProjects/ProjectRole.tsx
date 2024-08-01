@@ -9,17 +9,18 @@ import {
   getSkillGroupColor,
   skillGroupMap,
 } from "../../Account/Skills/skillHelper";
+import { router } from "expo-router";
 
 type ProjectRoleProps = {
   projectRole: ProjectRoleDTO;
-  handleEditRole: (role: ProjectRoleDTO) => void
+  handleEditRole: (role: ProjectRoleDTO) => void;
 };
 
 const ProjectRole: FC<ProjectRoleProps> = ({ projectRole, handleEditRole }) => {
   const theme = useTheme();
 
   const skillGroupType = skillGroupMap[projectRole.skillType || 0];
-  const color = getSkillGroupColor(skillGroupType, 0.12);
+  const color = getSkillGroupColor(skillGroupType, 0.2);
 
   return (
     <View
@@ -84,6 +85,15 @@ const ProjectRole: FC<ProjectRoleProps> = ({ projectRole, handleEditRole }) => {
               paddingVertical: 10,
               paddingHorizontal: 13,
               backgroundColor: theme.colors.white,
+            }}
+            onPress={() => {
+              router.navigate({
+                pathname: "/main/projectRolePreview",
+                params: {
+                  projectId: projectRole.projectId,
+                  projectRoleId: projectRole.id,
+                },
+              });
             }}
           >
             <FontAwesome6

@@ -17,7 +17,7 @@ type ChatTextInputProps = {
     item: Message;
     showReactions: boolean;
   }) => React.JSX.Element;
-  selectedMessage?: MessageDTO;
+  selectedMessage?: Message;
   setSelectedMessage: React.Dispatch<React.SetStateAction<Message | undefined>>;
   addReaction: (message: MessageReaction) => void;
   getMedia: (index: number) => void;
@@ -42,6 +42,7 @@ const ChatTextInput: React.ForwardRefRenderFunction<
   const theme = useTheme();
 
   const handleSend = () => {
+    
     const message: MessageCreateDTO = {
       content: text,
       replyMessageId: selectedMessage ? selectedMessage?.id : null,
@@ -64,7 +65,9 @@ const ChatTextInput: React.ForwardRefRenderFunction<
         <TextInput
           ref={ref}
           style={{
+            ...theme.customFonts.primary.small,
             ...styles.input,
+            fontSize: 17,
             backgroundColor: theme.colors.lightGray,
           }}
           blurOnSubmit={false}

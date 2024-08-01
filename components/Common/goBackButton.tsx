@@ -11,13 +11,13 @@ const GoBackButton = () => {
         router.back();
       }}
       icon={() => (
-        <FontAwesome6 name="x" size={18} color={theme.colors.black} solid />
+        <FontAwesome6 name="xmark" size={18} color={theme.colors.black} solid />
       )}
-      size={26}
+      size={18}
       style={{
         backgroundColor: theme.colors.white,
         position: "absolute",
-        top: "7%",
+        top: "2%",
         right: "1%",
         zIndex: 100,
       }}

@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, RefObject, useRef } from "react";
 import { useTheme } from "../Themes/theme";
-import { Text, View, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { Text, View, StyleSheet, StyleProp, ViewStyle, TextInput } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import StyledTextField from "./StyledTextField";
@@ -10,15 +10,18 @@ type CoinsProps = {
   viewStyle?: StyleProp<ViewStyle>;
   showShadow?: boolean;
   setCoins?: (coins: number) => void;
+  textInputRef?: RefObject<TextInput>;
 };
 
 const Coins: FC<CoinsProps> = ({
   coins,
   viewStyle,
   showShadow = true,
+  textInputRef,
   setCoins,
 }) => {
   const theme = useTheme();
+
   return (
     <View style={viewStyle}>
       <View
@@ -35,19 +38,33 @@ const Coins: FC<CoinsProps> = ({
           regular={true}
         />
         {setCoins ? (
-          <StyledTextField
-            editable={true}
-            value={coins ? coins.toString() : ""}
-            textInputProps={{
-              keyboardType: "numeric",
-              onChangeText: (text) => setCoins(Number(text)),
-              style: {
-                ...theme.customFonts.primary.large,
-                ...styles.text,
-                color: theme.colors.black,
-              },
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              
             }}
-          />
+          >
+            <StyledTextField
+              editable={true}
+              textInputRef={textInputRef}
+              value={coins ? coins.toString() : ""}
+              textInputProps={{
+                keyboardType: "numeric",
+                onChangeText: (text) => setCoins(Number(text)),
+                style: {
+                  ...theme.customFonts.primary.large,
+                  ...styles.text,
+                  backgroundColor: theme.colors.white,
+                  padding: 0,
+                  textAlignVertical: "bottom",
+                  height: 40,
+                  lineHeight: 1,
+                  color: theme.colors.black,
+                },
+              }}
+            />
+          </View>
         ) : (
           <Text
             style={{

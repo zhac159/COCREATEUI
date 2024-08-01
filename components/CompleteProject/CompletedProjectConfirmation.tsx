@@ -1,11 +1,11 @@
 import { ProjectDTO } from "@/common/api/model";
 import { FC } from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { useTheme } from "../Themes/theme";
-
 
 type CompletedProjectConfirmationProps = {
   project: ProjectDTO;
+  description: string;
 };
 
 const CompletedProjectConfirmation: FC<CompletedProjectConfirmationProps> = ({
@@ -14,13 +14,16 @@ const CompletedProjectConfirmation: FC<CompletedProjectConfirmationProps> = ({
   const theme = useTheme();
 
   return (
-    <>
+    <View
+      style={{
+        gap: 20,
+      }}
+    >
       <Text
         style={{
           ...theme.customFonts.secondary.large,
           fontWeight: "400",
           fontSize: 35,
-          marginBottom: 10,
         }}
       >
         Project Completed
@@ -30,12 +33,12 @@ const CompletedProjectConfirmation: FC<CompletedProjectConfirmationProps> = ({
           ...theme.customFonts.primary.small,
           fontWeight: "500",
           fontSize: 14,
-          marginBottom: 50,
         }}
       >
-        Congratulations! You have successfully completed your project. You can now review the project and submit it for review.
+        Congratulations! You have successfully completed your project. Credits
+        will now be handed out to your team.
       </Text>
-    </>
+    </View>
   );
 };
 

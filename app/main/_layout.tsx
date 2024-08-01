@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
 import {
   EncryptedKeyExchangeDTO,
+  EnquiryDTO,
   MessageDTO,
   MessageReactionDTO,
 } from "@/common/api/model";
@@ -16,12 +17,11 @@ import {
   handleReceiveMessagesReactions,
 } from "@/common/chat/chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
-import { useSetLastMessagesByTargetAndChatTypeState } from "@/components/RecoilStates/lastMessagesState";
 import {
   useUpdateProjectComplete,
-  useUpdateEnquiryShortlisted,
-  useUpdateProjectRoleEnquiries,
   useAssignedProjectsValue,
+  useSetProjectState,
+  useSetEnquiriesState,
 } from "@/components/RecoilStates/profileState";
 import { JsStack } from "@/components/Common/JStack";
 import {
@@ -29,6 +29,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import { useSetNewMessageReactionState } from "@/components/RecoilStates/newMessageReactionState";
+import { useSetLastMessagesByChatIdState } from "@/components/RecoilStates/lastMessagesState";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
@@ -39,11 +40,42 @@ export default function HelperScreenNav() {
 
   const assignedProjects = useAssignedProjectsValue();
 
-  const setLastMessages = useSetLastMessagesByTargetAndChatTypeState();
+  const setLastMessages = useSetLastMessagesByChatIdState();
 
-  const updateProjectRoleEnquiries = useUpdateProjectRoleEnquiries();
+  const setProjectState = useSetProjectState();
 
-  const updateShortlistEnquiry = useUpdateEnquiryShortlisted();
+  const setEnquiries = useSetEnquiriesState();
+
+  const handleUpdateEnquiries = (enquiry: EnquiryDTO) => {
+    setProjectState((oldProjects) => {
+      const newProjects = oldProjects.map((project) => {
+        if (!project.projectRoles) return project;
+
+        const newProjectRoles = project.projectRoles.map((role) => {
+          if (role.id !== enquiry.projectRoleId) return role;
+
+          const newEnquiries = role.enquiries
+            ? [...role.enquiries, enquiry]
+            : [enquiry];
+          return { ...role, enquiries: newEnquiries };
+        });
+
+        return { ...project, projectRoles: newProjectRoles };
+      });
+
+      return newProjects;
+    });
+  };
+
+  const updateShortlistEnquiry = (enquiryId: number) => {
+    setEnquiries((oldEnquiries) => {
+      return oldEnquiries.map((enquiry) => {
+        if (enquiry.id !== enquiryId) return enquiry;
+
+        return { ...enquiry, shortlisted: !enquiry.shortlisted };
+      });
+    });
+  };
 
   const updateProjectComplete = useUpdateProjectComplete();
 
@@ -97,10 +129,7 @@ export default function HelperScreenNav() {
   useEffect(() => {
     if (!connection) return;
 
-    const cleanup = handleReceiveNewEnquiry(
-      connection,
-      updateProjectRoleEnquiries
-    );
+    const cleanup = handleReceiveNewEnquiry(connection, handleUpdateEnquiries);
 
     return cleanup;
   }, [connection]);
@@ -220,6 +249,12 @@ export default function HelperScreenNav() {
         />
         <JsStack.Screen
           name="completedProject"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <JsStack.Screen
+          name="projectRolePreview"
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}

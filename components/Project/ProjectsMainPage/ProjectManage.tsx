@@ -8,6 +8,7 @@ import { SelectedRole } from "./projectMainPageHelper";
 import ShortlistedEnquiriesChats from "./ShortlistedEnquiriesChats";
 import ViewApplications from "../ViewApplications/ViewApplications";
 import ViewApplicationsAndAssetsButton from "../ViewApplications/ViewApplicationsAndAssetsButton";
+import { getChatId } from "@/common/chat/chatHelper";
 
 type ProjectManageProps = {
   project: ProjectDTO;
@@ -15,9 +16,7 @@ type ProjectManageProps = {
 };
 
 const ProjectManage: FC<ProjectManageProps> = ({ project, selectedRole }) => {
-
   const [showApplications, setShowApplications] = useState(false);
-
 
   const enquiriesToRender: EnquiryDTO[] = useMemo(() => {
     let enquiries: EnquiryDTO[] = [];
@@ -41,30 +40,25 @@ const ProjectManage: FC<ProjectManageProps> = ({ project, selectedRole }) => {
       />
     );
 
+  if(!project) return null;
+
   return (
     <View>
-      <View
-        style={styles.container}
-      >
+      <View style={styles.container}>
         <ViewApplicationsAndAssetsButton
           onPress={() => setShowApplications(true)}
           assetMode={!!selectedRole.assetMode}
           projectId={project.id}
         />
-        <GroupChatPreview
-          chatTargetIdTypePair={{
-            chatTargetId: project.id,
-            chatType: ChatType.Project,
-          }}
-          useSecondImage
-          project={project}
-        />
+        {selectedRole.allRoles && (
+          <GroupChatPreview
+            chatId={getChatId(ChatType.Project, project.id)}
+            useSecondImage
+            project={project}
+          />
+        )}
         <TeamMembersChats project={project} />
-        <ShortlistedEnquiriesChats
-          projectId={project.id}
-          enquiries={enquiriesToRender}
-          show={true}
-        />
+        <ShortlistedEnquiriesChats enquiries={enquiriesToRender} show={true} />
         {/* <AssetOfferChats
           assetOffers={projects[selectedProject].assetOffers}
           show={!!selectedRole.assetMode}
@@ -81,6 +75,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: "10%",
     paddingHorizontal: "3%",
-    gap: 15,
+    gap: 25,
   },
 });

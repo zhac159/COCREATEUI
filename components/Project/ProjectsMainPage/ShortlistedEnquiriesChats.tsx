@@ -1,23 +1,23 @@
 import React, { FC, useMemo } from "react";
 import { EnquiryDTO } from "@/common/api/model";
 import ChatPreview from "@/components/Chats/ChatPreview";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import ChatType from "@/common/chat/chatType";
 import { useTranslation } from "react-i18next";
-import WorkTabHeaders from "@/components/Work/WorkTabHeaders";
+import { getChatId } from "@/common/chat/chatHelper";
+import { useTheme } from "@/components/Themes/theme";
 
 type ShortlistedEnquiriesChatsProps = {
   enquiries: EnquiryDTO[];
   show: boolean;
-  projectId: number;
 };
 
 const ShortlistedEnquiriesChats: FC<ShortlistedEnquiriesChatsProps> = ({
   enquiries,
   show,
-  projectId,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const shortlistedEnquiries = useMemo(
     () => enquiries.filter((enquiry) => enquiry.shortlisted),
@@ -29,22 +29,38 @@ const ShortlistedEnquiriesChats: FC<ShortlistedEnquiriesChatsProps> = ({
   return (
     <View>
       {shortlistedEnquiries.length > 0 && (
-        <WorkTabHeaders title={t("work.shortlisted")} />
-      )}
-      {shortlistedEnquiries.map((enquiry) => (
-        <ChatPreview
-          chatName={enquiry.enquirer?.username || "N/A"}
-          chatTargetIdTypePair={{
-            chatTargetId: enquiry.enquirer?.userId || 0,
-            chatType: ChatType.Enquiry,
+        <Text
+          style={{
+            ...theme.customFonts.primary.medium,
+            paddingBottom: 18,
+            fontWeight: "900",
           }}
-          projectId={projectId}
-          chatImage="https://picsum.photos/200/300"
-          key={enquiry.id}
-          enquiryInformation={enquiry}
-          targetPublicKey={enquiry.enquirer?.publicKey}
-        />
-      ))}
+        >
+          Shortlisted
+        </Text>
+      )}
+      {shortlistedEnquiries.map((enquiry) => {
+        if (!enquiry.enquirer) {
+          return null;
+        }
+        return (
+          <ChatPreview
+            chatName={enquiry.enquirer.username}
+            chatType={ChatType.Enquiry}
+            chatId={getChatId(ChatType.Enquiry, enquiry.id)}
+            chatImage="https://picsum.photos/200/300"
+            key={enquiry.id}
+            enquiryInformation={enquiry}
+            chatMembers={[
+              {
+                userId: enquiry.enquirer.userId,
+                username: enquiry.enquirer.username,
+                publicKey: enquiry.enquirer.publicKey!,
+              },
+            ]}
+          />
+        );
+      })}
     </View>
   );
 };

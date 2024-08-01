@@ -8,10 +8,12 @@ import { useMemo } from "react";
 import { useTheme } from "../Themes/theme";
 import ChatType from "@/common/chat/chatType";
 import { ProjectDTO, SkillType } from "@/common/api/model";
+import { getChatId } from "@/common/chat/chatHelper";
 
 export type ChatMember = {
   userId: number;
   username: string;
+  publicKey?: string;
   skill?: SkillType;
 };
 
@@ -25,6 +27,7 @@ export type ChatHeaderIconButton = {
   iconColor: string;
   iconBackgroundColor: string;
   onPress: () => void;
+  iconActionName: string;
 };
 
 export const useChatIcons = (
@@ -56,7 +59,7 @@ export const useChatIcons = (
     await exchangeProjectKey(
       receiverPublicKey,
       receiverId,
-      projectId,
+      getChatId(projectId, ChatType.Project),
       connection
     );
   };
@@ -84,6 +87,7 @@ export const useChatIcons = (
             onPress: () => {},
             iconColor: theme.colors.iconGray,
             iconBackgroundColor: theme.colors.white,
+            iconActionName: "Accept Offer"
           },
         ];
       } else {
@@ -93,6 +97,7 @@ export const useChatIcons = (
             onPress: () => {},
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
+            iconActionName: "Edit Offer"
           },
         ];
       }
@@ -114,6 +119,7 @@ export const useChatIcons = (
             },
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
+            iconActionName: "Hire"
           },
           {
             iconName: "heart-crack",
@@ -126,6 +132,7 @@ export const useChatIcons = (
             },
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
+            iconActionName: "Dismiss"
           },
         ];
       } else {
@@ -139,6 +146,7 @@ export const useChatIcons = (
                 },
               });
             },
+            iconActionName: "Dismiss",
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
           },
@@ -157,7 +165,7 @@ export const useChatIcons = (
 
   return useMemo(() => {
     const getIconsForChatType =
-      chatIconConfig[currentChatData.chatTypeIdPair.chatType];
+      chatIconConfig[currentChatData.chatType];
     return getIconsForChatType
       ? getIconsForChatType(currentChatData, userId)
       : [];
@@ -172,13 +180,15 @@ export const useGetProjectChatMembers = (project: ProjectDTO) => {
     chatMembersForProject.push({
       userId: project.projectManager.userId,
       username: project.projectManager.username,
+      publicKey: project.projectManager.publicKey!,
     });
 
     project.projectRoles.forEach((role) => {
-      if (role.assignee) {
+      if (role.assignee && role.assignee.publicKey) {
         chatMembersForProject.push({
           userId: role.assignee.userId,
           username: role.assignee.username,
+          publicKey: role.assignee.publicKey,
           skill: role.skillType,
         });
       }

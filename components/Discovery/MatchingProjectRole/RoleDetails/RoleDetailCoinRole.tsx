@@ -35,7 +35,8 @@ const RoleDetailCoinRole: FC<RoleDetailCoinRoleProps> = ({
           backgroundColor: theme.colors.black,
           opacity: 0.7,
         }}
-        intensity={15}
+        tint="dark"
+        intensity={80}
       />
     </View>
   );

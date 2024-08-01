@@ -2,17 +2,17 @@ import { ChatType, MediaType } from "@/common/api/model";
 import MessageReaction from "./MessageReaction";
 
 type Message = {
-  chatType?: ChatType;
   content?: string | null;
-  date?: string;
-  id?: string;
-  mediaType?: MediaType;
+  chatId: string;
+  date: string;
+  id: string;
+  mediaType?: MediaType | null;
   replyMessageId?: string | null;
-  senderId?: number;
-  targetId?: number;
+  senderId: number;
+  targetId: number;
   uri?: string | null;
-  replyMessage?: Message;
-  reactions?: MessageReaction[];
+  replyMessage?: Message | null;
+  reactions?: MessageReaction[] | null;
 };
 
 export default Message;

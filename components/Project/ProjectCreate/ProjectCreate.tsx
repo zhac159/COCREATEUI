@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import StyledTextField from "@/components/Common/StyledTextField";
 import StyledButton from "@/components/Common/StyledButton";
 import { router } from "expo-router";
+import { getChatId } from "@/common/chat/chatHelper";
 
 type ProjectCreateProps = {};
 
@@ -52,7 +53,7 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
           newState.push(data);
           return newState;
         });
-        await generateAndStoreSymmetricAesKey(ChatType.Project, data.id);
+        await generateAndStoreSymmetricAesKey(getChatId(data.id, ChatType.Project));
         router.navigate({
           pathname: "/main/editProject",
           params: {

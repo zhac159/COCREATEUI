@@ -1,10 +1,5 @@
 import React, { FC, Dispatch, SetStateAction } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useTheme } from "../../Themes/theme";
 
 type DurationPicker = {
@@ -12,12 +7,14 @@ type DurationPicker = {
   setDuration: Dispatch<SetStateAction<string>>;
   hours: boolean;
   setHours: Dispatch<SetStateAction<boolean>>;
+  colour?: string;
 };
 
 const DurationPicker: FC<DurationPicker> = ({
   duration,
   setDuration,
   hours,
+  colour,
   setHours,
 }) => {
   const theme = useTheme();
@@ -36,12 +33,10 @@ const DurationPicker: FC<DurationPicker> = ({
           ...theme.customFonts.primary.medium,
           ...styles.formTextInput,
           color: theme.colors.black,
-          backgroundColor: theme.colors.lightGray
+          backgroundColor: colour ? colour : theme.colors.lightGray,
         }}
         value={duration}
-        onChangeText={(text) =>
-          setDuration(text)
-        }
+        onChangeText={(text) => setDuration(text)}
       />
       <View
         style={{
@@ -76,7 +71,6 @@ const DurationPicker: FC<DurationPicker> = ({
 export default DurationPicker;
 
 const styles = StyleSheet.create({
-
   formTextInput: {
     fontSize: 16,
     marginTop: "5%",

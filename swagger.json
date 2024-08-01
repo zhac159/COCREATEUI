@@ -2453,20 +2453,16 @@
             "type": "integer",
             "format": "int32"
           },
-          "groupChatId": {
-            "type": "integer",
-            "format": "int32",
+          "chatId": {
+            "type": "string",
             "nullable": true
-          },
-          "chatType": {
-            "$ref": "#/components/schemas/ChatType"
           }
         },
         "additionalProperties": false
       },
       "EncryptedKeyExchangeDTO": {
         "required": [
-          "chatType",
+          "chatId",
           "encryptedSymmetricKey",
           "id",
           "nonce",
@@ -2496,17 +2492,13 @@
             "type": "integer",
             "format": "int32"
           },
-          "groupChatId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "chatId": {
+            "minLength": 1,
+            "type": "string"
           },
           "senderId": {
             "type": "integer",
             "format": "int32"
-          },
-          "chatType": {
-            "$ref": "#/components/schemas/ChatType"
           }
         },
         "additionalProperties": false
@@ -2552,6 +2544,12 @@
         "additionalProperties": false
       },
       "EnquiryDTO": {
+        "required": [
+          "enquiryMessage",
+          "id",
+          "projectRoleId",
+          "shortlisted"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2568,9 +2566,14 @@
           "projectManager": {
             "$ref": "#/components/schemas/UserInformationDTO"
           },
-          "enquiryMessage": {
-            "type": "string",
+          "projectId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
+          },
+          "enquiryMessage": {
+            "minLength": 1,
+            "type": "string"
           },
           "shortlisted": {
             "type": "boolean"
@@ -2800,6 +2803,13 @@
         "additionalProperties": false
       },
       "MessageCreateDTO": {
+        "required": [
+          "chatId",
+          "chatType",
+          "date",
+          "id",
+          "targetId"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2832,11 +2842,23 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "chatId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "MessageDTO": {
+        "required": [
+          "chatId",
+          "chatType",
+          "date",
+          "id",
+          "senderId",
+          "targetId"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2873,6 +2895,10 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "chatId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -2913,6 +2939,10 @@
           },
           "chatType": {
             "$ref": "#/components/schemas/ChatType"
+          },
+          "chatId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2985,12 +3015,6 @@
         "additionalProperties": false
       },
       "PortofolioContentDTO": {
-        "required": [
-          "description",
-          "id",
-          "medias",
-          "skillType"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2998,8 +3022,8 @@
             "format": "int32"
           },
           "description": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "skillType": {
             "$ref": "#/components/schemas/SkillType"
@@ -3008,7 +3032,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaDTO"
-            }
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

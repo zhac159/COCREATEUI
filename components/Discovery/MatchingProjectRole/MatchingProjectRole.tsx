@@ -4,9 +4,7 @@ import { StyleSheet, TouchableWithoutFeedback, View, Text } from "react-native";
 import { useTheme } from "../../Themes/theme";
 import Media from "../../MediaViewer/Media";
 import { ScrollView } from "react-native-gesture-handler";
-import {
-  windowHeight,
-} from "../../Account/Common/getWindowDimensions";
+import { windowHeight } from "../../Account/Common/getWindowDimensions";
 import { LinearGradient } from "expo-linear-gradient";
 import RoleDetails from "./RoleDetails/RoleDetails";
 import MatchingRoleKeywordsAndDescription from "./MatchingRoleKeywordsAndDescription";
@@ -24,9 +22,10 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
     (role) => role.id === matchingProject.projectRoleId
   );
 
-  const otherRoles = matchingProject.project?.projectRoles?.filter(
-    (role) => role.id !== matchingProject.projectRoleId
-  ) || [];
+  const otherRoles =
+    matchingProject.project?.projectRoles?.filter(
+      (role) => role.id !== matchingProject.projectRoleId
+    ) || [];
 
   const matchingRoleNode = useMemo(
     () => (
@@ -72,11 +71,13 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
                 name={matchingProject?.project?.name || "N/A"}
                 description={matchingProject?.project?.description || "N/A"}
               />
-              {/* <Media
-                onPress={() => console.log("pressed")}
-                uri={matchingProject?.project?.medias?.[1].uri || ""}
-                style={styles.projectImages}
-              /> */}
+              {matchingProject?.project?.medias?.[1] && (
+                <Media
+                  onPress={() => console.log("pressed")}
+                  uri={matchingProject.project.medias[1].uri}
+                  style={styles.projectImages}
+                />
+              )}
               <ProjectManagerPreview
                 userInfo={matchingProject?.project?.projectManager}
               />

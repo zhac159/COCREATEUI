@@ -1,8 +1,9 @@
 import Coins from "@/components/Common/Coins";
 import { useCoinsValue } from "@/components/RecoilStates/profileState";
 import { useTheme } from "@/components/Themes/theme";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useRef } from "react";
 import { Text, StyleSheet, TextInput, View } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 type ProjectAddRoleCostProps = {
   cost?: number;
@@ -12,8 +13,16 @@ type ProjectAddRoleCostProps = {
 const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
   const theme = useTheme();
   const availableCoins = useCoinsValue();
+  const coinsRef = useRef<TextInput>(null);
   return (
-    <>
+    <View
+      style={{
+        flex: 1,
+        flexGrow: 1,
+        gap: 30,
+        marginBottom: "10%",
+      }}
+    >
       <Text
         style={{
           ...theme.customFonts.secondary.large,
@@ -22,15 +31,6 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
         }}
       >
         How Much Do You Want To Offer ?
-      </Text>
-      <Text
-        style={{
-          ...theme.customFonts.primary.medium,
-          fontWeight: "500",
-          fontSize: 14,
-        }}
-      >
-        What is Your Project About
       </Text>
       <View
         style={{
@@ -54,13 +54,17 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
         </Text>
         <Coins coins={availableCoins || 0} showShadow={false} />
       </View>
-      <View
+      <TouchableWithoutFeedback
+        onPress={() => {
+          coinsRef.current?.focus();
+          console.log("Pressed");
+        }}
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
           backgroundColor: theme.colors.primary,
-          borderRadius: 14,
+          borderRadius: 15,
           paddingVertical: 13,
           paddingLeft: 18,
           paddingRight: 12,
@@ -75,26 +79,16 @@ const ProjectAddRoleCost: FC<ProjectAddRoleCostProps> = ({ cost, setCost }) => {
         >
           Offer:
         </Text>
-        {/* <TextInput
-          style={{
-            ...theme.customFonts.primary.medium,
-            color: theme.colors.white,
-            fontSize: 22,
-            minWidth: "5%",
-          }}
-          keyboardType="numeric"
-          value={cost ? cost.toString() : ""}
-          onChangeText={(text) => setCost(Number(text))}
-        /> */}
         <Coins
           coins={cost || 0}
           showShadow={false}
           setCoins={(coins: number) => {
             setCost(coins);
           }}
+          textInputRef={coinsRef}
         />
-      </View>
-    </>
+      </TouchableWithoutFeedback>
+    </View>
   );
 };
 

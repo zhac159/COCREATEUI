@@ -35,7 +35,7 @@ const NoApplicationsPage: FC<NoApplicationsPageProps> = ({ turnBack }) => {
             onPress={turnBack}
             icon={() => (
               <FontAwesome6
-                name="x"
+                name="xmark"
                 size={20}
                 color={theme.colors.black}
                 solid

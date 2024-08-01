@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/Themes/theme";
 import WorkTabHeaders from "@/components/Work/WorkTabHeaders";
 import NoWorkPage from "@/components/Work/NoWorkPage";
+import { getChatId } from "@/common/chat/chatHelper";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();
@@ -32,6 +33,8 @@ export default function Work() {
     return assignedProjects.length === 0 && shortlistedEnquiries.length === 0;
   }, [assignedProjects, shortlistedEnquiries]);
 
+  console.log("assignedProjects", shortlistedEnquiries);
+
   const noShortlistedEnquiries = useMemo(() => {
     return shortlistedEnquiries.length === 0;
   }, [shortlistedEnquiries]);
@@ -43,10 +46,6 @@ export default function Work() {
     <View style={styles.container}>
       {assignedProjects.map((project) => (
         <ProjectChatPreview
-          chatTargetIdTypePair={{
-            chatTargetId: project.id || 0,
-            chatType: ChatType.Project,
-          }}
           project={project}
           key={project.id}
         />
@@ -54,18 +53,26 @@ export default function Work() {
       {!noShortlistedEnquiries && (
         <>
           <WorkTabHeaders title={t("work.shortlisted")} />
-          {shortlistedEnquiries.map((enquiry) => (
-            <ChatPreview
-              chatImage="https://picsum.photos/200/300"
-              chatName={enquiry.projectManager?.username || "N/A"}
-              chatTargetIdTypePair={{
-                chatTargetId: enquiry.projectManager?.userId || 0,
-                chatType: ChatType.Enquiry,
-              }}
-              key={enquiry.id}
-              targetPublicKey={enquiry.projectManager?.publicKey}
-            />
-          ))}
+          {shortlistedEnquiries.map((enquiry) => {
+            if (enquiry.projectManager)
+              return (
+                <ChatPreview
+                  chatImage="https://picsum.photos/200/300"
+                  chatName={enquiry.projectManager?.username || "N/A"}
+                  chatType={ChatType.Enquiry}
+                  chatId={getChatId(ChatType.Enquiry, enquiry.id)}
+                  key={enquiry.id}
+                  enquiryInformation={enquiry}
+                  chatMembers={[
+                    {
+                      userId: enquiry.projectManager.userId,
+                      username: enquiry.projectManager.username,
+                      publicKey: enquiry.projectManager.publicKey!,
+                    },
+                  ]}
+                />
+              );
+          })}
         </>
       )}
       {/* {assetOffers.map((offer) => (

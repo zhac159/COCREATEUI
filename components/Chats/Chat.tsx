@@ -3,7 +3,6 @@ import React, { FC, useState, useRef, useCallback } from "react";
 import {
   FlatList,
   TextInput,
-  View,
   StyleSheet,
   TouchableOpacity,
   Keyboard,
@@ -79,22 +78,30 @@ const Chat: FC<ChatProps> = ({
     !!showNames
   );
 
-  const handleAddReactionAndClose = useCallback( async (messageReaction: MessageReaction) => {
-    await handleAddReaction(messageReaction);
-    textInputRef.current?.blur();
-    setSelectedMessage(undefined);
-  }, [handleAddReaction]);
+  const handleAddReactionAndClose = useCallback(
+    async (messageReaction: MessageReaction) => {
+      await handleAddReaction(messageReaction);
+      textInputRef.current?.blur();
+      setSelectedMessage(undefined);
+    },
+    [handleAddReaction]
+  );
 
   const handleRenderItem = ({ item }: { item: Message }) => {
     return renderItem({ item, showReactions: true });
   };
 
- 
+  const handleSendMessageAndScroll = (message: MessageCreateDTO) => {
+    handleSendMessage(message);
+    setTimeout(() => {
+      if (flatListRef.current && messages.length > 0) {
+        flatListRef.current.scrollToIndex({ animated: true, index: 0 });
+      }
+    }, 100);
+  };
 
   return (
-    <KeyboardAvoidingView style={styles.container}
-      behavior="padding"
-    >
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <FlatList
         ref={flatListRef}
         contentContainerStyle={styles.fltListContainer}
@@ -115,7 +122,6 @@ const Chat: FC<ChatProps> = ({
         }}
         onStartReached={() => {
           if (!onStartReachedCalledDuringMomentum) {
-
             handleLoadLaterMessages();
             setOnStartReachedCalledDuringMomentum(true);
           }
@@ -148,7 +154,7 @@ const Chat: FC<ChatProps> = ({
         renderItem={renderItem}
         selectedMessage={selectedMessage}
         setSelectedMessage={setSelectedMessage}
-        sendMessage={handleSendMessage}
+        sendMessage={handleSendMessageAndScroll}
         addReaction={handleAddReactionAndClose}
         getMedia={getMedia}
       />
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  fltListContainer:{
+  fltListContainer: {
     paddingHorizontal: 15,
     gap: 15,
     paddingBottom: 160,

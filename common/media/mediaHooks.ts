@@ -121,11 +121,9 @@ export const usePrepareAndUpload = (
               const sasURIs = data.sasURIs;
               if (sasURIs) {
                 const cleanUrls = sasURIs.map((uri) => getCleanUrl(uri));
-                setUploadedUrls(cleanUrls);
                 await uploadFiles(sasURIs, uris);
-                resolve(
-                  cleanUrl ? cleanUrls : sasURIs.map((uri) => getCleanUrl(uri))
-                );
+                setUploadedUrls(cleanUrl ? cleanUrls : sasURIs);
+                resolve(cleanUrl ? cleanUrls : sasURIs);
               }
             },
             onError: (error) => {

@@ -21,11 +21,14 @@ import { usePostApiProjectComplete } from "@/common/api/endpoints/cocreateApi";
 import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelper";
 import StyledButton from "@/components/Common/StyledButton";
 import GoBackButton from "@/components/Common/goBackButton";
+import { useTranslation } from "react-i18next";
 
 export default function CompleteProject() {
   const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
     EntityType.EXPERIENCE
   );
+
+  const { t } = useTranslation();
 
   const router = useRouter();
 
@@ -114,7 +117,10 @@ export default function CompleteProject() {
               )
           )}
           {formStep === lastFormStepIndex && (
-            <CompletedProjectConfirmation project={project} />
+            <CompletedProjectConfirmation
+              project={project}
+              description={t("projects.complete-role.description")}
+            />
           )}
         </View>
         <StyledButton
@@ -134,10 +140,10 @@ export default function CompleteProject() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "space-between",
     paddingBottom: "20%",
-    paddingTop: "5%",
+    paddingTop: "15%",
     paddingHorizontal: 29,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,

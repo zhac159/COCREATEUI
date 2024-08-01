@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { defineConfig } from "orval";
 
 export default defineConfig({
@@ -8,6 +7,8 @@ export default defineConfig({
       target: "common/api/endpoints/cocreateApi.ts",
       schemas: "common/api/model",
       client: "react-query",
+      allParamsOptional: false,
+      optionsParamRequired: false,
       override: {
         mutator: {
           path: "./common/api/mutator/custom-instance.ts",

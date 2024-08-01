@@ -5,7 +5,7 @@ import { useTheme } from "../Themes/theme";
 import { formatDistance, parseISO } from "date-fns";
 import { router } from "expo-router";
 import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
-import { ChatTypeIdPair } from "./chatHelper";
+import { ChatMember, ChatTypeIdPair } from "./chatHelper";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { fetchMessages } from "@/common/database/databaseHelper";
 import {
@@ -15,30 +15,32 @@ import {
   SkillType,
 } from "@/common/api/model";
 import SkillIcon from "../Account/Skills/SkillIcon";
-import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import Media from "../MediaViewer/Media";
+import ChatType from "@/common/chat/chatType";
+import { useLastMessagesByChatIdState } from "../RecoilStates/lastMessagesState";
+import { getChatId } from "@/common/chat/chatHelper";
 
 type ChatPreviewProps = {
-  chatTargetIdTypePair: ChatTypeIdPair;
   chatImage: string;
+  chatType: ChatType;
+  chatId: string;
   chatName: string;
+  chatMembers: ChatMember[];
   enquiryInformation?: EnquiryDTO;
   projectInformation?: ProjectDTO;
   assetOfferInformation?: AssetOfferDTO;
-  projectId?: number;
-  targetPublicKey?: string | null;
   skillType?: SkillType;
 };
 
 const ChatPreview: FC<ChatPreviewProps> = ({
-  chatTargetIdTypePair,
   chatImage,
+  chatType,
+  chatId,
   chatName,
+  chatMembers,
   enquiryInformation,
   projectInformation,
   assetOfferInformation,
-  projectId,
-  targetPublicKey,
   skillType,
 }) => {
   const theme = useTheme();
@@ -47,11 +49,10 @@ const ChatPreview: FC<ChatPreviewProps> = ({
 
   const database = useSQLiteContext();
 
-  const [lastMessages, setLastMessages] =
-    useLastMessagesByTargetAndChatTypeState(chatTargetIdTypePair);
+  const [lastMessages, setLastMessages] = useLastMessagesByChatIdState(chatId);
 
   useEffect(() => {
-    fetchMessages(database, chatTargetIdTypePair, 3)
+    fetchMessages(database, chatId, 3)
       .then((fetchedMessages) => {
         setLastMessages(fetchedMessages);
       })
@@ -75,27 +76,17 @@ const ChatPreview: FC<ChatPreviewProps> = ({
         ...styles.container,
         flexDirection: "row",
         alignItems: "center",
-        // borderTopColor: theme.colors.lightGray,
-        // borderTopWidth: 1,
-        borderBottomColor: theme.colors.lightGray,
-        borderBottomWidth: 1,
       }}
       onPress={() => {
         setCurrentChatData({
-          chatName,
+          chatId: chatId,
+          chatMembers: chatMembers,
+          chatName: chatName,
+          chatType: chatType,
           colors: [],
-          chatTypeIdPair: chatTargetIdTypePair,
-          assetOfferInformation,
-          enquiryInformation,
-          projectInformation,
-          projectId,
-          targetPublicKey,
-          chatMembers: [
-            {
-              userId: chatTargetIdTypePair.chatTargetId,
-              username: chatName,
-            },
-          ],
+          assetOfferInformation: assetOfferInformation,
+          enquiryInformation: enquiryInformation,
+          projectInformation: projectInformation,
         });
         router.push("/main/chat");
       }}
@@ -107,29 +98,45 @@ const ChatPreview: FC<ChatPreviewProps> = ({
       )}
       <View
         style={{
-          flexDirection: "column",
           flex: 1,
-          paddingRight: 10,
-          paddingLeft: 10,
-          gap: 10,
-          height: "80%",
+          height: "90%",
+          paddingBottom: "1%"
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: "column",
+            flex: 1,
+            gap: 10,
+            borderBottomColor: theme.colors.lightGray,
+            borderBottomWidth: 1,
           }}
         >
-          <Text
+          <View
             style={{
-              ...theme.customFonts.primary.medium,
-              fontSize: 18,
-              color: theme.colors.black,
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            {chatName}
-          </Text>
+            <Text
+              style={{
+                ...theme.customFonts.primary.medium,
+                fontSize: 16,
+                color: theme.colors.black,
+              }}
+            >
+              {chatName}
+            </Text>
+            <Text
+              style={{
+                ...theme.customFonts.primary.medium,
+                fontSize: 12,
+                color: theme.colors.darkGray,
+              }}
+            >
+              {formattedDate}
+            </Text>
+          </View>
           <Text
             style={{
               ...theme.customFonts.primary.medium,
@@ -137,18 +144,9 @@ const ChatPreview: FC<ChatPreviewProps> = ({
               color: theme.colors.darkGray,
             }}
           >
-            {formattedDate}
+            {lastMessageString}
           </Text>
         </View>
-        <Text
-          style={{
-            ...theme.customFonts.primary.medium,
-            fontSize: 14,
-            color: theme.colors.darkGray,
-          }}
-        >
-          {lastMessageString}
-        </Text>
       </View>
     </TouchableOpacity>
   );

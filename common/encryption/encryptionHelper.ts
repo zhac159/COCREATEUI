@@ -7,8 +7,16 @@ import { EncryptedKeyExchangeCreateDTO } from "../api/model";
 import { HubConnection } from "@microsoft/signalr";
 import ChatType from "../chat/chatType";
 
-export function getAesKeyString(chatType: ChatType, targetId: number): string {
-  return "CoCreate-" + chatType + "-" + targetId + "-Aes-Key";
+export function getAesKeyString(chatId: string): string {
+  return "CoCreate-" + chatId + "-Aes-Key";
+}
+
+export async function generateAndStoreSymmetricAesKey(
+  chatId: string
+): Promise<string> {
+  const key = await generateAESKey();
+  await SecureStore.setItemAsync(getAesKeyString(chatId), key);
+  return key;
 }
 
 export async function generateAESKey(): Promise<string> {
@@ -19,20 +27,8 @@ export async function generateAESKey(): Promise<string> {
   return aesKey;
 }
 
-export function getSymmetricAesKey(
-  chatType: ChatType,
-  targetId: number
-): Promise<string | null> {
-  return SecureStore.getItemAsync(getAesKeyString(chatType, targetId));
-}
-
-export async function generateAndStoreSymmetricAesKey(
-  chatType: ChatType,
-  targetId: number
-): Promise<string> {
-  const key = await generateAESKey();
-  await SecureStore.setItemAsync(getAesKeyString(chatType, targetId), key);
-  return key;
+export function getSymmetricAesKey(chatId: string): Promise<string | null> {
+  return SecureStore.getItemAsync(getAesKeyString(chatId));
 }
 
 export function encryptMessageAES(message: string, passphrase: string): string {
@@ -153,64 +149,71 @@ export function getNonce(): Uint8Array {
 
 export async function createAndExchangeKeys(
   receiverPublicKey: string,
-  targetId: number,
-  chatType: ChatType,
-  connection: HubConnection | null
+  receiverId: number,
+  chatId: string,
+  connection: HubConnection
 ): Promise<void> {
-  const aesKey = await generateAndStoreSymmetricAesKey(chatType, targetId);
-
-  const nonce = getNonce();
-  const encryptedKey = await encryptMessageDFH(
-    aesKey,
-    nonce,
-    receiverPublicKey
-  );
-
   const publicKey = await getPublicKey();
 
   if (publicKey == null) {
     throw new Error("Public key not found");
   }
 
+  const aesKey = await generateAndStoreSymmetricAesKey(chatId);
+
+  console.log("aesKey", aesKey);
+
+  const nonce = getNonce();
+
+  const encryptedKey = await encryptMessageDFH(
+    aesKey,
+    nonce,
+    receiverPublicKey
+  );
+
   const keyExchangeDTO: EncryptedKeyExchangeCreateDTO = {
-    chatType: chatType,
     encryptedSymmetricKey: encryptedKey,
     nonce: toBase64(nonce),
     publicKey: toBase64(publicKey),
-    targetId,
+    chatId: chatId,
+    targetId: receiverId,
   };
+
+  console.log("KeyExchangeAsync", keyExchangeDTO);
 
   await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);
 }
 
 export async function createAndExchangeKeysIfThereIsNoKey(
   receiverPublicKey: string,
-  targetId: number,
-  chatType: ChatType,
-  connection: HubConnection | null
+  receiverId: number,
+  chatId: string,
+  connection: HubConnection
 ): Promise<void> {
-  const aesKey = await getSymmetricAesKey(chatType, targetId);
 
-  if (aesKey == null) {
-    await createAndExchangeKeys(
-      receiverPublicKey,
-      targetId,
-      chatType,
-      connection
-    );
+  const aesKey = await getSymmetricAesKey(chatId);
+
+  if (aesKey != null) {
+    return;
   }
+
+  await createAndExchangeKeys(
+    receiverPublicKey,
+    receiverId,
+    chatId,
+    connection
+  );
 }
 
 export async function exchangeProjectKey(
   receiverPublicKey: string,
   receiverId: number,
-  projectId: number,
+  chatId: string,
   connection: HubConnection | null
 ): Promise<void> {
-  const projectKey = await getSymmetricAesKey(ChatType.Project, projectId);
+  const projectKey = await getSymmetricAesKey(chatId);
 
   if (projectKey == null) {
-    console.log("no projectKey");
     return;
   }
 
@@ -226,12 +229,11 @@ export async function exchangeProjectKey(
   if (publicKey == null) return;
 
   const keyExchangeDTO: EncryptedKeyExchangeCreateDTO = {
-    chatType: ChatType.Project,
+    chatId: chatId,
     encryptedSymmetricKey: encryptedKey,
     nonce: toBase64(nonce),
     publicKey: toBase64(publicKey),
     targetId: receiverId,
-    groupChatId: projectId,
   };
 
   await connection?.invoke("KeyExchangeAsync", keyExchangeDTO);

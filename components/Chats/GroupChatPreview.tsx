@@ -6,21 +6,22 @@ import Media from "../MediaViewer/Media";
 import { router } from "expo-router";
 import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
 import { ChatTypeIdPair, useGetProjectChatMembers } from "./chatHelper";
-import { useLastMessagesByTargetAndChatTypeState } from "../RecoilStates/lastMessagesState";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { fetchMessages } from "@/common/database/databaseHelper";
 import { ProjectDTO } from "@/common/api/model";
 import GroupChatPreviewMessages from "./GroupChatPreviewMessages";
 import { findUserById } from "@/common/chat/chatHelper";
+import { useLastMessagesByChatIdState } from "../RecoilStates/lastMessagesState";
+import ChatType from "@/common/chat/chatType";
 
 type GroupChatPreviewProps = {
-  chatTargetIdTypePair: ChatTypeIdPair;
+  chatId: string;
   project: ProjectDTO;
   useSecondImage?: boolean;
 };
 
 const GroupChatPreview: FC<GroupChatPreviewProps> = ({
-  chatTargetIdTypePair,
+  chatId,
   project,
   useSecondImage = false,
 }) => {
@@ -31,15 +32,16 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
   const database = useSQLiteContext();
 
   const [lastMessages, setLastMessages] =
-    useLastMessagesByTargetAndChatTypeState(chatTargetIdTypePair);
+    useLastMessagesByChatIdState(chatId);
+    
 
   const chatMembers = useGetProjectChatMembers(project);
 
   useEffect(() => {
-    fetchMessages(database, chatTargetIdTypePair, 3).then((fetchedMessages) => {
+    fetchMessages(database, chatId, 3).then((fetchedMessages) => {
       setLastMessages(fetchedMessages);
     });
-  }, [database]);
+  }, [database, chatId]);
 
   return (
     <TouchableOpacity
@@ -47,8 +49,9 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
       onPress={() => {
         setCurrentChatData({
           chatName: project.name,
+          chatType: ChatType.Project,
           colors: [],
-          chatTypeIdPair: chatTargetIdTypePair,
+          chatId: chatId,
           chatMembers: chatMembers,
         });
         router.push("/main/chat");

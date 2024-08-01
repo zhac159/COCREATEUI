@@ -75,7 +75,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
     editRole?.endDate ? new Date(editRole?.endDate) : new Date()
   );
   const [effort, setEffort] = useState<string>("1");
-  
+
   const [hours, setHours] = useState<boolean>(
     editRole?.effort ? editRole?.effort > 23 : false
   );
@@ -283,7 +283,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
         height: "100%",
         paddingBottom: 50,
       }}
-      keyboardShouldPersistTaps = "always"
+      keyboardShouldPersistTaps="always"
       extraHeight={10}
       enableOnAndroid={false}
     >
@@ -298,7 +298,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            gap: 11
+            gap: 11,
           }}
         >
           <SkillIcon skillType={skill} />
@@ -338,50 +338,53 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
             flex: 1,
           }}
         >
-        {formStep === 0 && (
-          <ProjectAddRoleSkill skill={skill} setSkill={setSkill} />
-        )}
-        {formStep === 1 && (
-          <ProjectAddRoleTitleDescription
-            title={title}
-            setTitle={setTitle}
-            description={description}
-            setDescription={setDescription}
-            skill={skill}
-          />
-        )}
-        {formStep === 2 && (
-          <ProjectAddRoleKeywords
-            keywords={keywords}
-            setKeywords={setKeywords}
-            skill={skill}
-          />
-        )}
-        {formStep === 3 && (
-          <ProjectAddRoleImages uris={uris} setUris={setUris} skill={skill} />
-        )}
-        {formStep === 4 && (
-          <ProjectAddRoleWhenWhereHowLong
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            effort={effort}
-            setEffort={setEffort}
-            hours={hours}
-            setHours={setHours}
-            longitude={longitude}
-            setLongitude={setLongitude}
-            latitude={latitude}
-            setLatitude={setLatitude}
-            address={address}
-            setAddress={setAddress}
-            remote={remote}
-            setRemote={setRemote}
-            skill={skill}
-          />
-        )}
-        {formStep === 5 && <ProjectAddRoleCost cost={cost} setCost={setCost} />}
+          {formStep === 0 && (
+            <ProjectAddRoleSkill skill={skill} setSkill={setSkill} />
+          )}
+          {formStep === 1 && (
+            <ProjectAddRoleTitleDescription
+              title={title}
+              setTitle={setTitle}
+              description={description}
+              setDescription={setDescription}
+              skill={skill}
+            />
+          )}
+          {formStep === 2 && (
+            <ProjectAddRoleKeywords
+              keywords={keywords}
+              setKeywords={setKeywords}
+              skill={skill}
+            />
+          )}
+
+          {formStep === 3 && (
+            <ProjectAddRoleWhenWhereHowLong
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              effort={effort}
+              setEffort={setEffort}
+              hours={hours}
+              setHours={setHours}
+              longitude={longitude}
+              setLongitude={setLongitude}
+              latitude={latitude}
+              setLatitude={setLatitude}
+              address={address}
+              setAddress={setAddress}
+              remote={remote}
+              setRemote={setRemote}
+              skill={skill}
+            />
+          )}
+          {formStep === 4 && (
+            <ProjectAddRoleCost cost={cost} setCost={setCost} />
+          )}
+          {formStep === 5 && (
+            <ProjectAddRoleImages uris={uris} setUris={setUris} skill={skill} />
+          )}
         </View>
         <NextButton
           text={formStep === 5 ? "Finish Role" : "Next"}

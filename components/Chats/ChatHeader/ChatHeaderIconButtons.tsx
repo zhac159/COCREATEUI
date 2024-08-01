@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
@@ -22,7 +22,12 @@ const ChatHeaderIconButtons: FC<ChatHeaderButtonsProps> = ({
 }) => {
   const theme = useTheme();
 
-  const chatIcons: ChatHeaderIconButton[] = useChatIcons(currentChatData, userId, connection);
+  const chatIcons: ChatHeaderIconButton[] = useChatIcons(
+    currentChatData,
+    userId,
+    connection
+  );
+
 
   return (
     <View
@@ -32,24 +37,41 @@ const ChatHeaderIconButtons: FC<ChatHeaderButtonsProps> = ({
     >
       {chatIcons.map((chatIcon, index) => {
         return (
-          <IconButton
+          <View
             key={index}
-            onPress={chatIcon.onPress}
-            icon={() => (
-              <FontAwesome6
-                name={chatIcon.iconName}
-                size={18}
-                solid
-                color={chatIcon.iconColor}
-              />
-            )}
             style={{
-              margin: 0,
-              padding: 0,
-              backgroundColor: chatIcon.iconBackgroundColor,
+              alignItems: "center",
             }}
-            size={20}
-          />
+          >
+            <IconButton
+              key={index}
+              onPress={chatIcon.onPress}
+              icon={() => (
+                <FontAwesome6
+                  name={chatIcon.iconName}
+                  size={18}
+                  solid
+                  color={chatIcon.iconColor}
+                />
+              )}
+              style={{
+                margin: 0,
+                padding: 0,
+                backgroundColor: chatIcon.iconBackgroundColor,
+              }}
+              size={20}
+            />
+            <Text
+              style={{
+                ...theme.customFonts.primary.small,
+                color: theme.colors.black,
+                fontWeight: "700",
+                fontSize: 12,
+              }}
+            >
+              {chatIcon.iconActionName}
+            </Text>
+          </View>
         );
       })}
     </View>

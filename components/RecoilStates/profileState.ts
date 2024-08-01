@@ -491,22 +491,6 @@ export const useUpdateProjectRoleEnquiries = () => {
   };
 };
 
-export const useUpdateEnquiryShortlisted = () => {
-  const [user, setUser] = useRecoilState(currentUserState);
-
-  return (enquiryId: number) => {
-    if (!user || !user.enquiries) return;
-
-    const newEnquiries = user.enquiries.map((enquiry) => {
-      if (enquiry.id !== enquiryId) return enquiry;
-
-      return { ...enquiry, shortlisted: true };
-    });
-
-    setUser({ ...user, enquiries: newEnquiries });
-  };
-};
-
 export const useUpdateProjectComplete = () => {
   const [user, setUser] = useRecoilState(currentUserState);
 

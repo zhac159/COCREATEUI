@@ -2,22 +2,19 @@ import ChatType from "@/common/chat/chatType";
 import { useSQLiteContext } from "expo-sqlite/next";
 import { FC } from "react";
 import { FlatList, StyleSheet, View, Text } from "react-native";
-import { useFetchUrisByChatTargetIdTypePair } from "../Account/Common/Media/mediaHelper";
+import { useFetchUrisByChatId } from "../Account/Common/Media/mediaHelper";
 import Media from "../MediaViewer/Media";
 import { useTheme } from "../Themes/theme";
 
 type GroupChatMediaListProps = {
-  groupChatId: number;
+  groupChatId: string;
 };
 
 const GroupChatMediaList: FC<GroupChatMediaListProps> = ({ groupChatId }) => {
   const theme = useTheme();
   const database = useSQLiteContext();
 
-  const { uris, loading } = useFetchUrisByChatTargetIdTypePair(database, {
-    chatTargetId: groupChatId,
-    chatType: ChatType.Project,
-  });
+  const { uris, loading } = useFetchUrisByChatId(database, groupChatId);
 
   return (
     <View

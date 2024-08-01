@@ -8,6 +8,7 @@ type FromToDatePickerProps = {
   setStartDate: Dispatch<SetStateAction<Date>>;
   endDate: Date;
   setEndDate: Dispatch<SetStateAction<Date>>;
+  colour?: string;
 };
 
 const FromToDatePicker: FC<FromToDatePickerProps> = ({
@@ -15,6 +16,7 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
   setStartDate,
   endDate,
   setEndDate,
+  colour,
 }) => {
   const theme = useTheme();
 
@@ -68,7 +70,7 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
           onPress={() => showDatePicker(true)}
           style={{
             ...theme.customFonts.primary.medium,
-            backgroundColor: theme.colors.lightGray,
+            backgroundColor: colour ? colour : theme.colors.lightGray,
             borderRadius: 7,
             padding: 10,
             width: "70%",
@@ -105,7 +107,7 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
           style={{
             ...theme.customFonts.primary.medium,
             width: "70%",
-            backgroundColor: theme.colors.lightGray,
+            backgroundColor: colour ? colour : theme.colors.lightGray,
             borderRadius: 7,
             padding: 10,
           }}

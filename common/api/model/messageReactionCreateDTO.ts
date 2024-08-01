@@ -8,6 +8,8 @@ import type { ChatType } from './chatType';
 import type { Emoji } from './emoji';
 
 export interface MessageReactionCreateDTO {
+  /** @nullable */
+  chatId?: string | null;
   chatType?: ChatType;
   messageId?: string;
   multiplier?: number;

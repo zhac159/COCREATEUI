@@ -10,7 +10,7 @@ import { ChatTypeIdPair } from "../Chats/chatHelper";
 import Message from "../Common/Messages/Message";
 
 export type LastMessages = {
-  chatTypeIdPair: ChatTypeIdPair;
+  chatId: string;
   lastMessages: Message[];
 };
 
@@ -24,35 +24,24 @@ export const useLastMessagesValue = () => useRecoilValue(lastMessagesState);
 export const useSetLastMessagesState = () =>
   useSetRecoilState(lastMessagesState);
 
-export const lastMessagesByTargetAndChatTypeState = selectorFamily<
-  Message[],
-  ChatTypeIdPair
->({
-  key: "lastMessagesByTargetAndChatTypeState",
+export const lastMessagesByChatIdState = selectorFamily<Message[], string>({
+  key: "lastMessagesByChatIdState",
   get:
-    (chatTypeIdPair) =>
+    (chatId) =>
     ({ get }) => {
       const lastMessages = get(lastMessagesState);
-      const messages = lastMessages.find(
-        (message) =>
-          message.chatTypeIdPair.chatTargetId === chatTypeIdPair.chatTargetId &&
-          message.chatTypeIdPair.chatType === chatTypeIdPair.chatType
+      const lastMessage = lastMessages.find(
+        (message) => message.chatId === chatId
       );
-
-      return messages ? messages.lastMessages : [];
+      return lastMessage ? lastMessage.lastMessages : [];
     },
   set:
-    (chatTypeIdPair) =>
-    ({ set, get }, newValue) => {
-      const lastMessages = get(lastMessagesState);
-      if (lastMessages) {
+    (chatId) =>
+    ({ set }, newValue) => {
+      set(lastMessagesState, (oldLastMessages) => {
         let found = false;
-        const newLastMessagesState = lastMessages.map((message) => {
-          if (
-            message.chatTypeIdPair.chatTargetId ===
-              chatTypeIdPair.chatTargetId &&
-            message.chatTypeIdPair.chatType === chatTypeIdPair.chatType
-          ) {
+        const newLastMessagesState = oldLastMessages.map((message) => {
+          if (message.chatId === chatId) {
             found = true;
             return newValue instanceof DefaultValue
               ? undefined
@@ -62,36 +51,31 @@ export const lastMessagesByTargetAndChatTypeState = selectorFamily<
         });
 
         if (!found && !(newValue instanceof DefaultValue)) {
-          newLastMessagesState.push({ chatTypeIdPair, lastMessages: newValue });
+          newLastMessagesState.push({ chatId, lastMessages: newValue });
         }
 
-        set(
-          lastMessagesState,
-          newLastMessagesState.filter(Boolean) as LastMessages[]
-        );
-      }
+        return newLastMessagesState.filter(Boolean) as LastMessages[];
+      });
     },
 });
 
-export const useLastMessagesByTargetAndChatTypeState = (
-  chatTypeIdPair: ChatTypeIdPair
-) => useRecoilState(lastMessagesByTargetAndChatTypeState(chatTypeIdPair));
+export const useLastMessagesByChatIdState = (
+  chatId: string
+) => useRecoilState(lastMessagesByChatIdState(chatId));
 
-export const useLastMessagesByTargetAndChatTypeValue = (
-  chatTypeIdPair: ChatTypeIdPair
-) => useRecoilValue(lastMessagesByTargetAndChatTypeState(chatTypeIdPair));
+export const useLastMessagesByChatIdValue = (
+  chatId: string
+) => useRecoilValue(lastMessagesByChatIdState(chatId));
 
-export const useSetLastMessagesByTargetAndChatTypeState = () => {
+
+export const useSetLastMessagesByChatIdState = () => {
   const setLastMessagesState = useSetRecoilState(lastMessagesState);
 
-  return (chatTypeIdPair: ChatTypeIdPair, newValue: Message) => {
+  return (chatId: string, newValue: Message) => {
     setLastMessagesState((oldLastMessages) => {
       let found = false;
       const newLastMessagesState = oldLastMessages.map((message) => {
-        if (
-          message.chatTypeIdPair.chatTargetId === chatTypeIdPair.chatTargetId &&
-          message.chatTypeIdPair.chatType === chatTypeIdPair.chatType
-        ) {
+        if (message.chatId === chatId) {
           found = true;
           return newValue instanceof DefaultValue
             ? undefined
@@ -104,7 +88,7 @@ export const useSetLastMessagesByTargetAndChatTypeState = () => {
       });
 
       if (!found && !(newValue instanceof DefaultValue)) {
-        newLastMessagesState.push({ chatTypeIdPair, lastMessages: [newValue] });
+        newLastMessagesState.push({ chatId, lastMessages: [newValue] });
       }
 
       return newLastMessagesState.filter(Boolean) as LastMessages[];

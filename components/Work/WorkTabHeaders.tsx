@@ -15,6 +15,7 @@ const WorkTabHeaders: FC<WorkTabHeadersProps> = ({ title }) => {
         flexDirection: "row",
         alignItems: "center",
         gap: 10,
+        marginBottom: 20,
       }}
     >
       <Text

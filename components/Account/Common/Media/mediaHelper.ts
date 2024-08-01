@@ -130,16 +130,16 @@ export const getMediaCreateDTOs = (urls: string[]) => {
   );
 };
 
-export function useFetchUrisByChatTargetIdTypePair(
+export function useFetchUrisByChatId(
   database: SQLiteDatabase,
-  chatTargetIdTypePair: { chatTargetId: number; chatType: number }
+  chatId: string
 ) {
   const [uris, setUris] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
-    fetchUrisByChatTargetIdTypePair(database, chatTargetIdTypePair)
+    fetchUrisByChatTargetIdTypePair(database, chatId)
       .then((fetchedUris) => {
         setUris(fetchedUris);
         setLoading(false);
@@ -161,15 +161,6 @@ export function getMediaCreateDTOsFromUris(uris: string[]): MediaCreateDTO[] {
     };
   });
 }
-
-// const handleSelectMedia = (uri: string) => {
-//   setMediaViewer((state) => ({
-//     visible: false,
-//     selectedImageIndex: 0,
-//     uris: [uri],
-//   }));
-//   router.push("/main/portofolioModal");
-// };
 
 export const useSelectMedia = (uri: string | undefined | null) => {
   const setMediaViewer = useSetMediaViewerState();

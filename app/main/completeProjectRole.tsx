@@ -1,6 +1,11 @@
 import { usePostApiProjectRoleComplete } from "@/common/api/endpoints/cocreateApi";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { StyleSheet } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { View, Text } from "react-native-animatable";
 import { useMemo, useState } from "react";
 import { ProjectRoleCompleteDTO, ReviewCreateDTO } from "@/common/api/model";
@@ -16,11 +21,14 @@ import CompleteProjectUploadPhoto from "@/components/CompleteProject/CompletePro
 import CompleteProjectDescription from "@/components/CompleteProject/CompleteProjectDescription";
 import NextButton from "@/components/Project/Common/NextButton";
 import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfirmation";
+import { useTranslation } from "react-i18next";
 
 export default function CompleteProjectRole() {
   const params = useLocalSearchParams();
   const projectId = parseInt(params.projectId as string, 10);
   const userId = useUserIdValue();
+
+  const { t } = useTranslation();
 
   const router = useRouter();
 
@@ -78,41 +86,45 @@ export default function CompleteProjectRole() {
   if (!assignedProject) return <Text>Loading...</Text>;
 
   return (
-    <View style={styles.container}>
-      {formStep === 0 && (
-        <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
-      )}
-      {formStep === 1 && (
-        <CompleteProjectDescription
-          description={description}
-          setDescription={setDescription}
-        />
-      )}
-      {formStep === 2 && (
-        <CompleteProjectReviewAssignee
-          reviewed={assignedProject.projectManager!}
-          onReviewChange={(review) => {
-            setReviews((prev) => {
-              const newReviews = [...prev];
-              newReviews[0] = review;
-              return newReviews;
-            });
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView style={styles.container}>
+        {formStep === 0 && (
+          <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
+        )}
+        {formStep === 1 && (
+          <CompleteProjectDescription
+            description={description}
+            setDescription={setDescription}
+          />
+        )}
+        {formStep === 2 && (
+          <CompleteProjectReviewAssignee
+            reviewed={assignedProject.projectManager!}
+            onReviewChange={(review) => {
+              setReviews((prev) => {
+                const newReviews = [...prev];
+                newReviews[0] = review;
+                return newReviews;
+              });
+            }}
+          />
+        )}
+        {formStep === 3 && (
+          <CompletedProjectConfirmation project={assignedProject} 
+            description={t('projects.complete-role.description')}
+          />
+        )}
+        <NextButton
+          text={formStep === 3 ? "Finish Project" : "Next"}
+          icon={formStep === 3 ? "check" : "arrow-right"}
+          onPress={() => {
+            formStep === 3
+              ? handleCompleteProjectRole()
+              : setFormStep((prev) => prev + 1);
           }}
         />
-      )}
-      {formStep === 3 && (
-        <CompletedProjectConfirmation project={assignedProject} />
-      )}
-      <NextButton
-        text={formStep === 3 ? "Finish Project" : "Next"}
-        icon={formStep === 3 ? "check" : "arrow-right"}
-        onPress={() => {
-          formStep === 3
-            ? handleCompleteProjectRole()
-            : setFormStep((prev) => prev + 1);
-        }}
-      />
-    </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 

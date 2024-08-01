@@ -25,17 +25,6 @@ const CompleteProjectDescription: FC<CompleteProjectDescriptionProps> = ({
       >
         Project Description
       </Text>
-      <Text
-        style={{
-          ...theme.customFonts.primary.small,
-          fontWeight: "500",
-          fontSize: 14,
-          marginBottom: 50,
-        }}
-      >
-        Describe your project in detail. What was the goal, how did you achieve
-        it, what were the challenges, and what did you learn?
-      </Text>
       <TextInput
         style={{
           ...theme.customFonts.primary.small,

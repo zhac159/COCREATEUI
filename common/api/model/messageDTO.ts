@@ -8,16 +8,18 @@ import type { ChatType } from './chatType';
 import type { MediaType } from './mediaType';
 
 export interface MessageDTO {
-  chatType?: ChatType;
+  /** @minLength 1 */
+  chatId: string;
+  chatType: ChatType;
   /** @nullable */
   content?: string | null;
-  date?: string;
-  id?: string;
+  date: string;
+  id: string;
   mediaType?: MediaType;
   /** @nullable */
   replyMessageId?: string | null;
-  senderId?: number;
-  targetId?: number;
+  senderId: number;
+  targetId: number;
   /** @nullable */
   uri?: string | null;
 }

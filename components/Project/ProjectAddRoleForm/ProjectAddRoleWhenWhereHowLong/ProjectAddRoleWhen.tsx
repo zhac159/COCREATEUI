@@ -28,11 +28,11 @@ const ProjectAddRoleWhen: FC<ProjectAddRoleWhenProps> = ({
   const theme = useTheme();
 
   const skillGroupType = skillGroupMap[skill || 0];
+
   const color =
     skill === undefined
       ? theme.colors.lightestGray
-      : getSkillGroupColor(skillGroupType, 0.12);
-
+      : getSkillGroupColor(skillGroupType, 0.20);
 
   return (
     <>
@@ -56,7 +56,7 @@ const ProjectAddRoleWhen: FC<ProjectAddRoleWhenProps> = ({
               fontSize: 17,
             }}
           >
-            Production Location
+            Dates
           </Text>
         </View>
         <FromToDatePicker
@@ -64,6 +64,7 @@ const ProjectAddRoleWhen: FC<ProjectAddRoleWhenProps> = ({
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
+          colour={color}
         />
       </View>
     </>

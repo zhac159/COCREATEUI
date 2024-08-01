@@ -5,9 +5,11 @@ import { useTheme } from "../Themes/theme";
 import { formatDistance, parseISO } from "date-fns";
 import { BlurView } from "expo-blur";
 import { useUserIdValue } from "../RecoilStates/profileState";
+import Message from "../Common/Messages/Message";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 type GroupChatPreviewMessagesProps = {
-  message: MessageDTO;
+  message: Message;
   sender: UserInformationDTO | null;
 };
 
@@ -28,59 +30,63 @@ const GroupChatPreviewMessages: FC<GroupChatPreviewMessagesProps> = ({
 
   return (
     <View
-    style={{
-      alignSelf: userId === message.senderId ? "flex-end" : "flex-start",
-      overflow: "hidden",
-      ...styles.container,
-    }}
-    >
-    <BlurView
-      intensity={80}
-      tint="regular"
       style={{
-        padding: 10,
-        gap: 4,
+        alignSelf: userId === message.senderId ? "flex-end" : "flex-start",
+        overflow: "hidden",
+        ...styles.container,
       }}
     >
-      <Text
+      <BlurView
+        intensity={80}
+        tint="regular"
         style={{
-          ...theme.customFonts.primary.medium,
-          fontSize: 13,
-          color: theme.colors.black,
-        }}
-        numberOfLines={2}
-        ellipsizeMode="tail"
-      >
-        {
-          message.content}
-      </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          alignSelf: "flex-end",
-          gap: 10,
+          padding: 10,
+          gap: 4,
         }}
       >
-        <Text
+        {message.uri ? (
+          <FontAwesome6 name="image" size={20} color={theme.colors.black} />
+        ) : (
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+              fontSize: 15,
+              color: theme.colors.black,
+            }}
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          >
+            {message.content}
+          </Text>
+        )}
+
+        <View
           style={{
-            ...theme.customFonts.primary.medium,
-            fontSize: 10,
-            color: theme.colors.black,
+            flexDirection: "row",
+            alignSelf: "flex-end",
+            gap: 10,
           }}
         >
-          {"test user"}
-        </Text>
-        <Text
-          style={{
-            ...theme.customFonts.primary.medium,
-            fontSize: 10,
-            color: theme.colors.black,
-          }}
-        >
-          {formattedDate}
-        </Text>
-      </View>
-    </BlurView>
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+              fontSize: 12,
+              color: theme.colors.black,
+            }}
+          >
+            {sender?.username}
+          </Text>
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+              fontSize: 12,
+              color: theme.colors.black,
+            }}
+          >
+            {formattedDate}
+          </Text>
+        </View>
+      </BlurView>
     </View>
   );
 };

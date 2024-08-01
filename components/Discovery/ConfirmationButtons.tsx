@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "../Themes/theme";
+import { windowHeight } from "../Account/Common/getWindowDimensions";
 
 type ConfirmationButtonsProps = {
   onConfirm: () => void;
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: "10%",
+    top: windowHeight * 0.88,
     alignSelf: "center",
     paddingHorizontal: 20,
     gap: 30,

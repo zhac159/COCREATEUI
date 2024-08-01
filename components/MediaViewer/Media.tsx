@@ -140,7 +140,7 @@ const Media: React.FC<MediaProps> = ({
 
   if (!uri)
     return (
-      <View style={{ ...(style as {}), backgroundColor: backgroundColor ?? theme.colors.white }}>
+      <View style={{ ...(style as {}), backgroundColor: backgroundColor ?? theme.colors.lightGray  }}>
         {EditModeOverlay}
       </View>
     );

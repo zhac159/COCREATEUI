@@ -62,9 +62,17 @@
     "view-projects": {
       "all-roles": "All Roles"
     },
+    "complete-project": {
+      "title": "Project Completed",
+      "description": "Congratulations! You have successfully completed your project. Credits will now be handed out to your team."
+    },
+    "complete-role": {
+      "title": "Role Completed",
+      "description": "Congratulations! You have successfully completed your role. Credits will now be handed out to you."
+    },
     "default-page": {
       "title": "Create your first project",
-      "description": "As a special part of this beta you have received some credits. Use them to collborate with other creatives to get your ideas off the ground or find tools you need.",
+      "description": "As a special part of this beta you have received some credits. Use them to collborate with other creatives to get your ideas off the ground.",
       "your-projects": "Your Projects"
     },
     "create-project": {
@@ -79,7 +87,7 @@
       "title": "Who Are You Looking For?",
       "title-description-form-header": "What Is The Role About?",
       "title-placeholder": "Role Title...",
-      "title-tooltip": "The title should be a short description of your project like 'period horror film' or 'jazz gig in central london' - it could also include the name of your project like 'Endagon - a series of phantasy hand-drawn graphics'.",
+      "title-tooltip": "E.g. 'Actor in a period horror film' or 'Design the set for a student short' or 'Dance in a musical'",
       "description-placeholder": "Role Description...",
       "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested.",
       "keywords-placeholder": "Add, Keywords, seperated, by, commas,",

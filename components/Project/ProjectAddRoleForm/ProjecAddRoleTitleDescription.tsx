@@ -29,7 +29,7 @@ const ProjectAddRoleTitleDescription: FC<
   const color =
     skill === undefined
       ? theme.colors.lightestGray
-      : getSkillGroupColor(skillGroupType, 0.12);
+      : getSkillGroupColor(skillGroupType, 0.2);
 
   return (
     <View
@@ -89,7 +89,6 @@ const ProjectAddRoleTitleDescription: FC<
           placeholder: t("projects.add-role.description-placeholder"),
         }}
         editable={true}
-        tooltip={t("projects.add-role.description-tooltip")}
       />
     </View>
   );
