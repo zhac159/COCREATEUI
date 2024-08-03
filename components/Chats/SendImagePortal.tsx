@@ -1,6 +1,8 @@
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import {
   Button,
+  Keyboard,
+  KeyboardAvoidingView,
   StyleSheet,
   TextInput,
   View,
@@ -10,6 +12,7 @@ import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Media from "../MediaViewer/Media";
 import { MessageCreateDTO } from "@/common/api/model";
+import { useTheme } from "../Themes/theme";
 
 type SendImagePortalProps = {
   handleSendMessage: (message: MessageCreateDTO) => void;
@@ -22,7 +25,7 @@ const SendImagePortal: FC<SendImagePortalProps> = ({
   setUris,
   uri,
 }) => {
-
+  const theme= useTheme(); 
   const [message, setMessage] = useState("");
 
   const handleSend = async () => {
@@ -31,40 +34,70 @@ const SendImagePortal: FC<SendImagePortalProps> = ({
       content: message,
       uri,
     };
-    
+
     handleSendMessage(messageCreateDTO);
     setUris([]);
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <Media
         uri={uri}
         style={{
           width: "100%",
           height: "100%",
           position: "absolute",
-          pointerEvents: "none",
           zIndex: -100,
         }}
-        onPress={() => {}}
+        onPress={() => { Keyboard.dismiss(); }}
       />
-      <IconButton
-        style={{ right: 0, top: "5%", alignSelf: "flex-end" }}
-        onPress={() => setUris([])}
-        size={30}
-        icon={() => <FontAwesome6 name="xmark" size={30} />}
-      />
-      <View style={styles.textInputContainer}>
+      <KeyboardAvoidingView style={styles.container}
+        behavior="padding"
+        pointerEvents="box-none"
+      >
+        <IconButton
+          style={{ right: 0, top: "5%", alignSelf: "flex-end", position: "absolute" }}
+          onPress={() => setUris([])}
+          size={30}
+          icon={() => <FontAwesome6 name="xmark" size={30} />}
+        />
+        <View style={styles.textInputContainer}>
         <TextInput
-          style={styles.input}
+          style={{
+            ...theme.customFonts.primary.small,
+            ...styles.input,
+            fontSize: 17,
+            backgroundColor: theme.colors.lightGray,
+          }}
+          blurOnSubmit={false}
           value={message}
           onChangeText={setMessage}
-          placeholder="Type a message"
-          
+          onSubmitEditing={handleSend}
         />
-        <Button title="Send" onPress={handleSend} />
-      </View>
+        <IconButton
+          icon={() => (
+            <FontAwesome6
+              name={"arrow-up"}
+              size={18}
+              solid
+              color={theme.colors.white}
+            />
+          )}
+          onPress={handleSend}
+          style={{
+            backgroundColor: theme.colors.black,
+            margin: 0,
+            padding: 0,
+          }}
+          size={26}
+        />
+          
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -74,12 +107,16 @@ export default SendImagePortal;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    alignItems: "flex-end",
+    flexDirection: "column",
+    justifyContent: "flex-end",
   },
   textInputContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    alignSelf: "flex-end",
     paddingHorizontal: 10,
+    marginBottom: "10%",
   },
   input: {
     flex: 1,

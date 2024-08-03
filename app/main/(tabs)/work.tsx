@@ -44,6 +44,17 @@ export default function Work() {
   }
   return (
     <View style={styles.container}>
+            <Text
+        style={{
+          ...theme.customFonts.primary.medium,
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "black",
+          marginBottom: 40,
+        }}
+      >
+        {"Your Work"}
+      </Text>
       {assignedProjects.map((project) => (
         <ProjectChatPreview
           project={project}

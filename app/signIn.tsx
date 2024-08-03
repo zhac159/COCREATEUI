@@ -63,6 +63,7 @@ export default function SignIn() {
               size={30}
             />
           )}
+          hitSlop={15}
           onPress={() => router.replace("/")}
           size={30}
           style={{ position: "absolute", top: "10%", left: "1%" }}

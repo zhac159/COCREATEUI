@@ -116,7 +116,8 @@ export async function handleReceivedMessages(
       ? decryptMessageAES(message.uri, symmetricAesKey)
       : null;
 
-    console.log("Decrypted content:", decryptedUri);
+    console.log("Decrypted content:", decryptedContent);
+    console.log("Decrypted uri:", decryptedUri);
 
     const repliedMessage = await fetchMessageById(db, message.replyMessageId);
 
@@ -130,6 +131,8 @@ export async function handleReceivedMessages(
     if (decryptedUri) {
       uri = await downloadFile(decryptedUri);
     }
+
+    console.log("Downloaded uri:", uri);
 
     setLastMessages(message.chatId, {
       ...message,

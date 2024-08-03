@@ -13,6 +13,7 @@ import Message from "../Common/Messages/Message";
 import { useRenderChatMessage } from "./MessageBubble";
 import MessageReaction from "../Common/Messages/MessageReaction";
 import { BlurView } from "expo-blur";
+import { windowHeight } from "../Account/Common/getWindowDimensions";
 
 type ChatProps = {
   messages: Message[];
@@ -63,8 +64,8 @@ const Chat: FC<ChatProps> = ({
   const handleSelectReplyMessage = (message: Message) => {
     handleLoadMessagesAroundMessage(message);
     setTimeout(() => {
-      flatListRef.current?.scrollToIndex({
-        index: 14,
+      flatListRef.current?.scrollToOffset({
+        offset: windowHeight * 0.8,
         animated: true,
       });
     }, 200);

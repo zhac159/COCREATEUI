@@ -142,6 +142,11 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
       [item.senderId, userId]
     );
 
+    const isReplyMessageSenderCurrentUser = useMemo(
+      () => item.replyMessage!.senderId === userId,
+      [item.replyMessage, userId]
+    );
+
     return (
       <View
         style={{
@@ -180,9 +185,7 @@ const ReplyMessageBubble: FC<ReplyMessageBubbleProps> = memo(
                 ...theme.customFonts.primary.medium,
                 fontWeight: "400",
                 fontSize: 17,
-                color: isCurrentUserSender
-                  ? theme.colors.white
-                  : theme.colors.black,
+                color: theme.colors.black,
               }}
             >
               {item.replyMessage!.content}

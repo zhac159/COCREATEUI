@@ -9,7 +9,7 @@ export async function fetchTokenAndStartConnection() {
   }
   const connection = new HubConnectionBuilder()
     // .withUrl("https://wecreatex.azurewebsites.net/chatHub", {
-    .withUrl("http://192.168.1.92:5000/chatHub", {
+    .withUrl("https://wecreatex.azurewebsites.net/chatHub", {
       accessTokenFactory: () => token,
     })
     .withAutomaticReconnect()

@@ -112,29 +112,28 @@ export default function Discovery() {
         onSwipedAborted={() => setSwipingDistance(0)}
         onSwiped={(index) => {
           setSwipingDistance(0);
-          // seenMatchingProject({
-          //   data: {
-          //     projectRoleId:
-          //       matchingProjects.projectWithMatchingRoles![index]
-          //         .projectRoleId,
-          //   },
-          // });
+          seenMatchingProject({
+            data: {
+              projectRoleId:
+                matchingProjects.projectWithMatchingRoles![index]
+                  .projectRoleId,
+            },
+          });
         }}
         onSwipedRight={(index) => {
           triggerAnimation();
-          // createEnquiry({
-          //   data: {
-          //     projectRoleId:
-          //       matchingProjects.projectWithMatchingRoles![index].projectRoleId,
-          //     enquiryMessage: "Hello, I am interested in your project",
-          //   },
-          // });
+          createEnquiry({
+            data: {
+              projectRoleId:
+                matchingProjects.projectWithMatchingRoles![index].projectRoleId,
+              enquiryMessage: "Hello, I am interested in your project",
+            },
+          });
         }}
         verticalSwipe={false}
         cardVerticalMargin={0}
         cardHorizontalMargin={0}
         stackSize={5}
-        infinite
         stackSeparation={50}
         secondCardZoom={0.1}
         disableBottomSwipe

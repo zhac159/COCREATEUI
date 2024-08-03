@@ -58,7 +58,7 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
       }}
       style={{
         ...styles.container,
-        backgroundColor: theme.colors.white,
+        backgroundColor: "transparent",
       }}
     >
       <Media

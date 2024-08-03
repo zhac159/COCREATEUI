@@ -44,6 +44,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
   await db.execAsync(`
   CREATE INDEX IF NOT EXISTS idx_messageReactions_messageId ON messageReactions (messageId);
 `);
+
 }
 
 type Row = {
@@ -245,7 +246,7 @@ export async function fetchMessagesAroundId(
     WHERE m.date < ? 
     ORDER BY m.date DESC 
     LIMIT ?`,
-    [message.date!, 20]
+    [message.date, 20]
   );
 
   const resultSetAfter: Row[] = await database.getAllAsync(
@@ -263,7 +264,7 @@ export async function fetchMessagesAroundId(
     WHERE m.date > ? 
     ORDER BY m.date ASC 
     LIMIT ?`,
-    [message.date!, 20]
+    [message.date, 20]
   );
 
   const rowsBefore: Message[] = resultSetBefore.map((row) =>

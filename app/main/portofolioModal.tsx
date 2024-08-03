@@ -45,7 +45,7 @@ export default function PotofolioModal() {
       >
         {uri?.endsWith(".mp4") ? (
           <Video
-          source={{ uri: "https://www.w3schools.com/html/mov_bbb.mp4" }}
+          source={{ uri: uri }}
           rate={1.0}
             volume={1.0}
             shouldPlay

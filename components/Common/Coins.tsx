@@ -102,8 +102,9 @@ const Coins: FC<CoinsProps> = ({
             {coins}
           </Text>
           <BlurView
+            intensity={70}
+            tint="systemChromeMaterialDark"
             style={{
-              backgroundColor: theme.colors.gray,
               marginRight: 10,
               position: "absolute",
               height: "100%",

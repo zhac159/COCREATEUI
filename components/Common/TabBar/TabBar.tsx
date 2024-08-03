@@ -17,7 +17,7 @@ const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
 
   return (
     <BlurView
-    tint="light"
+    tint={darkMode ? "dark" : "light"}
     style={{
         width: "100%",
         paddingTop: 14,
@@ -25,13 +25,12 @@ const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
         minHeight: 80,
         position: "absolute",
         // backgroundColor: darkMode ? "#393939" : "#fff",
-        top: windowHeight -80 + 55,
+        top: windowHeight -80,
         zIndex: 100,
-        opacity: 0.8,
         flexDirection: "row",
         justifyContent: "space-around",
       }}
-      intensity={80}
+      intensity={50}
     >
       {BottomTabBarProps.state.routeNames.map((routeName, index) => {
         return (

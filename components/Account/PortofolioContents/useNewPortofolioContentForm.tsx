@@ -41,7 +41,12 @@ const useNewPortofolioContentForm = () => {
     upload,
     isLoading: isUploadingImages,
     filesUploadingStatus,
-  } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT);
+    
+  } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT,
+
+    ()=>{        setUris([]);
+    }
+  );
 
   const { mutate: createPortofolioContent, isLoading: isLoadingCreating } =
     usePostApiPortofolioContent({
