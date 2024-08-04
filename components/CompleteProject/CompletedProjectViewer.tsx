@@ -44,6 +44,7 @@ const CompletedProjectViewer: FC<CompletedProjectViewerProps> = ({
         ...styles.scrollContainer,
         backgroundColor: theme.colors.black,
       }}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         paddingBottom: 200,
       }}

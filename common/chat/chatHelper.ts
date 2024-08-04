@@ -119,9 +119,6 @@ export async function handleReceivedMessages(
       ? decryptMessageAES(message.uri, symmetricAesKey)
       : null;
 
-    console.log("Decrypted content:", decryptedContent);
-    console.log("Decrypted uri:", decryptedUri);
-
     const repliedMessage = await fetchMessageById(db, message.replyMessageId);
 
     const encryptedContent =
@@ -134,6 +131,8 @@ export async function handleReceivedMessages(
     if (decryptedUri) {
       uri = await downloadFile(decryptedUri);
     }
+
+    console.log("Downloaded uri:", uri);
 
     console.log("Downloaded uri:", uri);
 
@@ -197,6 +196,7 @@ export async function sendMessage(
   );
 
   const url = message.uri ? await upload([message.uri]) : null;
+  
   const encryptedUri = encryptMessageAES(url ? url[0] : "", symmetricAesKey);
 
   const date = new Date().toISOString();

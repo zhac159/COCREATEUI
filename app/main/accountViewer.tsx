@@ -21,8 +21,8 @@ export default function AccountViewer() {
         flex: 1,
       }}
     >
-      <GoBackButton/>
       <UserProfile userProfile={userProfile} />
+      <GoBackButton/>
     </View>
   );
 }

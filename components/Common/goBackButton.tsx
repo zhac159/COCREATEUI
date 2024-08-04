@@ -8,6 +8,7 @@ const GoBackButton = () => {
   return (
     <IconButton
       onPress={() => {
+        console.log("go back");
         router.back();
       }}
       icon={() => (
@@ -17,8 +18,10 @@ const GoBackButton = () => {
       style={{
         backgroundColor: theme.colors.white,
         position: "absolute",
-        top: "2%",
+        top: "10%",
         right: "1%",
+        height: 30,
+        width: 30,
         zIndex: 100,
       }}
     />

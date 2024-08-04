@@ -11,6 +11,7 @@ import Upload, {
   CompletedData,
   ProgressData,
 } from "react-native-background-upload";
+import * as MediaLibrary from 'expo-media-library';
 
 const debounce = (func: Function, wait: number) => {
   let timeout: NodeJS.Timeout;
@@ -139,17 +140,52 @@ export const usePrepareAndUpload = (
   return { upload, isLoading: !!filesUploadingStatus, filesUploadingStatus };
 };
 
+async function ensureMediaLibraryPermissions() {
+  const { status } = await MediaLibrary.getPermissionsAsync();
+  console.log(`Current permission status: ${status}`);
+  if (status !== 'granted') {
+    const { status: newStatus } = await MediaLibrary.requestPermissionsAsync();
+    console.log(`New permission status: ${newStatus}`);
+    if (newStatus !== 'granted') {
+      throw new Error('Permission to access media library is required!');
+    }
+  }
+}
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Usage in your downloadFile function
 export async function downloadFile(url: string) {
-  const { uri } = await FileSystem.downloadAsync(
-    url,
-    FileSystem.documentDirectory + getFilenameFromUrl(url)
-  );
-  return uri;
+  try {
+    const filename = getFilenameFromUrl(url);
+    const fileUri = FileSystem.documentDirectory + filename;
+
+    await delay(5000);
+
+    const { uri } = await FileSystem.downloadAsync(url, fileUri);
+
+    await ensureMediaLibraryPermissions();
+
+    const asset = await MediaLibrary.createAssetAsync(uri);
+    const album = await MediaLibrary.getAlbumAsync('WeCreateX');
+    if (album == null) {
+      await MediaLibrary.createAlbumAsync('WeCreateX', asset, false);
+    } else {
+      await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+    }
+    return asset.uri;
+  } catch (error) {
+    throw error;
+  }
 }
 
 function getFilenameFromUrl(url: string) {
   return url.substring(url.lastIndexOf("/") + 1);
 }
+
+
 
 function mapUrisToPrepareUploadSubmittions(
   uris: string[],

@@ -25,7 +25,7 @@
           "wecreatex.background-task.fetch"
         ]
       },
-      "buildNumber": "2",
+      "buildNumber": "3",
       "bitcode": false,
       "bundleIdentifier": "WeCreateX"
     },
@@ -57,6 +57,13 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your colleagues.",
+          "savePhotosPermission": "The app saves photos to your library to let you share them with your friends."
         }
       ],
       "expo-router",

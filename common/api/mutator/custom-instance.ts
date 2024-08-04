@@ -4,7 +4,7 @@ import BackEndErrors from "../enum/backEndErrors";
 import SecureStoreKeys from "../enum/secureStoreKeys";
 
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: "https://wecreatex.azurewebsites.net",
 });
 
 AXIOS_INSTANCE.interceptors.request.use(async (request) => {

@@ -95,8 +95,8 @@ export default function HelperScreenNav() {
 
   useEffect(() => {
     if (!connection || !database) return;
-    connection.on("ReceiveMessages", (messages: MessageDTO[]) => {
-      handleReceivedMessages(connection, database, messages, setLastMessages);
+    connection.on("ReceiveMessages", async (messages: MessageDTO[]) => {
+      await handleReceivedMessages(connection, database, messages, setLastMessages);
     });
   }, [connection, database]);
 
@@ -161,7 +161,7 @@ export default function HelperScreenNav() {
     const navigateToQuery = async () => {
       const currentDate = new Date();
       const isAugust20 =
-        currentDate.getDate() === 4 && currentDate.getMonth() === 7;
+        currentDate.getDate() === 20 && currentDate.getMonth() === 7;
       if (!isAugust20) return;
       var hasCompleted = await SecureStore.getItemAsync(
         SecureStoreKeys.COMPLETED_20_AUGUST_SURVEY + userId

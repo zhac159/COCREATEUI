@@ -25,7 +25,7 @@ const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
         paddingBottom: 30,
         height: 80,
         position: "absolute",
-        top: windowHeight - 25,
+        top: windowHeight - 25 - 55,
         zIndex: 100,
         flexDirection: "row",
         justifyContent: "space-around",

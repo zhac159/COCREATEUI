@@ -12,6 +12,7 @@ const AddPortofolioForm: FC<FormPageProps> = ({ nextStep }) => {
 
   const handleNextStep = () => {
     handleCreate();
+    nextStep?.();
   };
 
   return (

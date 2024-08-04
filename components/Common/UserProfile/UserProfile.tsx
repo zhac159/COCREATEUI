@@ -30,7 +30,9 @@ const UserProfile: FC<UserProfileProps> = ({ userProfile }) => {
       <>
         <BackgroundColourAnimation />
         <View style={{ ...styles.container, backgroundColor: "transparent" }}>
-          <ScrollView contentContainerStyle={{ ...styles.scrollContainer }}>
+          <ScrollView contentContainerStyle={{ ...styles.scrollContainer }}
+            showsVerticalScrollIndicator={false}
+            >
             <TouchableWithoutFeedback>
               <View>
                 <UserProfileDetails

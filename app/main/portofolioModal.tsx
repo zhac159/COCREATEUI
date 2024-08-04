@@ -68,7 +68,6 @@ export default function PotofolioModal() {
         backgroundColor: "black",
       }}
     >
-      <GoBackButton/>
       <Carousel
         key={key}
         vertical={false}
@@ -82,6 +81,7 @@ export default function PotofolioModal() {
         itemWidth={windowWidth}
         firstItem={selectedImageIndex}
       />
+      <GoBackButton />
     </View>
   );
 }
