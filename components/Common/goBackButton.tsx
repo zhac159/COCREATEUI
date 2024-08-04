@@ -7,7 +7,7 @@ const GoBackButton = () => {
   const theme = useTheme();
   return (
     <IconButton
-      onPress={() => {
+    onPress={() => {
         console.log("go back");
         router.back();
       }}

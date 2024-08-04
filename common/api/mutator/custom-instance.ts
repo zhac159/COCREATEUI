@@ -4,7 +4,7 @@ import BackEndErrors from "../enum/backEndErrors";
 import SecureStoreKeys from "../enum/secureStoreKeys";
 
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: "http://192.168.1.92:5000",
+  baseURL: "https://wecreatex.azurewebsites.net",
 });
 
 AXIOS_INSTANCE.interceptors.request.use(async (request) => {
