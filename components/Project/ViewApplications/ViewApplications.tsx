@@ -1,6 +1,5 @@
 import {
   EnquiryDTO,
-  ProjectWithMatchingRoleDTO,
   UserProfileDTO,
   UserProfilesDTO,
 } from "@/common/api/model";
@@ -18,6 +17,16 @@ import { IconButton } from "react-native-paper";
 import { useSetProjectState } from "@/components/RecoilStates/profileState";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import NoApplicationsPage from "./NoApplicationsPage";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+  Easing,
+} from "react-native-reanimated";
+import { View, StyleSheet } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 type ViewApplicationsProps = {
   enquiries: EnquiryDTO[];
@@ -57,7 +66,6 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
     });
   };
 
-
   const [swipingDistance, setSwipingDistance] = useState(0);
 
   const { mutate: getUserProfiles, isLoading } = usePostApiUserProfiles({
@@ -77,6 +85,27 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
   const renderCard = useCallback((userProfile: UserProfileDTO) => {
     return <UserProfile userProfile={userProfile} />;
   }, []);
+
+  const fadeAnim = useSharedValue(0);
+  const scaleAnim = useSharedValue(0.5);
+  const triggerAnimation = () => {
+    fadeAnim.value = 0;
+    scaleAnim.value = 0.5;
+    fadeAnim.value = withTiming(1, {
+      duration: 300,
+      easing: Easing.out(Easing.ease),
+    });
+    scaleAnim.value = withSpring(1, { damping: 5 });
+    setTimeout(() => {
+      fadeAnim.value = withTiming(0, { duration: 300 });
+    }, 1000);
+  };
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: fadeAnim.value,
+      transform: [{ scale: scaleAnim.value }],
+    };
+  });
 
   useEffect(() => {
     const applicantsIds = enquiries
@@ -105,6 +134,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
             setSwipingDistance(x);
           }}
           onSwipedRight={(index) => {
+            triggerAnimation();
             shortListApplication({
               params: {
                 enquiryId: enquiries[index].id,
@@ -125,7 +155,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
         />
       )
     );
-  }, [applicantsProfiles]);
+  }, [applicantsProfiles, triggerAnimation]);
 
   if (!applicantsProfiles || isLoading) return <LoadingBackdrop />;
 
@@ -149,10 +179,53 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
         onCancel={() => {
           swiperRef?.current?.swipeLeft();
         }}
+        cancelButtonText="Reject"
+        confirmButtonText="Shortlist Applicant"
         swipingDistance={swipingDistance}
       />
+      <Animated.View style={[styles.animatedContainer, animatedStyle]}>
+        <View
+          style={{
+            backgroundColor: "green",
+            borderRadius: 100,
+            width: 100,
+            height: 100,
+            marginBottom: 10,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <FontAwesome6 name="check" size={60} color="black" />
+        </View>
+      </Animated.View>
     </>
   );
 };
 
 export default ViewApplications;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "black",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  message: {
+    fontSize: 16,
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: "80%",
+  },
+  animatedContainer: {
+    position: "absolute",
+    top: windowHeight / 3,
+    width: "100%",
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

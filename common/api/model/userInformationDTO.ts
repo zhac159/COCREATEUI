@@ -8,6 +8,8 @@
 export interface UserInformationDTO {
   /** @nullable */
   publicKey?: string | null;
+  /** @nullable */
+  rating?: number | null;
   userId: number;
   /** @minLength 1 */
   username: string;

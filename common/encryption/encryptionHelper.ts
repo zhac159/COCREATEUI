@@ -61,7 +61,15 @@ export async function getDatabasKey(): Promise<string | null> {
 
 export async function generateKeyPair(
   userId: number
-): Promise<nacl.BoxKeyPair> {
+): Promise<nacl.BoxKeyPair | null> {
+  const existingPrivateKey = await SecureStore.getItemAsync(
+    getAsymmetricKeyName(SecureStoreKeys.PRIVATE_KEY, userId)
+  );
+
+  if (existingPrivateKey != null) {
+    return null;
+  }
+
   const privateKey = await Crypto.getRandomBytesAsync(32);
   const publicKey = nacl.box.keyPair.fromSecretKey(privateKey);
 
@@ -78,8 +86,13 @@ export async function generateKeyPair(
   return publicKey;
 }
 
-export async function getAsymmetricKeyKey(keyName: string, userId: number): Promise<Uint8Array | null> {
-  let publicKey = await SecureStore.getItemAsync(getAsymmetricKeyName(keyName, userId));
+export async function getAsymmetricKeyKey(
+  keyName: string,
+  userId: number
+): Promise<Uint8Array | null> {
+  let publicKey = await SecureStore.getItemAsync(
+    getAsymmetricKeyName(keyName, userId)
+  );
   if (publicKey == null) {
     return null;
   }
@@ -92,7 +105,10 @@ export async function encryptMessageDFH(
   publicKey: string,
   userId: number
 ): Promise<string> {
-  const privateKey = await getAsymmetricKeyKey(SecureStoreKeys.PRIVATE_KEY, userId);
+  const privateKey = await getAsymmetricKeyKey(
+    SecureStoreKeys.PRIVATE_KEY,
+    userId
+  );
 
   if (privateKey == null) {
     throw new Error("Private key not found");
@@ -114,7 +130,10 @@ export async function decryptMessageDFH(
   publicKey: string,
   userId: number
 ): Promise<string> {
-  const privateKey = await getAsymmetricKeyKey(SecureStoreKeys.PRIVATE_KEY, userId);
+  const privateKey = await getAsymmetricKeyKey(
+    SecureStoreKeys.PRIVATE_KEY,
+    userId
+  );
 
   if (privateKey == null) {
     throw new Error("Private key not found");
@@ -153,7 +172,10 @@ export async function createAndExchangeKeys(
   userId: number,
   connection: HubConnection
 ): Promise<void> {
-  const publicKey = await getAsymmetricKeyKey(SecureStoreKeys.PUBLIC_KEY, userId);
+  const publicKey = await getAsymmetricKeyKey(
+    SecureStoreKeys.PUBLIC_KEY,
+    userId
+  );
 
   if (publicKey == null) {
     throw new Error("Public key not found");
@@ -194,6 +216,8 @@ export async function createAndExchangeKeysIfThereIsNoKey(
 ): Promise<void> {
   const aesKey = await getSymmetricAesKey(chatId);
 
+  console.log("aesKey", aesKey);
+
   if (aesKey != null) {
     return;
   }
@@ -228,7 +252,10 @@ export async function exchangeProjectKey(
     userId
   );
 
-  const publicKey = await getAsymmetricKeyKey(SecureStoreKeys.PUBLIC_KEY, userId);
+  const publicKey = await getAsymmetricKeyKey(
+    SecureStoreKeys.PUBLIC_KEY,
+    userId
+  );
 
   if (publicKey == null) return;
 

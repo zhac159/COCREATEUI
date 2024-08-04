@@ -40,6 +40,7 @@ const PortofolioContentTab = () => {
     FormNode: NewPortofolioContentForm,
     handleCreate: submitCreate,
     isLoading: createIsLoading,
+    reset,
   } = useNewPortofolioContentForm();
 
   const [aboutYou, setAboutYou] = useAboutYouState();
@@ -78,15 +79,35 @@ const PortofolioContentTab = () => {
   if (createMode || createIsLoading) {
     return (
       <View style={styles.container}>
-        <StyledButton
-          text="Done"
-          onPress={handleCreate}
+        <View
           style={{
-            ...styles.dontButton,
-            backgroundColor: theme.colors.primary,
+            flexDirection: "row",
+            alignSelf: "flex-end",
+            gap: 10,
           }}
-          isLoading={createIsLoading}
-        />
+        >
+          <StyledButton
+            text="Done"
+            onPress={handleCreate}
+            style={{
+              ...styles.dontButton,
+              backgroundColor: theme.colors.primary,
+            }}
+            isLoading={createIsLoading}
+          />
+          <StyledButton
+            text="Cancel"
+            onPress={() => {
+              setCreateMode(false);
+              reset();
+            }}
+            style={{
+              ...styles.dontButton,
+              backgroundColor: theme.colors.red,
+            }}
+            isLoading={createIsLoading}
+          />
+        </View>
         {NewPortofolioContentForm}
       </View>
     );
@@ -155,7 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   dontButton: {
-    alignSelf: "flex-end",
     marginTop: 10,
     marginBottom: "15%",
   },

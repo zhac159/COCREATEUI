@@ -14,12 +14,16 @@ import {
   windowWidth,
 } from "@/components/Account/Common/getWindowDimensions";
 import BlackHalfOpacityBackdrop from "@/components/Common/BlackHalfOpacityBackdrop";
-import { usePostApiLoginTokenLogin } from "@/common/api/endpoints/cocreateApi";
+import { usePostApiLoginTokenLogin, usePutApiUserPublicKey } from "@/common/api/endpoints/cocreateApi";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
-import { generateDatabaseKey } from "@/common/encryption/encryptionHelper";
+import {
+  generateDatabaseKey,
+  generateKeyPair,
+  toBase64,
+} from "@/common/encryption/encryptionHelper";
 import { useSetCurrentUserState } from "@/components/RecoilStates/profileState";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 
@@ -27,14 +31,19 @@ const LoginPage = () => {
   const theme = useTheme();
   const setCurrentUser = useSetCurrentUserState();
   const { t } = useTranslation();
+  const { mutate: setPublicKey } = usePutApiUserPublicKey();
 
   const { mutate: authenticate, isLoading } = usePostApiLoginTokenLogin({
     mutation: {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setCurrentUser(data.user);
         generateDatabaseKey();
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
-        router.replace("/main/(tabs)/discovery");
+        var publicKey = await generateKeyPair(data.user.userId);
+        if (publicKey) {
+          setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
+        }
+       router.replace("/main/(tabs)/discovery");
       },
     },
   });

@@ -61,6 +61,7 @@ const Media: React.FC<MediaProps> = ({
     () => uri?.endsWith(".mp4") || uri?.endsWith(".mov"),
     [uri]
   );
+  
 
   const EditModeOverlay = useMemo(() => {
     if (!editMode || loadingState !== undefined) return null;
@@ -176,6 +177,7 @@ const Media: React.FC<MediaProps> = ({
             />
             {EditModeOverlay}
             {UploadingOverlay}
+            {DownloadingOverlay}
           </View>
         ) : (
           <View style={[style, { overflow: "hidden" }]}>

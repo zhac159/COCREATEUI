@@ -45,6 +45,7 @@ const ProjectAddRoleKeywords: FC<ProjectAddRoleKeywordsProps> = ({
         {t("projects.add-role.keywords-title")}
       </Text>
       <StyledTextField
+        value={keywords}
         textInputProps={{
           style: {
             ...theme.customFonts.primary.medium,
@@ -55,7 +56,6 @@ const ProjectAddRoleKeywords: FC<ProjectAddRoleKeywordsProps> = ({
           },
           numberOfLines: 14,
           multiline: true,
-          value: keywords,
           onChangeText: (text) => {
             if (text.length <= 30) {
               setKeywords(text);

@@ -24,6 +24,7 @@ export default function GroupChatDetails() {
 
   return (
     <ScrollView
+    showsVerticalScrollIndicator={false}
       style={{
         ...styles.container,
         backgroundColor: theme.colors.white,

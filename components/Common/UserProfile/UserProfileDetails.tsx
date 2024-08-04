@@ -2,8 +2,6 @@ import React, { FC } from "react";
 import {
   View,
   Text,
-  ScrollView,
-  TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
 import { useTheme } from "../../Themes/theme";

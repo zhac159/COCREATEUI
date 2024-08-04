@@ -17,6 +17,7 @@ const CompletedProjectConfirmation: FC<CompletedProjectConfirmationProps> = ({
     <View
       style={{
         gap: 20,
+        marginBottom: 100,
       }}
     >
       <Text

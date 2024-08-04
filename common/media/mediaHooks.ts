@@ -48,7 +48,9 @@ export const usePrepareAndUpload = (
     previousFilesUploadingStatus.current = filesUploadingStatus;
   }, [filesUploadingStatus, onUploaded]);
 
+
   const checkAndSetFilesUploadingStatus = (uploadId: string) => {
+    console.log("checkAndSetFilesUploadingStatus", uploadId);
     if (!filesUploadingStatus) return;
     setFilesUploadingStatus((prev) => {
       const newMap = new Map(prev);

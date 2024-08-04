@@ -2,30 +2,41 @@ import { useGetMedia } from "@/components/Account/Common/Media/mediaHelper";
 import Media from "@/components/MediaViewer/Media";
 import { useTheme } from "@/components/Themes/theme";
 import { Dispatch, FC, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, StyleSheet, View } from "react-native";
 
 type CompleteProjectUploadPhotoProps = {
   uris: string[];
   setUris: Dispatch<SetStateAction<string[]>>;
+  projectName?: string;
+  isCompletingRole?: boolean;
 };
 
 const CompleteProjectUploadPhoto: FC<CompleteProjectUploadPhotoProps> = ({
   uris,
-  setUris
+  setUris,
+  projectName,
+  isCompletingRole,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const getMedia = useGetMedia(setUris, true);
-
+  console.log("uris", projectName);
   return (
-    <>
+    <View>
       <Text
         style={{
           ...theme.customFonts.secondary.large,
           fontWeight: "400",
+          width: "90%",
           fontSize: 35,
         }}
       >
-        Upload Project Images
+        {isCompletingRole
+          ? t("projects.complete-role.upload-image-title", {
+              projectName: projectName,
+            })
+          : t("projects.complete-project.upload-image-title")}
       </Text>
       <Text
         style={{
@@ -33,9 +44,12 @@ const CompleteProjectUploadPhoto: FC<CompleteProjectUploadPhotoProps> = ({
           fontWeight: "500",
           fontSize: 14,
           paddingVertical: "2%",
+          marginBottom: 20,
         }}
       >
-        Upload up to two pictures and videos of your project. This would ideally be the finished product, but could also just be progress evidence or BTS from the production.
+        Upload up to two pictures and videos of your project. This would ideally
+        be the finished product, but could also just be progress evidence or BTS
+        from the production.
       </Text>
       <Media
         onPress={() => getMedia(0)}
@@ -49,7 +63,7 @@ const CompleteProjectUploadPhoto: FC<CompleteProjectUploadPhotoProps> = ({
         style={styles.mainImage}
         editMode={true}
       />
-    </>
+    </View>
   );
 };
 
@@ -64,13 +78,13 @@ const styles = StyleSheet.create({
   },
   desciptionTextInput: {
     fontSize: 16,
-    height: "25%",
+    height: 350,
     padding: 10,
     borderRadius: 7,
   },
   mainImage: {
     marginVertical: 10,
-    height: "35%",
+    height: 350,
     borderRadius: 7,
   },
 });

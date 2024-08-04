@@ -14,39 +14,25 @@ import { Keyboard, TouchableWithoutFeedback, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function GetStarted() {
-  const { t } = useTranslation();
-
+  
   const { form } = useFormWithStep([
     <NameAndPasswordForm />,
     <ConfirmEmailTokenForm />,
     <TermnsAndConditionsForm />,
-    <SurveyForm
-      formId={1}
-    />,
+    <SurveyForm formId={1} />,
     <LocationForm />,
     <AddSkillForm />,
     <AddPortofolioForm />,
-    <GetStartedTutorial
-      title={t("get-started.tutorial.title")}
-      message={t("get-started.tutorial.tutorial1")}
-    />,
-    <GetStartedTutorial
-      title={t("get-started.tutorial.title")}
-      message={t("get-started.tutorial.tutorial2")}
-    />,
-    <GetStartedTutorial
-      title={t("get-started.tutorial.title")}
-      message={t("get-started.tutorial.tutorial3")}
-    />,
-    <GetStartedTutorial
-      title={t("get-started.tutorial.title")}
-      message={t("get-started.tutorial.tutorial4")}
-    />,
+    <GetStartedTutorial tutorialNumber={1} />,
+    <GetStartedTutorial tutorialNumber={2} />,
+    <GetStartedTutorial tutorialNumber={3} />,
+    <GetStartedTutorial tutorialNumber={4} />,
   ]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >

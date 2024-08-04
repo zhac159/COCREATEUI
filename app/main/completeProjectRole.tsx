@@ -22,6 +22,8 @@ import CompleteProjectDescription from "@/components/CompleteProject/CompletePro
 import NextButton from "@/components/Project/Common/NextButton";
 import CompletedProjectConfirmation from "@/components/CompleteProject/CompletedProjectConfirmation";
 import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native-gesture-handler";
+import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 export default function CompleteProjectRole() {
   const params = useLocalSearchParams();
@@ -35,6 +37,7 @@ export default function CompleteProjectRole() {
   const [formStep, setFormStep] = useState(0);
 
   const [assignedProjects, setAssignedProjects] = useAssignedProjectsState();
+
   const assignedProject = useMemo(
     () =>
       assignedProjects
@@ -87,43 +90,56 @@ export default function CompleteProjectRole() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView style={styles.container}>
-        {formStep === 0 && (
-          <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
-        )}
-        {formStep === 1 && (
-          <CompleteProjectDescription
-            description={description}
-            setDescription={setDescription}
-          />
-        )}
-        {formStep === 2 && (
-          <CompleteProjectReviewAssignee
-            reviewed={assignedProject.projectManager!}
-            onReviewChange={(review) => {
-              setReviews((prev) => {
-                const newReviews = [...prev];
-                newReviews[0] = review;
-                return newReviews;
-              });
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          minHeight: windowHeight,
+        }}
+      >
+        <KeyboardAvoidingView style={styles.container}>
+          {formStep === 0 && (
+            <CompleteProjectUploadPhoto
+              setUris={setUris}
+              uris={uris}
+              isCompletingRole
+              projectName={assignedProject.name}
+            />
+          )}
+          {formStep === 1 && (
+            <CompleteProjectDescription
+              description={description}
+              setDescription={setDescription}
+            />
+          )}
+          {formStep === 2 && (
+            <CompleteProjectReviewAssignee
+              reviewed={assignedProject.projectManager!}
+              onReviewChange={(review) => {
+                setReviews((prev) => {
+                  const newReviews = [...prev];
+                  newReviews[0] = review;
+                  return newReviews;
+                });
+              }}
+            />
+          )}
+          {formStep === 3 && (
+            <CompletedProjectConfirmation
+              project={assignedProject}
+              description={t("projects.complete-role.description")}
+            />
+          )}
+          <NextButton
+            text={formStep === 3 ? "Finish Project" : "Next"}
+            icon={formStep === 3 ? "check" : "arrow-right"}
+            onPress={() => {
+              formStep === 3
+                ? handleCompleteProjectRole()
+                : setFormStep((prev) => prev + 1);
             }}
           />
-        )}
-        {formStep === 3 && (
-          <CompletedProjectConfirmation project={assignedProject} 
-            description={t('projects.complete-role.description')}
-          />
-        )}
-        <NextButton
-          text={formStep === 3 ? "Finish Project" : "Next"}
-          icon={formStep === 3 ? "check" : "arrow-right"}
-          onPress={() => {
-            formStep === 3
-              ? handleCompleteProjectRole()
-              : setFormStep((prev) => prev + 1);
-          }}
-        />
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 }

@@ -36,7 +36,9 @@ const NameAndPasswordForm: FC<FormPageProps> = ({ nextStep }) => {
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         generateDatabaseKey();
         var publicKey = await generateKeyPair(data.user.userId);
-        setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
+        if (publicKey) {
+          setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
+        }
         nextStep?.();
       },
     },

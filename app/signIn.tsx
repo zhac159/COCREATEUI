@@ -1,4 +1,7 @@
-import { usePostApiLogin } from "@/common/api/endpoints/cocreateApi";
+import {
+  usePostApiLogin,
+  usePutApiUserPublicKey,
+} from "@/common/api/endpoints/cocreateApi";
 import { UserLoginDTO } from "@/common/api/model";
 import { useSetCurrentUserState } from "@/components/RecoilStates/profileState";
 import React from "react";
@@ -14,7 +17,12 @@ import StyledButton from "@/components/Common/StyledButton";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import StyledTextField from "@/components/Common/StyledTextField";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
-import { generateDatabaseKey, hashPassword } from "@/common/encryption/encryptionHelper";
+import {
+  generateDatabaseKey,
+  generateKeyPair,
+  hashPassword,
+  toBase64,
+} from "@/common/encryption/encryptionHelper";
 import { useTranslation } from "react-i18next";
 import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -26,12 +34,17 @@ export default function SignIn() {
   const setCurrentUser = useSetCurrentUserState();
 
   const { handleSubmit, control } = useForm<UserLoginDTO>();
+  const { mutate: setPublicKey } = usePutApiUserPublicKey();
 
   const { mutate, isLoading, error } = usePostApiLogin({
     mutation: {
       onSuccess: async (data) => {
         setCurrentUser(data.user);
         generateDatabaseKey();
+        var publicKey = await generateKeyPair(data.user.userId);
+        if (publicKey) {
+          setPublicKey({ data: { publicKey: toBase64(publicKey.publicKey) } });
+        }
         SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/discovery");
       },
@@ -52,6 +65,7 @@ export default function SignIn() {
     <TouchableWithoutFeedback>
       <BackgroundColourAnimation />
       <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
@@ -63,7 +77,7 @@ export default function SignIn() {
               size={30}
             />
           )}
-          hitSlop={15}
+          hitSlop={40}
           onPress={() => router.replace("/")}
           size={30}
           style={{ position: "absolute", top: "10%", left: "1%" }}
@@ -133,7 +147,6 @@ export default function SignIn() {
                   error={error?.message}
                 />
               )}
-              
               name="password"
               rules={{ required: true }}
               defaultValue=""

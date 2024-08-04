@@ -49,7 +49,7 @@ const ProjectManagerPreview: FC<ProjectManagerPreviewProps> = ({
           >
             {userInfo?.username || "N/A"}
           </Text>
-          <Rating rating={30} white />
+          <Rating rating={userInfo?.rating ?? 0} white />
         </View>
         <SeeProfileButton userId={userInfo?.userId} />
       </View>

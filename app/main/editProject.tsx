@@ -15,6 +15,7 @@ export default function EditProject() {
       style={{
         flex: 1,
       }}
+      showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
       <ProjectAddRoles

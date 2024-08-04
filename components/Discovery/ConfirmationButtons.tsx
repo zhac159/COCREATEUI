@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "../Themes/theme";
 import { windowHeight } from "../Account/Common/getWindowDimensions";
@@ -9,6 +9,8 @@ type ConfirmationButtonsProps = {
   onCancel: () => void;
   swipingDistance: number;
   lightTheme?: boolean;
+  cancelButtonText?: string;
+  confirmButtonText?: string;
 };
 
 const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
@@ -16,6 +18,8 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
   onCancel,
   swipingDistance,
   lightTheme,
+  cancelButtonText,
+  confirmButtonText,
 }) => {
   const theme = useTheme();
 
@@ -23,13 +27,21 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
 
   return (
     <View style={styles.buttonsContainer}>
-      <TouchableOpacity onPress={onCancel}>
+      <TouchableOpacity
+        onPress={onCancel}
+        style={{
+          alignItems: "center",
+          height: 80,
+        }}
+      >
         <View
           style={{
             height: 71,
             width: 71,
             alignItems: "center",
             borderRadius: 400,
+            borderWidth: lightTheme ? 2 : 0,
+            borderColor: theme.colors.gray,
             marginTop: 0.2,
             justifyContent: "center",
             backgroundColor: lightTheme
@@ -50,18 +62,38 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             position: "absolute",
             borderRadius: 400,
             zIndex: -1,
-            backgroundColor: theme.colors.darkGray,
-            marginLeft: 1.5,
-            marginBottom: 1,
+            backgroundColor: theme.colors.gray,
+            right: 1.5,
+            bottom: 10,
           }}
         />
+        {cancelButtonText && (
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+              fontSize: 15,
+              width: 65,
+              left: 10,
+            }}
+          >
+            {cancelButtonText}
+          </Text>
+        )}
       </TouchableOpacity>
-      <TouchableOpacity onPress={onConfirm}>
+      <TouchableOpacity
+        onPress={onConfirm}
+        style={{
+          alignItems: "center",
+          height: 80,
+        }}
+      >
         <View
           style={{
             height: 71,
             width: 71,
             alignItems: "center",
+            borderWidth: lightTheme ? 2 : 0,
+            borderColor: theme.colors.gray,
             borderRadius: 400,
             justifyContent: "center",
             backgroundColor: lightTheme
@@ -83,10 +115,22 @@ const ConfirmationButtons: FC<ConfirmationButtonsProps> = ({
             borderRadius: 400,
             zIndex: -1,
             backgroundColor: theme.colors.gray,
-            marginLeft: 1.5,
-            marginBottom: 1,
+            right: 1.5,
+            bottom: 10,
           }}
         />
+        {confirmButtonText && (
+          <Text
+            style={{
+              ...theme.customFonts.primary.medium,
+              fontSize: 15,
+              width: 65,
+              left: 3,
+            }}
+          >
+            {confirmButtonText}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

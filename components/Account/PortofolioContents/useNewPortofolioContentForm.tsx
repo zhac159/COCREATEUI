@@ -3,7 +3,7 @@ import {
   useSkillsValue,
 } from "@/components/RecoilStates/profileState";
 import { useMemo, useState } from "react";
-import { View, TextInput } from "react-native";
+import { View, Text } from "react-native";
 import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
 import { StyleSheet } from "react-native";
@@ -19,7 +19,7 @@ import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { useTranslation } from "react-i18next";
 import StyledTextField from "@/components/Common/StyledTextField";
 
-const useNewPortofolioContentForm = () => {
+const useNewPortofolioContentForm = (onComplete?: () => void) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const setPortofolioContents = useSetPortfolioContentsState();
@@ -37,16 +37,20 @@ const useNewPortofolioContentForm = () => {
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris);
 
+  const reset = () => {
+    setUris([]);
+    setDescription("");
+  };
+
   const {
     upload,
     isLoading: isUploadingImages,
     filesUploadingStatus,
-    
-  } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT,
-
-    ()=>{        setUris([]);
-    }
-  );
+  } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT, () => {
+    setUris([]);
+    setDescription("");
+    onComplete?.();
+  });
 
   const { mutate: createPortofolioContent, isLoading: isLoadingCreating } =
     usePostApiPortofolioContent({
@@ -57,7 +61,7 @@ const useNewPortofolioContentForm = () => {
             return newState;
           });
           setIsLoading(false);
-          setDescription("");
+
         },
       },
     });
@@ -81,6 +85,15 @@ const useNewPortofolioContentForm = () => {
           gap: 50,
         }}
       >
+        <Text
+          style={{
+            ...theme.customFonts.primary.medium,
+            fontWeight: "400",
+            fontSize: 15,
+          }}
+        >
+          {t("account.portfolio.add-description")}
+        </Text>
         <SkillsList
           skills={userSkills}
           editMode={false}
@@ -169,6 +182,7 @@ const useNewPortofolioContentForm = () => {
     FormNode,
     handleCreate,
     isLoading: isLoading || isUploadingImages || isLoadingCreating,
+    reset
   };
 };
 

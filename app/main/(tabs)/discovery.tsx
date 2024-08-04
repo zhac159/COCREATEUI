@@ -9,7 +9,6 @@ import {
 } from "@/common/api/model";
 import {
   windowHeight,
-  windowWidth,
 } from "@/components/Account/Common/getWindowDimensions";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import ConfirmationButtons from "@/components/Discovery/ConfirmationButtons";
@@ -34,7 +33,6 @@ export default function Discovery() {
 
   const fadeAnim = useSharedValue(0);
   const scaleAnim = useSharedValue(0.5);
-
   const triggerAnimation = () => {
     fadeAnim.value = 0;
     scaleAnim.value = 0.5;
@@ -43,13 +41,10 @@ export default function Discovery() {
       easing: Easing.out(Easing.ease),
     });
     scaleAnim.value = withSpring(1, { damping: 5 });
-
-    // Hide the animation after a delay
     setTimeout(() => {
       fadeAnim.value = withTiming(0, { duration: 300 });
     }, 1000);
   };
-
   const animatedStyle = useAnimatedStyle(() => {
     return {
       opacity: fadeAnim.value,

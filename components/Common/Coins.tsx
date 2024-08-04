@@ -1,6 +1,13 @@
 import { FC, RefObject, useRef } from "react";
 import { useTheme } from "../Themes/theme";
-import { Text, View, StyleSheet, StyleProp, ViewStyle, TextInput } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  TextInput,
+} from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import StyledTextField from "./StyledTextField";
@@ -42,7 +49,6 @@ const Coins: FC<CoinsProps> = ({
             style={{
               alignItems: "center",
               justifyContent: "center",
-              
             }}
           >
             <StyledTextField
@@ -56,10 +62,6 @@ const Coins: FC<CoinsProps> = ({
                   ...theme.customFonts.primary.large,
                   ...styles.text,
                   backgroundColor: theme.colors.white,
-                  padding: 0,
-                  textAlignVertical: "bottom",
-                  height: 40,
-                  lineHeight: 1,
                   color: theme.colors.black,
                 },
               }}
@@ -150,5 +152,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     textAlign: "center",
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    padding: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    margin: 0,
   },
 });

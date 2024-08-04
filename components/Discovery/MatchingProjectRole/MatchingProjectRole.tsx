@@ -30,7 +30,10 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
   const matchingRoleNode = useMemo(
     () => (
       <View style={styles.container}>
-        <ScrollView style={styles.scrollContainer}>
+        <ScrollView
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
           <TouchableWithoutFeedback>
             <View
               style={{
@@ -63,7 +66,6 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
                 description={matchingRole?.description || ""}
               />
               <Media
-                onPress={() => console.log("pressed")}
                 uri={matchingProject?.project?.medias?.[0].uri || ""}
                 style={styles.projectImages}
               />
@@ -73,7 +75,6 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
               />
               {matchingProject?.project?.medias?.[1] && (
                 <Media
-                  onPress={() => console.log("pressed")}
                   uri={matchingProject.project.medias[1].uri}
                   style={styles.projectImages}
                 />

@@ -11,7 +11,6 @@ const MatchingRoleKeywordsAndDescription: FC<
   MatchingRoleKeywordsAndDescriptionProps
 > = ({ tags, description }) => {
   const theme = useTheme();
-
   return (
     <View
       style={{
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 25,
   },
-  tagText : {
+  tagText: {
     textAlign: "center",
   },
   descriptionContainer: {

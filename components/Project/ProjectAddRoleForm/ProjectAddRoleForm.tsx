@@ -45,9 +45,15 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
   projectId,
   editRole,
 }) => {
+
+
+  console.log(editRole);
+
   const theme = useTheme();
 
   const setProject = useSetProjectState();
+
+  console.log(editRole?.name);
 
   const [formStep, setFormStep] = useState(0);
 
@@ -283,6 +289,7 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
         height: "100%",
         paddingBottom: 50,
       }}
+      showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="always"
       extraHeight={10}
       enableOnAndroid={false}

@@ -7,10 +7,11 @@ import { useTranslation } from "react-i18next";
 import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
 import StyledButton from "../Common/StyledButton";
+import { TermsAndConditions } from "../Account/Settings/TermsAndConditions";
 
 const TermnsAndConditionsForm: FC<FormPageProps> = ({ nextStep }) => {
   const theme = useTheme();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const terms = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
@@ -39,6 +40,7 @@ const TermnsAndConditionsForm: FC<FormPageProps> = ({ nextStep }) => {
             />
           )}
           size={20}
+          hitSlop={20}
           onPress={() => handlePress(index)}
           style={{
             margin: "-3%",
@@ -106,6 +108,7 @@ const TermnsAndConditionsForm: FC<FormPageProps> = ({ nextStep }) => {
         icon="arrow-right"
         disabled={!isAllChecked}
       />
+      <TermsAndConditions />
     </View>
   );
 };

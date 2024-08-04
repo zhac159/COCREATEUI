@@ -63,8 +63,7 @@ const GroupChatPreview: FC<GroupChatPreviewProps> = ({
     >
       <Media
         uri={
-          project.medias[useSecondImage ? 1 : 0]?.uri ||
-          "https://picsum.photos/200/300"
+          project.medias[useSecondImage ? 1 : 0]?.uri
         }
         style={styles.image}
       />

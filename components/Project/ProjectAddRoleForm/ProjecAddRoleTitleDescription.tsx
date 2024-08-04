@@ -20,6 +20,8 @@ type ProjectAddRoleTitleDescriptionProps = {
 const ProjectAddRoleTitleDescription: FC<
   ProjectAddRoleTitleDescriptionProps
 > = ({ title, setTitle, description, setDescription, skill }) => {
+
+
   const theme = useTheme();
 
   const { t } = useTranslation();
@@ -48,6 +50,7 @@ const ProjectAddRoleTitleDescription: FC<
         {t("projects.add-role.title-description-form-header")}
       </Text>
       <StyledTextField
+        value={title}
         textInputProps={{
           style: {
             ...theme.customFonts.primary.medium,
@@ -58,7 +61,6 @@ const ProjectAddRoleTitleDescription: FC<
           },
           numberOfLines: 14,
           multiline: true,
-          value: title,
           onChangeText: (text) => {
             if (text.length <= 30) {
               setTitle(text);
@@ -70,6 +72,7 @@ const ProjectAddRoleTitleDescription: FC<
         tooltip={t("projects.add-role.title-tooltip")}
       />
       <StyledTextField
+        value={description}
         textInputProps={{
           style: {
             ...theme.customFonts.primary.medium,
@@ -80,11 +83,8 @@ const ProjectAddRoleTitleDescription: FC<
           },
           numberOfLines: 14,
           multiline: true,
-          value: description,
           onChangeText: (text) => {
-            if (text.length <= 30) {
-              setDescription(text);
-            }
+            setDescription(text);
           },
           placeholder: t("projects.add-role.description-placeholder"),
         }}

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import {
   useAssetOffersValue,
@@ -13,9 +13,13 @@ import { useTheme } from "@/components/Themes/theme";
 import WorkTabHeaders from "@/components/Work/WorkTabHeaders";
 import NoWorkPage from "@/components/Work/NoWorkPage";
 import { getChatId } from "@/common/chat/chatHelper";
+import { ScrollView } from "react-native-gesture-handler";
+import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 export default function Work() {
   const enquiries = useEnquiriesValue();
+
+  const [showWaitingShortlist, setShowWaitingShortlist] = useState(false);
 
   const assignedProjects = useAssignedProjectsValue();
 
@@ -29,22 +33,28 @@ export default function Work() {
     (enquiry) => enquiry.shortlisted
   );
 
+  const notShortlistedEnquiries = enquiries.filter(
+    (enquiry) => !enquiry.shortlisted
+  );
+
   const noWork = useMemo(() => {
     return assignedProjects.length === 0 && shortlistedEnquiries.length === 0;
   }, [assignedProjects, shortlistedEnquiries]);
-
-  console.log("assignedProjects", shortlistedEnquiries);
 
   const noShortlistedEnquiries = useMemo(() => {
     return shortlistedEnquiries.length === 0;
   }, [shortlistedEnquiries]);
 
+  const noNotShortlistedEnquiries = useMemo(() => {
+    return notShortlistedEnquiries.length === 0;
+  }, [notShortlistedEnquiries]);
+
   if (noWork) {
     return <NoWorkPage />;
   }
   return (
-    <View style={styles.container}>
-            <Text
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <Text
         style={{
           ...theme.customFonts.primary.medium,
           fontSize: 20,
@@ -56,13 +66,26 @@ export default function Work() {
         {"Your Work"}
       </Text>
       {assignedProjects.map((project) => (
-        <ProjectChatPreview
-          project={project}
-          key={project.id}
-        />
+        <ProjectChatPreview project={project} key={project.id} />
       ))}
+      {assignedProjects.length == 0 && (
+        <Text
+          style={{
+            ...theme.customFonts.primary.small,
+            fontSize: 17,
+            marginVertical: 70,
+            color: theme.colors.gray,
+          }}
+        >
+          {t("work.no-team-project")}
+        </Text>
+      )}
       {!noShortlistedEnquiries && (
-        <>
+        <View
+          style={{
+            marginBottom: 40,
+          }}
+        >
           <WorkTabHeaders title={t("work.shortlisted")} />
           {shortlistedEnquiries.map((enquiry) => {
             if (enquiry.projectManager)
@@ -83,7 +106,43 @@ export default function Work() {
                 />
               );
           })}
-        </>
+        </View>
+      )}
+      {!noNotShortlistedEnquiries && (
+        <View
+          style={{
+            marginBottom: 200,
+          }}
+        >
+          <WorkTabHeaders
+            title={t("work.waiting-shortlist")}
+            isExandalbe
+            isExpanded={showWaitingShortlist}
+            onTitlePress={() => {
+              setShowWaitingShortlist(!showWaitingShortlist);
+            }}
+          />
+          {showWaitingShortlist &&
+            notShortlistedEnquiries.map((enquiry) => {
+              if (enquiry.projectManager)
+                return (
+                  <ChatPreview
+                    chatName={enquiry.projectManager?.username || "N/A"}
+                    chatType={ChatType.Enquiry}
+                      chatId={getChatId(ChatType.Enquiry, enquiry.id)}
+                    key={enquiry.id}
+                    enquiryInformation={enquiry}
+                    chatMembers={[
+                      {
+                        userId: enquiry.projectManager.userId,
+                        username: enquiry.projectManager.username,
+                        publicKey: enquiry.projectManager.publicKey!,
+                      },
+                    ]}
+                  />
+                );
+            })}
+        </View>
       )}
       {/* {assetOffers.map((offer) => (
         <ChatPreview
@@ -106,16 +165,16 @@ export default function Work() {
       >
         Asset Offers
       </Text> */}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    width: "100%",
     paddingVertical: "10%",
     paddingHorizontal: "4%",
+    gap: 18,
+    minHeight: windowHeight,
   },
   title: {
     fontSize: 20,

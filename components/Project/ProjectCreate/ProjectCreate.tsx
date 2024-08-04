@@ -26,6 +26,7 @@ import StyledTextField from "@/components/Common/StyledTextField";
 import StyledButton from "@/components/Common/StyledButton";
 import { router } from "expo-router";
 import { getChatId } from "@/common/chat/chatHelper";
+import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 type ProjectCreateProps = {};
 
@@ -33,9 +34,20 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
   const { t } = useTranslation();
 
   const setProject = useSetProjectState();
-  const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
-    EntityType.PROJECT
-  );
+  const {
+    upload,
+    isLoading: isUploadingImages,
+    filesUploadingStatus,
+  } = usePrepareAndUpload(EntityType.PROJECT, (urls) => {
+    
+    const newMedias = getMediaCreateDTOs(urls);
+    const NewProject: ProjectCreateDTO = {
+      medias: newMedias,
+      description: description,
+      name: title,
+    };
+    createProject({ data: NewProject });
+  });
 
   const [uris, setUris] = useState<string[]>([]);
   const [title, setTitle] = useState<string>("");
@@ -67,19 +79,16 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
   });
 
   const handleCreate = async () => {
-    const urls = await upload(uris);
-    const newMedias = getMediaCreateDTOs(urls);
-    const NewProject: ProjectCreateDTO = {
-      medias: newMedias,
-      description: description,
-      name: title,
-    };
-    createProject({ data: NewProject });
+    await upload(uris);
   };
 
   const theme = useTheme();
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <View style={styles.container}>
         <CancelButton onPress={() => router.back()} />
         {!showImages && (
@@ -141,10 +150,26 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
               editable={true}
               tooltip={t("projects.create-project.description-tooltip")}
             />
+            <StyledButton
+              text={t("button.next")}
+              icon="arrow-right"
+              onPress={() => {
+                showImages ? handleCreate() : setShowImages(true);
+              }}
+              style={{
+                marginTop: 80,
+              }}
+              isLoading={isLoading || isUploadingImages}
+            />
           </View>
         )}
         {showImages && (
-          <>
+          <View
+            style={{
+              minHeight: windowHeight,
+              gap: 20,
+            }}
+          >
             <Text
               style={{
                 ...theme.customFonts.secondary.large,
@@ -152,48 +177,46 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
                 fontSize: 35,
               }}
             >
-              Add Project Pictures
+              {t("projects.create-project.add-pictures-title")}
             </Text>
-            <View
+            <Text
               style={{
-                borderRadius: 7,
-                height: "30%",
-                backgroundColor: theme.colors.lightGray,
+                ...theme.customFonts.primary.large,
+                fontWeight: "400",
+                fontSize: 20,
               }}
             >
-              <Media
-                onPress={() => getMedia(0)}
-                uri={uris[0]}
-                style={styles.mainImage}
-                editMode={true}
-              />
-            </View>
-            <View
-              style={{
-                borderRadius: 7,
-                height: "30%",
-                backgroundColor: theme.colors.lightGray,
+              {t("projects.create-project.add-pictures-descriptions")}
+            </Text>
+            <Media
+              onPress={() => getMedia(0)}
+              uri={uris[0]}
+              style={styles.mainImage}
+              loadingState={filesUploadingStatus?.get(uris[0])}
+              editMode={true}
+            />
+            <Media
+              onPress={() => getMedia(1)}
+              uri={uris[1]}
+              loadingState={filesUploadingStatus?.get(uris[1])}
+              style={styles.mainImage}
+              editMode={true}
+            />
+            <StyledButton
+              text={t("button.next")}
+              icon="arrow-right"
+              onPress={() => {
+                showImages ? handleCreate() : setShowImages(true);
               }}
-            >
-              <Media
-                onPress={() => getMedia(1)}
-                uri={uris[1]}
-                style={styles.mainImage}
-                editMode={true}
-              />
-            </View>
-          </>
+              style={{
+                marginTop: 50,
+              }}
+              isLoading={isLoading || isUploadingImages}
+            />
+          </View>
         )}
-        <StyledButton
-          text={t("button.next")}
-          icon="arrow-right"
-          onPress={() => {
-            showImages ? handleCreate() : setShowImages(true);
-          }}
-          isLoading={isLoading || isUploadingImages}
-        />
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 
@@ -216,13 +239,12 @@ const styles = StyleSheet.create({
   },
   mainImage: {
     borderRadius: 7,
-    flex: 1,
+    height: 350,
   },
   container: {
-    flex: 1,
     paddingHorizontal: "5%",
     paddingTop: "10%",
     gap: 25,
-    justifyContent: "space-between",
+    paddingBottom: "10%",
   },
 });

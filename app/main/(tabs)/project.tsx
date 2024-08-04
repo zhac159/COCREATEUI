@@ -17,6 +17,8 @@ export default function Project() {
     <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+
     >
       <Projects />
     </KeyboardAwareScrollView>

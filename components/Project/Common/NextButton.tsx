@@ -17,6 +17,7 @@ const NextButton: FC<NextButtonPros> = ({ onPress, text, icon }) => {
         backgroundColor: theme.colors.primary,
         alignSelf: "center",
         borderRadius: 21,
+        marginTop: 20,
         flexDirection: "row",
         alignItems: "center",
       }}

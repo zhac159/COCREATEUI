@@ -10,5 +10,9 @@ type StepFormProps = {
 const StepForm: FC<StepFormProps> = ({ formPages }) => {
   const [index, setIndex] = useState(formPages.length - 1);
 
-  return <ScrollView>{formPages[index]}</ScrollView>;
+  return (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {formPages[index]}
+    </ScrollView>
+  );
 };

@@ -24,6 +24,7 @@ export default function Survey() {
     <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
     >
       <BackgroundColourAnimation />
       <SurveyForm formId={surveyId} nextStep={nextStep} />

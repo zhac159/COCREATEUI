@@ -9,8 +9,8 @@ export const useFormWithStep = (forms: ReactElement<FormPageProps>[]) => {
   const [index, setIndex] = useState(0);
 
   const nextStep = () => {
-    if (index === forms.length) {
-      router.navigate("/main/(tabs)/discovery");
+    if (index === forms.length - 1) {
+      router.replace("/main/(tabs)/discovery")
     } else {
       setIndex((currentIndex) => currentIndex + 1);
     }
