@@ -95,7 +95,7 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
           <View
             style={{
               gap: 20,
-              minHeight: windowHeight,
+              minHeight: windowHeight + 200,
             }}
           >
             <Text
@@ -158,7 +158,7 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
                 showImages ? handleCreate() : setShowImages(true);
               }}
               style={{
-                marginTop: 150,
+                bottom: 15,
               }}
               isLoading={isLoading || isUploadingImages}
             />
@@ -247,5 +247,6 @@ const styles = StyleSheet.create({
     paddingTop: "10%",
     gap: 25,
     paddingBottom: "10%",
+    minHeight: windowHeight,
   },
 });

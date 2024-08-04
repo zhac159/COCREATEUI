@@ -18,9 +18,9 @@ const Projects: FC<ProjectsProps> = () => {
     allRoles: true,
   });
 
-  // const uris = projects
-  //   ? projects?.map((project) => project.medias[0].uri)
-  //   : [];
+  const uris = projects
+    ? projects?.map((project) => project.medias[0].uri)
+    : [];
 
   useEffect(() => {
     setSelectedRole({
@@ -28,31 +28,31 @@ const Projects: FC<ProjectsProps> = () => {
     });
   }, [currentIndex, projects]);
 
-  // const renderItem = ({
-  //   item,
-  //   index,
-  // }: {
-  //   item: string | null | undefined;
-  //   index: number;
-  // }) => {
-  //   const project = projects?.[index];
-  //   return (
-  //     <ProjectBanner
-  //       id={project.id}
-  //       name={project.name}
-  //       uri={uris[index]}
-  //       roles={project.projectRoles}
-  //       selectedRole={selectedRole}
-  //       setSelectedRole={setSelectedRole}
-  //     />
-  //   );
-  // };
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: string | null | undefined;
+    index: number;
+  }) => {
+    const project = projects?.[index];
+    return (
+      <ProjectBanner
+        id={project.id}
+        name={project.name}
+        uri={uris[index]}
+        roles={project.projectRoles}
+        selectedRole={selectedRole}
+        setSelectedRole={setSelectedRole}
+      />
+    );
+  };
 
   if (projects.length === 0) return <View></View>;
 
   return (
     <View>
-      {/* <Carousel
+      <Carousel
         onScrollEnd={(index) => setCurrentIndex(index)}
         width={windowWidth}
         vertical={false}
@@ -60,7 +60,7 @@ const Projects: FC<ProjectsProps> = () => {
         data={uris}
         renderItem={renderItem}
         height={bannerHeight}
-      /> */}
+      />
       <ProjectManage
         project={projects[currentIndex]}
         selectedRole={selectedRole}
