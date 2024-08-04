@@ -53,7 +53,9 @@ const ProjectCreate: FC<ProjectCreateProps> = () => {
           newState.push(data);
           return newState;
         });
-        await generateAndStoreSymmetricAesKey(getChatId(data.id, ChatType.Project));
+        await generateAndStoreSymmetricAesKey(
+          getChatId(ChatType.Project, data.id)
+        );
         router.navigate({
           pathname: "/main/editProject",
           params: {

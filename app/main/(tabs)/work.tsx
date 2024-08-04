@@ -68,7 +68,6 @@ export default function Work() {
             if (enquiry.projectManager)
               return (
                 <ChatPreview
-                  chatImage="https://picsum.photos/200/300"
                   chatName={enquiry.projectManager?.username || "N/A"}
                   chatType={ChatType.Enquiry}
                   chatId={getChatId(ChatType.Enquiry, enquiry.id)}

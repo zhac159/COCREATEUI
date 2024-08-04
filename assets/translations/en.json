@@ -1,15 +1,22 @@
 {
   "hello": "Hello, World!",
-  "welcome-page" :{
+  "welcome-page": {
     "title-1": "Welcome to the",
     "title-2": "future of creative work"
   },
-  "sign-in":{
-    "username-email" : "Username / Email",
-    "password" : "Password",
-    "password-tool-tip":"If you forgot your password, please email springRiseLimited@outlook.com"
+  "sign-in": {
+    "username-email": "Username / Email",
+    "password": "Password",
+    "password-tool-tip": "If you forgot your password, please email springRiseLimited@outlook.com"
   },
   "get-started": {
+    "tutorial": {
+      "title": "How it works",
+      "tutorial1": "You browse projects other creatives are doing which match your skills",
+      "tutorial2": "You apply at projects you're interested in \n\n You work on the proejct ",
+      "tutorial3": "You can add the finished product to your portfolio. \n\n You earn credits for your work.",
+      "tutorial4": "You can use the credits you earned to hire other cretives and rent assets and tools you need. "
+    },
     "terms-and-conditions": {
       "title": "This app is part of a research project",
       "description": "WeCreateX is part of MA research at King's College London to explore the future of creativity.",
@@ -106,9 +113,10 @@
       "accountdetails": "Acount Details & Location",
       "termsandconditions": "Terms & Conditions",
       "feedbackandcontact": "Feedback & Contact",
-      "delete": "Delete Account"
+      "delete": "Delete Account",
+      "logout": "Logout"
     },
-    "account-viewer":{
+    "account-viewer": {
       "projects-commissioned": "Project(s)\nCommissioned",
       "roles-worked": "Role(s)\nWorked"
     },
@@ -153,7 +161,7 @@
           "email-placeholder": "Enter New Email..."
         }
       },
-      "delete":{
+      "delete": {
         "title": "Delete Account",
         "description": "Are you sure you want to delete your account? This action cannot be undone."
       }
@@ -174,5 +182,8 @@
     "next": "Next",
     "complete": "Complete",
     "delete": "Delete"
+  },
+  "terms-and-conditions": {
+    "content": "IIntroduction Welcome to WeCreateX. WeCreateX is a research platform designed to facilitate the exchange of creative work among participants for the purpose of academic research conducted by Nikolas Kunesch as part of his MA research at King’s College London. By using WeCreateX, you agree to comply with the Consent Form which outlines the research conditions and you are bound by the following terms and conditions which moderate behavior on the platfrom. Please read these terms carefully."
   }
 }

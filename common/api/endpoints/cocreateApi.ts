@@ -36,6 +36,7 @@ import type {
   ExperienceCreateDTO,
   ExperienceDTO,
   GetApiProjectCompletedParams,
+  GetApiProjectGetByRoleParams,
   GetApiUserGetProfileParams,
   LoginResponseDTO,
   MessageCreateDTO,
@@ -78,6 +79,7 @@ import type {
   UserProfileDTO,
   UserProfilesDTO,
   UserPublicKeyUpdateDTO,
+  UserTokenLoginDTO,
   UserUpdateDTO,
   UserUpdateEmailDTO,
   UserVerifyEmailDTO
@@ -402,7 +404,7 @@ export const postApiEnquiryConfirm = (
  ) => {
       
       
-      return customInstance<Boolean>(
+      return customInstance<ProjectDTO>(
       {url: `/api/Enquiry/confirm`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: enquiryConfirmDTO
@@ -864,6 +866,58 @@ const {mutation: mutationOptions} = options ?? {};
       return useMutation(mutationOptions);
     }
     
+export const postApiLoginTokenLogin = (
+    userTokenLoginDTO: UserTokenLoginDTO,
+ ) => {
+      
+      
+      return customInstance<LoginResponseDTO>(
+      {url: `/api/Login/token-login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userTokenLoginDTO
+    },
+      );
+    }
+  
+
+
+export const getPostApiLoginTokenLoginMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoginTokenLogin>>, TError,{data: UserTokenLoginDTO}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiLoginTokenLogin>>, TError,{data: UserTokenLoginDTO}, TContext> => {
+const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiLoginTokenLogin>>, {data: UserTokenLoginDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiLoginTokenLogin(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiLoginTokenLoginMutationResult = NonNullable<Awaited<ReturnType<typeof postApiLoginTokenLogin>>>
+    export type PostApiLoginTokenLoginMutationBody = UserTokenLoginDTO
+    export type PostApiLoginTokenLoginMutationError = ErrorType<unknown>
+
+    export const usePostApiLoginTokenLogin = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoginTokenLogin>>, TError,{data: UserTokenLoginDTO}, TContext>, }
+): UseMutationResult<
+        Awaited<ReturnType<typeof postApiLoginTokenLogin>>,
+        TError,
+        {data: UserTokenLoginDTO},
+        TContext
+      > => {
+
+      const mutationOptions = getPostApiLoginTokenLoginMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 export const postApiPortofolioContent = (
     portofolioContentCreateDTO: PortofolioContentCreateDTO,
  ) => {
@@ -1272,6 +1326,63 @@ export const useGetApiProjectCompleted = <TData = Awaited<ReturnType<typeof getA
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getGetApiProjectCompletedQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+export const getApiProjectGetByRole = (
+    params?: GetApiProjectGetByRoleParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ProjectDTO>(
+      {url: `/api/Project/getByRole`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiProjectGetByRoleQueryKey = (params?: GetApiProjectGetByRoleParams,) => {
+    return [`/api/Project/getByRole`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetApiProjectGetByRoleQueryOptions = <TData = Awaited<ReturnType<typeof getApiProjectGetByRole>>, TError = ErrorType<unknown>>(params?: GetApiProjectGetByRoleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectGetByRole>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiProjectGetByRoleQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiProjectGetByRole>>> = ({ signal }) => getApiProjectGetByRole(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProjectGetByRole>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiProjectGetByRoleQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProjectGetByRole>>>
+export type GetApiProjectGetByRoleQueryError = ErrorType<unknown>
+
+export const useGetApiProjectGetByRole = <TData = Awaited<ReturnType<typeof getApiProjectGetByRole>>, TError = ErrorType<unknown>>(
+ params?: GetApiProjectGetByRoleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectGetByRole>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiProjectGetByRoleQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

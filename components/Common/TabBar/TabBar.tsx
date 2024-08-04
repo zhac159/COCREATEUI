@@ -11,6 +11,7 @@ type TabBarProps = {
 };
 
 const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
+
   const darkMode = useMemo(() => {
     return BottomTabBarProps.state.index === 0;
   }, [BottomTabBarProps.state.index]);
@@ -22,10 +23,9 @@ const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
         width: "100%",
         paddingTop: 14,
         paddingBottom: 30,
-        minHeight: 80,
+        height: 80,
         position: "absolute",
-        // backgroundColor: darkMode ? "#393939" : "#fff",
-        top: windowHeight -80,
+        top: windowHeight - 25,
         zIndex: 100,
         flexDirection: "row",
         justifyContent: "space-around",

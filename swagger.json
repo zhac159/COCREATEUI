@@ -314,17 +314,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                  "$ref": "#/components/schemas/ProjectDTOAPIResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                  "$ref": "#/components/schemas/ProjectDTOAPIResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BooleanAPIResponse"
+                  "$ref": "#/components/schemas/ProjectDTOAPIResponse"
                 }
               }
             }
@@ -680,6 +680,54 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/UserCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Login/token-login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserTokenLoginDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserTokenLoginDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserTokenLoginDTO"
               }
             }
           }
@@ -1077,6 +1125,46 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProjectCompletedDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Project/getByRole": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "projectRoleId",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDTOAPIResponse"
                 }
               }
             }
@@ -4427,6 +4515,19 @@
           "publicKey": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserTokenLoginDTO": {
+        "required": [
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false

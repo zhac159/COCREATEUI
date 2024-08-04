@@ -3,7 +3,6 @@ import { StyleSheet, View, Text } from "react-native";
 import { useTheme } from "../Themes/theme";
 import useNewPortofolioContentForm from "../Account/PortofolioContents/useNewPortofolioContentForm";
 import StyledButton from "../Common/StyledButton";
-import { router } from "expo-router";
 import { FormPageProps } from "@/common/forms/formsHelper";
 
 const AddPortofolioForm: FC<FormPageProps> = ({ nextStep }) => {
@@ -13,7 +12,6 @@ const AddPortofolioForm: FC<FormPageProps> = ({ nextStep }) => {
 
   const handleNextStep = () => {
     handleCreate();
-    router.navigate("main/(tabs)/account");
   };
 
   return (

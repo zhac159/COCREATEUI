@@ -1,23 +1,15 @@
 import {
   useAboutYouState,
   usePortfolioContentsState,
+  usePortfolioContentsValue,
 } from "@/components/RecoilStates/profileState";
 import { View, StyleSheet } from "react-native";
 import TabHeaderButtons from "../Common/TabHeaderButtons";
 import { useState } from "react";
 import { useTheme } from "@/components/Themes/theme";
 import PortofolioContent from "./PortofolioContent";
-import { PrepareUploadDTO } from "@/common/api/model";
 import { EntityType } from "../Common/Media/EntityType";
-import {
-  getCleanUrl,
-  getMediaTypeFromUri,
-  uploadFiles,
-} from "../Common/Media/mediaHelper";
-import {
-  usePostApiPrepare,
-  usePutApiUserPortofolio,
-} from "@/common/api/endpoints/cocreateApi";
+import { usePutApiUserPortofolio } from "@/common/api/endpoints/cocreateApi";
 import useNewPortofolioContentForm from "./useNewPortofolioContentForm";
 import StyledButton from "@/components/Common/StyledButton";
 import StyledTextField from "@/components/Common/StyledTextField";
@@ -37,17 +29,12 @@ const PortofolioContentTab = () => {
     upload,
     filesUploadingStatus,
     isLoading: isFilesUploadingLoading,
-  } = usePrepareAndUpload(
-    EntityType.PORTOFOLIOCONTENT,
-    (urls) => {
-      setEditMode(false);
-    }
-  );
-
+  } = usePrepareAndUpload(EntityType.PORTOFOLIOCONTENT, (urls) => {
+    setEditMode(false);
+  });
 
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
-
 
   const {
     FormNode: NewPortofolioContentForm,
@@ -58,8 +45,7 @@ const PortofolioContentTab = () => {
   const [aboutYou, setAboutYou] = useAboutYouState();
   const [newAboutYou, setNewAboutYou] = useState<string>(aboutYou || "");
 
-  const [portofolioContents, setPortofolioContents] =
-    usePortfolioContentsState();
+  const portofolioContents = usePortfolioContentsValue();
 
   const { mutate: updatePortofolioContent } = usePutApiUserPortofolio({
     mutation: {
@@ -96,10 +82,8 @@ const PortofolioContentTab = () => {
           text="Done"
           onPress={handleCreate}
           style={{
-            alignSelf: "flex-end",
+            ...styles.dontButton,
             backgroundColor: theme.colors.primary,
-            marginTop: 10,
-            marginBottom: "15%",
           }}
           isLoading={createIsLoading}
         />
@@ -131,14 +115,11 @@ const PortofolioContentTab = () => {
           multiline: true,
           numberOfLines: 5,
         }}
-        textProps={
-          {
-              style:{
-                paddingLeft: "2%",
-              }
-            
-          }
-        }
+        textProps={{
+          style: {
+            paddingLeft: "2%",
+          },
+        }}
       />
       {portofolioContents.map((content, index) => (
         <PortofolioContent
@@ -172,5 +153,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     justifyContent: "flex-start",
+  },
+  dontButton: {
+    alignSelf: "flex-end",
+    marginTop: 10,
+    marginBottom: "15%",
   },
 });

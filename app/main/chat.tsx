@@ -51,7 +51,6 @@ export default function EnquiryChat() {
     currentChatDataValue.chatMembers
   );
 
-  console.log("userIdUsernameMap", userIdUsernameMap);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [uris, setUris] = useState<string[]>([]);
@@ -65,9 +64,7 @@ export default function EnquiryChat() {
 
   useEffect(() => {
     (async () => {
-      console.log("currentChatDataValue", currentChatDataValue);
       if (
-        !connection ||
         !currentChatDataValue.chatMembers[0] ||
         !currentChatDataValue.chatMembers[0].publicKey
       )
@@ -77,6 +74,7 @@ export default function EnquiryChat() {
         currentChatDataValue.chatMembers[0].publicKey,
         currentChatDataValue.chatMembers[0].userId,
         currentChatDataValue.chatId,
+        userId,
         connection
       );
     })();

@@ -55,6 +55,7 @@ interface CustomTheme extends Theme {
     black: string;
     lightBlack: string;
     orange: string;
+    darkOrange: string;
     white: string;
     darkestGray: string;
     darkerGray: string;

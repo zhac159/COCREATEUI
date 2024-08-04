@@ -40,26 +40,32 @@ const ChatHeaderText: FC<ChatHeaderTextProps> = ({ currentChatData }) => {
     <TouchableWithoutFeedback onPress={handleChatHeaderPress}>
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 15,
+          justifyContent: "space-between",
         }}
       >
-        <Text
+        <View
           style={{
-            ...theme.customFonts.secondary.medium,
-            fontSize: 25,
-            fontWeight: "400",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 15,
           }}
         >
-          {currentChatData.chatName}
-        </Text>
-        <FontAwesome6
-          name="chevron-right"
-          size={20}
-          solid
-          color={theme.colors.black}
-        />
+          <Text
+            style={{
+              ...theme.customFonts.secondary.medium,
+              fontSize: 25,
+              fontWeight: "400",
+            }}
+          >
+            {currentChatData.chatName}
+          </Text>
+          <FontAwesome6
+            name="chevron-right"
+            size={20}
+            solid
+            color={theme.colors.black}
+          />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

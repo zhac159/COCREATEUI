@@ -1,9 +1,7 @@
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { IconButton } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { usePostApiEnquiryConfirm } from "@/common/api/endpoints/cocreateApi";
-import { exchangeProjectKey } from "@/common/encryption/encryptionHelper";
 import { HubConnection } from "@microsoft/signalr";
 import { CurrentChatData } from "@/components/RecoilStates/currentChatDataState";
 import { useTheme } from "@/components/Themes/theme";

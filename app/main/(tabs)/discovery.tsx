@@ -88,7 +88,7 @@ export default function Discovery() {
     }, [])
   );
 
-  if (isLoading || !matchingProjects) return <LoadingBackdrop />;
+  if (isLoading || !matchingProjects) return <LoadingBackdrop showVideo />;
 
   if (matchingProjects.projectWithMatchingRoles.length === 0) {
     return <NoMatchingProjectsPage />;
@@ -115,8 +115,7 @@ export default function Discovery() {
           seenMatchingProject({
             data: {
               projectRoleId:
-                matchingProjects.projectWithMatchingRoles![index]
-                  .projectRoleId,
+                matchingProjects.projectWithMatchingRoles![index].projectRoleId,
             },
           });
         }}

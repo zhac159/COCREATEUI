@@ -38,7 +38,7 @@ const ConfirmEmailTokenForm: FC<FormPageProps> = ({ nextStep }) => {
             fontSize: 40,
           }}
         >
-          Enter Confirmation Code
+          Enter Confirmation Code (make sure to check your spam folder please)
         </Text>
         <TextInput
           style={{

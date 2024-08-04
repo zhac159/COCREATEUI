@@ -5,10 +5,13 @@ import nacl from "tweetnacl";
 import { Buffer } from "buffer";
 import { EncryptedKeyExchangeCreateDTO } from "../api/model";
 import { HubConnection } from "@microsoft/signalr";
-import ChatType from "../chat/chatType";
+import SecureStoreKeys from "../api/enum/secureStoreKeys";
 
 export function getAesKeyString(chatId: string): string {
   return "CoCreate-" + chatId + "-Aes-Key";
+}
+export function getAsymmetricKeyName(key: string, userId: number): string {
+  return key + "-" + userId;
 }
 
 export async function generateAndStoreSymmetricAesKey(
@@ -56,33 +59,27 @@ export async function getDatabasKey(): Promise<string | null> {
   return await SecureStore.getItemAsync("CoCreate-Local-Aes-Key");
 }
 
-export async function generateKeyPair(): Promise<nacl.BoxKeyPair> {
+export async function generateKeyPair(
+  userId: number
+): Promise<nacl.BoxKeyPair> {
   const privateKey = await Crypto.getRandomBytesAsync(32);
   const publicKey = nacl.box.keyPair.fromSecretKey(privateKey);
 
   await SecureStore.setItemAsync(
-    "CoCreate-Local-Private-Key",
+    getAsymmetricKeyName(SecureStoreKeys.PRIVATE_KEY, userId),
     toBase64(privateKey)
   );
 
   await SecureStore.setItemAsync(
-    "CoCreate-Local-Public-Key",
+    getAsymmetricKeyName(SecureStoreKeys.PUBLIC_KEY, userId),
     toBase64(publicKey.publicKey)
   );
 
   return publicKey;
 }
 
-export async function getPrivateKey(): Promise<Uint8Array | null> {
-  let privateKey = await SecureStore.getItemAsync("CoCreate-Local-Private-Key");
-  if (privateKey == null) {
-    return null;
-  }
-  return fromBase64(privateKey);
-}
-
-export async function getPublicKey(): Promise<Uint8Array | null> {
-  let publicKey = await SecureStore.getItemAsync("CoCreate-Local-Public-Key");
+export async function getAsymmetricKeyKey(keyName: string, userId: number): Promise<Uint8Array | null> {
+  let publicKey = await SecureStore.getItemAsync(getAsymmetricKeyName(keyName, userId));
   if (publicKey == null) {
     return null;
   }
@@ -92,9 +89,10 @@ export async function getPublicKey(): Promise<Uint8Array | null> {
 export async function encryptMessageDFH(
   message: string,
   nonce: Uint8Array,
-  publicKey: string
+  publicKey: string,
+  userId: number
 ): Promise<string> {
-  const privateKey = await getPrivateKey();
+  const privateKey = await getAsymmetricKeyKey(SecureStoreKeys.PRIVATE_KEY, userId);
 
   if (privateKey == null) {
     throw new Error("Private key not found");
@@ -113,9 +111,10 @@ export async function encryptMessageDFH(
 export async function decryptMessageDFH(
   message: string,
   nonce: string,
-  publicKey: string
+  publicKey: string,
+  userId: number
 ): Promise<string> {
-  const privateKey = await getPrivateKey();
+  const privateKey = await getAsymmetricKeyKey(SecureStoreKeys.PRIVATE_KEY, userId);
 
   if (privateKey == null) {
     throw new Error("Private key not found");
@@ -151,9 +150,10 @@ export async function createAndExchangeKeys(
   receiverPublicKey: string,
   receiverId: number,
   chatId: string,
+  userId: number,
   connection: HubConnection
 ): Promise<void> {
-  const publicKey = await getPublicKey();
+  const publicKey = await getAsymmetricKeyKey(SecureStoreKeys.PUBLIC_KEY, userId);
 
   if (publicKey == null) {
     throw new Error("Public key not found");
@@ -168,7 +168,8 @@ export async function createAndExchangeKeys(
   const encryptedKey = await encryptMessageDFH(
     aesKey,
     nonce,
-    receiverPublicKey
+    receiverPublicKey,
+    userId
   );
 
   const keyExchangeDTO: EncryptedKeyExchangeCreateDTO = {
@@ -188,9 +189,9 @@ export async function createAndExchangeKeysIfThereIsNoKey(
   receiverPublicKey: string,
   receiverId: number,
   chatId: string,
+  userId: number,
   connection: HubConnection
 ): Promise<void> {
-
   const aesKey = await getSymmetricAesKey(chatId);
 
   if (aesKey != null) {
@@ -201,6 +202,7 @@ export async function createAndExchangeKeysIfThereIsNoKey(
     receiverPublicKey,
     receiverId,
     chatId,
+    userId,
     connection
   );
 }
@@ -209,6 +211,7 @@ export async function exchangeProjectKey(
   receiverPublicKey: string,
   receiverId: number,
   chatId: string,
+  userId: number,
   connection: HubConnection | null
 ): Promise<void> {
   const projectKey = await getSymmetricAesKey(chatId);
@@ -221,10 +224,11 @@ export async function exchangeProjectKey(
   const encryptedKey = await encryptMessageDFH(
     projectKey,
     nonce,
-    receiverPublicKey
+    receiverPublicKey,
+    userId
   );
 
-  const publicKey = await getPublicKey();
+  const publicKey = await getAsymmetricKeyKey(SecureStoreKeys.PUBLIC_KEY, userId);
 
   if (publicKey == null) return;
 

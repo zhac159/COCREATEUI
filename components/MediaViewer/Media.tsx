@@ -160,14 +160,14 @@ const Media: React.FC<MediaProps> = ({
               source={{ uri }}
               rate={1.0}
               volume={mute ? 0 : 1.0}
-              isMuted={false}
+              isMuted={true}
               resizeMode={ResizeMode.COVER}
               videoStyle={{
                 opacity: editMode ? 0.5 : 1,
               }}
               onLoadStart={() => setDownloadingState(true)}
               onLoad={handlePlaybackStatusUpdate}
-              shouldPlay = {false}
+              shouldPlay = {true}
               isLooping
               style={{
                 height: "100%",
@@ -182,12 +182,6 @@ const Media: React.FC<MediaProps> = ({
             <Image
               source={{
                 uri: uri,
-              }}
-              onLoadStart={() => {
-                setDownloadingState(true);
-              }}
-              onLoadEnd={() => {
-                setDownloadingState(false);
               }}
               contentFit="cover"
               style={{

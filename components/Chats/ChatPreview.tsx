@@ -18,10 +18,9 @@ import SkillIcon from "../Account/Skills/SkillIcon";
 import Media from "../MediaViewer/Media";
 import ChatType from "@/common/chat/chatType";
 import { useLastMessagesByChatIdState } from "../RecoilStates/lastMessagesState";
-import { getChatId } from "@/common/chat/chatHelper";
 
 type ChatPreviewProps = {
-  chatImage: string;
+  chatImage?: string;
   chatType: ChatType;
   chatId: string;
   chatName: string;
@@ -76,6 +75,8 @@ const ChatPreview: FC<ChatPreviewProps> = ({
         ...styles.container,
         flexDirection: "row",
         alignItems: "center",
+        backgroundColor: "transparent",
+        gap: 10,
       }}
       onPress={() => {
         setCurrentChatData({
@@ -94,20 +95,33 @@ const ChatPreview: FC<ChatPreviewProps> = ({
       {skillType !== undefined ? (
         <SkillIcon skillType={skillType} style={styles.image} />
       ) : (
-        <Media uri={"https://picsum.photos/200/300"} style={styles.image} />
+        // <Media uri={chatImage ?? "https://picsum.photos/200/300"} style={styles.image} />
+        <View
+          style={{ ...styles.image, backgroundColor: theme.colors.lightGray }}
+        >
+          <Text
+            style={{
+              color: theme.colors.black,
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            {chatName.substring(0, 2)}
+          </Text>
+        </View>
       )}
       <View
         style={{
           flex: 1,
           height: "90%",
-          paddingBottom: "1%"
+          paddingBottom: "1%",
         }}
       >
         <View
           style={{
             flexDirection: "column",
             flex: 1,
-            gap: 10,
+            paddingBottom: 8,
             borderBottomColor: theme.colors.lightGray,
             borderBottomWidth: 1,
           }}
@@ -140,9 +154,11 @@ const ChatPreview: FC<ChatPreviewProps> = ({
           <Text
             style={{
               ...theme.customFonts.primary.medium,
-              fontSize: 15,
+              fontSize: 14,
               color: theme.colors.darkGray,
             }}
+            numberOfLines={2}
+            ellipsizeMode="tail"
           >
             {lastMessageString}
           </Text>
@@ -160,9 +176,12 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   image: {
-    width: 60,
-    height: 60,
+    width: 55,
+    height: 55,
     borderRadius: 10,
     marginBottom: 10,
+    pointerEvents: "none",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

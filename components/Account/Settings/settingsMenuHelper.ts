@@ -3,5 +3,6 @@ export enum SettingsMenuOptions {
   accountdetails,
   termsandconditions,
   feedbackandcontact,
-  delete
+  delete,
+  logout,
 }

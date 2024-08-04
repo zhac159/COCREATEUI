@@ -1,4 +1,4 @@
-import { Stack, useRouter } from "expo-router";
+import { router, Stack, useRouter } from "expo-router";
 import React, { createContext, useEffect, useState } from "react";
 import { HubConnection } from "@microsoft/signalr";
 import {
@@ -22,6 +22,7 @@ import {
   useAssignedProjectsValue,
   useSetProjectState,
   useSetEnquiriesState,
+  useUserIdValue,
 } from "@/components/RecoilStates/profileState";
 import { JsStack } from "@/components/Common/JStack";
 import {
@@ -30,14 +31,14 @@ import {
 } from "@react-navigation/stack";
 import { useSetNewMessageReactionState } from "@/components/RecoilStates/newMessageReactionState";
 import { useSetLastMessagesByChatIdState } from "@/components/RecoilStates/lastMessagesState";
+import * as SecureStore from "expo-secure-store";
+import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 
 export default function HelperScreenNav() {
   const [connection, setConnection] = useState<HubConnection | null>(null);
-
-  const router = useRouter();
-
+  const userId = useUserIdValue();
   const assignedProjects = useAssignedProjectsValue();
 
   const setLastMessages = useSetLastMessagesByChatIdState();
@@ -121,7 +122,7 @@ export default function HelperScreenNav() {
     connection.on(
       "ReceiveEncryptedKeysExchange",
       (encryptedKeys: EncryptedKeyExchangeDTO[]) => {
-        handleReceiveEncryptedKeysExchange(connection, encryptedKeys);
+        handleReceiveEncryptedKeysExchange(connection, encryptedKeys, userId);
       }
     );
   }, [connection]);
@@ -155,6 +156,23 @@ export default function HelperScreenNav() {
 
     return cleanup;
   }, [connection]);
+
+  useEffect(() => {
+    const navigateToQuery = async () => {
+      const currentDate = new Date();
+      const isAugust20 =
+        currentDate.getDate() === 4 && currentDate.getMonth() === 7;
+      if (!isAugust20) return;
+      var hasCompleted = await SecureStore.getItemAsync(
+        SecureStoreKeys.COMPLETED_20_AUGUST_SURVEY + userId
+      );
+      if (!hasCompleted) {
+        router.push("/main/survey");
+      }
+    };
+
+    navigateToQuery();
+  }, []);
 
   useEffect(() => {
     if (assignedProjects) {
@@ -255,6 +273,12 @@ export default function HelperScreenNav() {
         />
         <JsStack.Screen
           name="projectRolePreview"
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <JsStack.Screen
+          name="survey"
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}

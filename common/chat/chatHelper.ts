@@ -66,13 +66,16 @@ export function getChatId(
 
 export async function handleReceiveEncryptedKeysExchange(
   connection: HubConnection,
-  encryptedKeys: EncryptedKeyExchangeDTO[]
+  encryptedKeys: EncryptedKeyExchangeDTO[],
+  userId: number
 ): Promise<void> {
   for (const encryptedKeyExchangeDTO of encryptedKeys) {
+
     const decryptedKey = await decryptMessageDFH(
       encryptedKeyExchangeDTO.encryptedSymmetricKey,
       encryptedKeyExchangeDTO.nonce,
-      encryptedKeyExchangeDTO.publicKey
+      encryptedKeyExchangeDTO.publicKey,
+      userId
     );
     console.log("Decrypted key:", decryptedKey);
 

@@ -27,6 +27,8 @@ type ViewApplicationsProps = {
 const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
   const swiperRef = useRef<Swiper<UserProfileDTO>>(null);
 
+  const [isSwipedAll, setIsSwipedAll] = useState(false);
+
   const [applicantsProfiles, setApplicantsProfiles] =
     useState<UserProfilesDTO>();
 
@@ -112,6 +114,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
           }}
           onSwipedAborted={() => setSwipingDistance(0)}
           onSwiped={() => setSwipingDistance(0)}
+          onSwipedAll={() => setIsSwipedAll(true)}
           verticalSwipe={false}
           cardVerticalMargin={0}
           showSecondCard={false}
@@ -126,7 +129,7 @@ const ViewApplications: FC<ViewApplicationsProps> = ({ enquiries, close }) => {
 
   if (!applicantsProfiles || isLoading) return <LoadingBackdrop />;
 
-  if (applicantsProfiles.userProfiles.length === 0) {
+  if (applicantsProfiles.userProfiles.length === 0 || isSwipedAll) {
     return <NoApplicationsPage turnBack={close} />;
   }
 

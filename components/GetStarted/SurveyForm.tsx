@@ -10,7 +10,6 @@ import { usePostApiSurveyAnswerCreateList } from "@/common/api/endpoints/cocreat
 import {
   CreateSurveyAnswerDTO,
   CreateSurveyAnswerListDTO,
-  SurveyAnswerListDTO,
 } from "@/common/api/model";
 import { useUserIdValue } from "../RecoilStates/profileState";
 
@@ -27,7 +26,11 @@ type QuestionValuesType = {
   10: number;
 };
 
-const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
+type SurveyFormProps = {
+  formId: number;
+};
+
+const SurveyForm: FC<FormPageProps & SurveyFormProps > = ({ nextStep, formId }) => {
   const userId = useUserIdValue();
 
   const [questionValues, setQuestionValues] = useState<QuestionValuesType>({
@@ -58,7 +61,7 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
       const surveyAnswer: CreateSurveyAnswerDTO = {
         answer: (Math.round(value * 2) / 2).toString(),
         questionId: numericKey,
-        surveyId: 1,
+        surveyId: formId,
         userId: userId,
       };
 
@@ -71,6 +74,7 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
 
     nextStep?.();
   };
+
   const opinionSliders = useMemo(
     () =>
       Object.keys(questionValues).map((key) => (
@@ -86,7 +90,6 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
         />
       )),
     [
-      questionValues,
       setQuestionValues,
     ]
   );
@@ -113,6 +116,7 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
         text="Next"
         onPress={() => handleSubmit()}
         icon="arrow-right"
+        disabled={Object.values(questionValues).some((value) => value === 0)}
       />
     </View>
   );
@@ -121,5 +125,5 @@ const SurveyForm: FC<FormPageProps> = ({ nextStep }) => {
 export default SurveyForm;
 
 const styles = StyleSheet.create({
-  container: { paddingHorizontal: "5%", gap: 100 },
+  container: { paddingHorizontal: "9%", gap: 100 },
 });

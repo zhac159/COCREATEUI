@@ -90,7 +90,6 @@ const ProjectRole: FC<ProjectRoleProps> = ({ projectRole, handleEditRole }) => {
               router.navigate({
                 pathname: "/main/projectRolePreview",
                 params: {
-                  projectId: projectRole.projectId,
                   projectRoleId: projectRole.id,
                 },
               });

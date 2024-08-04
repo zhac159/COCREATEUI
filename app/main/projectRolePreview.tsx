@@ -1,4 +1,4 @@
-import { useGetApiProjectProjectId } from "@/common/api/endpoints/cocreateApi";
+import { useGetApiProjectGetByRole } from "@/common/api/endpoints/cocreateApi";
 import GoBackButton from "@/components/Common/goBackButton";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 import MatchingProject from "@/components/Discovery/MatchingProjectRole/MatchingProjectRole";
@@ -6,15 +6,14 @@ import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 
 export default function ProjectRolePreview() {
-  const { projectRoleId, projectId } = useLocalSearchParams<{
-    projectId: string;
+  
+  const { projectRoleId } = useLocalSearchParams<{
     projectRoleId: string;
   }>();
 
   const intProjectRoleId = parseInt(projectRoleId!);
-  const intProjectId = parseInt(projectId!);
 
-  const { data: project, isLoading } = useGetApiProjectProjectId(intProjectId);
+  const { data: project, isLoading } = useGetApiProjectGetByRole({projectRoleId: intProjectRoleId});
 
   if (isLoading || !project) return <LoadingBackdrop />;
 

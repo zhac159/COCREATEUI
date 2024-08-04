@@ -9,6 +9,8 @@ import { useTheme } from "../Themes/theme";
 import ChatType from "@/common/chat/chatType";
 import { ProjectDTO, SkillType } from "@/common/api/model";
 import { getChatId } from "@/common/chat/chatHelper";
+import { router } from "expo-router";
+import { useSetProjectState } from "../RecoilStates/profileState";
 
 export type ChatMember = {
   userId: number;
@@ -37,10 +39,20 @@ export const useChatIcons = (
 ) => {
   const theme = useTheme();
 
+  const setProjects = useSetProjectState();
+
   const { mutate: confirmEnquiry } = usePostApiEnquiryConfirm({
     mutation: {
-      onSuccess: async (data) => {
-        console.log("Enquiry confirmed");
+      onSuccess: async (data: ProjectDTO) => {
+        setProjects((state) =>
+          state.map((project) => {
+            if (project.id === data.id) {
+              return data;
+            }
+            return project;
+          })
+        );
+        router.navigate("/main/(tabs)/project");
       },
     },
   });
@@ -49,7 +61,8 @@ export const useChatIcons = (
     enquiryId: number,
     receiverPublicKey: string,
     receiverId: number,
-    projectId: number
+    projectId: number,
+    userId: number
   ) => {
     confirmEnquiry({
       data: {
@@ -59,7 +72,8 @@ export const useChatIcons = (
     await exchangeProjectKey(
       receiverPublicKey,
       receiverId,
-      getChatId(projectId, ChatType.Project),
+      getChatId(ChatType.Project, projectId),
+      userId,
       connection
     );
   };
@@ -87,7 +101,7 @@ export const useChatIcons = (
             onPress: () => {},
             iconColor: theme.colors.iconGray,
             iconBackgroundColor: theme.colors.white,
-            iconActionName: "Accept Offer"
+            iconActionName: "Accept Offer",
           },
         ];
       } else {
@@ -97,7 +111,7 @@ export const useChatIcons = (
             onPress: () => {},
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
-            iconActionName: "Edit Offer"
+            iconActionName: "Edit Offer",
           },
         ];
       }
@@ -108,18 +122,34 @@ export const useChatIcons = (
       ) {
         return [
           {
+            iconName: "eye",
+            onPress: () => {
+              router.navigate({
+                pathname: "/main/projectRolePreview",
+                params: {
+                  projectRoleId:
+                    currentChatData.enquiryInformation?.projectRoleId,
+                },
+              });
+            },
+            iconActionName: "View Role",
+            iconColor: theme.colors.black,
+            iconBackgroundColor: theme.colors.white,
+          },
+          {
             iconName: "heart",
             onPress: () => {
               handleConfirmEnquiry(
                 currentChatData.enquiryInformation?.id!,
-                currentChatData.enquiryInformation?.enquirer?.publicKey || "",
-                currentChatData.enquiryInformation?.enquirer?.userId || 0,
-                currentChatData.projectId || 0
+                currentChatData.enquiryInformation?.enquirer?.publicKey!,
+                currentChatData.enquiryInformation?.enquirer?.userId!,
+                currentChatData.projectId!,
+                userId
               );
             },
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
-            iconActionName: "Hire"
+            iconActionName: "Hire",
           },
           {
             iconName: "heart-crack",
@@ -132,11 +162,26 @@ export const useChatIcons = (
             },
             iconColor: theme.colors.black,
             iconBackgroundColor: theme.colors.white,
-            iconActionName: "Dismiss"
+            iconActionName: "Dismiss",
           },
         ];
       } else {
         return [
+          {
+            iconName: "eye",
+            onPress: () => {
+              router.navigate({
+                pathname: "/main/projectRolePreview",
+                params: {
+                  projectRoleId:
+                    currentChatData.enquiryInformation?.projectRoleId,
+                },
+              });
+            },
+            iconActionName: "View Role",
+            iconColor: theme.colors.black,
+            iconBackgroundColor: theme.colors.white,
+          },
           {
             iconName: "heart-crack",
             onPress: () => {
@@ -164,14 +209,12 @@ export const useChatIcons = (
   };
 
   return useMemo(() => {
-    const getIconsForChatType =
-      chatIconConfig[currentChatData.chatType];
+    const getIconsForChatType = chatIconConfig[currentChatData.chatType];
     return getIconsForChatType
       ? getIconsForChatType(currentChatData, userId)
       : [];
   }, [currentChatData, userId]);
 };
-
 
 export const useGetProjectChatMembers = (project: ProjectDTO) => {
   return useMemo(() => {

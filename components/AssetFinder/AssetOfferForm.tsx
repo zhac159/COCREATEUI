@@ -4,18 +4,14 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
 } from "react-native";
 import { useTheme } from "../Themes/theme";
 import FromToDatePicker from "../Common/Forms/FromToDatePicker";
-import DurationPicker from "../Common/Forms/DurationPicker";
-import { de } from "@faker-js/faker";
 import ButtonWithIcon from "../Common/ButtonWithIcon";
 import { usePostApiAssetOfferCreate } from "@/common/api/endpoints/cocreateApi";
 import { router } from "expo-router";
-import { useSetProjectByIdState } from "../RecoilStates/profileState";
-import { createAndExchangeKeys } from "@/common/encryption/encryptionHelper";
+import { useSetProjectByIdState, useUserIdValue } from "../RecoilStates/profileState";
 import { ConnectionContext } from "@/app/main/_layout";
 import ChatType from "@/common/chat/chatType";
 import { BlurView } from "expo-blur";
@@ -32,7 +28,7 @@ const AssetOfferForm: FC<AssetOfferFormProps> = ({
   show,
 }) => {
   const theme = useTheme();
-
+  const userId = useUserIdValue();
   const setProject = useSetProjectByIdState(projectId);
   
   const connection = useContext(ConnectionContext);
@@ -60,13 +56,6 @@ const AssetOfferForm: FC<AssetOfferFormProps> = ({
             assetOffers: newAssetOffers,
           };
         });
-
-        createAndExchangeKeys(
-          data.asset!.owner!.publicKey || "",
-          data.asset!.owner!.userId || 0,
-          ChatType.AssetEnquiry,
-          connection
-        );
       },
       onError: (error) => {
         console.log(error);

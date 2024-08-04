@@ -10,6 +10,7 @@ import { AccountDetailsAndLocation } from "./AccountDetailsAndLocation/AccountDe
 import { TermsAndConditions } from "./TermsAndConditions";
 import { FeedbackAndContact } from "./FeedbackAndContact";
 import { DeleteAccountPage } from "./DeleteAccountPage";
+import { SignOutPage } from "./SignOutPage";
 
 const SettingsTab = () => {
   const [active, setActive] = useState<SettingsMenuOptions>();
@@ -20,6 +21,7 @@ const SettingsTab = () => {
     [SettingsMenuOptions.accountdetails]: <AccountDetailsAndLocation />,
     [SettingsMenuOptions.feedbackandcontact]: <FeedbackAndContact />,
     [SettingsMenuOptions.delete]: <DeleteAccountPage />,
+    [SettingsMenuOptions.logout]: <SignOutPage/>,
   };
 
   return (

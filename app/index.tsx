@@ -14,29 +14,49 @@ import {
   windowWidth,
 } from "@/components/Account/Common/getWindowDimensions";
 import BlackHalfOpacityBackdrop from "@/components/Common/BlackHalfOpacityBackdrop";
-import { usePostApiUserAuthenticateToken } from "@/common/api/endpoints/cocreateApi";
+import { usePostApiLoginTokenLogin } from "@/common/api/endpoints/cocreateApi";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import * as SecureStore from "expo-secure-store";
+import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
+import { generateDatabaseKey } from "@/common/encryption/encryptionHelper";
+import { useSetCurrentUserState } from "@/components/RecoilStates/profileState";
+import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 
 const LoginPage = () => {
   const theme = useTheme();
-
+  const setCurrentUser = useSetCurrentUserState();
   const { t } = useTranslation();
 
-  const { mutate: authenticate, isLoading } = usePostApiUserAuthenticateToken({
+  const { mutate: authenticate, isLoading } = usePostApiLoginTokenLogin({
     mutation: {
       onSuccess: (data) => {
+        setCurrentUser(data.user);
+        generateDatabaseKey();
+        SecureStore.setItemAsync(SecureStoreKeys.USER_TOKEN, data.token);
         router.replace("/main/(tabs)/discovery");
       },
     },
   });
 
-  // useEffect(() => {
-  //   authenticate();
-  // }, []);
+  useEffect(() => {
+    const autoLogin = async () => {
+      const token = await SecureStore.getItemAsync(SecureStoreKeys.USER_TOKEN);
+      if (token) {
+        authenticate({
+          data: {
+            token: token,
+          },
+        });
+      }
+    };
 
-  // if (isLoading) {
-  //   return <LoadingBackdrop />;
-  // }
+    autoLogin();
+  }, [authenticate]);
+
+  if (isLoading) {
+    return <LoadingBackdrop />;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -96,6 +116,8 @@ const LoginPage = () => {
   );
 };
 
+export default LoginPage;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -115,5 +137,3 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 });
-
-export default LoginPage;

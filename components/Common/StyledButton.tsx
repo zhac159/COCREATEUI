@@ -52,6 +52,7 @@ const StyledButton: FC<StyledButtonProps> = ({
         overflow: "hidden",
         ...styles.container,
         ...(style as {}),
+        opacity: disabled ? 0.5 : 1,
         backgroundColor: success
         ? theme.colors.green
         : (style && 'backgroundColor' in style ? style.backgroundColor : theme.colors.primary),
