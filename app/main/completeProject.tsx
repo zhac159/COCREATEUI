@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
@@ -22,6 +23,7 @@ import { getMediaCreateDTOs } from "@/components/Account/Common/Media/mediaHelpe
 import StyledButton from "@/components/Common/StyledButton";
 import GoBackButton from "@/components/Common/goBackButton";
 import { useTranslation } from "react-i18next";
+import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 
 export default function CompleteProject() {
   const { upload, isLoading: isUploadingImages } = usePrepareAndUpload(
@@ -88,52 +90,58 @@ export default function CompleteProject() {
   if (!project) return <Text>Loading...</Text>;
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView style={styles.container}>
-        <GoBackButton />
-        <View>
-          {formStep === 0 && (
-            <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
-          )}
-          {formStep === 1 && (
-            <CompleteProjectDescription
-              description={description}
-              setDescription={setDescription}
-            />
-          )}
-          {assignesProjectRoles.map(
-            (role, index) =>
-              formStep === index + 2 && (
-                <CompleteProjectReviewAssignee
-                  key={index}
-                  roleSkill={role.skillType!}
-                  reviewed={role.assignee!}
-                  onReviewChange={(review) => {
-                    const newReviews = [...reviews];
-                    newReviews[index] = review;
-                    setReviews(newReviews);
-                  }}
-                />
-              )
-          )}
-          {formStep === lastFormStepIndex && (
-            <CompletedProjectConfirmation
-              project={project}
-              description={t("projects.complete-role.description")}
-            />
-          )}
-        </View>
-        <StyledButton
-          text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
-          icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
-          onPress={() => {
-            formStep === lastFormStepIndex
-              ? handleCompleteProject()
-              : setFormStep((prev) => prev + 1);
-          }}
-        />
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          minHeight: windowHeight,
+        }}
+      >
+        <KeyboardAvoidingView style={styles.container}>
+          <GoBackButton />
+          <View>
+            {formStep === 0 && (
+              <CompleteProjectUploadPhoto setUris={setUris} uris={uris} />
+            )}
+            {formStep === 1 && (
+              <CompleteProjectDescription
+                description={description}
+                setDescription={setDescription}
+              />
+            )}
+            {assignesProjectRoles.map(
+              (role, index) =>
+                formStep === index + 2 && (
+                  <CompleteProjectReviewAssignee
+                    key={index}
+                    roleSkill={role.skillType!}
+                    reviewed={role.assignee!}
+                    onReviewChange={(review) => {
+                      const newReviews = [...reviews];
+                      newReviews[index] = review;
+                      setReviews(newReviews);
+                    }}
+                  />
+                )
+            )}
+            {formStep === lastFormStepIndex && (
+              <CompletedProjectConfirmation
+                project={project}
+                description={t("projects.complete-role.description")}
+              />
+            )}
+          </View>
+          <StyledButton
+            text={formStep === lastFormStepIndex ? "Finish Project" : "Next"}
+            icon={formStep === lastFormStepIndex ? "check" : "arrow-right"}
+            onPress={() => {
+              formStep === lastFormStepIndex
+                ? handleCompleteProject()
+                : setFormStep((prev) => prev + 1);
+            }}
+          />
+        </KeyboardAvoidingView>
+      </ScrollView>
   );
 }
 

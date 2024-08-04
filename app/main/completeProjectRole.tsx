@@ -89,68 +89,66 @@ export default function CompleteProjectRole() {
   if (!assignedProject) return <Text>Loading...</Text>;
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          minHeight: windowHeight,
-        }}
-      >
-        <KeyboardAvoidingView style={styles.container}>
-          {formStep === 0 && (
-            <CompleteProjectUploadPhoto
-              setUris={setUris}
-              uris={uris}
-              isCompletingRole
-              projectName={assignedProject.name}
-            />
-          )}
-          {formStep === 1 && (
-            <CompleteProjectDescription
-              description={description}
-              setDescription={setDescription}
-            />
-          )}
-          {formStep === 2 && (
-            <CompleteProjectReviewAssignee
-              reviewed={assignedProject.projectManager!}
-              onReviewChange={(review) => {
-                setReviews((prev) => {
-                  const newReviews = [...prev];
-                  newReviews[0] = review;
-                  return newReviews;
-                });
-              }}
-            />
-          )}
-          {formStep === 3 && (
-            <CompletedProjectConfirmation
-              project={assignedProject}
-              description={t("projects.complete-role.description")}
-            />
-          )}
-          <NextButton
-            text={formStep === 3 ? "Finish Project" : "Next"}
-            icon={formStep === 3 ? "check" : "arrow-right"}
-            onPress={() => {
-              formStep === 3
-                ? handleCompleteProjectRole()
-                : setFormStep((prev) => prev + 1);
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        minHeight: windowHeight,
+      }}
+    >
+      <KeyboardAvoidingView style={styles.container}>
+        {formStep === 0 && (
+          <CompleteProjectUploadPhoto
+            setUris={setUris}
+            uris={uris}
+            isCompletingRole
+            projectName={assignedProject.name}
+          />
+        )}
+        {formStep === 1 && (
+          <CompleteProjectDescription
+            description={description}
+            setDescription={setDescription}
+          />
+        )}
+        {formStep === 2 && (
+          <CompleteProjectReviewAssignee
+            reviewed={assignedProject.projectManager!}
+            onReviewChange={(review) => {
+              setReviews((prev) => {
+                const newReviews = [...prev];
+                newReviews[0] = review;
+                return newReviews;
+              });
             }}
           />
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+        )}
+        {formStep === 3 && (
+          <CompletedProjectConfirmation
+            project={assignedProject}
+            description={t("projects.complete-role.description")}
+          />
+        )}
+        <NextButton
+          text={formStep === 3 ? "Finish Project" : "Next"}
+          icon={formStep === 3 ? "check" : "arrow-right"}
+          onPress={() => {
+            formStep === 3
+              ? handleCompleteProjectRole()
+              : setFormStep((prev) => prev + 1);
+          }}
+        />
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
-    paddingBottom: 30,
-    paddingTop: "20%",
+    paddingBottom: "20%",
+    paddingTop: "15%",
     paddingHorizontal: 29,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,

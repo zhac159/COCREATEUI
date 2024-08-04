@@ -26,19 +26,6 @@ const AddPortofolioForm: FC<FormPageProps> = ({ nextStep }) => {
       >
         Add a project to your portofolio
       </Text>
-      <Text
-        style={{
-          ...theme.customFonts.primary.medium,
-          fontWeight: "400",
-          fontSize: 20,
-        }}
-      >
-        Let's start creating your portfolio: upload photos and video previews of
-        your best work (up to three min). You can upload up to three items for
-        each project you showcase. Link more extensive samples of your work,
-        professional social media handles or documents in your bio. You can add
-        more projects and create a more extensive portfolio after setup.
-      </Text>
       {FormNode}
       <StyledButton text="Next" onPress={handleNextStep} icon="arrow-right" />
     </View>

@@ -32,7 +32,7 @@ const AddSkillForm: FC<FormPageProps> = ({ nextStep }) => {
           fontSize: 40,
         }}
       >
-        What Are You Creative Skills?
+        What Are Your Creative Skills?
       </Text>
       {FormNode}
       <StyledButton text="Next" onPress={handleNextStep} icon="arrow-right" />

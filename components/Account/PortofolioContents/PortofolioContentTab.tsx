@@ -132,7 +132,7 @@ const PortofolioContentTab = () => {
         onChangeText={setNewAboutYou}
         fontSize={20}
         textInputProps={{
-          placeholder: t("account.portfolio.add-description-placeholder"),
+          placeholder: t("account.portfolio.bio-placeholder"),
           multiline: true,
           numberOfLines: 5,
         }}

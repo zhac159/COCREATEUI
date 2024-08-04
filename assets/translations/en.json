@@ -135,7 +135,8 @@
     },
     "portfolio": {
       "about-you-placeholder": "About You...",
-      "add-description-placeholder": "Bio...",
+      "add-description-placeholder": "Description...",
+      "bio-placeholder": "Bio...",
       "description": "Your portfolio is a collection of all the projects you have worked on. It is a great way to show off your skills and experience to potential employers.",
       "add-description": "Upload photos and video previews of your best work (up to three min). You can upload up to three items foreach project you showcase. Link more extensive samples of your work, professional social media handles or documents in your bio"
     },

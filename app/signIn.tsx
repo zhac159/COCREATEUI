@@ -80,7 +80,7 @@ export default function SignIn() {
           hitSlop={40}
           onPress={() => router.replace("/")}
           size={30}
-          style={{ position: "absolute", top: "10%", left: "1%" }}
+          style={{ position: "absolute", top: "10%", left: "1%", zIndex: 1000 }}
         />
         <View style={styles.formContainer}>
           <View>
