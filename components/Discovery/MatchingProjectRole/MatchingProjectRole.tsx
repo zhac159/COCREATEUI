@@ -22,6 +22,8 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
     (role) => role.id === matchingProject.projectRoleId
   );
 
+  console.log("matchingRole", matchingRole);
+
   const otherRoles =
     matchingProject.project?.projectRoles?.filter(
       (role) => role.id !== matchingProject.projectRoleId

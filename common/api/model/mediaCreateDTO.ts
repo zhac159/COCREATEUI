@@ -7,7 +7,7 @@
 import type { MediaType } from './mediaType';
 
 export interface MediaCreateDTO {
-  mediaType?: MediaType;
-  /** @nullable */
-  uri?: string | null;
+  mediaType: MediaType;
+  /** @minLength 1 */
+  uri: string;
 }

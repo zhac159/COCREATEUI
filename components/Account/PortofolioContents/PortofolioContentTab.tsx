@@ -1,6 +1,5 @@
 import {
   useAboutYouState,
-  usePortfolioContentsState,
   usePortfolioContentsValue,
 } from "@/components/RecoilStates/profileState";
 import { View, StyleSheet } from "react-native";
@@ -105,7 +104,6 @@ const PortofolioContentTab = () => {
               ...styles.dontButton,
               backgroundColor: theme.colors.red,
             }}
-            isLoading={createIsLoading}
           />
         </View>
         {NewPortofolioContentForm}

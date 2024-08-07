@@ -7,20 +7,18 @@ import { SkillDTO } from "@/common/api/model";
 import { usePutApiUserSkills } from "@/common/api/endpoints/cocreateApi";
 import { getRestOfSkills, mapSkillDTOToSkillUpdateDTO } from "./skillHelper";
 import TabHeaderButtons from "../Common/TabHeaderButtons";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 const SkillsTab = () => {
+  const { mutate } = usePutApiUserSkills();
+  const [editMode, setEditMode] = useState(false);
+
   const [skills, setSkills] = useSkillsState();
   const [restOfTheSkills, setRestOfTheSkills] = useState<SkillDTO[]>([]);
-  const { mutate } = usePutApiUserSkills();
-
-  const [editMode, setEditMode] = useState(false);
 
   const deselectSkill = (skillDTO: SkillDTO) => {
     setSkills((prevSkills) =>
-      prevSkills
-        ? prevSkills.filter((skill) => skill.skillType !== skillDTO.skillType)
-        : []
+      prevSkills.filter((skill) => skill.skillType !== skillDTO.skillType)
     );
     setRestOfTheSkills((prevRestOfSkills) => [...prevRestOfSkills, skillDTO]);
   };
@@ -29,22 +27,20 @@ const SkillsTab = () => {
     setRestOfTheSkills((prevRestOfSkills) =>
       prevRestOfSkills.filter((skill) => skill.skillType !== skillDTO.skillType)
     );
-    setSkills((prevSkills) => (prevSkills ? [...prevSkills, skillDTO] : []));
+    setSkills((prevSkills) => [...prevSkills, skillDTO]);
   };
 
   const groupedSkills = map(groupBy(skills, "SkillGroupType"), (data) => data);
   const skillsSelected = flatten(groupedSkills);
 
   const handleSubmit = () => {
-    if (editMode && skills) {
-      mutate({
-        data: skills.map(mapSkillDTOToSkillUpdateDTO),
-      });
-    }
+    mutate({
+      data: skills.map(mapSkillDTOToSkillUpdateDTO),
+    });
   };
 
   useEffect(() => {
-    setRestOfTheSkills(getRestOfSkills(skills ?? []));
+    setRestOfTheSkills(getRestOfSkills(skills));
   }, []);
 
   useEffect(() => {
@@ -54,24 +50,14 @@ const SkillsTab = () => {
   }, [skills]);
 
   return (
-    <View
-      style={{
-        flexGrow: 1,
-        backgroundColor: "transparent",
-        justifyContent: "flex-start",
-      }}
-    >
+    <View style={styles.scene}>
       <TabHeaderButtons
         editMode={editMode}
         setEditMode={setEditMode}
         onDone={handleSubmit}
         showPlayButton={true}
       />
-      <View
-        style={{
-          gap: 60,
-        }}
-      >
+      <View style={styles.listsConstiner}>
         <SkillsList
           skills={skillsSelected}
           editMode={editMode}
@@ -89,3 +75,14 @@ const SkillsTab = () => {
 };
 
 export default SkillsTab;
+
+export const styles = StyleSheet.create({
+  scene: {
+    flexGrow: 1,
+    backgroundColor: "transparent",
+    justifyContent: "flex-start",
+  },
+  listsConstiner: {
+    gap: 60,
+  },
+});

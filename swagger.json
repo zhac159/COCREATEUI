@@ -2829,11 +2829,15 @@
         "additionalProperties": false
       },
       "MediaCreateDTO": {
+        "required": [
+          "mediaType",
+          "uri"
+        ],
         "type": "object",
         "properties": {
           "uri": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "mediaType": {
             "$ref": "#/components/schemas/MediaType"
@@ -3079,11 +3083,16 @@
         "additionalProperties": false
       },
       "PortofolioContentCreateDTO": {
+        "required": [
+          "description",
+          "medias",
+          "skillType"
+        ],
         "type": "object",
         "properties": {
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "order": {
             "type": "integer",
@@ -3096,8 +3105,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaCreateDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false

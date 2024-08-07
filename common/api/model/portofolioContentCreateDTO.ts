@@ -8,10 +8,9 @@ import type { MediaCreateDTO } from './mediaCreateDTO';
 import type { SkillType } from './skillType';
 
 export interface PortofolioContentCreateDTO {
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  medias?: MediaCreateDTO[] | null;
+  /** @minLength 1 */
+  description: string;
+  medias: MediaCreateDTO[];
   order?: number;
-  skillType?: SkillType;
+  skillType: SkillType;
 }

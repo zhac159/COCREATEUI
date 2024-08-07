@@ -32,7 +32,7 @@ export const uploadFiles = async (sasUris: string[], files: string[]) => {
       file = contentUri;
     }
 
-    console.log(`Uploading ${file} to ${sasUri}`);
+    console.log("Uploading file", file);
 
     const options: UploadOptions = {
       url: sasUri,
@@ -102,6 +102,30 @@ export const useGetMedia = (
   return getMedia;
 };
 
+export const useGetMediaCreateDTO = (onlyImages = false) => {
+  const getMedia = useCallback(async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: onlyImages
+        ? ImagePicker.MediaTypeOptions.Images
+        : ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      selectionLimit: 1,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const newMedia: MediaCreateDTO = {
+        uri: result.assets[0].uri,
+        mediaType: getMediaTypeFromUri(result.assets[0].uri),
+      };
+
+      return newMedia;
+    }
+  }, []);
+
+  return getMedia;
+};
+
 export const getMediaTypeFromUri = (uri: string) => {
   if (uri.endsWith(".jpeg") || uri.endsWith(".jpg")) {
     return MediaType.IMAGE;
@@ -130,10 +154,7 @@ export const getMediaCreateDTOs = (urls: string[]) => {
   );
 };
 
-export function useFetchUrisByChatId(
-  database: SQLiteDatabase,
-  chatId: string
-) {
+export function useFetchUrisByChatId(database: SQLiteDatabase, chatId: string) {
   const [uris, setUris] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -165,7 +186,7 @@ export function getMediaCreateDTOsFromUris(uris: string[]): MediaCreateDTO[] {
 export const useSelectMedia = (uri: string | undefined | null) => {
   const setMediaViewer = useSetMediaViewerState();
 
-  if(!uri) {
+  if (!uri) {
     return () => null;
   }
 

@@ -38,6 +38,8 @@ export const usePrepareAndUpload = (
 
   const previousFilesUploadingStatus = useRef(filesUploadingStatus);
 
+  console.log("filesUploadingStatus", filesUploadingStatus);
+
   useEffect(() => {
     if (
       previousFilesUploadingStatus.current !== null &&
@@ -60,6 +62,10 @@ export const usePrepareAndUpload = (
   };
 
   const debouncedSetFilesUploadingStatus = debounce((data: ProgressData) => {
+    console.log("debouncedSetFilesUploadingStatus", data);
+    if(data.progress > 100) {
+      data.progress = 100;
+    }
     setFilesUploadingStatus((prev) => {
       const newMap = new Map(prev);
       newMap.set(data.id, data.progress);
@@ -70,12 +76,13 @@ export const usePrepareAndUpload = (
   const debouncedCompleteFilesUploadingStatus = (data: CompletedData) => {
     checkAndSetFilesUploadingStatus(data.id);
   };
+  
 
   useEffect(() => {
     if (filesUploadingStatus) {
       const allValuesAreHundred = Array.from(
         filesUploadingStatus.values()
-      ).every((value) => value === 100);
+      ).every((value) => value > 100);
       if (allValuesAreHundred) {
         setFilesUploadingStatus(null);
       }

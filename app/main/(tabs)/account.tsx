@@ -31,7 +31,7 @@ export default function Account() {
         snapThreshold={0.5}
         renderHeader={() => (
           <AccountMainInfo
-            coins={currentUser.coins || 0}
+            coins={currentUser.coins}
             username={currentUser.username}
             rating={currentUser.rating}
           />
