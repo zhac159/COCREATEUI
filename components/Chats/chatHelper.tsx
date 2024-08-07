@@ -64,11 +64,13 @@ export const useChatIcons = (
     projectId: number,
     userId: number
   ) => {
+
     confirmEnquiry({
       data: {
         enquiryId: enquiryId,
       },
     });
+    
     await exchangeProjectKey(
       receiverPublicKey,
       receiverId,
@@ -143,7 +145,7 @@ export const useChatIcons = (
                 currentChatData.enquiryInformation?.id!,
                 currentChatData.enquiryInformation?.enquirer?.publicKey!,
                 currentChatData.enquiryInformation?.enquirer?.userId!,
-                currentChatData.projectId!,
+                currentChatData.enquiryInformation?.projectId!,
                 userId
               );
             },

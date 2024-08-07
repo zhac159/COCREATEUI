@@ -44,7 +44,7 @@ const NewAssetForm: React.FC<NewAssetFormProps> = ({
   const getMedia = useGetMedia(setUris, true);
   const cacheImages = useCacheImages();
   const cacheUris = async (asset: AssetDTO) => {
-    var uris = asset.medias?.map((media) => media.uri || "") || [];
+    var uris = asset.medias?.map((media) => media.uri) || [];
     await cacheImages(uris || []);
   };
   const setAssets = useSetAssetsState();

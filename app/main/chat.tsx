@@ -37,9 +37,11 @@ export default function EnquiryChat() {
     return <BackgroundColourAnimation />;
   }, []);
 
-
   const targetId = useMemo(() => {
-    if (currentChatDataValue.chatType === ChatType.Project && currentChatDataValue.projectId) {
+    if (
+      currentChatDataValue.chatType === ChatType.Project &&
+      currentChatDataValue.projectId
+    ) {
       return currentChatDataValue.projectId;
     }
     return currentChatDataValue.chatMembers[0].userId;
@@ -51,7 +53,6 @@ export default function EnquiryChat() {
     currentChatDataValue.chatMembers
   );
 
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [uris, setUris] = useState<string[]>([]);
   const getMedia = useGetMedia(setUris, true);
@@ -59,14 +60,24 @@ export default function EnquiryChat() {
   const lastMessages = useLastMessagesByChatIdValue(
     currentChatDataValue.chatId
   );
-  
+
   const newMessageReaction = useNewMessageReactionValue();
+
+  console.log("chatId", currentChatDataValue.chatId);
 
   useEffect(() => {
     (async () => {
+      console.log(
+        "currentChatDataValue",
+        !currentChatDataValue.chatMembers[0] ||
+          !currentChatDataValue.chatMembers[0].publicKey ||
+          currentChatDataValue.chatType === ChatType.Project
+      );
+
       if (
         !currentChatDataValue.chatMembers[0] ||
-        !currentChatDataValue.chatMembers[0].publicKey
+        !currentChatDataValue.chatMembers[0].publicKey ||
+        currentChatDataValue.chatType === ChatType.Project
       )
         return;
 
@@ -180,8 +191,6 @@ export default function EnquiryChat() {
     }
   }, [lastMessages]);
 
-
-  
   useEffect(() => {
     if (newMessageReaction === null) return;
 

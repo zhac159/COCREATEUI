@@ -9,7 +9,10 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "api": "orval --config ./orval.config.ts",
-    "clean": "powershell -Command \"(Get-Content ./common/api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./common/api/endpoints/cocreateApi.ts\""
+    "clean": "powershell -Command \"(Get-Content ./common/api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./common/api/endpoints/cocreateApi.ts\"",
+    "fetch-swagger": "curl -o ./swagger.json http://192.168.1.92:5000/swagger/v1/swagger.json",
+    "gapi": "npm run fetch-swagger && npm run api && npm run clean"
+
   },
   "jest": {
     "preset": "jest-expo"

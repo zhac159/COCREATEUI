@@ -19,7 +19,7 @@ const Projects: FC<ProjectsProps> = () => {
   });
 
   const uris = projects
-    ? projects?.map((project) => project.medias[0].uri)
+    ? projects?.map((project) => project.medias[0]?.uri)
     : [];
 
   useEffect(() => {

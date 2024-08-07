@@ -1,6 +1,5 @@
 import { FC, useMemo } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { ChatTypeIdPair } from "./chatHelper";
 import { ProjectDTO } from "@/common/api/model";
 import GroupChatPreview from "./GroupChatPreview";
 import Swiper from "react-native-swiper";

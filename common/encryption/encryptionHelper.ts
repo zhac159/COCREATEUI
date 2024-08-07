@@ -14,20 +14,20 @@ export function getAsymmetricKeyName(key: string, userId: number): string {
   return key + "-" + userId;
 }
 
-export async function generateAndStoreSymmetricAesKey(
-  chatId: string
-): Promise<string> {
-  const key = await generateAESKey();
-  await SecureStore.setItemAsync(getAesKeyString(chatId), key);
-  return key;
-}
-
 export async function generateAESKey(): Promise<string> {
   const aesKey = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
     Math.random().toString()
   );
   return aesKey;
+}
+
+export async function generateAndStoreSymmetricAesKey(
+  chatId: string
+): Promise<string> {
+  const key = await generateAESKey();
+  await SecureStore.setItemAsync(getAesKeyString(chatId), key);
+  return key;
 }
 
 export function getSymmetricAesKey(chatId: string): Promise<string | null> {
@@ -65,6 +65,8 @@ export async function generateKeyPair(
   const existingPrivateKey = await SecureStore.getItemAsync(
     getAsymmetricKeyName(SecureStoreKeys.PRIVATE_KEY, userId)
   );
+
+  console.log("existingPrivateKey", existingPrivateKey);
 
   if (existingPrivateKey != null) {
     return null;
@@ -240,11 +242,15 @@ export async function exchangeProjectKey(
 ): Promise<void> {
   const projectKey = await getSymmetricAesKey(chatId);
 
+  console.log("projectKey", projectKey);
+  console.log("dasasd", chatId);
+
   if (projectKey == null) {
     return;
   }
 
   const nonce = getNonce();
+
   const encryptedKey = await encryptMessageDFH(
     projectKey,
     nonce,

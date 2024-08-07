@@ -14,12 +14,14 @@ import { addOpactity, useTheme } from "../Themes/theme";
 import { useSetMediaViewerState } from "./mediaViewerState";
 import { router } from "expo-router";
 import * as Progress from "react-native-progress";
+import { MediaDTO } from "@/common/api/model";
 
 type MediaProps = {
   onPress?: () => void;
   uri: string | undefined | null;
   style: StyleProp<ViewStyle>;
   editMode?: boolean;
+  media?: MediaDTO;
   backgroundColor?: string;
   mute?: boolean;
   loadingState?: number;
@@ -28,19 +30,22 @@ type MediaProps = {
 const Media: React.FC<MediaProps> = ({
   onPress,
   uri,
+  media,
   style,
   editMode,
   mute = true,
   backgroundColor,
   loadingState,
 }) => {
+  const uriToUse = media?.uri ?? uri;
+
   const theme = useTheme();
 
   const [downloadingSate, setDownloadingState] = useState(false);
 
   const setMediaViewer = useSetMediaViewerState();
 
-  onPress = onPress ? onPress : () => handleSelectMedia(uri || "");
+  onPress = onPress ? onPress : () => handleSelectMedia(uriToUse || "");
 
   const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (status.isLoaded && status.isPlaying) {
@@ -48,20 +53,19 @@ const Media: React.FC<MediaProps> = ({
     }
   };
 
-  const handleSelectMedia = (uri: string) => {
+  const handleSelectMedia = (uriToUse: string) => {
     setMediaViewer((state) => ({
       visible: false,
       selectedImageIndex: 0,
-      uris: [uri],
+      uris: [uriToUse],
     }));
     router.push("/main/portofolioModal");
   };
 
   const isMediaVideo = useMemo(
-    () => uri?.endsWith(".mp4") || uri?.endsWith(".mov"),
-    [uri]
+    () => uriToUse?.endsWith(".mp4") || uriToUse?.endsWith(".mov"),
+    [uriToUse]
   );
-  
 
   const EditModeOverlay = useMemo(() => {
     if (!editMode || loadingState !== undefined) return null;
@@ -139,9 +143,14 @@ const Media: React.FC<MediaProps> = ({
     );
   }, [loadingState]);
 
-  if (!uri)
+  if (!uriToUse)
     return (
-      <View style={{ ...(style as {}), backgroundColor: backgroundColor ?? theme.colors.lightGray  }}>
+      <View
+        style={{
+          ...(style as {}),
+          backgroundColor: backgroundColor ?? theme.colors.lightGray,
+        }}
+      >
         {EditModeOverlay}
       </View>
     );
@@ -158,7 +167,7 @@ const Media: React.FC<MediaProps> = ({
         {isMediaVideo ? (
           <View style={[style, { overflow: "hidden" }]}>
             <Video
-              source={{ uri }}
+              source={{ uri: uriToUse }}
               rate={1.0}
               volume={mute ? 0 : 1.0}
               isMuted={true}
@@ -168,7 +177,7 @@ const Media: React.FC<MediaProps> = ({
               }}
               onLoadStart={() => setDownloadingState(true)}
               onLoad={handlePlaybackStatusUpdate}
-              shouldPlay = {true}
+              shouldPlay={true}
               isLooping
               style={{
                 height: "100%",
@@ -183,7 +192,7 @@ const Media: React.FC<MediaProps> = ({
           <View style={[style, { overflow: "hidden" }]}>
             <Image
               source={{
-                uri: uri,
+                uri: uriToUse,
               }}
               contentFit="cover"
               style={{

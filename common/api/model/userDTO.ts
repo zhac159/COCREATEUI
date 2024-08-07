@@ -23,7 +23,7 @@ export interface UserDTO {
   assignedProjects: ProjectDTO[];
   /** @nullable */
   bannerPictureSrc?: string | null;
-  coins?: number;
+  coins: number;
   /** @minLength 1 */
   email: string;
   enquiries: EnquiryDTO[];

@@ -55,9 +55,9 @@ export function getChatId(
 
   if (soloUserId && userId) {
     if (userId > soloUserId) {
-      chatId = chatType + "-" + soloUserId + "-" + userId;
+      chatId = chatType + "-" + entityId + "-" + soloUserId + "-" + userId;
     } else {
-      chatId = chatType + "-" + userId + "-" + soloUserId;
+      chatId = chatType + "-" + entityId + "-" + userId + "-" + soloUserId;
     }
   }
 
@@ -70,7 +70,6 @@ export async function handleReceiveEncryptedKeysExchange(
   userId: number
 ): Promise<void> {
   for (const encryptedKeyExchangeDTO of encryptedKeys) {
-
     const decryptedKey = await decryptMessageDFH(
       encryptedKeyExchangeDTO.encryptedSymmetricKey,
       encryptedKeyExchangeDTO.nonce,
@@ -183,6 +182,8 @@ export async function sendMessage(
 ): Promise<Message> {
   const symmetricAesKey = await getSymmetricAesKey(chatId);
 
+  console.log("Symmetric key:", symmetricAesKey);
+
   if (!symmetricAesKey) throw new Error("Symmetric key not found");
 
   const databaseAesKey = await getDatabasKey();
@@ -196,7 +197,7 @@ export async function sendMessage(
   );
 
   const url = message.uri ? await upload([message.uri]) : null;
-  
+
   const encryptedUri = encryptMessageAES(url ? url[0] : "", symmetricAesKey);
 
   const date = new Date().toISOString();
@@ -335,8 +336,6 @@ function useWebSocketConnection<T>(
 }
 
 export default useWebSocketConnection;
-
-
 
 export const useSendMessage = (
   connection: HubConnection,

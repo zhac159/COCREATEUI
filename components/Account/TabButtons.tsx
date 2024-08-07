@@ -5,19 +5,17 @@ import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
 import { BlurView } from "expo-blur";
 
 type TabButtonsProps = {
-  tabs: string[];
   selectedTab: number;
   setSelectedTab: (inx: number) => void;
-  isSticky: boolean;
 };
 
 const TabButtons: FC<TabButtonsProps> = ({
-  tabs,
   selectedTab,
   setSelectedTab,
-  isSticky,
 }) => {
+  
   const theme = useTheme();
+  const tabs = ["Skills", "Assets", "Portfolio", "Experience"];
 
   return (
     <View

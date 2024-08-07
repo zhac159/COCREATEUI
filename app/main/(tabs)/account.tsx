@@ -1,8 +1,5 @@
 import {
-  StyleSheet,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  View,
+  StyleSheet
 } from "react-native";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
 import { useRef, useState } from "react";
@@ -11,7 +8,6 @@ import AccountMainInfo from "@/components/Account/AccountMainInfo";
 import TabButtons from "@/components/Account/TabButtons";
 import AssetTab from "@/components/Account/Assets/AssetTab";
 import PortofolioContentTab from "@/components/Account/PortofolioContents/PortofolioContentTab";
-import { windowHeight } from "@/components/Account/Common/getWindowDimensions";
 import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnimation";
 import ExperienceTab from "@/components/Experience/ExperienceTab";
 import SettingsTab from "@/components/Account/Settings/SettingsTab";
@@ -20,28 +16,12 @@ import { CollapsibleRef, Tabs } from "react-native-collapsible-tab-view";
 const HEADER_HEIGHT = 250;
 
 export default function Account() {
+
   const currentUser = useCurrentUserValue();
 
   const collapsibleRef = useRef<CollapsibleRef>(null);
 
-  const tabsNames = ["Skills", "Assets", "Portfolio", "Experience"];
-
-  const [isSticky, setIsSticky] = useState(false);
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    setIsSticky(offsetY > windowHeight * 0.22);
-  };
-
   const [index, setIndex] = useState(0);
-
-  const [routes] = useState([
-    { key: "first", title: "First" },
-    { key: "second", title: "Second" },
-    { key: "third", title: "Third" },
-    { key: "fourth", title: "Fourth" },
-    { key: "fifth", title: "Fifth" },
-  ]);
 
   return (
     <>
@@ -58,13 +38,11 @@ export default function Account() {
         )}
         renderTabBar={() => (
           <TabButtons
-            tabs={tabsNames}
             selectedTab={index}
             setSelectedTab={(index) => {
               collapsibleRef.current?.setIndex(index);
               setIndex(index);
             }}
-            isSticky={isSticky}
           />
         )}
         pagerProps={

@@ -17,7 +17,7 @@ export default function GetStarted() {
   
   const { form } = useFormWithStep([
     <NameAndPasswordForm />,
-    <ConfirmEmailTokenForm />,
+    // <ConfirmEmailTokenForm />,
     <TermnsAndConditionsForm />,
     <SurveyForm formId={1} />,
     <LocationForm />,
