@@ -138,7 +138,12 @@
       "add-description-placeholder": "Description...",
       "bio-placeholder": "Bio...",
       "description": "Your portfolio is a collection of all the projects you have worked on. It is a great way to show off your skills and experience to potential employers.",
-      "add-description": "Upload photos and video previews of your best work (up to three min). You can upload up to three items foreach project you showcase. Link more extensive samples of your work, professional social media handles or documents in your bio"
+      "add-description": "Upload photos and video previews of your best work (up to three min). You can upload up to three items foreach project you showcase. Link more extensive samples of your work, professional social media handles or documents in your bio",
+      "errors":{
+        "skill-required": "Please add a skill to the project",
+        "media-required": "Please add at least one photo or video to the project",
+        "description-required": "Please add a title to the project"
+      }
     },
     "settings": {
       "feedback-and-contact": {

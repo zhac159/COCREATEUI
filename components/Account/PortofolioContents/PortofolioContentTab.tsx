@@ -9,8 +9,6 @@ import { useTheme } from "@/components/Themes/theme";
 import PortofolioContent from "./PortofolioContent";
 import { EntityType } from "../Common/Media/EntityType";
 import { usePutApiUserPortofolio } from "@/common/api/endpoints/cocreateApi";
-import useNewPortofolioContentForm from "./useNewPortofolioContentForm";
-import StyledButton from "@/components/Common/StyledButton";
 import StyledTextField from "@/components/Common/StyledTextField";
 import { useTranslation } from "react-i18next";
 import {
@@ -18,10 +16,9 @@ import {
   getUpdatedImages,
 } from "./portofolioContentHelper";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
+import PortofolioAddContentForm from "./PortolioAddContentForm";
 
 const PortofolioContentTab = () => {
-  const theme = useTheme();
-
   const { t } = useTranslation();
 
   const {
@@ -35,12 +32,6 @@ const PortofolioContentTab = () => {
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
 
-  const {
-    FormNode: NewPortofolioContentForm,
-    handleCreate: submitCreate,
-    isLoading: createIsLoading,
-    reset,
-  } = useNewPortofolioContentForm();
 
   const [aboutYou, setAboutYou] = useAboutYouState();
   const [newAboutYou, setNewAboutYou] = useState<string>(aboutYou || "");
@@ -70,44 +61,14 @@ const PortofolioContentTab = () => {
     });
   };
 
-  const handleCreate = async () => {
-    await submitCreate();
-    setCreateMode(false);
-  };
 
-  if (createMode || createIsLoading) {
+  if (createMode ) {
     return (
-      <View style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignSelf: "flex-end",
-            gap: 10,
-          }}
-        >
-          <StyledButton
-            text="Done"
-            onPress={handleCreate}
-            style={{
-              ...styles.dontButton,
-              backgroundColor: theme.colors.primary,
-            }}
-            isLoading={createIsLoading}
-          />
-          <StyledButton
-            text="Cancel"
-            onPress={() => {
-              setCreateMode(false);
-              reset();
-            }}
-            style={{
-              ...styles.dontButton,
-              backgroundColor: theme.colors.red,
-            }}
-          />
-        </View>
-        {NewPortofolioContentForm}
-      </View>
+      <PortofolioAddContentForm
+        onClose={() => {
+          setCreateMode(false);
+        }}
+      />
     );
   }
 

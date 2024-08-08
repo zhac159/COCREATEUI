@@ -8,11 +8,9 @@ import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
 import { StyleSheet } from "react-native";
 import {
-  getMediaCreateDTOsFromUris,
-  useGetMedia,
   useGetMediaCreateDTO,
 } from "../Common/Media/mediaHelper";
-import { PortofolioContentCreateDTO, SkillType } from "@/common/api/model";
+import { PortofolioContentCreateDTO } from "@/common/api/model";
 import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi";
 import { EntityType } from "../Common/Media/EntityType";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
@@ -22,31 +20,71 @@ import StyledText from "@/components/Common/StyledComponents/StyledText";
 import CustomTheme from "@/components/Themes/themeType";
 import useThemedStyles from "@/components/Common/StyledComponents/hooks/useThemedStyles";
 import { Controller, useForm } from "react-hook-form";
+import { postApiPortofolioContentBody } from "@/src/gen/zod/coCreateAPI";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import FormFieldWrapper from "@/common/forms/FormFieldWrapper";
 
 const useNewPortofolioContentForm = (onComplete?: () => void) => {
   const { t } = useTranslation();
   const styles = useThemedStyles(getStyles);
   const userSkills = useSkillsValue();
 
+  const formZodSchema = postApiPortofolioContentBody.extend({
+    skillType: z
+      .number()
+      .optional()
+      .refine((val) => val !== undefined, {
+        message: t("account.portfolio.errors.skill-required"),
+      }),
+    medias: z
+      .array(
+        z
+          .object({
+            uri: z.string(),
+            mediaType: z.number(),
+          })
+          .optional()
+      )
+      .refine(
+        (medias) => medias.filter((media) => media !== undefined).length > 0,
+        {
+          message: t("account.portfolio.errors.media-required"),
+          path: ["root"],
+        }
+      ),
+    description: z
+      .string()
+      .optional()
+      .refine((val) => val !== "", {
+        message: t("account.portfolio.errors.description-required"),
+      }),
+  });
+
   const setPortofolioContents = useSetPortfolioContentsState();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { control, handleSubmit, reset } = useForm<PortofolioContentCreateDTO>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+  } = useForm<PortofolioContentCreateDTO>({
     defaultValues: {
       description: "",
-      skillType: userSkills[0]?.skillType,
+      skillType: undefined,
       medias: [],
       order: 10,
     },
+    mode: "onSubmit",
+    resolver: zodResolver(formZodSchema),
   });
 
   const getMedia = useGetMediaCreateDTO();
 
-  const { upload, filesUploadingStatus } = usePrepareAndUpload(
+  const { uploadMediaCreateDTOs, filesUploadingStatus } = usePrepareAndUpload(
     EntityType.PORTOFOLIOCONTENT,
-    (uri) => {
-      console.log("URI", uri);
+    () => {
       reset();
       onComplete?.();
       setIsLoading(false);
@@ -65,19 +103,10 @@ const useNewPortofolioContentForm = (onComplete?: () => void) => {
   });
 
   const handleCreate = async () => {
-    setIsLoading(true);
     handleSubmit(async (data) => {
-      const uris = data.medias
-        .filter((media) => !!media)
-        .map((media) => media.uri);
-
-      console.log("data", uris);
-
-      const uploadedUrls = await upload(uris);
-
-      console.log("uploadedUrls", uploadedUrls);
-      data.medias = getMediaCreateDTOsFromUris(uploadedUrls);
-      createPortofolioContent({ data });
+      setIsLoading(true);
+      const uploadedMedias = await uploadMediaCreateDTOs(data.medias);
+      createPortofolioContent({ data: { ...data, medias: uploadedMedias } });
     })();
   };
 
@@ -88,15 +117,23 @@ const useNewPortofolioContentForm = (onComplete?: () => void) => {
         <Controller
           control={control}
           name="skillType"
-          render={({ field: { onChange, value } }) => (
-            <SkillsList
-              skills={userSkills}
-              selectSkill={(skill) => onChange(skill.skillType)}
-              selectedSkill={value}
-            />
+          render={({ fieldState: { error }, field: { onChange, value } }) => (
+            <FormFieldWrapper error={error?.message}>
+              <SkillsList
+                skills={userSkills}
+                selectSkill={(skill) => onChange(skill.skillType)}
+                selectedSkill={value}
+              />
+            </FormFieldWrapper>
           )}
         />
-
+        <Controller
+          control={control}
+          name="medias"
+          render={({ fieldState: { error } }) => (
+            <FormFieldWrapper error={error?.root?.message} />
+          )}
+        />
         <View style={styles.imageInputContainer}>
           <Controller
             control={control}
@@ -158,22 +195,26 @@ const useNewPortofolioContentForm = (onComplete?: () => void) => {
         <Controller
           control={control}
           name="description"
-          render={({ field: { onChange, value } }) => (
-            <StyledTextField
-              editable={true}
-              value={value}
-              onChangeText={onChange}
-              textInputProps={{
-                placeholder: t("account.portfolio.add-description-placeholder"),
-                multiline: true,
-                numberOfLines: 5,
-              }}
-            />
+          render={({ fieldState: { error }, field: { onChange, value } }) => (
+            <FormFieldWrapper error={error?.message}>
+              <StyledTextField
+                editable={true}
+                value={value}
+                onChangeText={onChange}
+                textInputProps={{
+                  placeholder: t(
+                    "account.portfolio.add-description-placeholder"
+                  ),
+                  multiline: true,
+                  numberOfLines: 5,
+                }}
+              />
+            </FormFieldWrapper>
           )}
         />
       </View>
     ),
-    [userSkills, getMedia, upload, filesUploadingStatus]
+    [userSkills, getMedia, filesUploadingStatus]
   );
 
   return {

@@ -26,8 +26,6 @@ const PortofolioContent: FC<portofolioContentProps> = ({
   editMode = false,
   filesUploadingStatus,
 }) => {
-  const [indicator, setIndicator] = useState(0);
-
   const uris = useMemo(
     () => portofolioContent.medias?.map((media) => media.uri) || [],
     [portofolioContent.medias]

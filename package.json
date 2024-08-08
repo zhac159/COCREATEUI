@@ -12,7 +12,6 @@
     "clean": "powershell -Command \"(Get-Content ./common/api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./common/api/endpoints/cocreateApi.ts\"",
     "fetch-swagger": "curl -o ./swagger.json http://192.168.1.92:5000/swagger/v1/swagger.json",
     "gapi": "npm run fetch-swagger && npm run api && npm run clean"
-
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,6 +23,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@faker-js/faker": "^8.4.0",
     "@formatjs/intl-pluralrules": "^5.2.14",
+    "@hookform/resolvers": "^3.9.0",
     "@miblanchard/react-native-slider": "^2.6.0",
     "@microsoft/signalr": "^8.0.0",
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -111,9 +111,10 @@
     "react-query": "^3.39.3",
     "recoil": "^0.7.7",
     "rn-fetch-blob": "^0.12.0",
+    "ts-to-zod": "^3.10.0",
     "tweetnacl": "^1.0.3",
     "tweetnacl-ts": "^1.0.3",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

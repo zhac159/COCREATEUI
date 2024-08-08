@@ -52,7 +52,7 @@ const CompletedProjectViewer: FC<CompletedProjectViewerProps> = ({
       <View>
         <Media
           onPress={() => console.log("pressed")}
-          uri={completedProject.medias[0].uri}
+          uri={completedProject.medias[0]?.uri}
           style={styles.projectImage}
         />
         <LinearGradient

@@ -35,4 +35,14 @@ export default defineConfig({
       target: "./swagger.json",
     },
   },
+  zod: {
+    output: {
+      client: 'zod',
+      mode: 'single',
+      target: './src/gen/zod',
+    },
+    input: {
+      target: './swagger.json',
+    },
+  },
 });

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePostApiPrepare } from "../api/endpoints/cocreateApi";
-import { EntityType, PrepareUploadDTO } from "../api/model";
+import { EntityType, MediaCreateDTO, PrepareUploadDTO } from "../api/model";
 import {
   getCleanUrl,
+  getMediaCreateDTOsFromUris,
   getMediaTypeFromUri,
   uploadFiles,
 } from "@/components/Account/Common/Media/mediaHelper";
@@ -11,23 +12,15 @@ import Upload, {
   CompletedData,
   ProgressData,
 } from "react-native-background-upload";
-import * as MediaLibrary from 'expo-media-library';
-
-const debounce = (func: Function, wait: number) => {
-  let timeout: NodeJS.Timeout;
-  return function (this: any, ...args: any[]) {
-    const context = this;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
-  };
-};
+import * as MediaLibrary from "expo-media-library";
+import { debounce } from "lodash";
 
 export const usePrepareAndUpload = (
   entityType: EntityType,
   onUploaded?: (urls: string[]) => void,
   cleanUrl = true
 ) => {
-  const { mutate: prepareUpload, isLoading } = usePostApiPrepare();
+  const { mutate: prepareUpload } = usePostApiPrepare();
 
   const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
 
@@ -38,7 +31,47 @@ export const usePrepareAndUpload = (
 
   const previousFilesUploadingStatus = useRef(filesUploadingStatus);
 
-  console.log("filesUploadingStatus", filesUploadingStatus);
+  const checkAndSetFilesUploadingStatus = (uploadId: string) => {
+    if (!filesUploadingStatus) return;
+    setFilesUploadingStatus((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(uploadId, 100);
+      return newMap;
+    });
+  };
+
+  const debouncedSetFilesUploadingStatus = debounce((data: ProgressData) => {
+    if (data.progress > 100) {
+      return;
+    }
+    setFilesUploadingStatus((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(data.id, data.progress);
+      return newMap;
+    });
+  }, 5);
+
+  useEffect(() => {
+    if (filesUploadingStatus) {
+      var progressListener = Upload.addListener(
+        "progress",
+        null,
+        debouncedSetFilesUploadingStatus
+      );
+      var completeListener = Upload.addListener(
+        "completed",
+        null,
+        (data: CompletedData) => {
+          checkAndSetFilesUploadingStatus(data.id);
+        }
+      );
+    } else return;
+
+    return () => {
+      progressListener.remove();
+      completeListener.remove();
+    };
+  }, [debouncedSetFilesUploadingStatus, filesUploadingStatus]);
 
   useEffect(() => {
     if (
@@ -50,71 +83,19 @@ export const usePrepareAndUpload = (
     previousFilesUploadingStatus.current = filesUploadingStatus;
   }, [filesUploadingStatus, onUploaded]);
 
-
-  const checkAndSetFilesUploadingStatus = (uploadId: string) => {
-    console.log("checkAndSetFilesUploadingStatus", uploadId);
-    if (!filesUploadingStatus) return;
-    setFilesUploadingStatus((prev) => {
-      const newMap = new Map(prev);
-      newMap.set(uploadId, 100);
-      return newMap;
-    });
-  };
-
-  const debouncedSetFilesUploadingStatus = debounce((data: ProgressData) => {
-    console.log("debouncedSetFilesUploadingStatus", data);
-    if(data.progress > 100) {
-      data.progress = 100;
-    }
-    setFilesUploadingStatus((prev) => {
-      const newMap = new Map(prev);
-      newMap.set(data.id, data.progress);
-      return newMap;
-    });
-  }, 5);
-
-  const debouncedCompleteFilesUploadingStatus = (data: CompletedData) => {
-    checkAndSetFilesUploadingStatus(data.id);
-  };
-  
-
   useEffect(() => {
     if (filesUploadingStatus) {
       const allValuesAreHundred = Array.from(
         filesUploadingStatus.values()
-      ).every((value) => value > 100);
+      ).every((value) => value >= 100);
       if (allValuesAreHundred) {
         setFilesUploadingStatus(null);
       }
     }
   }, [filesUploadingStatus]);
 
-  useEffect(() => {
-    const handleProgress = (data: ProgressData) => {
-      debouncedSetFilesUploadingStatus(data);
-    };
-
-    if (filesUploadingStatus) {
-      var progressListener = Upload.addListener(
-        "progress",
-        null,
-        handleProgress
-      );
-      var completeListener = Upload.addListener(
-        "completed",
-        null,
-        debouncedCompleteFilesUploadingStatus
-      );
-    } else return;
-
-    return () => {
-      progressListener.remove();
-      completeListener.remove();
-    };
-  }, [debouncedSetFilesUploadingStatus, filesUploadingStatus]);
-
   const upload = useCallback(
-    (uris: string[]): Promise<string[]> =>
+    async (uris: string[]): Promise<string[]> =>
       new Promise((resolve, reject) => {
         const filesUploadingStatus = new Map(uris.map((uri) => [uri, 0]));
         setFilesUploadingStatus(filesUploadingStatus);
@@ -146,23 +127,35 @@ export const usePrepareAndUpload = (
     [entityType, prepareUpload]
   );
 
-  return { upload, isLoading: !!filesUploadingStatus, filesUploadingStatus };
+  const uploadMediaCreateDTOs = useCallback(
+    async (mediaDTOs: MediaCreateDTO[]) => {
+      const urisToUpload = mediaDTOs
+        .filter((media) => !!media)
+        .map((media) => media.uri);
+      const uploadedUrls = await upload(urisToUpload);
+
+      return getMediaCreateDTOsFromUris(uploadedUrls);
+    },
+    [upload]
+  );
+
+  return { upload, isLoading: !!filesUploadingStatus, filesUploadingStatus, uploadMediaCreateDTOs };
 };
 
 async function ensureMediaLibraryPermissions() {
   const { status } = await MediaLibrary.getPermissionsAsync();
   console.log(`Current permission status: ${status}`);
-  if (status !== 'granted') {
+  if (status !== "granted") {
     const { status: newStatus } = await MediaLibrary.requestPermissionsAsync();
     console.log(`New permission status: ${newStatus}`);
-    if (newStatus !== 'granted') {
-      throw new Error('Permission to access media library is required!');
+    if (newStatus !== "granted") {
+      throw new Error("Permission to access media library is required!");
     }
   }
 }
 
 function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Usage in your downloadFile function
@@ -178,9 +171,9 @@ export async function downloadFile(url: string) {
     await ensureMediaLibraryPermissions();
 
     const asset = await MediaLibrary.createAssetAsync(uri);
-    const album = await MediaLibrary.getAlbumAsync('WeCreateX');
+    const album = await MediaLibrary.getAlbumAsync("WeCreateX");
     if (album == null) {
-      await MediaLibrary.createAlbumAsync('WeCreateX', asset, false);
+      await MediaLibrary.createAlbumAsync("WeCreateX", asset, false);
     } else {
       await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
     }
@@ -193,8 +186,6 @@ export async function downloadFile(url: string) {
 function getFilenameFromUrl(url: string) {
   return url.substring(url.lastIndexOf("/") + 1);
 }
-
-
 
 function mapUrisToPrepareUploadSubmittions(
   uris: string[],

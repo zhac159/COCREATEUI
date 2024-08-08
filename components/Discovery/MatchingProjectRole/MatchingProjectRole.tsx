@@ -22,15 +22,14 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
     (role) => role.id === matchingProject.projectRoleId
   );
 
-  console.log("matchingRole", matchingRole);
-
   const otherRoles =
     matchingProject.project?.projectRoles?.filter(
       (role) => role.id !== matchingProject.projectRoleId
     ) || [];
 
-  const matchingRoleNode = useMemo(
-    () => (
+  const matchingRoleNode = useMemo(() => {
+    if (!matchingProject || !matchingRole) return null;
+    return (
       <View style={styles.container}>
         <ScrollView
           style={styles.scrollContainer}
@@ -45,7 +44,7 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
             >
               <View>
                 <Media
-                  uri={matchingRole?.medias?.[0].uri || ""}
+                  uri={matchingRole.medias?.[0].uri}
                   style={styles.roleImage}
                 />
                 <LinearGradient
@@ -55,34 +54,32 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
                 />
               </View>
               <RoleDetails
-                name={matchingRole?.name || "N/A"}
-                location={matchingRole?.address || "N/A"}
-                effort={matchingRole?.effort || 0}
-                startDateString={matchingRole?.startDate || "N/A"}
-                endDateString={matchingRole?.endDate || "N/A"}
-                cost={matchingRole?.cost || 0}
-                skillType={matchingRole?.skillType}
+                name={matchingRole.name}
+                location={matchingRole.address}
+                effort={matchingRole.effort}
+                startDateString={matchingRole.startDate}
+                endDateString={matchingRole.endDate}
+                cost={matchingRole.cost}
+                skillType={matchingRole.skillType}
               />
               <MatchingRoleKeywordsAndDescription
-                tags={matchingRole?.keywords || []}
-                description={matchingRole?.description || ""}
+                tags={matchingRole.keywords}
+                description={matchingRole.description}
               />
               <Media
-                uri={matchingProject?.project?.medias?.[0].uri || ""}
+                uri={matchingProject.project.medias[0]?.uri}
                 style={styles.projectImages}
               />
               <ProjectNameAndDescription
-                name={matchingProject?.project?.name || "N/A"}
-                description={matchingProject?.project?.description || "N/A"}
+                name={matchingProject.project.name}
+                description={matchingProject.project.description}
               />
-              {matchingProject?.project?.medias?.[1] && (
-                <Media
-                  uri={matchingProject.project.medias[1].uri}
-                  style={styles.projectImages}
-                />
-              )}
+              <Media
+                uri={matchingProject.project.medias[1]?.uri}
+                style={styles.projectImages}
+              />
               <ProjectManagerPreview
-                userInfo={matchingProject?.project?.projectManager}
+                userInfo={matchingProject.project.projectManager}
               />
               <View
                 style={{
@@ -108,9 +105,8 @@ const MatchingProject: FC<MatchingProjectProps> = ({ matchingProject }) => {
           </TouchableWithoutFeedback>
         </ScrollView>
       </View>
-    ),
-    []
-  );
+    );
+  }, []);
 
   return matchingRoleNode;
 };

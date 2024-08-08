@@ -1,13 +1,14 @@
 import { useTheme } from "@/components/Themes/theme";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { StyleProp, Text, TextStyle } from "react-native";
 
 type StyledTextProps = {
   color?: string;
   fontSize?: number;
-  content: string;
+  content: string | undefined;
   weight?: "900" | "700" | "500" | "400" | "300";
   secondary?: boolean;
+  error?: boolean;
 };
 
 const StyledText: FC<StyledTextProps> = ({
@@ -15,21 +16,32 @@ const StyledText: FC<StyledTextProps> = ({
   content,
   fontSize,
   weight,
+  error,
   secondary = false,
 }) => {
   const theme = useTheme();
 
-  const themedStyle: StyleProp<TextStyle> = secondary
-    ? theme.customFonts.secondary.medium
-    : theme.customFonts.primary.medium;
+  const themedStyle: StyleProp<TextStyle> = useMemo(() => {
+    return secondary
+      ? theme.customFonts.secondary.medium
+      : theme.customFonts.primary.medium;
+  }, [secondary, theme]);
+
+  const colorStyle = useMemo(() => {
+    return error ? theme.colors.red : color || theme.colors.black;
+  }, [error, color, theme]);
+
+  if (!content) {
+    return null;
+  }
 
   return (
     <Text
       style={{
         ...themedStyle,
-        color: color || theme.colors.black,
+        color: colorStyle,
         fontSize: fontSize || 17,
-        fontWeight: weight || "400" ,
+        fontWeight: weight || "400",
       }}
     >
       {content}
