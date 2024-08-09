@@ -37,6 +37,7 @@ import type {
   ExperienceDTO,
   GetApiProjectCompletedParams,
   GetApiProjectGetByRoleParams,
+  GetApiProjectRoleParams,
   GetApiUserGetProfileParams,
   LoginResponseDTO,
   MessageCreateDTO,
@@ -1554,6 +1555,63 @@ const {mutation: mutationOptions} = options ?? {};
       return useMutation(mutationOptions);
     }
     
+export const getApiProjectRole = (
+    params?: GetApiProjectRoleParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ProjectRoleDTO>(
+      {url: `/api/ProjectRole`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiProjectRoleQueryKey = (params?: GetApiProjectRoleParams,) => {
+    return [`/api/ProjectRole`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetApiProjectRoleQueryOptions = <TData = Awaited<ReturnType<typeof getApiProjectRole>>, TError = ErrorType<unknown>>(params?: GetApiProjectRoleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectRole>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiProjectRoleQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiProjectRole>>> = ({ signal }) => getApiProjectRole(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProjectRole>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetApiProjectRoleQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProjectRole>>>
+export type GetApiProjectRoleQueryError = ErrorType<unknown>
+
+export const useGetApiProjectRole = <TData = Awaited<ReturnType<typeof getApiProjectRole>>, TError = ErrorType<unknown>>(
+ params?: GetApiProjectRoleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProjectRole>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiProjectRoleQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 export const postApiProjectRoleComplete = (
     projectRoleCompleteDTO: ProjectRoleCompleteDTO,
  ) => {

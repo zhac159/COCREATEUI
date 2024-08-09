@@ -2887,6 +2887,63 @@ export const putApiProjectRoleResponse = zod.object({
 })
 
 
+export const getApiProjectRoleQueryParams = zod.object({
+  "id": zod.number().optional()
+})
+
+export const getApiProjectRoleResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "cost": zod.number(),
+  "effort": zod.number(),
+  "startDate": zod.string().datetime(),
+  "endDate": zod.string().datetime(),
+  "skillType": zod.number(),
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1),
+  "projectId": zod.number(),
+  "keywords": zod.array(zod.string()),
+  "remote": zod.boolean().optional(),
+  "completed": zod.boolean().optional(),
+  "assignee": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}).optional(),
+  "medias": zod.array(zod.object({
+  "id": zod.number(),
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
+})),
+  "enquiries": zod.array(zod.object({
+  "id": zod.number(),
+  "projectRoleId": zod.number(),
+  "enquirer": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}).optional(),
+  "projectManager": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}).optional(),
+  "projectId": zod.number().nullish(),
+  "enquiryMessage": zod.string().min(1),
+  "shortlisted": zod.boolean()
+})).nullish()
+}).optional(),
+  "error": zod.string().nullish()
+})
+
+
 export const postApiProjectRoleCompleteBody = zod.object({
   "id": zod.number().optional(),
   "medias": zod.array(zod.object({

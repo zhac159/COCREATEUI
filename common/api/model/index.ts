@@ -54,6 +54,7 @@ export * from './geometryUserData';
 export * from './getApiAssetSearchParams';
 export * from './getApiProjectCompletedParams';
 export * from './getApiProjectGetByRoleParams';
+export * from './getApiProjectRoleParams';
 export * from './getApiUserGetProfileParams';
 export * from './getUserProfileDTO';
 export * from './loginResponseDTO';

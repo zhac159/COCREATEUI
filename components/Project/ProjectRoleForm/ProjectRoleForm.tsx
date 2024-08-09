@@ -1,4 +1,4 @@
-import { ProjectRoleDTO } from "@/common/api/model";
+import { MediaUpdateDTO, ProjectRoleDTO } from "@/common/api/model";
 import { MultiStepForm } from "@/common/forms/MultiStepForm";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,14 +13,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ProjectRoleCost from "./ProjectRoleFormCost";
 import {
   useCoinsValue,
-  useProjectByIdState,
   useProjectState,
-  useSetProjectByIdState,
-  useSetProjectState,
 } from "@/components/RecoilStates/profileState";
 import ProjectRoleLocationDate from "./ProjectRoleFormLocationDate";
 import { router } from "expo-router";
-import { usePostApiProjectRole } from "@/common/api/endpoints/cocreateApi";
+import {
+  usePostApiProjectRole,
+  usePutApiProjectRole,
+} from "@/common/api/endpoints/cocreateApi";
 import { usePrepareAndUpload } from "@/common/media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
 
@@ -43,30 +43,55 @@ const ProjectRoleForm: FC<ProjectRoleFormProps> = ({
       onSuccess: (data) => {
         setProject((state) => {
           const currentState = state || [];
-
           const projectIndex = currentState.findIndex(
             (project) => project.id === projectId
           );
-
           if (projectIndex === -1) {
             return currentState;
           }
-
           const newState = [...currentState];
-
           const project = { ...newState[projectIndex] };
-
           if (project.projectRoles) {
             project.projectRoles = [...project.projectRoles, data];
           } else {
             project.projectRoles = [data];
           }
-
-          console.log("project", project);
-
           newState[projectIndex] = project;
           return newState;
         });
+        router.back();
+      },
+    },
+  });
+
+  const { mutate: updateProjectRole } = usePutApiProjectRole({
+    mutation: {
+      onSuccess: (data) => {
+        setProject((state) => {
+          const currentState = state || [];
+
+          const newState = [...currentState];
+
+          const project = { ...newState[0] };
+
+          if (project.projectRoles) {
+            const index = project.projectRoles.findIndex(
+              (role) => role.id === data.id
+            );
+            if (index !== -1) {
+              const newProjectRoles = [...project.projectRoles];
+              newProjectRoles[index] = data;
+              const newProject = { ...project, projectRoles: newProjectRoles };
+              newState[0] = newProject;
+            }
+          } else {
+            const newProject = { ...project, projectRoles: [data] };
+            newState[0] = newProject;
+          }
+
+          return newState;
+        });
+        router.back();
       },
     },
   });
@@ -134,10 +159,11 @@ const ProjectRoleForm: FC<ProjectRoleFormProps> = ({
     control,
     handleSubmit: submitForm,
     watch,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm<ProjectRoleDTO>({
-    defaultValues: {
+    defaultValues: projectRole || {
       keywords: [],
       medias: [],
       startDate: new Date().toISOString(),
@@ -148,19 +174,35 @@ const ProjectRoleForm: FC<ProjectRoleFormProps> = ({
   });
 
   const handleSubmit = () => {
+    console.log(getValues());
     submitForm(async (data) => {
-      console.log("data", data);
       const uploadedMedias = await uploadMediaCreateDTOs(data.medias);
 
-      console.log("uploadedMedias", uploadedMedias);
-      createProjectRole({
-        data: {
-          ...data,
-          effort: data.effort * (hours ? 1 : 24),
-          medias: uploadedMedias,
-          projectId,
-        },
-      });
+      if (projectRole) {
+        const updateMedia: MediaUpdateDTO = {
+          id: projectRole.medias[0].id,
+          uri: uploadedMedias[0].uri,
+          mediaType: uploadedMedias[0].mediaType,
+        };
+
+        return updateProjectRole({
+          data: {
+            ...data,
+            effort: data.effort * (hours ? 1 : 24),
+            medias: [updateMedia],
+            id: projectRole.id,
+          },
+        });
+      } else {
+        createProjectRole({
+          data: {
+            ...data,
+            effort: data.effort * (hours ? 1 : 24),
+            medias: uploadedMedias,
+            projectId,
+          },
+        });
+      }
     })();
   };
 

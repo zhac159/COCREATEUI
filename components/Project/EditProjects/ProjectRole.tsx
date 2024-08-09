@@ -1,5 +1,5 @@
 import { ProjectRoleDTO } from "@/common/api/model";
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useTheme } from "../../Themes/theme";
 import SkillIcon from "../../Account/Skills/SkillIcon";
@@ -111,7 +111,15 @@ const ProjectRole: FC<ProjectRoleProps> = ({ projectRole, handleEditRole }) => {
             </Text>
           </TouchableOpacity>
           <IconButton
-            onPress={() => handleEditRole(projectRole)}
+            onPress={() => {
+              router.navigate({
+                pathname: "/main/(project)/projectRoleFormPage",
+                params: {
+                  projectId: projectRole.projectId,
+                  projectRoleId: projectRole.id,
+                },
+              });
+            }}
             icon={() => (
               <FontAwesome6
                 name="pen"

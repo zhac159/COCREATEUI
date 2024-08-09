@@ -1305,6 +1305,44 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "ProjectRole"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRoleDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRoleDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRoleDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/ProjectRole/complete": {

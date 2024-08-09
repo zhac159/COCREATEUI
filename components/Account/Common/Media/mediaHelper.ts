@@ -8,7 +8,6 @@ import { fetchUrisByChatTargetIdTypePair } from "@/common/database/databaseHelpe
 import Upload, { UploadOptions } from "react-native-background-upload";
 import { Platform } from "react-native";
 import * as FileSystem from "expo-file-system";
-import { get } from "lodash";
 import { router } from "expo-router";
 import { useSetMediaViewerState } from "@/components/MediaViewer/mediaViewerState";
 
