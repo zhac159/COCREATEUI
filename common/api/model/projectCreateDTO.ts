@@ -7,10 +7,9 @@
 import type { MediaCreateDTO } from './mediaCreateDTO';
 
 export interface ProjectCreateDTO {
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  medias?: MediaCreateDTO[] | null;
-  /** @nullable */
-  name?: string | null;
+  /** @minLength 1 */
+  description: string;
+  medias: MediaCreateDTO[];
+  /** @minLength 1 */
+  name: string;
 }

@@ -3310,22 +3310,26 @@
         "additionalProperties": false
       },
       "ProjectCreateDTO": {
+        "required": [
+          "description",
+          "medias",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "medias": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaCreateDTO"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -3525,6 +3529,7 @@
           "keywords",
           "latitude",
           "longitude",
+          "medias",
           "name",
           "projectId",
           "skillType",
@@ -3598,8 +3603,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaDTO"
-            },
-            "nullable": true
+            }
           },
           "enquiries": {
             "type": "array",

@@ -154,11 +154,11 @@ export default StyledButton;
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
-    paddingRight: 23,
+    paddingRight: 26,
     borderRadius: 40,
     alignItems: "center",
     alignSelf: "center",
-    paddingVertical: 8,
+    paddingVertical: 7,
     flexDirection: "row",
     gap: 15,
     justifyContent: "center",

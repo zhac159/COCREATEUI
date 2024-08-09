@@ -224,7 +224,7 @@ export const postApiEnquiryConfirmResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -464,7 +464,7 @@ export const postApiExperienceResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -580,7 +580,7 @@ export const postApiExperienceResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -716,7 +716,7 @@ export const postApiExperienceResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -780,7 +780,7 @@ export const postApiExperienceResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -918,7 +918,7 @@ export const postApiLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1034,7 +1034,7 @@ export const postApiLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1143,7 +1143,7 @@ export const postApiLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1207,7 +1207,7 @@ export const postApiLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1380,7 +1380,7 @@ export const postApiLoginRegisterResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1496,7 +1496,7 @@ export const postApiLoginRegisterResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1605,7 +1605,7 @@ export const postApiLoginRegisterResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1669,7 +1669,7 @@ export const postApiLoginRegisterResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1840,7 +1840,7 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -1956,7 +1956,7 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2065,7 +2065,7 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2129,7 +2129,7 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2325,12 +2325,12 @@ export const postApiPrepareResponse = zod.object({
 
 
 export const postApiProjectBody = zod.object({
-  "name": zod.string().nullish(),
-  "description": zod.string().nullish(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
   "medias": zod.array(zod.object({
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish()
+}))
 })
 
 export const postApiProjectResponse = zod.object({
@@ -2377,7 +2377,7 @@ export const postApiProjectResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2506,7 +2506,7 @@ export const getApiProjectCompletedResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2580,7 +2580,7 @@ export const getApiProjectGetByRoleResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2684,7 +2684,7 @@ export const getApiProjectProjectIdResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2788,7 +2788,7 @@ export const postApiProjectRoleResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -2862,7 +2862,7 @@ export const putApiProjectRoleResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3027,7 +3027,7 @@ export const getApiUserUserIdResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3143,7 +3143,7 @@ export const getApiUserUserIdResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3252,7 +3252,7 @@ export const getApiUserUserIdResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3316,7 +3316,7 @@ export const getApiUserUserIdResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3494,7 +3494,7 @@ export const putApiUserResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3610,7 +3610,7 @@ export const putApiUserResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3719,7 +3719,7 @@ export const putApiUserResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3783,7 +3783,7 @@ export const putApiUserResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -3962,7 +3962,7 @@ export const postApiUserMatchingProjectsResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4185,7 +4185,7 @@ export const postApiUserProfilesResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4301,7 +4301,7 @@ export const postApiUserProfilesResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4437,7 +4437,7 @@ export const postApiUserProfilesResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4501,7 +4501,7 @@ export const postApiUserProfilesResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4679,7 +4679,7 @@ export const getApiUserGetProfileResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4795,7 +4795,7 @@ export const getApiUserGetProfileResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4931,7 +4931,7 @@ export const getApiUserGetProfileResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -4995,7 +4995,7 @@ export const getApiUserGetProfileResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -5170,7 +5170,7 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -5286,7 +5286,7 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -5395,7 +5395,7 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),
@@ -5459,7 +5459,7 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "id": zod.number(),
   "uri": zod.string().min(1),
   "mediaType": zod.number()
-})).nullish(),
+})),
   "enquiries": zod.array(zod.object({
   "id": zod.number(),
   "projectRoleId": zod.number(),

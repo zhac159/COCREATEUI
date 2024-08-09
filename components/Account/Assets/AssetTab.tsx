@@ -22,8 +22,8 @@ const AssetTab = () => {
   const [editMode, setEditMode] = useState(false);
   const [createMode, setCreateMode] = useState(false);
 
-  const [update, setUpdate] = useState<() => void>(() => console.log("update"));
-  const [create, setCreate] = useState<() => void>(() => null);
+  // const [update, setUpdate] = useState<() => void>(() => console.log("update"));
+  // const [create, setCreate] = useState<() => void>(() => null);
 
   useEffect(() => {
     var newFilteredAssets = assets.filter(

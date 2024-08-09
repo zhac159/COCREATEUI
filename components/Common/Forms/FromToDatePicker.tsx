@@ -5,17 +5,17 @@ import DatePicker from "react-native-date-picker";
 
 type FromToDatePickerProps = {
   startDate: Date;
-  setStartDate: Dispatch<SetStateAction<Date>>;
+  onStartDateSelect: (date: Date) => void;
   endDate: Date;
-  setEndDate: Dispatch<SetStateAction<Date>>;
+  onEndDateSelect: (date: Date) => void;
   colour?: string;
 };
 
 const FromToDatePicker: FC<FromToDatePickerProps> = ({
   startDate,
-  setStartDate,
+  onStartDateSelect,
   endDate,
-  setEndDate,
+  onEndDateSelect,
   colour,
 }) => {
   const theme = useTheme();
@@ -33,7 +33,7 @@ const FromToDatePicker: FC<FromToDatePickerProps> = ({
   };
 
   const handleConfirm = (date: Date) => {
-    startDateEdit ? setStartDate(date) : setEndDate(date);
+    startDateEdit ? onStartDateSelect(date) : onEndDateSelect(date);
     hideDatePicker();
   };
 

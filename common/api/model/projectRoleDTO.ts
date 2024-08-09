@@ -25,8 +25,7 @@ export interface ProjectRoleDTO {
   keywords: string[];
   latitude: number;
   longitude: number;
-  /** @nullable */
-  medias?: MediaDTO[] | null;
+  medias: MediaDTO[];
   /** @minLength 1 */
   name: string;
   projectId: number;

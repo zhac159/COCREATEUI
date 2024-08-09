@@ -9,6 +9,7 @@ type StyledTextProps = {
   weight?: "900" | "700" | "500" | "400" | "300";
   secondary?: boolean;
   error?: boolean;
+  style?: StyleProp<TextStyle>;
 };
 
 const StyledText: FC<StyledTextProps> = ({
@@ -18,6 +19,7 @@ const StyledText: FC<StyledTextProps> = ({
   weight,
   error,
   secondary = false,
+  style
 }) => {
   const theme = useTheme();
 
@@ -42,6 +44,7 @@ const StyledText: FC<StyledTextProps> = ({
         color: colorStyle,
         fontSize: fontSize || 17,
         fontWeight: weight || "400",
+        ...style as {},
       }}
     >
       {content}

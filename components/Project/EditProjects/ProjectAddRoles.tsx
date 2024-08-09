@@ -21,13 +21,12 @@ type ProjectAddRolesProps = {
   projectId: number;
 };
 
-const ProjectAddRoles: FC<ProjectAddRolesProps> = ({projectId}) => {
+const ProjectAddRoles: FC<ProjectAddRolesProps> = ({ projectId }) => {
   const projects = useProjectValue();
 
   const { t } = useTranslation();
-  
-  const project = projects.find((project) => project.id === projectId); 
 
+  const project = projects.find((project) => project.id === projectId);
 
   const [addRole, setAddRole] = useState(false);
   const [editRole, setEditRole] = useState<ProjectRoleDTO>();
@@ -39,7 +38,7 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({projectId}) => {
 
   const theme = useTheme();
 
-  if(!project) {
+  if (!project) {
     return null;
   }
 
@@ -81,7 +80,12 @@ const ProjectAddRoles: FC<ProjectAddRolesProps> = ({projectId}) => {
                 backgroundColor: theme.colors.primary,
               }}
               onPress={() => {
-                setAddRole(true);
+                router.navigate({
+                  pathname: "/main/(project)/projectRoleFormPage",
+                  params: {
+                    projectId,
+                  },
+                });
               }}
             >
               <Text

@@ -59,13 +59,13 @@ const ProjectAddRoleWhen: FC<ProjectAddRoleWhenProps> = ({
             Dates
           </Text>
         </View>
-        <FromToDatePicker
+        {/* <FromToDatePicker
           startDate={startDate}
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
           colour={color}
-        />
+        /> */}
       </View>
     </>
   );

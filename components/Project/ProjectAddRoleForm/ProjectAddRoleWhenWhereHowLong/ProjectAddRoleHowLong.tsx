@@ -57,13 +57,13 @@ const ProjectAddRoleHowLong: FC<ProjectAddRoleHowLongProps> = ({
             Time Effort
           </Text>
         </View>
-        <DurationPicker
+        {/* <DurationPicker
           duration={effort}
           setDuration={setEffort}
           hours={hours}
           setHours={setHours}
           colour={color}
-        />
+        /> */}
       </View>
     </>
   );

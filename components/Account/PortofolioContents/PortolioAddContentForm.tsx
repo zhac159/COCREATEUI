@@ -3,7 +3,8 @@ import CustomTheme from "@/components/Themes/themeType";
 import { StyleSheet, View } from "react-native";
 import StyledButton from "@/components/Common/StyledButton";
 import useNewPortofolioContentForm from "./useNewPortofolioContentForm";
-import { useTheme } from "@/components/Themes/theme";
+import useThemedStyles from "@/components/Common/StyledComponents/hooks/useThemedStyles";
+import { useTranslation } from "react-i18next";
 
 type PortoflioAddContentFormProps = {
   onClose: () => void;
@@ -12,8 +13,8 @@ type PortoflioAddContentFormProps = {
 const PortofolioAddContentForm: FC<PortoflioAddContentFormProps> = ({
   onClose,
 }) => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
+  const styles = useThemedStyles(getStyles);
+  const {t} = useTranslation();
 
   const {
     FormNode: NewPortofolioContentForm,
@@ -28,7 +29,7 @@ const PortofolioAddContentForm: FC<PortoflioAddContentFormProps> = ({
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <StyledButton
-          text="Done"
+          text={t("button.done")}
           onPress={async () => {
             await submitCreate();
           }}
@@ -36,7 +37,7 @@ const PortofolioAddContentForm: FC<PortoflioAddContentFormProps> = ({
           isLoading={createIsLoading}
         />
         <StyledButton
-          text="Cancel"
+          text={t("button.cancel")}
           onPress={() => {
             onClose();
             reset();

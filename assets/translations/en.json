@@ -93,7 +93,12 @@
       "description-placeholder": "Project Description...",
       "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested.",
       "add-pictures-descriptions": "Add pictures that will give people a sense of what you are trying to do. This could be a poster, similar work, a moodboard, inspiration… Make it interesting!",
-      "add-pictures-title": "Add Project Pictures"
+      "add-pictures-title": "Add Project Pictures",
+      "error":{
+        "title-required": "Please add a title to the project",
+        "description-required": "Please add a description to the project",
+        "media-required": "Please add two photos for the project"
+      }
     },
     "add-role": {
       "add-role-button": "Add Role",
@@ -105,7 +110,25 @@
       "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested.",
       "keywords-placeholder": "Add, Keywords, seperated, by, commas,",
       "keywords-tooltip": "Keywords help to match the right people with the right role. Think of anything that describes the nature of the job or the person you'd want to do it. For exmple: Calligraphy, Jazz, UI, Male, 30-40 Years, Gig, Short Film",
-      "keywords-title": "Add Keywords"
+      "keywords-title": "Add Keywords",
+      "skills-title": "What Skill Are You Looking For?",
+      "media-title": "Add Role Picture",
+      "cost-title": "How Many Do You Want To Offer?",
+      "coins-available": "Credits Available:",
+      "location-title": "Production Location",
+      "date-title": "Production Dates",
+      "offer": "Offer:",
+      "location-date-title": "When, Where And How Long?",
+      "error":{
+        "address-required": "Please add a location to the role",
+        "title-required": "Please add a title to the role",
+        "description-required": "Please add a description to the role",
+        "media-required": "Please add a photo for the role",
+        "skill-required": "Please add a skill to the role",
+        "insufficient-credits": "You don't have enough credits to offer this role",
+        "effort-required": "Please add the duration of the role",
+        "cost-required": "Please add the number of credits you want to offer for the role"
+      }
     },
     "view-applications": {
       "title": "Applications",
@@ -194,7 +217,10 @@
     "submit": "Submit",
     "next": "Next",
     "complete": "Complete",
-    "delete": "Delete"
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "done": "Done",
+    "back": "Back"
   },
   "terms-and-conditions": {
     "content": {

@@ -47,13 +47,9 @@ const ProjectAddRoleForm: FC<ProjectAddRoleFormProps> = ({
 }) => {
 
 
-  console.log(editRole);
-
   const theme = useTheme();
 
   const setProject = useSetProjectState();
-
-  console.log(editRole?.name);
 
   const [formStep, setFormStep] = useState(0);
 

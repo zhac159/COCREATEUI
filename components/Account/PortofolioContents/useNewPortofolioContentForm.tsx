@@ -7,9 +7,7 @@ import { View } from "react-native";
 import SkillsList from "../Skills/SkillsList";
 import Media from "@/components/MediaViewer/Media";
 import { StyleSheet } from "react-native";
-import {
-  useGetMediaCreateDTO,
-} from "../Common/Media/mediaHelper";
+import { useGetMediaCreateDTO } from "../Common/Media/mediaHelper";
 import { PortofolioContentCreateDTO } from "@/common/api/model";
 import { usePostApiPortofolioContent } from "@/common/api/endpoints/cocreateApi";
 import { EntityType } from "../Common/Media/EntityType";
@@ -28,7 +26,11 @@ import FormFieldWrapper from "@/common/forms/FormFieldWrapper";
 const useNewPortofolioContentForm = (onComplete?: () => void) => {
   const { t } = useTranslation();
   const styles = useThemedStyles(getStyles);
+  const getMedia = useGetMediaCreateDTO();
   const userSkills = useSkillsValue();
+
+  const setPortofolioContents = useSetPortfolioContentsState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const formZodSchema = postApiPortofolioContentBody.extend({
     skillType: z
@@ -61,15 +63,7 @@ const useNewPortofolioContentForm = (onComplete?: () => void) => {
       }),
   });
 
-  const setPortofolioContents = useSetPortfolioContentsState();
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const {
-    control,
-    handleSubmit,
-    reset,
-  } = useForm<PortofolioContentCreateDTO>({
+  const { control, handleSubmit, reset } = useForm<PortofolioContentCreateDTO>({
     defaultValues: {
       description: "",
       skillType: undefined,
@@ -80,7 +74,6 @@ const useNewPortofolioContentForm = (onComplete?: () => void) => {
     resolver: zodResolver(formZodSchema),
   });
 
-  const getMedia = useGetMediaCreateDTO();
 
   const { uploadMediaCreateDTOs, filesUploadingStatus } = usePrepareAndUpload(
     EntityType.PORTOFOLIOCONTENT,

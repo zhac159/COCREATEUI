@@ -3,16 +3,16 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useTheme } from "../../Themes/theme";
 
 type DurationPicker = {
-  duration: string;
-  setDuration: Dispatch<SetStateAction<string>>;
+  duration: number;
+  onDurationChange: (duration: number) => void;
   hours: boolean;
-  setHours: Dispatch<SetStateAction<boolean>>;
+  setHours: (hours: boolean) => void;
   colour?: string;
 };
 
 const DurationPicker: FC<DurationPicker> = ({
   duration,
-  setDuration,
+  onDurationChange,
   hours,
   colour,
   setHours,
@@ -35,8 +35,8 @@ const DurationPicker: FC<DurationPicker> = ({
           color: theme.colors.black,
           backgroundColor: colour ? colour : theme.colors.lightGray,
         }}
-        value={duration}
-        onChangeText={(text) => setDuration(text)}
+        value={duration?.toString()}
+        onChangeText={(text) => onDurationChange(parseInt(text))}
       />
       <View
         style={{

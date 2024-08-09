@@ -1,18 +1,18 @@
-import { ProjectCreateDTO } from "@/common/api/model";
-import FormFieldWrapper from "@/common/forms/FormFieldWrapper";
-import { FormPageProps } from "@/common/forms/MultiStepForm";
-import StyledButton from "@/components/Common/StyledButton";
-import StyledTextField from "@/components/Common/StyledTextField";
-import { FC } from "react";
+import { ProjectRoleDTO } from "@/common/api/model";
 import { Control, Controller } from "react-hook-form";
+import { FC } from "react";
+import { FormPageProps } from "@/common/forms/MultiStepForm";
+import FormFieldWrapper from "@/common/forms/FormFieldWrapper";
+import StyledTextField from "@/components/Common/StyledTextField";
+import StyledButton from "@/components/Common/StyledButton";
 import { useTranslation } from "react-i18next";
 
-type ProjectCreateTitleAndDescriptionProps = {
-  control: Control<ProjectCreateDTO, any>;
+type ProjectRoleTitleAndDescriptionProps = {
+  control: Control<ProjectRoleDTO>;
 };
 
-const ProjectCreateTitleAndDescription: FC<
-  ProjectCreateTitleAndDescriptionProps & FormPageProps
+const ProjectRoleTitleAndDescription: FC<
+  ProjectRoleTitleAndDescriptionProps & FormPageProps
 > = ({ control, nextStep }) => {
   const { t } = useTranslation();
 
@@ -29,10 +29,10 @@ const ProjectCreateTitleAndDescription: FC<
                 numberOfLines: 5,
                 multiline: true,
                 onChangeText: onChange,
-                placeholder: t("projects.create-project.title-placeholder"),
+                placeholder: t("projects.add-role.title-placeholder"),
               }}
               editable={true}
-              tooltip={t("projects.create-project.title-tooltip")}
+              tooltip={t("projects.add-role.title-tooltip")}
             />
           </FormFieldWrapper>
         )}
@@ -48,19 +48,17 @@ const ProjectCreateTitleAndDescription: FC<
                 numberOfLines: 14,
                 multiline: true,
                 onChangeText: onChange,
-                placeholder: t(
-                  "projects.create-project.description-placeholder"
-                ),
+                placeholder: t("projects.add-role.description-placeholder"),
               }}
               editable={true}
-              tooltip={t("projects.create-project.description-tooltip")}
+              tooltip={t("projects.add-role.description-tooltip")}
             />
           </FormFieldWrapper>
         )}
       />
-      <StyledButton text={t('button.next')} onPress={() => nextStep?.()} />
+      <StyledButton text={t("button.next")} onPress={() => nextStep?.()} />
     </>
   );
 };
 
-export default ProjectCreateTitleAndDescription;
+export default ProjectRoleTitleAndDescription;
