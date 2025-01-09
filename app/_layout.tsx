@@ -1,41 +1,21 @@
-import '@formatjs/intl-pluralrules';
-import '@formatjs/intl-pluralrules/locale-data/en';
-import '../common/translations/i18n';
-import 'react-native-gesture-handler'
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
 
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import { RecoilRoot } from "recoil";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Portal, Provider } from "react-native-paper";
-import { LightTheme } from "@/components/Themes/theme";
-import MediaViewerPortal from "@/components/MediaViewer/MediaViewerPortal";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { migrateDbIfNeeded } from "@/common/database/databaseHelper";
-import { SQLiteProvider } from 'expo-sqlite';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
-
-export { ErrorBoundary } from "expo-router";
-
-export const unstable_settings = {
-  initialRouteName: "index",
-};
-
+// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    LibreCaslonText: require("../assets/fonts/LibreCaslonText-Regular.ttf"),
-    ...FontAwesome.font,
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
-
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
 
   useEffect(() => {
     if (loaded) {
@@ -47,33 +27,12 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const queryClient = new QueryClient();
-
   return (
-    <Provider theme={LightTheme}>
-      <Portal.Host>
-        <RecoilRoot>
-          <SQLiteProvider
-            databaseName={"cocreateLocalDatabase3.db"}
-            onInit={migrateDbIfNeeded}
-          >
-            <QueryClientProvider client={queryClient}>
-              <GestureHandlerRootView style={{ flex: 1 }}>
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="index" options={{ headerShown: false }} />
-                  <Stack.Screen name="getStarted" options={{ headerShown: false }} />
-                  <Stack.Screen name="signIn" options={{ headerShown: false }} />
-                </Stack>
-                <MediaViewerPortal />
-              </GestureHandlerRootView>
-            </QueryClientProvider>
-          </SQLiteProvider>
-        </RecoilRoot>
-      </Portal.Host>
-    </Provider>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+    </ThemeProvider>
   );
 }

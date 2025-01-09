@@ -1,55 +1,22 @@
 {
   "expo": {
-    "name": "WeCreateX",
-    "slug": "WeCreateX",
-    "version": "0.4.0",
+    "name": "COCREATEUI",
+    "slug": "COCREATEUI",
+    "version": "1.0.0",
     "orientation": "portrait",
-    "newArchEnabled": true,
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSPhotoLibraryAddUsageDescription": "This app requires access to your photo library to save images.",
-        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to display images.",
-        "UIBackgroundModes": [
-          "fetch",
-          "processing"
-        ],
-        "BGTaskSchedulerPermittedIdentifiers": [
-          "wecreatex.background-task.fetch"
-        ]
-      },
-      "buildNumber": "2",
-      "bitcode": false,
-      "bundleIdentifier": "WeCreateX"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.ACCESS_NETWORK_STATE",
-        "android.permission.BLUETOOTH",
-        "android.permission.CAMERA",
-        "android.permission.INTERNET",
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.SYSTEM_ALERT_WINDOW",
-        "android.permission.WAKE_LOCK"
-      ],
-      "package": "cocreate.test"
+      "package": "com.anonymous.COCREATEUI"
     },
     "web": {
       "bundler": "metro",
@@ -57,23 +24,16 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your colleagues.",
-          "savePhotosPermission": "The app saves photos to your library to let you share them with your friends."
-        }
-      ],
       "expo-router",
-      "expo-secure-store",
-      "expo-build-properties",
-      "expo-font"
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

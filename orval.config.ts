@@ -4,18 +4,18 @@ export default defineConfig({
   petstore: {
     output: {
       mode: "split",
-      target: "common/api/endpoints/cocreateApi.ts",
-      schemas: "common/api/model",
+      target: "api/endpoints/cocreateApi.ts",
+      schemas: "api/model",
       client: "react-query",
       allParamsOptional: false,
       optionsParamRequired: false,
       override: {
         mutator: {
-          path: "./common/api/mutator/custom-instance.ts",
+          path: "./api/mutator/custom-instance.ts",
           name: "customInstance",
         },
         formData: {
-          path: './common/api/mutator/custom-form-data.ts',
+          path: './api/mutator/custom-form-data.ts',
           name: 'customFormData',
         },
         operations: {
@@ -39,7 +39,7 @@ export default defineConfig({
     output: {
       client: 'zod',
       mode: 'single',
-      target: './src/gen/zod',
+      target: './api/zod',
     },
     input: {
       target: './swagger.json',
