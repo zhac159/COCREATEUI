@@ -4,7 +4,6 @@ import { Text } from "react-native-paper";
 import { useTheme } from "../Themes/theme";
 import Coins from "../Common/Coins";
 import Rating from "../Common/Rating";
-import { useTranslation } from "react-i18next";
 
 type AccountMainInfoProps = {
   coins: number;
@@ -18,7 +17,6 @@ const AccountMainInfo: FC<AccountMainInfoProps> = ({
   rating,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>

@@ -6,13 +6,13 @@ import Media from "../MediaViewer/Media";
 import { router } from "expo-router";
 import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
 import { ChatTypeIdPair, useGetProjectChatMembers } from "./chatHelper";
-import { useSQLiteContext } from "expo-sqlite/next";
 import { fetchMessages } from "@/common/database/databaseHelper";
 import { ProjectDTO } from "@/common/api/model";
 import GroupChatPreviewMessages from "./GroupChatPreviewMessages";
 import { findUserById } from "@/common/chat/chatHelper";
 import { useLastMessagesByChatIdState } from "../RecoilStates/lastMessagesState";
 import ChatType from "@/common/chat/chatType";
+import { useSQLiteContext } from "expo-sqlite";
 
 type GroupChatPreviewProps = {
   chatId: string;

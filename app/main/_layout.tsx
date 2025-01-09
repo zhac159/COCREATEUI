@@ -16,7 +16,6 @@ import {
   handleUpdateCompleteProject,
   handleReceiveMessagesReactions,
 } from "@/common/chat/chatHelper";
-import { useSQLiteContext } from "expo-sqlite/next";
 import {
   useUpdateProjectComplete,
   useAssignedProjectsValue,
@@ -33,6 +32,7 @@ import { useSetNewMessageReactionState } from "@/components/RecoilStates/newMess
 import { useSetLastMessagesByChatIdState } from "@/components/RecoilStates/lastMessagesState";
 import * as SecureStore from "expo-secure-store";
 import SecureStoreKeys from "@/common/api/enum/secureStoreKeys";
+import { useSQLiteContext } from "expo-sqlite";
 
 export const ConnectionContext = createContext<HubConnection | null>(null);
 

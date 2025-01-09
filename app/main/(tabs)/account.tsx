@@ -1,6 +1,4 @@
-import {
-  StyleSheet
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useCurrentUserValue } from "@/components/RecoilStates/profileState";
 import { useRef, useState } from "react";
 import SkillsTab from "@/components/Account/Skills/SkillsTab";
@@ -12,11 +10,13 @@ import BackgroundColourAnimation from "@/components/Account/BackgroundColourAnim
 import ExperienceTab from "@/components/Experience/ExperienceTab";
 import SettingsTab from "@/components/Account/Settings/SettingsTab";
 import { CollapsibleRef, Tabs } from "react-native-collapsible-tab-view";
+import React from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import UserDetails from "@/components/Account/MainAccountPage/UserDetails";
 
 const HEADER_HEIGHT = 250;
 
 export default function Account() {
-
   const currentUser = useCurrentUserValue();
 
   const collapsibleRef = useRef<CollapsibleRef>(null);
@@ -24,82 +24,16 @@ export default function Account() {
   const [index, setIndex] = useState(0);
 
   return (
-    <>
-      <BackgroundColourAnimation />
-      <Tabs.Container
-        headerContainerStyle={{ backgroundColor: "transparent" }}
-        snapThreshold={0.5}
-        renderHeader={() => (
-          <AccountMainInfo
-            coins={currentUser.coins}
-            username={currentUser.username}
-            rating={currentUser.rating}
-          />
-        )}
-        renderTabBar={() => (
-          <TabButtons
-            selectedTab={index}
-            setSelectedTab={(index) => {
-              collapsibleRef.current?.setIndex(index);
-              setIndex(index);
-            }}
-          />
-        )}
-        pagerProps={
-          {
-            scrollEnabled: false,
-          }
-        }
-        ref={collapsibleRef}
-      >
-        <Tabs.Tab name="skills">
-          <Tabs.ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scene}
-            automaticallyAdjustKeyboardInsets
-          >
-            <SkillsTab />
-          </Tabs.ScrollView>
-        </Tabs.Tab>
-        <Tabs.Tab name="assets">
-          <Tabs.ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scene}
-            automaticallyAdjustKeyboardInsets
-          >
-            <AssetTab />
-          </Tabs.ScrollView>
-        </Tabs.Tab>
-        <Tabs.Tab name="portofolio">
-          <Tabs.ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scene}
-            automaticallyAdjustKeyboardInsets
-          >
-            <PortofolioContentTab />
-          </Tabs.ScrollView>
-        </Tabs.Tab>
-        <Tabs.Tab name="experience">
-          <Tabs.ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scene}
-            automaticallyAdjustKeyboardInsets
-          >
-            <ExperienceTab />
-          </Tabs.ScrollView>
-        </Tabs.Tab>
-        <Tabs.Tab name="settings">
-          <Tabs.ScrollView
-            keyboardShouldPersistTaps="handled"
-            automaticallyAdjustKeyboardInsets
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scene}
-          >
-            <SettingsTab />
-          </Tabs.ScrollView>
-        </Tabs.Tab>
-      </Tabs.Container>
-    </>
+    <ScrollView
+      style={{
+        gap: 10,
+      }}
+      contentContainerStyle={{
+        gap: 10,
+      }}
+    >
+      <UserDetails />
+    </ScrollView>
   );
 }
 

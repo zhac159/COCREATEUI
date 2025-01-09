@@ -6,7 +6,6 @@ import { formatDistance, parseISO } from "date-fns";
 import { router } from "expo-router";
 import { useSetCurrentChatDataState } from "../RecoilStates/currentChatDataState";
 import { ChatMember, ChatTypeIdPair } from "./chatHelper";
-import { useSQLiteContext } from "expo-sqlite/next";
 import { fetchMessages } from "@/common/database/databaseHelper";
 import {
   AssetOfferDTO,
@@ -18,6 +17,7 @@ import SkillIcon from "../Account/Skills/SkillIcon";
 import Media from "../MediaViewer/Media";
 import ChatType from "@/common/chat/chatType";
 import { useLastMessagesByChatIdState } from "../RecoilStates/lastMessagesState";
+import { useSQLiteContext } from "expo-sqlite";
 
 type ChatPreviewProps = {
   chatImage?: string;

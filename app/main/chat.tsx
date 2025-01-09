@@ -23,6 +23,7 @@ import { createAndExchangeKeysIfThereIsNoKey } from "@/common/encryption/encrypt
 import ChatType from "@/common/chat/chatType";
 import { useSQLiteContext } from "expo-sqlite";
 import ChatHeader from "@/components/Chats/ChatHeader/CheatHeader";
+import React from "react";
 
 export default function EnquiryChat() {
   const database = useSQLiteContext();

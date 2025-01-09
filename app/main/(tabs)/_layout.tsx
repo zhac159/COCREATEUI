@@ -1,8 +1,6 @@
 import { Tabs } from "expo-router";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useTheme } from "@/components/Themes/theme";
-import { useEffect, useState } from "react";
-import { Keyboard } from "react-native";
 import TabBar from "@/components/Common/TabBar/TabBar";
 
 export default function TabLayout() {
@@ -10,7 +8,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={(props) => ({
+      screenOptions={() => ({
         gestureEnabled: false,
         headerStyle: {
           height: 0,

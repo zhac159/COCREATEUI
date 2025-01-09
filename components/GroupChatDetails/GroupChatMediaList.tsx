@@ -1,10 +1,10 @@
 import ChatType from "@/common/chat/chatType";
-import { useSQLiteContext } from "expo-sqlite/next";
 import { FC } from "react";
 import { FlatList, StyleSheet, View, Text } from "react-native";
 import { useFetchUrisByChatId } from "../Account/Common/Media/mediaHelper";
 import Media from "../MediaViewer/Media";
 import { useTheme } from "../Themes/theme";
+import { useSQLiteContext } from "expo-sqlite";
 
 type GroupChatMediaListProps = {
   groupChatId: string;
