@@ -9,16 +9,18 @@ import {
 
 type ScrollViewWrapperProps = KeyboardAwareScrollViewProps & {
   children: ReactNode;
+  showBackgroundColor?: boolean;
 };
 
 export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
   children,
   contentContainerStyle,
+  showBackgroundColor,
   ...props
 }) => {
   return (
     <>
-      <StyledBackgroundAnimation />
+      {showBackgroundColor && <StyledBackgroundAnimation />}
       <KeyboardAwareScrollView
         contentContainerStyle={[styles.container, contentContainerStyle]}
         onTouchStart={Keyboard.dismiss}
@@ -33,8 +35,9 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: "20%",
-    paddingHorizontal: "3%",
+    paddingTop: "15%",
+    paddingBottom: 200,
+    paddingHorizontal: "1.5%",
     backgroundColor: "transparent",
   },
 });

@@ -1,7 +1,7 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { FC, memo } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import TabBarIcon from "./TabBarIcon";
 
 type TabBarProps = {
@@ -10,10 +10,7 @@ type TabBarProps = {
 
 const TabBar: FC<TabBarProps> = ({ BottomTabBarProps }) => {
   return (
-    <BlurView
-      style={styles.tabBar}
-      intensity={100}
-    >
+    <BlurView style={styles.tabBar} intensity={50} tint="light">
       {BottomTabBarProps.state.routeNames.map((routeName, index) => {
         return (
           <TouchableOpacity
@@ -45,5 +42,8 @@ const styles = StyleSheet.create({
     zIndex: 100,
     flexDirection: "row",
     justifyContent: "space-around",
+    width: "100%",
+    bottom: 0,
+    position: "absolute",
   },
 });

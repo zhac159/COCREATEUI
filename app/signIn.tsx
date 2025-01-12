@@ -42,6 +42,7 @@ export default function Index() {
   return (
     <ScrollViewWrapper
       contentContainerStyle={{ height: "100%" }}
+      showBackgroundColor
     >
       <View style={styles.formContainer}>
         <Controller

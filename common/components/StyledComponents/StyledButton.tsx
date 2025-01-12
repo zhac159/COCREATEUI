@@ -16,6 +16,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { colors } from "react-native-keyboard-controller/lib/typescript/components/KeyboardToolbar/colors";
 
 const animationDuration = 2000;
 const animationToValue = 150;
@@ -150,35 +151,32 @@ const StyledButton: FC<StyledButtonProps> = ({
           />
         </Animated.View>
       )}
-      <Text
-        style={{
-          ...theme.customFonts.primary.medium,
-          opacity: isLoading ? 0.5 : 1,
-          ...(textStyle as {}),
-          color:
-            textStyle && "backgroundColor" in textStyle
-              ? textStyle.color
-              : theme.colors.white,
-        }}
-      >
-        {text}
-      </Text>
       {icon && (
         <FontAwesome6
           name={icon}
-          size={20}
+          size={15}
           solid
-          style={{
-            marginTop: 5,
-            opacity: isLoading ? 0.5 : 1,
-          }}
-          color={
-            textStyle && "backgroundColor" in textStyle
-              ? textStyle.color
-              : theme.colors.white
-          }
+          style={[
+            {
+              opacity: isLoading ? 0.5 : 1,
+              color: theme.colors.white,
+            },
+            textStyle,
+          ]}
         />
       )}
+      <Text
+        style={[
+          {
+            ...theme.customFonts.primary.medium,
+            opacity: isLoading ? 0.5 : 1,
+            color: theme.colors.white,
+          },
+          textStyle,
+        ]}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -186,11 +184,10 @@ export default StyledButton;
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 20,
-    paddingRight: 26,
-    borderRadius: 40,
+    paddingHorizontal: 25,
+    borderRadius: 20,
     gap: 15,
-    paddingVertical: 7,
+    paddingVertical: 10,
     alignItems: "center",
     alignSelf: "center",
     flexDirection: "row",

@@ -8,6 +8,12 @@ export default function MainTabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          position: "absolute",
+        },
+        sceneStyle: {
+          backgroundColor: "transparent",
+        },
       }}
       tabBar={(props) => <TabBar BottomTabBarProps={props} />}
     >
