@@ -5,10 +5,10 @@ import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { InformationMessage } from "../InformationMessage";
 
-interface StyledTextInputProps extends TextInputProps {
+type StyledTextInputProps = TextInputProps & {
   error?: string;
   label: string;
-}
+};
 
 export const StyledTextInput: FC<StyledTextInputProps> = ({
   error,

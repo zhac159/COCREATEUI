@@ -46,7 +46,7 @@ export default function RootLayout() {
                 navigationBarColor: "transparent",
                 contentStyle: {
                   touchAction: "none",
-                  backgroundColor: LightTheme.colors.backgroundColor,
+                  backgroundColor: "transparent",
                 },
               }}
             >

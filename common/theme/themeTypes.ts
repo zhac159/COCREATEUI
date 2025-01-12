@@ -1,4 +1,4 @@
-import { DefaultTheme } from '@react-navigation/native';
+import { DefaultTheme } from "@react-navigation/native";
 
 type FontWeight =
   | "700"
@@ -13,80 +13,79 @@ type FontWeight =
   | "normal"
   | "bold";
 
-  type Theme = typeof DefaultTheme;
+type Theme = typeof DefaultTheme;
 
-
-  export interface CustomTheme extends Theme {
-    customFonts: {
-      primary: {
-        small: {
-          fontFamily: string;
-          fontWeight: FontWeight;
-          fontSize: number;
-        };
-        medium: {
-          fontFamily: string;
-          fontWeight: FontWeight;
-          fontSize: number;
-        };
-        large: {
-          fontFamily: string;
-          fontWeight: FontWeight;
-          fontSize: number;
-        };
-      };
-      secondary: {
-        small: {
-          fontFamily: string;
-          fontWeight: FontWeight;
-          fontSize: number;
-        };
-        medium: {
-          fontFamily: string;
-          fontWeight: FontWeight;
-          fontSize: number;
-        };
-        large: {
-          fontFamily: string;
-          fontWeight: FontWeight;
-          fontSize: number;
-        };
-      };
-    };
-    colors: Theme["colors"] & {
-      black: string;
-      lightBlack: string;
-      orange: string;
-      darkOrange: string;
-      white: string;
-      darkestGray: string;
-      darkerGray: string;
-      darkGray: string;
-      gray: string;
-      iconGray: string;
-      grayer: string;
-      lightGray: string;
-      lightestGray: string;
-      green: string;
-      red: string;
-      lightBlue: string;
-      tabBarDarkColor: string;
-      tabBarLightColor: string;
-      backgroundColor: string
-    };
-    customIcons: {
+export type CustomTheme = Theme & {
+  customFonts: {
+    primary: {
       small: {
-        size: number;
-        color: string;
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontSize: number;
       };
       medium: {
-        size: number;
-        color: string;
-        weight: string;
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontSize: number;
       };
       large: {
-        size: number;
-        color: string;
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontSize: number;
       };
     };
-  }
+    secondary: {
+      small: {
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontSize: number;
+      };
+      medium: {
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontSize: number;
+      };
+      large: {
+        fontFamily: string;
+        fontWeight: FontWeight;
+        fontSize: number;
+      };
+    };
+  };
+  colors: Theme["colors"] & {
+    black: string;
+    lightBlack: string;
+    orange: string;
+    darkOrange: string;
+    white: string;
+    darkestGray: string;
+    darkerGray: string;
+    darkGray: string;
+    gray: string;
+    iconGray: string;
+    grayer: string;
+    lightGray: string;
+    lightestGray: string;
+    green: string;
+    red: string;
+    lightBlue: string;
+    tabBarDarkColor: string;
+    tabBarLightColor: string;
+    backgroundColor: string;
+  };
+  customIcons: {
+    small: {
+      size: number;
+      color: string;
+    };
+    medium: {
+      size: number;
+      color: string;
+      weight: string;
+    };
+    large: {
+      size: number;
+      color: string;
+    };
+  };
+};

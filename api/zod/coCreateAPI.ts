@@ -848,7 +848,8 @@ export const postApiLoginResponse = zod.object({
   "username": zod.string().min(1),
   "userId": zod.number(),
   "email": zod.string().min(1),
-  "bannerPictureSrc": zod.string().min(1)
+  "bannerPictureSrc": zod.string().min(1),
+  "coins": zod.number()
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -869,7 +870,8 @@ export const postApiLoginRegisterResponse = zod.object({
   "username": zod.string().min(1),
   "userId": zod.number(),
   "email": zod.string().min(1),
-  "bannerPictureSrc": zod.string().min(1)
+  "bannerPictureSrc": zod.string().min(1),
+  "coins": zod.number()
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -888,7 +890,8 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "username": zod.string().min(1),
   "userId": zod.number(),
   "email": zod.string().min(1),
-  "bannerPictureSrc": zod.string().min(1)
+  "bannerPictureSrc": zod.string().min(1),
+  "coins": zod.number()
 })
 }).optional(),
   "error": zod.string().nullish()

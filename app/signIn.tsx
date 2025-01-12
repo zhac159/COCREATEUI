@@ -8,33 +8,25 @@ import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import { usePostApiLogin } from "@/api/endpoints/cocreateApi";
 import { useEncryption } from "@/common/hooks/encryption/useEncryption";
-import { useAuthStore } from "@/common/stores/auth/authStore";
 import { router } from "expo-router";
-import {
-  createConnection,
-  useConnectionContext,
-} from "@/common/webSockets/ConnectionProvider";
+import { useOnUserLogIn } from "@/components/SignIn/hooks/useOnUserLogIn";
 
 export default function Index() {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const setAuth = useAuthStore((state) => state.setAuth);
-
-  const { setConnection } = useConnectionContext();
-
-  const { hashPassword } = useEncryption();
-
-  const { handleSubmit, control } = useForm<UserLoginDTO>();
+  const { onUserLogIn } = useOnUserLogIn();
 
   const { mutate, error, isPending } = usePostApiLogin({
     mutation: {
       onSuccess: async (data) => {
-        setAuth(data.user);
-        setConnection(createConnection(data.token));
+        await onUserLogIn(data);
       },
     },
   });
+
+  const { handleSubmit, control } = useForm<UserLoginDTO>();
+  const { hashPassword } = useEncryption();
 
   const onSubmit = async (userLoginDTO: UserLoginDTO) => {
     const hashedPassword = await hashPassword(userLoginDTO.password);
@@ -44,11 +36,13 @@ export default function Index() {
         password: hashedPassword,
       },
     });
-    router.replace("/(main)/account");
+    router.replace("/main/(tabs)/account");
   };
 
   return (
-    <ScrollViewWrapper>
+    <ScrollViewWrapper
+      contentContainerStyle={{ height: "100%" }}
+    >
       <View style={styles.formContainer}>
         <Controller
           name="usernameOrEmail"

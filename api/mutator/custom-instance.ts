@@ -1,7 +1,7 @@
 import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 import * as SecureStore from "expo-secure-store";
-import BackEndErrors from "../enum/backEndErrors";
-import SecureStoreKeys from "../enum/secureStoreKeys";
+import BackEndErrors from "../../common/constants/backEndErrors";
+import SecureStoreKeys from "../../common/constants/secureStoreKeys";
 
 export const AXIOS_INSTANCE = Axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,

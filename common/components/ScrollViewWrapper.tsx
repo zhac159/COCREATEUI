@@ -3,20 +3,26 @@ import { Keyboard, StyleSheet } from "react-native";
 import { StyledBackgroundAnimation } from "./BackgroundAnimation";
 import {
   KeyboardAwareScrollView,
+  KeyboardAwareScrollViewProps,
   KeyboardToolbar,
 } from "react-native-keyboard-controller";
 
-type ScrollViewWrapperProps = {
+type ScrollViewWrapperProps = KeyboardAwareScrollViewProps & {
   children: ReactNode;
 };
 
-export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({ children }) => {
+export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
+  children,
+  contentContainerStyle,
+  ...props
+}) => {
   return (
     <>
       <StyledBackgroundAnimation />
       <KeyboardAwareScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[styles.container, contentContainerStyle]}
         onTouchStart={Keyboard.dismiss}
+        {...props}
       >
         {children}
       </KeyboardAwareScrollView>
@@ -27,10 +33,8 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({ children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingVertical: "20%",
     paddingHorizontal: "3%",
-    height: "100%",
     backgroundColor: "transparent",
   },
 });

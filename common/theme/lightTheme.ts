@@ -24,7 +24,7 @@ export const LightTheme: CustomTheme = {
       lightBlue: "rgb(223, 228, 255)",
       tabBarDarkColor: "rgba(55, 55, 55, 0.8)",
       tabBarLightColor: "rgba(200, 200, 200, 0.8)",
-      backgroundColor: "rgb(220, 220, 220)",
+      backgroundColor: "rgb(209, 197, 197)",
     },
     customFonts: {  
       primary: {  

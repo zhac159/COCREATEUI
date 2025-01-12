@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 
-interface ConnectionContextType {
+type ConnectionContextType = {
   connection: HubConnection | null;
   setConnection: (connection: HubConnection) => void;
 }
@@ -40,9 +40,9 @@ export function useConnectionContext() {
   return context;
 }
 
-interface ConnectionProviderProps {
+type ConnectionProviderProps = {
   children: React.ReactNode;
-}
+};
 
 export function ConnectionProvider({ children }: ConnectionProviderProps) {
   const [connection, setConnection] = useState<HubConnection | null>(null);

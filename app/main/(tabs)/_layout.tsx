@@ -1,8 +1,8 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import TabBar from "@/components/Main/TabBar/TabBar";
+import TabBar from "@/components/Main/Tabs/TabBar/TabBar";
 
-export default function MainLayout() {
+export default function MainTabsLayout() {
   return (
     <Tabs
       screenOptions={{

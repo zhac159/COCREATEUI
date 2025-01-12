@@ -13,4 +13,5 @@ export interface UserLoginResponseDTO {
   email: string;
   /** @minLength 1 */
   bannerPictureSrc: string;
+  coins: number;
 }

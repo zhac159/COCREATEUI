@@ -2,7 +2,7 @@ import { useTheme } from "@react-navigation/native";
 import { FC, useMemo } from "react";
 import { StyleProp, Text, TextProps, TextStyle } from "react-native";
 
-interface StyledTextProps extends TextProps {
+type StyledTextProps = TextProps & {
   color?: string;
   fontSize?: number;
   text: string;

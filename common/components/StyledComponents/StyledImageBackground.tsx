@@ -8,9 +8,9 @@ import {
   ImageBackgroundProps,
 } from "react-native";
 
-interface StyledImageBackgroundProps extends ImageBackgroundProps {
+type StyledImageBackgroundProps = ImageBackgroundProps & {
   blackLayer?: boolean;
-}
+};
 
 export const StyledImageBackground: FC<StyledImageBackgroundProps> = ({
   blackLayer,

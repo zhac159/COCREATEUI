@@ -4956,6 +4956,7 @@
       "UserLoginResponseDTO": {
         "required": [
           "bannerPictureSrc",
+          "coins",
           "email",
           "userId",
           "username"
@@ -4977,6 +4978,10 @@
           "bannerPictureSrc": {
             "minLength": 1,
             "type": "string"
+          },
+          "coins": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
