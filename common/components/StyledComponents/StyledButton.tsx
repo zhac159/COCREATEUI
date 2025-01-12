@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef } from "react";
+import React, { FC, useEffect, useMemo } from "react";
 import {
   StyleProp,
   StyleSheet,
@@ -16,7 +16,6 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { colors } from "react-native-keyboard-controller/lib/typescript/components/KeyboardToolbar/colors";
 
 const animationDuration = 2000;
 const animationToValue = 150;
@@ -155,7 +154,6 @@ const StyledButton: FC<StyledButtonProps> = ({
         <FontAwesome6
           name={icon}
           size={15}
-          solid
           style={[
             {
               opacity: isLoading ? 0.5 : 1,

@@ -1,6 +1,6 @@
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
-import StyledText from "@/common/components/StyledComponents/StyledText";
+import { StyledTitle } from "@/common/components/StyledComponents/StyledTitle";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { EditAccountAndInfo } from "@/components/Main/Tabs/Account/EditAccountAndInfo";
 import { Theme } from "@react-navigation/native";
@@ -14,12 +14,7 @@ export default function Account() {
   return (
     <ScrollViewWrapper contentContainerStyle={styles.container}>
       <EditAccountAndInfo style={styles.editAccountAndInfoStyles} />
-      <StyledText
-        text={t("account.you-commissioned-projets")}
-        fontSize={25}
-        weight="400"
-        secondary
-      />
+      <StyledTitle text={t("account.you-commissioned-projets")} />
       <StyledButton
         text={t("account.new-project")}
         onPress={() => router.push("/main/(forms)/newProject")}

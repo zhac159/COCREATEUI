@@ -5,26 +5,13 @@
  * OpenAPI spec version: v1
  */
 import type { SkillType } from './skillType';
-import type { MediaCreateDTO } from './mediaCreateDTO';
 
 export interface ProjectRoleCreateDTO {
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  description?: string | null;
-  cost?: number;
-  effort?: number;
-  startDate?: string;
-  endDate?: string;
-  skillType?: SkillType;
-  longitude?: number;
-  latitude?: number;
-  /** @nullable */
-  address?: string | null;
-  /** @nullable */
-  keywords?: string[] | null;
-  remote?: boolean;
-  projectId?: number;
-  /** @nullable */
-  medias?: MediaCreateDTO[] | null;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  description: string;
+  cost: number;
+  skillType: SkillType;
+  remote: boolean;
 }

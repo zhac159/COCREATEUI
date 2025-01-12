@@ -204,8 +204,6 @@ export const postApiEnquiryConfirmResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -444,8 +442,6 @@ export const postApiExperienceResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -560,8 +556,6 @@ export const postApiExperienceResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -696,8 +690,6 @@ export const postApiExperienceResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -760,8 +752,6 @@ export const postApiExperienceResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1008,329 +998,19 @@ export const postApiProjectBody = zod.object({
   "name": zod.string().min(1),
   "description": zod.string().min(1),
   "date": zod.string().datetime(),
-  "location": zod.object({
-  "factory": zod.object({
-  "precisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional(),
-  "coordinateSequenceFactory": zod.object({
-  "ordinates": zod.number().optional()
-}).optional(),
-  "srid": zod.number().optional(),
-  "geometryServices": zod.object({
-  "geometryOverlay": zod.object({
-
-}).optional(),
-  "coordinateEqualityComparer": zod.object({
-
-}).optional(),
-  "defaultSRID": zod.number().optional(),
-  "defaultCoordinateSequenceFactory": zod.object({
-  "ordinates": zod.number().optional()
-}).optional(),
-  "defaultPrecisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional()
-}).optional()
-}).optional(),
-  "userData": zod.any().nullish(),
-  "srid": zod.number().optional(),
-  "precisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional(),
-  "numGeometries": zod.number().optional(),
-  "isSimple": zod.boolean().optional(),
-  "isValid": zod.boolean().optional(),
-  "area": zod.number().optional(),
-  "length": zod.number().optional(),
-  "centroid": zod.any().optional(),
-  "interiorPoint": zod.any().optional(),
-  "pointOnSurface": zod.any().optional(),
-  "envelope": zod.object({
-  "factory": zod.object({
-  "precisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional(),
-  "coordinateSequenceFactory": zod.object({
-  "ordinates": zod.number().optional()
-}).optional(),
-  "srid": zod.number().optional(),
-  "geometryServices": zod.object({
-  "geometryOverlay": zod.object({
-
-}).optional(),
-  "coordinateEqualityComparer": zod.object({
-
-}).optional(),
-  "defaultSRID": zod.number().optional(),
-  "defaultCoordinateSequenceFactory": zod.object({
-  "ordinates": zod.number().optional()
-}).optional(),
-  "defaultPrecisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional()
-}).optional()
-}).optional(),
-  "userData": zod.any().nullish(),
-  "srid": zod.number().optional(),
-  "geometryType": zod.string().nullish(),
-  "ogcGeometryType": zod.number().optional(),
-  "precisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional(),
-  "coordinate": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional(),
-  "coordinates": zod.array(zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-})).nullish(),
-  "numPoints": zod.number().optional(),
-  "numGeometries": zod.number().optional(),
-  "isSimple": zod.boolean().optional(),
-  "isValid": zod.boolean().optional(),
-  "isEmpty": zod.boolean().optional(),
-  "area": zod.number().optional(),
-  "length": zod.number().optional(),
-  "centroid": zod.any().optional(),
-  "interiorPoint": zod.any().optional(),
-  "pointOnSurface": zod.any().optional(),
-  "dimension": zod.number().optional(),
-  "boundary": zod.any().optional(),
-  "boundaryDimension": zod.number().optional(),
-  "envelope": zod.any().optional(),
-  "envelopeInternal": zod.object({
-  "isNull": zod.boolean().optional(),
-  "width": zod.number().optional(),
-  "height": zod.number().optional(),
-  "diameter": zod.number().optional(),
-  "minX": zod.number().optional(),
-  "maxX": zod.number().optional(),
-  "minY": zod.number().optional(),
-  "maxY": zod.number().optional(),
-  "area": zod.number().optional(),
-  "minExtent": zod.number().optional(),
-  "maxExtent": zod.number().optional(),
-  "centre": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional()
-}).optional(),
-  "isRectangle": zod.boolean().optional()
-}).optional(),
-  "envelopeInternal": zod.object({
-  "isNull": zod.boolean().optional(),
-  "width": zod.number().optional(),
-  "height": zod.number().optional(),
-  "diameter": zod.number().optional(),
-  "minX": zod.number().optional(),
-  "maxX": zod.number().optional(),
-  "minY": zod.number().optional(),
-  "maxY": zod.number().optional(),
-  "area": zod.number().optional(),
-  "minExtent": zod.number().optional(),
-  "maxExtent": zod.number().optional(),
-  "centre": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional()
-}).optional(),
-  "isRectangle": zod.boolean().optional(),
-  "coordinateSequence": zod.object({
-  "dimension": zod.number().optional(),
-  "measures": zod.number().optional(),
-  "spatial": zod.number().optional(),
-  "ordinates": zod.number().optional(),
-  "hasZ": zod.boolean().optional(),
-  "hasM": zod.boolean().optional(),
-  "zOrdinateIndex": zod.number().optional(),
-  "mOrdinateIndex": zod.number().optional(),
-  "first": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional(),
-  "last": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional(),
-  "count": zod.number().optional()
-}).optional(),
-  "coordinates": zod.array(zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-})).nullish(),
-  "numPoints": zod.number().optional(),
-  "isEmpty": zod.boolean().optional(),
-  "dimension": zod.number().optional(),
-  "boundaryDimension": zod.number().optional(),
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "coordinate": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional(),
-  "geometryType": zod.string().nullish(),
-  "ogcGeometryType": zod.number().optional(),
-  "boundary": zod.object({
-  "factory": zod.object({
-  "precisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional(),
-  "coordinateSequenceFactory": zod.object({
-  "ordinates": zod.number().optional()
-}).optional(),
-  "srid": zod.number().optional(),
-  "geometryServices": zod.object({
-  "geometryOverlay": zod.object({
-
-}).optional(),
-  "coordinateEqualityComparer": zod.object({
-
-}).optional(),
-  "defaultSRID": zod.number().optional(),
-  "defaultCoordinateSequenceFactory": zod.object({
-  "ordinates": zod.number().optional()
-}).optional(),
-  "defaultPrecisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional()
-}).optional()
-}).optional(),
-  "userData": zod.any().nullish(),
-  "srid": zod.number().optional(),
-  "geometryType": zod.string().nullish(),
-  "ogcGeometryType": zod.number().optional(),
-  "precisionModel": zod.object({
-  "isFloating": zod.boolean().optional(),
-  "maximumSignificantDigits": zod.number().optional(),
-  "scale": zod.number().optional(),
-  "gridSize": zod.number().optional(),
-  "precisionModelType": zod.number().optional()
-}).optional(),
-  "coordinate": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional(),
-  "coordinates": zod.array(zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-})).nullish(),
-  "numPoints": zod.number().optional(),
-  "numGeometries": zod.number().optional(),
-  "isSimple": zod.boolean().optional(),
-  "isValid": zod.boolean().optional(),
-  "isEmpty": zod.boolean().optional(),
-  "area": zod.number().optional(),
-  "length": zod.number().optional(),
-  "centroid": zod.any().optional(),
-  "interiorPoint": zod.any().optional(),
-  "pointOnSurface": zod.any().optional(),
-  "dimension": zod.number().optional(),
-  "boundary": zod.any().optional(),
-  "boundaryDimension": zod.number().optional(),
-  "envelope": zod.any().optional(),
-  "envelopeInternal": zod.object({
-  "isNull": zod.boolean().optional(),
-  "width": zod.number().optional(),
-  "height": zod.number().optional(),
-  "diameter": zod.number().optional(),
-  "minX": zod.number().optional(),
-  "maxX": zod.number().optional(),
-  "minY": zod.number().optional(),
-  "maxY": zod.number().optional(),
-  "area": zod.number().optional(),
-  "minExtent": zod.number().optional(),
-  "maxExtent": zod.number().optional(),
-  "centre": zod.object({
-  "x": zod.number().optional(),
-  "y": zod.number().optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional(),
-  "coordinateValue": zod.any().optional(),
-  "isValid": zod.boolean().optional()
-}).optional()
-}).optional(),
-  "isRectangle": zod.boolean().optional()
-}).optional(),
-  "z": zod.number().optional(),
-  "m": zod.number().optional()
-}),
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1),
   "medias": zod.array(zod.object({
   "uri": zod.string().min(1),
   "mediaType": zod.number()
+})),
+  "projectRoles": zod.array(zod.object({
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "cost": zod.number(),
+  "skillType": zod.number(),
+  "remote": zod.boolean()
 }))
 })
 
@@ -1358,8 +1038,6 @@ export const postApiProjectResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1487,8 +1165,6 @@ export const getApiProjectCompletedResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1561,8 +1237,6 @@ export const getApiProjectGetByRoleResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1665,8 +1339,6 @@ export const getApiProjectProjectIdResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1742,23 +1414,11 @@ export const getApiProjectProjectIdResponse = zod.object({
 
 
 export const postApiProjectRoleBody = zod.object({
-  "name": zod.string().nullish(),
-  "description": zod.string().nullish(),
-  "cost": zod.number().optional(),
-  "effort": zod.number().optional(),
-  "startDate": zod.string().datetime().optional(),
-  "endDate": zod.string().datetime().optional(),
-  "skillType": zod.number().optional(),
-  "longitude": zod.number().optional(),
-  "latitude": zod.number().optional(),
-  "address": zod.string().nullish(),
-  "keywords": zod.array(zod.string()).nullish(),
-  "remote": zod.boolean().optional(),
-  "projectId": zod.number().optional(),
-  "medias": zod.array(zod.object({
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})).nullish()
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "cost": zod.number(),
+  "skillType": zod.number(),
+  "remote": zod.boolean()
 })
 
 export const postApiProjectRoleResponse = zod.object({
@@ -1769,8 +1429,6 @@ export const postApiProjectRoleResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1843,8 +1501,6 @@ export const putApiProjectRoleResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -1900,8 +1556,6 @@ export const getApiProjectRoleResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2065,8 +1719,6 @@ export const getApiUserUserIdResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2181,8 +1833,6 @@ export const getApiUserUserIdResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2290,8 +1940,6 @@ export const getApiUserUserIdResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2354,8 +2002,6 @@ export const getApiUserUserIdResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2532,8 +2178,6 @@ export const putApiUserResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2648,8 +2292,6 @@ export const putApiUserResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2757,8 +2399,6 @@ export const putApiUserResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -2821,8 +2461,6 @@ export const putApiUserResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3000,8 +2638,6 @@ export const postApiUserMatchingProjectsResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3223,8 +2859,6 @@ export const postApiUserProfilesResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3339,8 +2973,6 @@ export const postApiUserProfilesResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3475,8 +3107,6 @@ export const postApiUserProfilesResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3539,8 +3169,6 @@ export const postApiUserProfilesResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3717,8 +3345,6 @@ export const getApiUserGetProfileResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3833,8 +3459,6 @@ export const getApiUserGetProfileResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -3969,8 +3593,6 @@ export const getApiUserGetProfileResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -4033,8 +3655,6 @@ export const getApiUserGetProfileResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -4208,8 +3828,6 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -4324,8 +3942,6 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -4433,8 +4049,6 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),
@@ -4497,8 +4111,6 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "description": zod.string().min(1),
   "cost": zod.number(),
   "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
   "skillType": zod.number(),
   "longitude": zod.number(),
   "latitude": zod.number(),

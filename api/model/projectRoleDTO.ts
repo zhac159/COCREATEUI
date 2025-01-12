@@ -17,8 +17,6 @@ export interface ProjectRoleDTO {
   description: string;
   cost: number;
   effort: number;
-  startDate: string;
-  endDate: string;
   skillType: SkillType;
   longitude: number;
   latitude: number;

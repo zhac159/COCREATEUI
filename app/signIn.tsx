@@ -101,11 +101,3 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
 });
-
-// const refinedSchema = postApiLoginBody.extend({}).refine(
-//   (data) => data.password.length === 0,
-//   {
-//     message: "Passwords do not match",
-//     path: ["password"]
-//   }
-// );

@@ -4,8 +4,8 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { Point } from './point';
 import type { MediaCreateDTO } from './mediaCreateDTO';
+import type { ProjectRoleCreateDTO } from './projectRoleCreateDTO';
 
 export interface ProjectCreateDTO {
   /** @minLength 1 */
@@ -13,6 +13,10 @@ export interface ProjectCreateDTO {
   /** @minLength 1 */
   description: string;
   date: string;
-  location: Point;
+  longitude: number;
+  latitude: number;
+  /** @minLength 1 */
+  address: string;
   medias: MediaCreateDTO[];
+  projectRoles: ProjectRoleCreateDTO[];
 }
