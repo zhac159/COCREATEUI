@@ -1,0 +1,254 @@
+{
+    "hello": "Hello, World!",
+    "welcome-page": {
+      "title-1": "Welcome to the",
+      "title-2": "future of creative work"
+    },
+    "sign-in": {
+      "sign-in": "Sign In",
+      "username-email": "Username / Email",
+      "password": "Password",
+      "password-tool-tip": "If you forgot your password, please email springRiseLimited@outlook.com"
+    },
+    "get-started": {
+      "tutorial": {
+        "title": "How it works",
+        "tutorial1": "You browse projects other creatives are doing which match your skills",
+        "tutorial2": "You apply at projects you're interested in \n\n You work on the proejct ",
+        "tutorial3": "You can add the finished product to your portfolio. \n\n You earn credits for your work.",
+        "tutorial4": "You can use the credits you earned to hire other cretives and rent assets and tools you need. "
+      },
+      "terms-and-conditions": {
+        "title": "This app is part of a research project",
+        "description": "WeCreateX is part of MA research at King's College London to explore the future of creativity.",
+        "check-boxes-title": "Tick every box to accept the terms and conditions and proceed.",
+        "terms": {
+          "1": "I confirm that I have read and understood the information sheet (V2) dated 17/06/2024 for the above project. I have had the opportunity to consider the information and asked questions which have been answered to my satisfaction.",
+          "2": "I consent voluntarily to be a participant in this project and understand that I can refuse to take part and can withdraw from the project at any time, without having to give a reason, up until the 17th of August 2024",
+          "3": "I consent to the processing of my personal information for the purposes explained to me in the Information Sheet. I understand that such information will be handled in accordance with the terms of the General Data Protec5on Regulation (GDPR) and the UK Data Protection Act 2018.",
+          "4": "I understand that my information may be subject to review by responsible individuals from the College for monitoring and audit purposes.",
+          "5": "I understand that confidentiality and anonymity will be maintained, and it will not be possible to identify me in any research outputs.",
+          "6": "I understand that I must not take part if I fall under the exclusion criteria as detailed in the information sheet and explained to me by the researcher.",
+          "7": "I  understand that the information I have submited will be published as a report.",
+          "8": "I understand that I might be approached for an interview.",
+          "9": "I have read the Information Sheet, the Terms and Conditions and the Consent Form and I accept the terms and conditions and consent to take part in the research"
+        }
+      },
+      "survey": {
+        "markers": {
+          "1": "Not at all true",
+          "4": "Somewhat true",
+          "7": "Very true"
+        },
+        "title": "Please rate 10 research statements (max 1 min) and collect your credits after.",
+        "opinions": {
+          "1": "I enjoy filmmaking and/or acting very much.",
+          "2": "Filmmaking and/or acting is fun to do.",
+          "3": "I would describe filmmaking and/or acting as very interesting.",
+          "4": "While I am making films and/or acting, I am thinking about how much I enjoy it.",
+          "5": "I think I am quite good at filmmaking and/or acting.",
+          "6": "I am satisfied with my creative performance.",
+          "7": "I believe filmmaking and/or acting is valuable to me.",
+          "8": "I think filmmaking and/or acting are important.",
+          "9": "I put a lot of effort into filmmaking and/or acting.",
+          "10": "It is important to me to do well in filmmaking and/or acting."
+        }
+      }
+    },
+    "discovery": {
+      "no-projects": {
+        "title": "More projects will be here soon! ",
+        "description": "You're one of the first to test this app. People will be added continoulsy, so will  new projects. Check back in a couple of days or create your own project."
+      }
+    },
+    "work": {
+      "shortlisted": "Shortlisted",
+      "waiting-shortlist": "Waiting To Be Shortlisted",
+      "no-work-title": "Start working by applying to jobs",
+      "no-work-description": "You're one of the first to test this app. People will be added continoulsy, so will  new projects. Check back in a couple of days or create your own project.",
+      "no-team-project": "Once you have been hired for a project, the Team Chat will appear here."
+    },
+    "projects": {
+      "view-projects": {
+        "all-roles": "All Roles"
+      },
+      "complete-project": {
+        "title": "Project Completed",
+        "description": "Congratulations! You have successfully completed your project. Credits will now be handed out to your team.",
+        "upload-image-title": "Upload Images To Finis Project"
+      },
+      "complete-role": {
+        "title": "Role Completed",
+        "description": "Congratulations! You finished your project. You will now receive your credits.",
+        "upload-image-title": "The project {{projectName}} is now finished. Upload images to receive your credits. "
+      },
+      "default-page": {
+        "title": "Create your first project",
+        "description": "As a special part of this beta you have received some credits. Use them to collborate with other creatives to get your ideas off the ground.",
+        "your-projects": "Your Projects"
+      },
+      "create-project": {
+        "title": "What is Your Project About?",
+        "title-placeholder": "Project Title...",
+        "title-tooltip": "The title should be a short description of your project like, 'period horror film' or 'jazz gig in central london' - it could also include the name of your project like 'Endagon - a series of phantasy hand-drawn graphics'.",
+        "description-placeholder": "Project Description...",
+        "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested.",
+        "add-pictures-descriptions": "Add pictures that will give people a sense of what you are trying to do. This could be a poster, similar work, a moodboard, inspiration… Make it interesting!",
+        "add-pictures-title": "Add Project Pictures",
+        "error":{
+          "title-required": "Please add a title to the project",
+          "description-required": "Please add a description to the project",
+          "media-required": "Please add two photos for the project"
+        }
+      },
+      "add-role": {
+        "add-role-button": "Add Role",
+        "title": "Who Are You Looking For?",
+        "title-description-form-header": "What Is The Role About?",
+        "title-placeholder": "Role Title...",
+        "title-tooltip": "E.g. 'Actor in a period horror film' or 'Design the set for a student short' or 'Dance in a musical'",
+        "description-placeholder": "Role Description...",
+        "description-tooltip": "Describe the project you want to do in great detail. Let poeple know your vision and make them interested.",
+        "keywords-placeholder": "Add, Keywords, seperated, by, commas,",
+        "keywords-tooltip": "Keywords help to match the right people with the right role. Think of anything that describes the nature of the job or the person you'd want to do it. For exmple: Calligraphy, Jazz, UI, Male, 30-40 Years, Gig, Short Film",
+        "keywords-title": "Add Keywords",
+        "skills-title": "What Skill Are You Looking For?",
+        "media-title": "Add Role Picture",
+        "cost-title": "How Many Do You Want To Offer?",
+        "coins-available": "Credits Available:",
+        "location-title": "Production Location",
+        "date-title": "Production Dates",
+        "offer": "Offer:",
+        "location-date-title": "When, Where And How Long?",
+        "error":{
+          "address-required": "Please add a location to the role",
+          "title-required": "Please add a title to the role",
+          "description-required": "Please add a description to the role",
+          "media-required": "Please add a photo for the role",
+          "skill-required": "Please add a skill to the role",
+          "insufficient-credits": "You don't have enough credits to offer this role",
+          "effort-required": "Please add the duration of the role",
+          "cost-required": "Please add the number of credits you want to offer for the role"
+        }
+      },
+      "view-applications": {
+        "title": "Applications",
+        "no-applications-title": "Applications will soon appear here",
+        "no-applications-description": "You don't have any applications yet. Wait longer or offer more credits to make your project more appealing."
+      }
+    },
+    "account": {
+      "menu-items": {
+        "vouchercode": "Enter Code",
+        "accountdetails": "Acount Details & Location",
+        "termsandconditions": "Terms & Conditions",
+        "feedbackandcontact": "Feedback & Contact",
+        "delete": "Delete Account",
+        "logout": "Logout"
+      },
+      "account-viewer": {
+        "projects-commissioned": "Project(s)\nCommissioned",
+        "roles-worked": "Role(s)\nWorked"
+      },
+      "experience": {
+        "reviews": {
+          "title": "Review(s)",
+          "no-reviews-title": "No Reviews Yet",
+          "no-reviews-description": "You don't have any reviews yet. Ask your clients to leave a review after you've finished a project."
+        }
+      },
+      "portfolio": {
+        "about-you-placeholder": "About You...",
+        "add-description-placeholder": "Description...",
+        "bio-placeholder": "Bio...",
+        "description": "Your portfolio is a collection of all the projects you have worked on. It is a great way to show off your skills and experience to potential employers.",
+        "add-description": "Upload photos and video previews of your best work (up to three min). You can upload up to three items foreach project you showcase. Link more extensive samples of your work, professional social media handles or documents in your bio",
+        "errors":{
+          "skill-required": "Please add a skill to the project",
+          "media-required": "Please add at least one photo or video to the project",
+          "description-required": "Please add a title to the project"
+        }
+      },
+      "settings": {
+        "feedback-and-contact": {
+          "title": "Feedback & Contact",
+          "content": "For any questions, to report a problem or give feedback, please reach out to: nikolas.kunesch@kcl.ac.uk"
+        },
+        "enter-code": {
+          "title": "Enter Code",
+          "code-placeholder": "Enter Code...",
+          "code-tooltip": "Enter your waiver code to receive credits down below."
+        },
+        "term-and-conditions": {
+          "title": "Terms & Conditions",
+          "content": "By using this service you agree to the terms and conditions. You can read them here."
+        },
+        "account-details-and-location": {
+          "change-password": {
+            "title": "Change Password:",
+            "old-password-placeholder": "Enter Old Password...",
+            "new-password-placeholder": "Enter New Password..."
+          },
+          "change-location": {
+            "title": "Location",
+            "location-placeholder": "Enter Location..."
+          },
+          "change-email": {
+            "title": "Email",
+            "email-placeholder": "Enter New Email..."
+          }
+        },
+        "delete": {
+          "title": "Delete Account",
+          "description": "Are you sure you want to delete your account? This action cannot be undone."
+        }
+      }
+    },
+    "login": {
+      "username": "Username",
+      "password": "Password"
+    },
+    "error": {
+      "username-not-found": "No user with this username found",
+      "invalid-password": "Invalid password for this user",
+      "invalid-voucher-code": "Invalid voucher code",
+      "same-password": "New password must be different from the old password"
+    },
+    "button": {
+      "submit": "Submit",
+      "next": "Next",
+      "complete": "Complete",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "done": "Done",
+      "back": "Back"
+    },
+    "terms-and-conditions": {
+      "content": {
+        "introduction-title": "Introduction",
+        "introduction": "Welcome to WeCreateX. WeCreateX is a research platform designed to facilitate the exchange of creative work among participants for the purpose of academic research conducted by Nikolas Kunesch as part of his MA research at King's College London. By using WeCreateX, you agree to comply with the Consent Form which outlines the research conditions and you are bound by the following terms and conditions which moderate behavior on the platfrom. Please read these terms carefully.",
+        "title-1": "Acceptance of Terms",
+        "content-1": "By accessing and using WeCreateX, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you should not use the platform.",
+        "title-2": "Purpose of the Platform",
+        "content-2": "WeCreateX is created solely for the purpose of academic research. It is designed to facilitate non-monetary exchanges of creative work among participants and measure the effects on intrinsic motivation.",
+        "title-3": "Eligibility",
+        "content-3": "Participants must be at least 18 years old, active in the creative industries, and not in professional employment. Participants must reside in London or Germany.",
+        "title-4": "Registration and Account Security",
+        "content-4": "Registration: To use WeCreateX, you must register and create an account. You agree to provide accurate and complete information during registration. Account Security: You are responsible for maintaining the confidentiality of your account login information and for all activities that occur under your account.",
+        "title-5": "Code of Conduct",
+        "content-5": "Participants must adhere to the following code of conduct: Respectful Communication: Treat all participants with respect and courtesy. Harassment, discrimination, or abusive behavior will not be tolerated. Prohibited Content: Do not post or exchange any content that is illegal, harmful, threatening, defamatory, obscene, or otherwise objectionable. Intellectual Property: Respect the intellectual property rights of others. Do not post or share work that you do not own or have permission to use. Honesty and Integrity: Engage in honest and constructive exchanges. Do not engage in fraudulent activities or misrepresent your work.",
+        "title-6": "Non-Monetary Exchange",
+        "content-6": "Credits System: The platform uses a credits system for the exchange of creative work. Credits cannot be exchanged for money. Work-for-Work: Participants may exchange creative work for credits, which can be used to obtain other participants' creative work.",
+        "title-7": "Liability and Disclaimers",
+        "content-7": "No Liability: WeCreateX, Nikolas Kunesch, and King's College London are not liable for any disputes, losses, or damages arising from interactions or exchanges between participants. The platfrom's function is to connect creatives. It cannot gurantee that the information other participants provide is accurate. Any meeting outside the platform (exchnages of work) is fully conducted at participant’s own risk. No Warranty: The platform is provided 'as is' without warranties of any kind. We do not guarantee the accuracy, reliability, or quality of any content exchanged on the platform. Research Use: Your participation and any content you share on the platform may be used for research purposes. Data will be anonymized and treated confidentially as per the Information Sheet for Participants.",
+        "title-8": "Data Privacy",
+        "content-8": "Anonymity: Your participation in the survey and activities on the platform will be anonymous. Data Security: Your data will be stored securely on Apple and Azure servers and processed in accordance with UK data protection laws. Data Use: Your data will be used solely for the purposes of this research. For more information on data processing, please refer to the Information Sheet for Participants.",
+        "title-9": "Termination",
+        "content-9": "WeCreateX reserves the right to terminate or suspend your account if you violate these terms and conditions or engage in behavior that is detrimental to the platform or its participants.",
+        "title-10": "Changes to Terms and Conditions",
+        "content-10": "WeCreateX may update these terms and conditions from time to time. You will be notified of any significant changes, and your continued use of the platform will constitute acceptance of the new terms.",
+        "title-11": "Contact Information",
+        "content-11": "If you have any questions or need further information, please contact:\nEmail: Nikolas.kunesch@kcl.ac.uk\nEthical review clearance number: LRU/DP-23/24-42803"
+      } 
+    }
+  }
