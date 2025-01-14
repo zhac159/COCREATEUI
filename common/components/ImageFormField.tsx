@@ -8,8 +8,6 @@ import StyledIconButton from "./StyledComponents/StyledIconButton";
 import StyledText from "./StyledComponents/StyledText";
 import { useTranslation } from "react-i18next";
 import { Control, Controller } from "react-hook-form";
-import { MediaType } from "../constants/mediaTypes";
-import { MediaCreateDTO, MediaDTO } from "@/api/model";
 
 type ImageFormFieldProps = {
   description?: string;
@@ -23,7 +21,7 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
   name,
 }) => {
   const style = useThemedStyles(getStyles);
-  const {  pickImage } = useGetMedia();
+  const { pickImage } = useGetMedia();
   const { t } = useTranslation();
 
   return (
@@ -37,11 +35,11 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
             onPress={async () => {
               const result = await pickImage();
               if (result) {
-                const media: MediaCreateDTO = {
-                  uri: result,
-                  mediaType: MediaType.Image,
-                };
-                onChange(media);
+                onChange({
+                  ...value,
+                  uri: result.uri,
+                  mediaType: result.type,
+                });
               }
             }}
           />

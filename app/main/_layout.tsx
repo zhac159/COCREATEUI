@@ -18,6 +18,7 @@ export default function MainLayout() {
       }}
     >
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(forms)" />
     </Stack>
   );
 }

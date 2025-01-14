@@ -1,23 +1,25 @@
+import { JsStack } from "@/common/contexts/JsStackContext";
 import { useTheme } from "@react-navigation/native";
-import { Stack } from "expo-router";
+import { TransitionPresets } from "@react-navigation/stack";
+import { Modal } from "react-native";
 
 export default function FormsLayout() {
   const theme = useTheme();
   return (
-    <Stack
+    <JsStack
       screenOptions={{
         headerShown: false,
-        statusBarTranslucent: true,
-        statusBarBackgroundColor: "transparent",
-        navigationBarTranslucent: true,
-        navigationBarColor: "transparent",
-        contentStyle: {
-          touchAction: "none",
-          backgroundColor: theme.colors.backgroundColor,
-        },
       }}
     >
-      <Stack.Screen name="newProject" />
-    </Stack>
+      <JsStack.Screen name="newProject" />
+      <JsStack.Screen
+        name="test"
+        options={{
+          ...TransitionPresets.ModalPresentationIOS,
+          presentation: "modal",
+          gestureEnabled: true,
+        }}
+      />
+    </JsStack>
   );
 }

@@ -3,10 +3,12 @@ import { postApiProjectBody } from "@/api/zod/coCreateAPI";
 import { ImageFormField } from "@/common/components/ImageFormField";
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
+import { StyledTextInput } from "@/common/components/StyledComponents/StyledTextInput";
 import { StyledTitle } from "@/common/components/StyledComponents/StyledTitle";
-import { FormProvider, useForm } from "react-hook-form";
+import { router, Stack } from "expo-router";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
+import { Modal, StyleSheet } from "react-native";
 
 export default function NewProject() {
   const { t } = useTranslation();
@@ -22,6 +24,7 @@ export default function NewProject() {
 
   const logFormValues = () => {
     console.log(form.getValues());
+    router.push("/main/(forms)/test");
   };
 
   return (
@@ -33,8 +36,43 @@ export default function NewProject() {
           name="medias.0"
           control={form.control}
         />
+        <Controller
+          name="name"
+          control={form.control}
+          render={({ field }) => (
+            <StyledTextInput
+              label={t("new-project.title")}
+              placeholder={t("new-project.title-placeholder")}
+              onChangeText={field.onChange}
+              value={field.value}
+            />
+          )}
+        />
         <StyledButton text={"dsa"} onPress={logFormValues} />
+        <Controller
+          name="description"
+          control={form.control}
+          render={({ field }) => (
+            <StyledTextInput
+              label={t("new-project.description")}
+              placeholder={t("new-project.description-placeholder")}
+              onChangeText={field.onChange}
+              multiline
+              numberOfLines={4}
+              value={field.value}
+              style={styles.description}
+            />
+          )}
+        />
       </ScrollViewWrapper>
+      <Modal
+        visible={true}
+        animationType="slide"
+        style={{ backgroundColor: "red" }}
+        
+      >
+        <StyledButton text={"dsa"} onPress={logFormValues} />
+      </Modal>
     </FormProvider>
   );
 }
@@ -42,5 +80,10 @@ export default function NewProject() {
 const styles = StyleSheet.create({
   container: {
     gap: 20,
+    paddingHorizontal: "4%",
+  },
+  description: {
+    minHeight: 200,
+    paddingVertical: 10,
   },
 });

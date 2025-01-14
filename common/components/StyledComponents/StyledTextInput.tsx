@@ -13,6 +13,7 @@ type StyledTextInputProps = TextInputProps & {
 export const StyledTextInput: FC<StyledTextInputProps> = ({
   error,
   label,
+  style,
   ...props
 }) => {
   const styles = useThemedStyles(getStyles);
@@ -21,9 +22,10 @@ export const StyledTextInput: FC<StyledTextInputProps> = ({
     <View style={styles.container}>
       <StyledText text={label} />
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, style]}
         multiline={true}
         numberOfLines={1}
+        placeholderTextColor={styles.placeHolderTextColors.color}
         {...props}
       />
       {error && <InformationMessage type="error" message={error} />}
@@ -37,13 +39,16 @@ const getStyles = (theme: Theme) =>
       gap: 10,
     },
     textInput: {
-      ...theme.customFonts.primary.medium,
-      width: "100%",
+      ...theme.customFonts.primary.medium, 
       backgroundColor: theme.colors.white,
-      borderRadius: 7,
-      fontSize: 14,
-      paddingVertical: 10,
-      paddingHorizontal: 10,
+      width: "100%",
       textAlignVertical: "top",
+      borderRadius: 15,
+      fontSize: 14,
+      paddingVertical: 15,
+      paddingHorizontal: 10,
+    },
+    placeHolderTextColors: {
+      color: theme.colors.grayer,
     },
   });
