@@ -4,12 +4,15 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import "react-native-reanimated";
-import "./../i18n";
 import { StatusBar } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConnectionProvider } from "@/common/webSockets/ConnectionProvider";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import "react-native-reanimated";
+import 'react-native-get-random-values';
+import "./../i18n";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,33 +32,35 @@ export default function RootLayout() {
 
   if (!loaded) {
     return null;
-  }
+  } 
 
   return (
-    <ConnectionProvider>
-      <QueryClientProvider client={queryClient}>
-        <KeyboardProvider navigationBarTranslucent statusBarTranslucent>
-          <ThemeProvider value={LightTheme}>
-            <StatusBar backgroundColor={"transparent"} translucent />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                statusBarTranslucent: true,
-                statusBarBackgroundColor: "transparent",
-                navigationBarTranslucent: true,
-                navigationBarColor: "transparent",
-                contentStyle: {
-                  touchAction: "none",
-                  backgroundColor: "transparent",
-                },
-              }}
-            >
-              <Stack.Screen name="index" />
-              <Stack.Screen name="signIn" />
-            </Stack>
-          </ThemeProvider>
-        </KeyboardProvider>
-      </QueryClientProvider>
-    </ConnectionProvider>
+    <SafeAreaProvider>
+      <ConnectionProvider>
+        <QueryClientProvider client={queryClient}>
+          <KeyboardProvider navigationBarTranslucent statusBarTranslucent>
+            <ThemeProvider value={LightTheme}>
+              <StatusBar backgroundColor={"transparent"} translucent />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  statusBarTranslucent: true,
+                  statusBarBackgroundColor: "transparent",
+                  navigationBarTranslucent: true,
+                  navigationBarColor: "transparent",
+                  contentStyle: {
+                    touchAction: "none",
+                    backgroundColor: "transparent",
+                  },
+                }}
+              >
+                <Stack.Screen name="index" />
+                <Stack.Screen name="signIn" />
+              </Stack>
+            </ThemeProvider>
+          </KeyboardProvider>
+        </QueryClientProvider>
+      </ConnectionProvider>
+    </SafeAreaProvider>
   );
 }

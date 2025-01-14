@@ -998,9 +998,11 @@ export const postApiProjectBody = zod.object({
   "name": zod.string().min(1),
   "description": zod.string().min(1),
   "date": zod.string().datetime(),
+  "location": zod.object({
   "longitude": zod.number(),
   "latitude": zod.number(),
-  "address": zod.string().min(1),
+  "address": zod.string().min(1)
+}),
   "medias": zod.array(zod.object({
   "uri": zod.string().min(1),
   "mediaType": zod.number()

@@ -12,8 +12,10 @@ export default function Account() {
   const { t } = useTranslation();
   const styles = useThemedStyles(getStyles);
   return (
-    <ScrollViewWrapper contentContainerStyle={styles.container}>
-      <EditAccountAndInfo style={styles.editAccountAndInfoStyles} />
+    <ScrollViewWrapper
+      contentContainerStyle={styles.container}
+      header={<EditAccountAndInfo style={styles.editAccountAndInfoStyles} />}
+    >
       <StyledTitle text={t("account.you-commissioned-projets")} />
       <StyledButton
         text={t("account.new-project")}

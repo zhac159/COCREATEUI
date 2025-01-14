@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { useGetMedia } from "../hooks/useGetMedia";
-import { StyledImage } from "./StyledComponents/StyledImage";
+import { useGetMedia } from "../../hooks/useGetMedia";
+import { StyledImage } from "../StyledComponents/StyledImage";
 import { View, StyleSheet } from "react-native";
 import { Theme } from "@react-navigation/native";
-import useThemedStyles from "../theme/getThemedStylesheet";
-import StyledIconButton from "./StyledComponents/StyledIconButton";
-import StyledText from "./StyledComponents/StyledText";
+import useThemedStyles from "../../theme/getThemedStylesheet";
+import StyledIconButton from "../StyledComponents/StyledIconButton";
+import StyledText from "../StyledComponents/StyledText";
 import { useTranslation } from "react-i18next";
 import { Control, Controller } from "react-hook-form";
 

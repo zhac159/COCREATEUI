@@ -16,6 +16,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { StyledTouchableOpacity } from "./StyledTouchableOpacity";
 
 const animationDuration = 2000;
 const animationToValue = 150;
@@ -127,7 +128,7 @@ const StyledButton: FC<StyledButtonProps> = ({
   }, [backgroundColor, theme.colors.primary]);
 
   return (
-    <TouchableOpacity
+    <StyledTouchableOpacity
       style={{
         opacity: disabled ? 0.5 : 1,
         ...styles.container,
@@ -175,7 +176,7 @@ const StyledButton: FC<StyledButtonProps> = ({
       >
         {text}
       </Text>
-    </TouchableOpacity>
+    </StyledTouchableOpacity>
   );
 };
 export default StyledButton;

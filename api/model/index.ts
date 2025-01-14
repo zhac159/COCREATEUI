@@ -57,6 +57,7 @@ export * from './getApiProjectGetByRoleParams';
 export * from './getApiProjectRoleParams';
 export * from './getApiUserGetProfileParams';
 export * from './getUserProfileDTO';
+export * from './locationDTO';
 export * from './loginResponseDTO';
 export * from './loginResponseDTOAPIResponse';
 export * from './mediaCreateDTO';

@@ -1,6 +1,6 @@
 export enum MediaType {
-    Image,
-    Video,
-    Audio,
-    Document
+    IMAGE,
+    VIDEO,
+    AUDIO,
+    DOCUMENT
 }
