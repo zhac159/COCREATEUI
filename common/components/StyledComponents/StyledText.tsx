@@ -1,6 +1,13 @@
-import { useTheme } from "@react-navigation/native";
+import useThemedStyles from "@/common/theme/getThemedStylesheet";
+import { Theme, useTheme } from "@react-navigation/native";
 import { FC, useMemo } from "react";
-import { StyleProp, Text, TextProps, TextStyle } from "react-native";
+import {
+  StyleProp,
+  Text,
+  TextProps,
+  TextStyle,
+  StyleSheet,
+} from "react-native";
 
 export type StyledTextProps = TextProps & {
   color?: string;
@@ -10,7 +17,7 @@ export type StyledTextProps = TextProps & {
   secondary?: boolean;
   error?: boolean;
   style?: StyleProp<TextStyle>;
-}
+};
 
 const StyledText: FC<StyledTextProps> = ({
   color,
@@ -22,32 +29,22 @@ const StyledText: FC<StyledTextProps> = ({
   style,
   ...props
 }) => {
-  const theme = useTheme();
-
-  const themedStyle: StyleProp<TextStyle> = useMemo(() => {
-    return secondary
-      ? theme.customFonts.secondary.medium
-      : theme.customFonts.primary.medium;
-  }, [secondary, theme]);
-
-  const colorStyle = useMemo(() => {
-    return error ? theme.colors.red : color || theme.colors.black;
-  }, [error, color, theme]);
+  const styles = useThemedStyles((theme) => getStyles(theme, secondary));
 
   return (
-    <Text
-      style={{
-        ...themedStyle,
-        color: colorStyle,
-        fontSize: fontSize || 17,
-        fontWeight: weight || "700",
-        ...(style as {}),
-      }}
-      {...props}
-    >
+    <Text style={[styles.text, style]} {...props}>
       {text}
     </Text>
   );
 };
 
 export default StyledText;
+
+const getStyles = (theme: Theme, secondary?: boolean) =>
+  StyleSheet.create({
+    text: {
+      ...(secondary
+        ? theme.customFonts.secondary.medium
+        : theme.customFonts.primary.medium),
+    },
+  });

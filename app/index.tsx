@@ -1,14 +1,15 @@
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { StyledImageBackground } from "@/common/components/StyledComponents/StyledImageBackground";
 import StyledText from "@/common/components/StyledComponents/StyledText";
-import { useTheme } from "@react-navigation/native";
+import useThemedStyles from "@/common/theme/getThemedStylesheet";
+import { Theme, useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 export default function Index() {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const styles = useThemedStyles(getStyles);
 
   return (
     <StyledImageBackground
@@ -16,17 +17,11 @@ export default function Index() {
       source={require("../assets/images/backdrops/home-page-background.png")}
       style={styles.container}
     >
-      <StyledText
-        text={t("welcome-page.title")}
-        fontSize={50}
-        color={theme.colors.orange}
-      />
+      <StyledText text={t("welcome-page.title")} style={styles.title} />
       <View style={styles.buttonsContainer}>
         <StyledButton
           text={t("sign-in.sign-in")}
-          style={{
-            backgroundColor: theme.colors.black,
-          }}
+          style={styles.signInButton}
           onPress={() => {
             router.navigate({
               pathname: "/signIn",
@@ -35,9 +30,7 @@ export default function Index() {
         />
         <StyledButton
           text={t("get-started.get-started")}
-          style={{
-            backgroundColor: theme.colors.orange,
-          }}
+          style={styles.getStartedButton}
           onPress={() => {
             router.navigate({
               pathname: "/signIn",
@@ -49,15 +42,28 @@ export default function Index() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: "20%",
-    paddingHorizontal: "3%",
-    justifyContent: "space-between",
-  },
-  buttonsContainer: {
-    alignSelf: "center",
-    gap: 20,
-  },
-});
+const styles = StyleSheet.create({});
+
+const getStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingVertical: "20%",
+      paddingHorizontal: "3%",
+      justifyContent: "space-between",
+    },
+    signInButton: {
+      backgroundColor: theme.colors.black,
+    },
+    getStartedButton: {
+      backgroundColor: theme.colors.orange,
+    },
+    buttonsContainer: {
+      alignSelf: "center",
+      gap: 20,
+    },
+    title: {
+      fontSize: 50,
+      color: theme.colors.orange,
+    },
+  });

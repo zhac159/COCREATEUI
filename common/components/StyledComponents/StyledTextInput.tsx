@@ -7,7 +7,7 @@ import { InformationMessage } from "../InformationMessage";
 
 type StyledTextInputProps = TextInputProps & {
   error?: string;
-  label: string;
+  label?: string;
 };
 
 export const StyledTextInput: FC<StyledTextInputProps> = ({
@@ -20,7 +20,7 @@ export const StyledTextInput: FC<StyledTextInputProps> = ({
 
   return (
     <View style={styles.container}>
-      <StyledText text={label} />
+      {label && <StyledText text={label} />}
       <TextInput
         style={[styles.textInput, style]}
         multiline={true}
@@ -39,7 +39,7 @@ const getStyles = (theme: Theme) =>
       gap: 10,
     },
     textInput: {
-      ...theme.customFonts.primary.medium, 
+      ...theme.customFonts.primary.medium,
       backgroundColor: theme.colors.white,
       width: "100%",
       textAlignVertical: "top",

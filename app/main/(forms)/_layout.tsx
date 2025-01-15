@@ -7,6 +7,8 @@ export default function FormsLayout() {
     <JsStack
       screenOptions={{
         headerShown: false,
+        cardStyle: { backgroundColor: "transparent" },
+
       }}
     >
       <JsStack.Screen name="newProject" />

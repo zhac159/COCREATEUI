@@ -55,6 +55,53 @@
       }
     }
   },
+  "skills": {
+    "0": "Editor",
+    "1": "Director",
+    "2": "Producer",
+    "3": "Screenwriter",
+    "4": "Cinematographer",
+    "5": "Sound Designer",
+    "6": "Production Designer",
+    "7": "Special Effects",
+    "8": "Script Supervisor",
+    "9": "Casting Director",
+    "10": "Makeup Artist",
+    "11": "Costume Designer",
+    "12": "Boom Operator",
+    "13": "Props Manager",
+    "14": "Sound Mixer",
+    "15": "Runner",
+    "16": "Production Assistant",
+    "17": "Choreographer",
+    "18": "Assistant Director",
+    "19": "Co-Producer",
+    "20": "Hair Stylist",
+    "21": "Grip",
+    "22": "Location Manager",
+    "23": "Set Dresser",
+    "24": "Storyboard Artist",
+    "25": "Animator",
+    "26": "Lead Actor (Screen)",
+    "27": "Lead Actress (Screen)",
+    "28": "Extra",
+    "29": "Supporting Actor (Screen)",
+    "30": "Supporting Actress (Screen)",
+    "31": "Background Actor/Actress",
+    "32": "Voice Actor/Actress",
+    "33": "Stand-In",
+    "34": "Dancer",
+    "35": "Lead Actor (Theatre)",
+    "36": "Lead Actress (Theatre)",
+    "37": "Musical Theatre Performer",
+    "38": "Supporting Actor (Theatre)",
+    "39": "Supporting Actress (Theatre)",
+    "40": "Actor/Model"
+  },
+  "skill-groups":{
+    "0": "Filmmaking",
+    "1": "Acting"
+  },
   "new-project": {
     "main-title": "New Project",
     "title": "Title",
@@ -73,11 +120,14 @@
     "new-role": {
       "add-role": "Add Role",
       "skill": "Skill",
+      "skill-placeholder": "Acting, Dancing, Designing, Music, Writing …",
       "title": "Title", 
       "title-placeholder": "Actor, Dancer, Designer, Musician …",
       "description": "Description",
       "description-placeholder": "The role of a lifetime, the character, the task, the challenge …",
-      "payment": "Payment"
+      "payment": "Payment",
+      "payment-placeholder": "Credits, Money, Experience, Exposure …",
+      "offer": "Offer"
     }
   },
   "discovery": {

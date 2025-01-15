@@ -4,7 +4,7 @@ import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { FontAwesome6 } from "@expo/vector-icons";
 import StyledText from "../StyledComponents/StyledText";
-import { router, Route } from "expo-router";
+import { router, Href } from "expo-router";
 import { StackPositions } from "@/common/constants/stackPostitions";
 import { StyledTouchableOpacity } from "../StyledComponents/StyledTouchableOpacity";
 
@@ -12,7 +12,7 @@ type ModalFormRedirectButtonProps = ViewProps & {
   icon: string;
   text: string;
   value: string;
-  modalRoute: Route;
+  modalRoute: Href;
   stackPosition?: StackPositions;
 };
 
@@ -25,7 +25,6 @@ export const ModalFormRedirectButton: FC<ModalFormRedirectButtonProps> = ({
   style,
   ...props
 }) => {
-
   const styles = useThemedStyles((theme) => getStyles(theme, stackPosition));
 
   return (
@@ -44,7 +43,12 @@ export const ModalFormRedirectButton: FC<ModalFormRedirectButtonProps> = ({
         <StyledText text={text} />
       </View>
       <View style={styles.valueContainer}>
-        <StyledText text={value} style={styles.valueStyle} />
+        <StyledText
+          text={value}
+          style={styles.valueStyle}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+        />
         <FontAwesome6
           name="chevron-right"
           size={18}
@@ -74,11 +78,13 @@ const getStyles = (theme: Theme, stackPosition: StackPositions) =>
       color: theme.colors.black,
     },
     valueContainer: {
+      maxWidth: "60%",
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
     },
     valueStyle: {
+      textAlign: "right",
       color: theme.colors.grayer,
       marginTop: -3,
     },

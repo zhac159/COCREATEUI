@@ -18,9 +18,6 @@ export const customFormData = (body: Record<string, any>): FormData => {
       });
     } else if (typeof body[key] === "object") {
       Object.keys(body[key]).forEach((subKey) => {
-
-        console.log('key', key);
-        console.log('subKey', subKey);
         if (key.split('.').pop() === "FileSrcs") {
           formData.append(`${key}`, body[key][subKey]);
         } else {

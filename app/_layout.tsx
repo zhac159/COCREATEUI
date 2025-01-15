@@ -11,8 +11,9 @@ import { ConnectionProvider } from "@/common/webSockets/ConnectionProvider";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "react-native-reanimated";
-import 'react-native-get-random-values';
+import "react-native-get-random-values";
 import "./../i18n";
+import { FontAwesome } from "@expo/vector-icons";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +23,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     LibreCaslonText: require("../assets/fonts/LibreCaslonText-Regular.ttf"),
+    ...FontAwesome.font,
   });
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function RootLayout() {
 
   if (!loaded) {
     return null;
-  } 
+  }
 
   return (
     <SafeAreaProvider>

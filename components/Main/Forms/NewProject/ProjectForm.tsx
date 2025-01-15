@@ -7,6 +7,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
+import { StyledDivider } from "@/common/components/StyledComponents/StyledDivider";
 
 type ProjectFormProps = {};
 
@@ -62,18 +63,22 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
             />
           )}
         />
+        <StyledDivider />
         <Controller
           name="date"
           control={form.control}
-          render={({ field }) => (
-            <ModalFormRedirectButton
-              icon="calendar"
-              text={t("new-project.date")}
-              value={field.value}
-              modalRoute="/main/(forms)/newProject/cost"
-              stackPosition={StackPositions.BOTTOM}
-            />
-          )}
+          render={({ field }) => {
+            const formattedDate = new Date(field.value).toLocaleDateString();
+            return (
+              <ModalFormRedirectButton
+                icon="calendar"
+                text={t("new-project.date")}
+                value={formattedDate}
+                modalRoute="/main/(forms)/newProject/date"
+                stackPosition={StackPositions.BOTTOM}
+              />
+            );
+          }}
         />
       </View>
     </View>

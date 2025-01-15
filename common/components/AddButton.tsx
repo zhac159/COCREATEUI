@@ -19,5 +19,6 @@ const getStyles = (theme: Theme) =>
   StyleSheet.create({
     button: {
       borderRadius: 10,
+      elevation: 8,
     },
   });

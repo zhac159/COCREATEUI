@@ -43,6 +43,7 @@ export default function Index() {
     <ScrollViewWrapper
       contentContainerStyle={{ height: "100%" }}
       showBackgroundColor
+      disableTopInset
     >
       <View style={styles.formContainer}>
         <Controller
@@ -76,7 +77,6 @@ export default function Index() {
         text={t("sign-in.sign-in")}
         error={!!error}
         isLoading={isPending}
-        backgroundColor={theme.colors.black}
         onPress={handleSubmit(onSubmit)}
       />
     </ScrollViewWrapper>

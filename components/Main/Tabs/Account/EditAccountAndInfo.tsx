@@ -13,7 +13,7 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
   ...props
 }) => {
   const { t } = useTranslation();
-  
+
   return (
     <View style={[styles.editAccountAndInfo, style]} {...props}>
       <StyledImage
@@ -21,12 +21,7 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
         style={styles.profilePicture}
       />
       <View style={styles.nameButtonContainer}>
-        <StyledText
-          text={"auth.username"}
-          fontSize={25}
-          secondary
-          weight="400"
-        />
+        <StyledText text={"auth.username"} style={styles.name} secondary />
         <StyledButton
           text={t("account.edit-profile")}
           style={styles.editButton}
@@ -42,6 +37,10 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
 };
 
 const styles = StyleSheet.create({
+  name: {
+    fontSize: 25,
+    fontWeight: "400",
+  },
   editAccountAndInfo: {
     flexDirection: "row",
     gap: 20,

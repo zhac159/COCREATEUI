@@ -15,7 +15,7 @@ export const Coins: FC<CoinsProps> = ({ value, style, ...props }) => {
   return (
     <View style={[styles.coins, style]}>
       <FontAwesome6 name="bolt" size={15} color={styles.iconColor.color} />
-      <StyledText text={value.toString()} fontSize={30} />
+      <StyledText text={value.toString()} style={styles.textStyle} />
     </View>
   );
 };
@@ -35,5 +35,8 @@ const getStyles = (theme: Theme) =>
     },
     iconColor: {
       color: theme.colors.black,
+    },
+    textStyle: {
+      fontSize: 30,
     },
   });

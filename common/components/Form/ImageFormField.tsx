@@ -30,6 +30,12 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
       control={control}
       render={({ field: { onChange, value } }) => (
         <View style={style.container}>
+          {value && (
+            <StyledImage
+            source={{ uri: value.uri }}
+            style={style.styledImage}
+            />
+          )}
           <StyledIconButton
             iconName="image"
             onPress={async () => {
@@ -42,18 +48,15 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
                 });
               }
             }}
-          />
-          {!value && (
-            <>
-              <StyledText text={t("new-project.project-image")} />
-              {description && (
-                <StyledText text={description} style={style.description} />
-              )}
-            </>
-          )}
-          {value && (
-            <StyledImage source={{ uri: value.uri }} style={style.styledImage} />
-          )}
+            />
+            {!value && (
+              <>
+                <StyledText text={t("new-project.project-image")} />
+                {description && (
+                  <StyledText text={description} style={style.description} />
+                )}
+              </>
+            )}
         </View>
       )}
     />
@@ -78,8 +81,8 @@ const getStyles = (theme: Theme) =>
     },
     styledImage: {
       position: "absolute",
-      width: "100%",
-      height: "100%",
-      zIndex: -1,
+      width: "105%",
+      height: "105%",
+      borderRadius: 15,
     },
   });

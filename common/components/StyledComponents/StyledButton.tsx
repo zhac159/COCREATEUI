@@ -9,14 +9,18 @@ import {
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useTheme } from "@react-navigation/native";
+import { Theme, useTheme } from "@react-navigation/native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { StyledTouchableOpacity } from "./StyledTouchableOpacity";
+import {
+  StyledTouchableOpacity,
+  StyledTouchableOpacityProps,
+} from "./StyledTouchableOpacity";
+import useThemedStyles from "@/common/theme/getThemedStylesheet";
 
 const animationDuration = 2000;
 const animationToValue = 150;
@@ -65,17 +69,16 @@ const gradientColors = [
   "rgba(255, 255, 255, 0)",
 ] as [string, string, ...string[]];
 
-export type StyledButtonProps = {
+export type StyledButtonProps = StyledTouchableOpacityProps & {
   onPress: () => void;
   text: string;
   icon?: string;
   error?: boolean;
   textStyle?: StyleProp<TextStyle>;
-  style?: StyleProp<ViewStyle>;
+  iconStyle?: StyleProp<TextStyle>;
   isLoading?: boolean;
   success?: boolean;
   disabled?: boolean;
-  backgroundColor?: string;
 };
 
 const StyledButton: FC<StyledButtonProps> = ({
@@ -85,24 +88,14 @@ const StyledButton: FC<StyledButtonProps> = ({
   error,
   icon,
   textStyle,
+  iconStyle,
   isLoading,
   success,
   disabled,
-  backgroundColor,
 }) => {
   const theme = useTheme();
 
   const translateX = useSharedValue(-100);
-
-  useEffect(() => {
-    translateX.value = withRepeat(
-      withTiming(animationToValue, {
-        duration: animationDuration,
-      }),
-      -1,
-      false
-    );
-  }, []);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -118,23 +111,25 @@ const StyledButton: FC<StyledButtonProps> = ({
     if (success) {
       return theme.colors.green;
     }
-    if (style && "backgroundColor" in style) {
-      return style.backgroundColor;
-    }
-    if (backgroundColor) {
-      return backgroundColor;
-    }
-    return theme.colors.primary;
-  }, [backgroundColor, theme.colors.primary]);
+  }, [theme.colors.primary]);
+
+  const styles = useThemedStyles((theme) =>
+    getStyles(theme, backgroundColorStyle)
+  );
+
+  useEffect(() => {
+    translateX.value = withRepeat(
+      withTiming(animationToValue, {
+        duration: animationDuration,
+      }),
+      -1,
+      false
+    );
+  }, []);
 
   return (
     <StyledTouchableOpacity
-      style={{
-        opacity: disabled ? 0.5 : 1,
-        ...styles.container,
-        ...(style as {}),
-        backgroundColor: backgroundColorStyle,
-      }}
+      style={[styles.container, style]}
       onPress={onPress}
       disabled={isLoading || disabled}
     >
@@ -160,37 +155,32 @@ const StyledButton: FC<StyledButtonProps> = ({
               opacity: isLoading ? 0.5 : 1,
               color: theme.colors.white,
             },
-            textStyle,
+            iconStyle,
           ]}
         />
       )}
-      <Text
-        style={[
-          {
-            ...theme.customFonts.primary.medium,
-            opacity: isLoading ? 0.5 : 1,
-            color: theme.colors.white,
-          },
-          textStyle,
-        ]}
-      >
-        {text}
-      </Text>
+      <Text style={[styles.textStyle, textStyle]}>{text}</Text>
     </StyledTouchableOpacity>
   );
 };
 export default StyledButton;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 25,
-    borderRadius: 20,
-    gap: 15,
-    paddingVertical: 10,
-    alignItems: "center",
-    alignSelf: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
-});
+const getStyles = (theme: Theme, backgroundColor?: string) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: backgroundColor || theme.colors.primary,
+      paddingHorizontal: 25,
+      borderRadius: 20,
+      gap: 15,
+      paddingVertical: 10,
+      alignItems: "center",
+      alignSelf: "center",
+      flexDirection: "row",
+      justifyContent: "center",
+      overflow: "hidden",
+    },
+    textStyle: {
+      ...theme.customFonts.primary.medium,
+      color: theme.colors.white,
+    },
+  });

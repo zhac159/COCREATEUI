@@ -72,6 +72,7 @@ export type CustomTheme = Theme & {
     tabBarDarkColor: string;
     tabBarLightColor: string;
     backgroundColor: string;
+    backgroundColorContrast: string;
   };
   customIcons: {
     small: {

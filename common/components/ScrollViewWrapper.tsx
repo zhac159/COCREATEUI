@@ -32,6 +32,7 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
   header,
   contentContainerStyle,
   showBackgroundColor,
+  StickyHeaderComponent,
   disableTopInset = false,
   keyboardShouldPersistTaps = "never",
   ...props
@@ -93,13 +94,14 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
           {children}
         </SafeAreaView>
       </KeyboardAwareScrollView>
+      {StickyHeaderComponent && <StickyHeaderComponent />}
     </>
   );
 };
 
 const getStyles = (theme: Theme, disableTopInset?: boolean) =>
   StyleSheet.create({
-     container: {
+    container: {
       paddingTop: disableTopInset ? 0 : additionalTopInset,
       paddingHorizontal: "2%",
       backgroundColor: "transparent",

@@ -7,7 +7,7 @@ import {
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 
-type StyledTouchableOpacityProps = TouchableOpacityProps & {};
+export type StyledTouchableOpacityProps = TouchableOpacityProps & {};
 
 export const StyledTouchableOpacity: FC<StyledTouchableOpacityProps> = ({
   style,
