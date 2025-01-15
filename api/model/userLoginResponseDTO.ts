@@ -4,6 +4,7 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { ProjectInfoDTO } from './projectInfoDTO';
 
 export interface UserLoginResponseDTO {
   /** @minLength 1 */
@@ -14,4 +15,5 @@ export interface UserLoginResponseDTO {
   /** @minLength 1 */
   bannerPictureSrc: string;
   coins: number;
+  projectsManaging: ProjectInfoDTO[];
 }

@@ -17,7 +17,7 @@ export const useGetMedia = () => {
       return {
         uri: result.assets[0].uri,
         type:
-          result.assets[0].type === "image" ? MediaType.Image : MediaType.Video,
+          result.assets[0].type === "image" ? MediaType.IMAGE : MediaType.VIDEO,
       };
     }
   };

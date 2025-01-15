@@ -62,6 +62,7 @@ import type {
   ProjectRoleCreateDTO,
   ProjectRoleDTO,
   ProjectRoleUpdateDTO,
+  ProjectUpdateDTO,
   ProjectWithMatchingRolesListDTO,
   PutApiEnquiryShortlistEnquiryParams,
   RedeemVoucherCodeDTO,
@@ -1354,6 +1355,64 @@ const {mutation: mutationOptions} = options ?
       > => {
 
       const mutationOptions = getPostApiProjectMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const postApiProjectUpdate = (
+    projectUpdateDTO: ProjectUpdateDTO,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ProjectDTO>(
+      {url: `/api/Project/update`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: projectUpdateDTO, signal
+    },
+      );
+    }
+  
+
+
+export const getPostApiProjectUpdateMutationOptions = <TData = Awaited<ReturnType<typeof postApiProjectUpdate>>, TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProjectUpdateDTO}, TContext>, }
+) => {
+const mutationKey = ['postApiProjectUpdate'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiProjectUpdate>>, {data: ProjectUpdateDTO}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiProjectUpdate(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: ProjectUpdateDTO}, TContext>}
+
+    export type PostApiProjectUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof postApiProjectUpdate>>>
+    export type PostApiProjectUpdateMutationBody = ProjectUpdateDTO
+    export type PostApiProjectUpdateMutationError = ErrorType<unknown>
+
+    export const usePostApiProjectUpdate = <TData = Awaited<ReturnType<typeof postApiProjectUpdate>>, TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProjectUpdateDTO}, TContext>, }
+): UseMutationResult<
+        TData,
+        TError,
+        {data: ProjectUpdateDTO},
+        TContext
+      > => {
+
+      const mutationOptions = getPostApiProjectUpdateMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

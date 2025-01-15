@@ -32,6 +32,7 @@ const getStyles = (theme: Theme) =>
       minWidth: 100,
       paddingHorizontal: 15,
       paddingVertical: 5,
+      elevation: 5,
     },
     iconColor: {
       color: theme.colors.black,

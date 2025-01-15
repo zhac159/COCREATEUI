@@ -36,7 +36,6 @@ export default function Index() {
         password: hashedPassword,
       },
     });
-    router.replace("/main/(tabs)/account");
   };
 
   return (

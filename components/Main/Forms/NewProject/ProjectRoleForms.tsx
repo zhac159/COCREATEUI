@@ -8,22 +8,18 @@ import { useTranslation } from "react-i18next";
 import StyledText from "@/common/components/StyledComponents/StyledText";
 import { useGetNewProjectDefaultValues } from "./hooks/useGetNewProjectDefaultValues";
 
-
-
 type ProjectRoleFormsProps = {};
 
 export const ProjectRoleForms: FC<ProjectRoleFormsProps> = ({}) => {
   const { t } = useTranslation();
-  const {defaultRole} = useGetNewProjectDefaultValues();
-  const form = useFormContext<ProjectCreateDTO>();
+  const { defaultRole } = useGetNewProjectDefaultValues();
+  const { control } = useFormContext<ProjectCreateDTO>();
   return (
-    <View
-        style={styles.container}
-    >
+    <View style={styles.container}>
       <StyledText text={t("new-project.roles")} style={styles.roles} />
       <Controller
         name="projectRoles"
-        control={form.control}
+        control={control}
         render={({ field: { value } }) => (
           <>
             {value?.map((_, index) => (
@@ -34,7 +30,7 @@ export const ProjectRoleForms: FC<ProjectRoleFormsProps> = ({}) => {
       />
       <Controller
         name="projectRoles"
-        control={form.control}
+        control={control}
         render={({ field }) => (
           <AddButton
             text={t("new-project.new-role.add-role")}

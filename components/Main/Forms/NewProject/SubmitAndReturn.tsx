@@ -3,15 +3,26 @@ import { StyleSheet, View } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { useTranslation } from "react-i18next";
-import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GoBackButton } from "@/common/components/GoBackButton";
+import { PublishButton } from "@/common/components/PublishButton";
+import { StyledButtonProps } from "@/common/components/StyledComponents/StyledButton";
 
-type SubmitAndReturnProps = {
+type SubmitAndReturnProps = Omit<
+  StyledButtonProps,
+  "text" | "onPress" | "icon"
+> & {
   onSubmit: () => void;
 };
 
-export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({ onSubmit }) => {
+export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({
+  onSubmit,
+  style,
+  error,
+  textStyle,
+  iconStyle,
+  ...props
+}) => {
   const { t } = useTranslation();
 
   const { top } = useSafeAreaInsets();
@@ -19,15 +30,16 @@ export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({ onSubmit }) => {
 
   return (
     <View style={styles.container}>
-      <StyledButton
+      <GoBackButton />
+      <PublishButton
         onPress={onSubmit}
-        icon="check"
         text={t("new-project.publish")}
-        style={styles.submitButton}
-        iconStyle={styles.buttonText}
-        textStyle={styles.buttonText}
+        style={[styles.submitButton, style]}
+        error={error}
+        textStyle={[styles.buttonText, textStyle]}
+        iconStyle={iconStyle}
+        {...props}
       />
-      <GoBackButton xVariant />
     </View>
   );
 };

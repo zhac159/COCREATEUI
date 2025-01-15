@@ -4,11 +4,9 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { MediaType } from './mediaType';
 
-export interface MediaUpdateDTO {
-  id?: number;
+export interface ProjectInfoDTO {
+  id: number;
   /** @minLength 1 */
-  uri: string;
-  mediaType: MediaType;
+  name: string;
 }

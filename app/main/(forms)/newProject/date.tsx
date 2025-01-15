@@ -16,8 +16,12 @@ export default function Date() {
       <Controller
         name="date"
         control={form.control}
-        render={({ field }) => (
-          <DateFormField onChange={field.onChange} value={field.value} />
+        render={({ field, fieldState: { error } }) => (
+          <DateFormField
+            onChange={field.onChange}
+            value={field.value}
+            error={error?.message}
+          />
         )}
       />
     </ModalFormFieldWrapper>

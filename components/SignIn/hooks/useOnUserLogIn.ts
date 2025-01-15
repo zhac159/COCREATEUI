@@ -6,6 +6,7 @@ import {
   createConnection,
   useConnectionContext,
 } from "@/common/webSockets/ConnectionProvider";
+import { router } from "expo-router";
 import { useCallback } from "react";
 
 export const useOnUserLogIn = () => {
@@ -18,6 +19,7 @@ export const useOnUserLogIn = () => {
       setAuth(data.user);
       setSecureValue(SecureStoreKeys.USER_TOKEN, data.token);
       setConnection(createConnection(data.token));
+      router.replace("/main/(tabs)/account");
     },
     [setAuth, setSecureValue, setConnection]
   );

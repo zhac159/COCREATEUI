@@ -12,6 +12,7 @@ type ModalFormRedirectButtonProps = ViewProps & {
   icon: string;
   text: string;
   value: string;
+  error?: boolean;
   modalRoute: Href;
   stackPosition?: StackPositions;
 };
@@ -20,12 +21,15 @@ export const ModalFormRedirectButton: FC<ModalFormRedirectButtonProps> = ({
   icon,
   text,
   value,
+  error = false,
   modalRoute,
   stackPosition = StackPositions.MIDDLE,
   style,
   ...props
 }) => {
-  const styles = useThemedStyles((theme) => getStyles(theme, stackPosition));
+  const styles = useThemedStyles((theme) =>
+    getStyles(theme, stackPosition, error)
+  );
 
   return (
     <StyledTouchableOpacity
@@ -59,7 +63,11 @@ export const ModalFormRedirectButton: FC<ModalFormRedirectButtonProps> = ({
   );
 };
 
-const getStyles = (theme: Theme, stackPosition: StackPositions) =>
+const getStyles = (
+  theme: Theme,
+  stackPosition: StackPositions,
+  error: boolean
+) =>
   StyleSheet.create({
     container: {
       justifyContent: "space-between",
@@ -67,6 +75,8 @@ const getStyles = (theme: Theme, stackPosition: StackPositions) =>
       alignItems: "center",
       backgroundColor: theme.colors.white,
       ...getBorderRadius(stackPosition),
+      borderColor: error ? theme.colors.red : theme.colors.white,
+      borderWidth: error ? 1 : 0,
       paddingHorizontal: 13,
       paddingVertical: 16,
     },

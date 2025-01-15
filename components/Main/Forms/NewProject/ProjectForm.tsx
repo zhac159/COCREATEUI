@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
 import { StyledDivider } from "@/common/components/StyledComponents/StyledDivider";
+import { InformationMessage } from "@/common/components/InformationMessage";
 
 type ProjectFormProps = {};
 
@@ -25,19 +26,20 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
       <Controller
         name="name"
         control={form.control}
-        render={({ field }) => (
+        render={({ field, fieldState: { error } }) => (
           <StyledTextInput
             label={t("new-project.title")}
             placeholder={t("new-project.title-placeholder")}
             onChangeText={field.onChange}
             value={field.value}
+            error={error?.message}
           />
         )}
       />
       <Controller
         name="description"
         control={form.control}
-        render={({ field }) => (
+        render={({ field, fieldState: { error } }) => (
           <StyledTextInput
             label={t("new-project.description")}
             placeholder={t("new-project.description-placeholder")}
@@ -46,6 +48,7 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
             numberOfLines={10}
             value={field.value}
             style={styles.description}
+            error={error?.message}
           />
         )}
       />
@@ -53,13 +56,14 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
         <Controller
           name="location"
           control={form.control}
-          render={({ field: { value } }) => (
+          render={({ field: { value }, fieldState: { error } }) => (
             <ModalFormRedirectButton
               icon="location-dot"
               text={t("new-project.location")}
               value={value?.address || ""}
               modalRoute="/main/(forms)/newProject/location"
               stackPosition={StackPositions.TOP}
+              error={!!error}
             />
           )}
         />
@@ -67,7 +71,7 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
         <Controller
           name="date"
           control={form.control}
-          render={({ field }) => {
+          render={({ field, fieldState: { error } }) => {
             const formattedDate = new Date(field.value).toLocaleDateString();
             return (
               <ModalFormRedirectButton
@@ -76,6 +80,7 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
                 value={formattedDate}
                 modalRoute="/main/(forms)/newProject/date"
                 stackPosition={StackPositions.BOTTOM}
+                error={!!error}
               />
             );
           }}

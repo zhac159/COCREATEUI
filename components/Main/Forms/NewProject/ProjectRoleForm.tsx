@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { ModalFormRedirectButton } from "@/common/components/Form/ModalFormRedirectButton";
 import { StackPositions } from "@/common/constants/stackPostitions";
 import { StyledDivider } from "@/common/components/StyledComponents/StyledDivider";
+import { DeleteButton } from "@/common/components/DeleteButton";
 
 type ProjectRoleFormProps = {
   index: number;
@@ -20,6 +21,18 @@ export const ProjectRoleForm: FC<ProjectRoleFormProps> = ({ index }) => {
   const { control } = useFormContext<ProjectCreateDTO>();
   return (
     <View style={styles.container}>
+      <Controller
+        name={`projectRoles`}
+        control={control}
+        render={({ field }) => (
+          <DeleteButton
+            onPress={() => {
+              field.onChange(field.value.filter((_, i) => i !== index));
+            }}
+            style={styles.deleteButton}
+          />
+        )}
+      />
       <Controller
         name={`projectRoles.${index}.name`}
         control={control}
@@ -113,5 +126,11 @@ const getStyles = (theme: Theme) =>
     },
     modelRedirectButton: {
       backgroundColor: theme.colors.backgroundColor,
+    },
+    deleteButton: {
+      position: "absolute",
+      top: -5,
+      right: -5,
+      zIndex: 100,
     },
   });

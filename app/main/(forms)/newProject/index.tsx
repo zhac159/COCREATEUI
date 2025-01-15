@@ -5,30 +5,47 @@ import { StyleSheet } from "react-native";
 import { ProjectForm } from "@/components/Main/Forms/NewProject/ProjectForm";
 import { ProjectRoleForms } from "@/components/Main/Forms/NewProject/ProjectRoleForms";
 import { useFormContext } from "react-hook-form";
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectCreateDTO, ProjectUpdateDTO } from "@/api/model";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { SubmitAndReturn } from "@/components/Main/Forms/NewProject/SubmitAndReturn";
+import { useCallback, useState } from "react";
+import {
+  usePostApiProject,
+  usePostApiProjectUpdate,
+} from "@/api/endpoints/cocreateApi";
+import { router } from "expo-router";
 
 export default function Index() {
   const { t } = useTranslation();
 
   const styles = useThemedStyles(getStyles);
+  const [error, setError] = useState(false);
 
-  const { handleSubmit } = useFormContext<ProjectCreateDTO>();
+  const { mutate: createProject } = usePostApiProject();
+  const { mutate: updateProject } = usePostApiProjectUpdate();
+  const { handleSubmit } = useFormContext<ProjectUpdateDTO>();
 
-  const logValuyes = () => {
-    handleSubmit((data) => {
-      console.log(data);
-    })();
-  };
+  const onSubmit = useCallback(() => {
+    handleSubmit(
+      (data) => {
+        data.id ? updateProject({ data }) : createProject({ data });
+        router.navigate("/main/(tabs)/account");
+      },
+      () => {
+        setError(true);
+      }
+    )();
+  }, [handleSubmit]);
 
   return (
     <ScrollViewWrapper
       disableTopInset
       contentContainerStyle={styles.container}
       header={<StyledTitle text={t("new-project.main-title")} />}
-      StickyHeaderComponent={() => <SubmitAndReturn onSubmit={logValuyes} />}
+      StickyHeaderComponent={() => (
+        <SubmitAndReturn onSubmit={onSubmit} error={error} />
+      )}
     >
       <ProjectForm />
       <ProjectRoleForms />

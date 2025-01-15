@@ -104,18 +104,7 @@ const StyledButton: FC<StyledButtonProps> = ({
     };
   });
 
-  const backgroundColorStyle = useMemo(() => {
-    if (error) {
-      return theme.colors.red;
-    }
-    if (success) {
-      return theme.colors.green;
-    }
-  }, [theme.colors.primary]);
-
-  const styles = useThemedStyles((theme) =>
-    getStyles(theme, backgroundColorStyle)
-  );
+  const styles = useThemedStyles((theme) => getStyles(theme));
 
   useEffect(() => {
     translateX.value = withRepeat(
@@ -129,7 +118,11 @@ const StyledButton: FC<StyledButtonProps> = ({
 
   return (
     <StyledTouchableOpacity
-      style={[styles.container, style]}
+      style={[
+        styles.container,
+        style,
+        error && { backgroundColor: styles.redError.backgroundColor },
+      ]}
       onPress={onPress}
       disabled={isLoading || disabled}
     >
@@ -165,10 +158,10 @@ const StyledButton: FC<StyledButtonProps> = ({
 };
 export default StyledButton;
 
-const getStyles = (theme: Theme, backgroundColor?: string) =>
+const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      backgroundColor: backgroundColor || theme.colors.primary,
+      backgroundColor: theme.colors.primary,
       paddingHorizontal: 25,
       borderRadius: 20,
       gap: 15,
@@ -182,5 +175,8 @@ const getStyles = (theme: Theme, backgroundColor?: string) =>
     textStyle: {
       ...theme.customFonts.primary.medium,
       color: theme.colors.white,
+    },
+    redError: {
+      backgroundColor: theme.colors.red,
     },
   });

@@ -33,7 +33,10 @@ export default function Payment() {
           <StyledTextInput
             style={styles.textInput}
             keyboardType="numeric"
-            onChangeText={field.onChange}
+            onChangeText={(text) => {
+              const number = text ? parseInt(text, 10) : 0;
+              field.onChange(number);
+            }}
             value={field.value.toString()}
           />
         )}

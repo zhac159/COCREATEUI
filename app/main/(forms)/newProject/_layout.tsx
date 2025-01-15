@@ -6,15 +6,20 @@ import { Theme } from "@react-navigation/native";
 import { TransitionPresets } from "@react-navigation/stack";
 import { FormProvider, useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGetCreateProjectFormSchema } from "@/components/Main/Forms/NewProject/hooks/useGetCreateProjectFormSchema";
 
 export default function NewProjectLayout() {
+  const styles = useThemedStyles(getStyles);
+
+  const { createProjectFormSchema } = useGetCreateProjectFormSchema();
+
   const { defaultProject } = useGetNewProjectDefaultValues();
 
   const form = useForm<ProjectCreateDTO>({
     defaultValues: defaultProject,
+    resolver: zodResolver(createProjectFormSchema),
   });
-
-  const styles = useThemedStyles(getStyles);
 
   return (
     <FormProvider {...form}>

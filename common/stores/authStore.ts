@@ -12,6 +12,7 @@ const defaultAuth: UserLoginResponseDTO = {
   userId: 0,
   username: "",
   coins: 0,
+  projectsManaging: [],
 };
 
 type AuthActions = {

@@ -43,8 +43,8 @@ export const putApiAssetBody = zod.object({
   "assetType": zod.number().optional(),
   "medias": zod.array(zod.object({
   "id": zod.number().optional(),
-  "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional()
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
 })).nullish()
 })
 
@@ -839,7 +839,11 @@ export const postApiLoginResponse = zod.object({
   "userId": zod.number(),
   "email": zod.string().min(1),
   "bannerPictureSrc": zod.string().min(1),
-  "coins": zod.number()
+  "coins": zod.number(),
+  "projectsManaging": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1)
+}))
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -861,7 +865,11 @@ export const postApiLoginRegisterResponse = zod.object({
   "userId": zod.number(),
   "email": zod.string().min(1),
   "bannerPictureSrc": zod.string().min(1),
-  "coins": zod.number()
+  "coins": zod.number(),
+  "projectsManaging": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1)
+}))
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -881,7 +889,11 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "userId": zod.number(),
   "email": zod.string().min(1),
   "bannerPictureSrc": zod.string().min(1),
-  "coins": zod.number()
+  "coins": zod.number(),
+  "projectsManaging": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1)
+}))
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -921,8 +933,8 @@ export const putApiPortofolioContentBody = zod.object({
   "order": zod.number().nullish(),
   "medias": zod.array(zod.object({
   "id": zod.number().optional(),
-  "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional()
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
 })).nullish()
 })
 
@@ -950,8 +962,8 @@ export const putApiPortofolioContentGroupBody = zod.object({
   "order": zod.number().nullish(),
   "medias": zod.array(zod.object({
   "id": zod.number().optional(),
-  "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional()
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
 })).nullish()
 })).nullish()
 })
@@ -1017,6 +1029,129 @@ export const postApiProjectBody = zod.object({
 })
 
 export const postApiProjectResponse = zod.object({
+  "success": zod.boolean().optional(),
+  "data": zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "completed": zod.boolean(),
+  "medias": zod.array(zod.object({
+  "id": zod.number(),
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
+})),
+  "projectManager": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}),
+  "projectRoles": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "cost": zod.number(),
+  "effort": zod.number(),
+  "skillType": zod.number(),
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1),
+  "projectId": zod.number(),
+  "keywords": zod.array(zod.string()),
+  "remote": zod.boolean().optional(),
+  "completed": zod.boolean().optional(),
+  "assignee": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}).optional(),
+  "medias": zod.array(zod.object({
+  "id": zod.number(),
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
+})),
+  "enquiries": zod.array(zod.object({
+  "id": zod.number(),
+  "projectRoleId": zod.number(),
+  "enquirer": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}).optional(),
+  "projectManager": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+}).optional(),
+  "projectId": zod.number().nullish(),
+  "enquiryMessage": zod.string().min(1),
+  "shortlisted": zod.boolean()
+})).nullish()
+})),
+  "assetOffers": zod.array(zod.object({
+  "id": zod.number(),
+  "offerValue": zod.number(),
+  "assetUsageStartTime": zod.string().datetime(),
+  "assetUsageEndTime": zod.string().datetime(),
+  "duration": zod.number(),
+  "description": zod.string().min(1),
+  "asset": zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "assetType": zod.number(),
+  "owner": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+})
+}).optional(),
+  "project": zod.object({
+  "id": zod.number(),
+  "name": zod.string().min(1),
+  "projectManager": zod.object({
+  "userId": zod.number(),
+  "username": zod.string().min(1),
+  "rating": zod.number().nullish(),
+  "publicKey": zod.string().nullish()
+})
+}).optional()
+}))
+}).optional(),
+  "error": zod.string().nullish()
+})
+
+
+export const postApiProjectUpdateBody = zod.object({
+  "id": zod.number().optional(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
+  "medias": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
+})),
+  "projectRoles": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "cost": zod.number(),
+  "skillType": zod.number(),
+  "remote": zod.boolean()
+}))
+})
+
+export const postApiProjectUpdateResponse = zod.object({
   "success": zod.boolean().optional(),
   "data": zod.object({
   "id": zod.number(),
@@ -1476,23 +1611,11 @@ export const postApiProjectRoleResponse = zod.object({
 
 export const putApiProjectRoleBody = zod.object({
   "id": zod.number().optional(),
-  "name": zod.string().nullish(),
-  "description": zod.string().nullish(),
-  "cost": zod.number().optional(),
-  "effort": zod.number().optional(),
-  "startDate": zod.string().datetime().optional(),
-  "endDate": zod.string().datetime().optional(),
-  "skillType": zod.number().optional(),
-  "longitude": zod.number().optional(),
-  "latitude": zod.number().optional(),
-  "address": zod.string().nullish(),
-  "keywords": zod.array(zod.string()).nullish(),
-  "remote": zod.boolean().optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional()
-})).nullish()
+  "name": zod.string().min(1),
+  "description": zod.string().min(1),
+  "cost": zod.number(),
+  "skillType": zod.number(),
+  "remote": zod.boolean()
 })
 
 export const putApiProjectRoleResponse = zod.object({
@@ -2725,8 +2848,8 @@ export const putApiUserPortofolioBody = zod.object({
   "order": zod.number().nullish(),
   "medias": zod.array(zod.object({
   "id": zod.number().optional(),
-  "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional()
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
 })).nullish()
 })).nullish()
 })

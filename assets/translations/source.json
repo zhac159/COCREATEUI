@@ -98,7 +98,7 @@
     "39": "Supporting Actress (Theatre)",
     "40": "Actor/Model"
   },
-  "skill-groups":{
+  "skill-groups": {
     "0": "Filmmaking",
     "1": "Acting"
   },
@@ -121,13 +121,18 @@
       "add-role": "Add Role",
       "skill": "Skill",
       "skill-placeholder": "Acting, Dancing, Designing, Music, Writing …",
-      "title": "Title", 
+      "title": "Title",
       "title-placeholder": "Actor, Dancer, Designer, Musician …",
       "description": "Description",
       "description-placeholder": "The role of a lifetime, the character, the task, the challenge …",
       "payment": "Payment",
       "payment-placeholder": "Credits, Money, Experience, Exposure …",
       "offer": "Offer"
+    },
+    "errors": {
+      "order-positive": "Please offer a positive number of credits",
+      "insufficient-credits": "You don't have enough credits to create this project",
+      "past-date": "Please select a future date for the project"
     }
   },
   "discovery": {
@@ -216,6 +221,7 @@
     "edit-profile": "Edit Profile",
     "you-commissioned-projets": "You Commissioned Projects",
     "new-project": "New Project",
+    "manage-project": "Manage Project",
     "menu-items": {
       "vouchercode": "Enter Code",
       "accountdetails": "Acount Details & Location",

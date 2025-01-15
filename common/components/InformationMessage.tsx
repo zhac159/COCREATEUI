@@ -9,7 +9,7 @@ import StyledText from "./StyledComponents/StyledText";
 
 type InformationMessage = {
   type: "info" | "warning" | "error";
-  message: string;
+  message?: string;
 };
 
 export const InformationMessage: FC<InformationMessage> = ({
@@ -28,6 +28,8 @@ export const InformationMessage: FC<InformationMessage> = ({
         return "circle-exclamation";
     }
   }, [type]);
+
+  if(!message) return null;
 
   return (
     <View style={styles.container}>
