@@ -65,10 +65,20 @@
     "project-image-placeholder": "Moodboard, exmaple work, similar work, poster, ideas …",
     "roles": "Roles",
     "location": "Location",
+    "location-tooltip": "Select the location your project takes place in …",
     "date": "Date",
-    "skill": "Skill",
-    "payment": "Payment",
-    "publish": "Publish"
+    "date-tooltip": "Production dates, when will the project take place?",
+    "date-description": "When will the project take place?",
+    "publish": "Publish",
+    "new-role": {
+      "add-role": "Add Role",
+      "skill": "Skill",
+      "title": "Title", 
+      "title-placeholder": "Actor, Dancer, Designer, Musician …",
+      "description": "Description",
+      "description-placeholder": "The role of a lifetime, the character, the task, the challenge …",
+      "payment": "Payment"
+    }
   },
   "discovery": {
     "no-projects": {

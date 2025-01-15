@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { FontAwesome6 } from "@expo/vector-icons";
 import StyledText from "../StyledComponents/StyledText";
-import { RelativePathString, router, ExternalPathString, Route } from "expo-router";
+import { router, Route } from "expo-router";
 import { StackPositions } from "@/common/constants/stackPostitions";
 import { StyledTouchableOpacity } from "../StyledComponents/StyledTouchableOpacity";
 
@@ -25,6 +25,7 @@ export const ModalFormRedirectButton: FC<ModalFormRedirectButtonProps> = ({
   style,
   ...props
 }) => {
+
   const styles = useThemedStyles((theme) => getStyles(theme, stackPosition));
 
   return (
@@ -74,9 +75,12 @@ const getStyles = (theme: Theme, stackPosition: StackPositions) =>
     },
     valueContainer: {
       flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
     },
     valueStyle: {
       color: theme.colors.grayer,
+      marginTop: -3,
     },
     chevronColor: {
       color: theme.colors.grayer,

@@ -65,7 +65,7 @@ const gradientColors = [
   "rgba(255, 255, 255, 0)",
 ] as [string, string, ...string[]];
 
-type StyledButtonProps = {
+export type StyledButtonProps = {
   onPress: () => void;
   text: string;
   icon?: string;

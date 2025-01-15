@@ -1,3 +1,4 @@
+import { AddButton } from "@/common/components/AddButton";
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { StyledTitle } from "@/common/components/StyledComponents/StyledTitle";
@@ -17,11 +18,9 @@ export default function Account() {
       header={<EditAccountAndInfo style={styles.editAccountAndInfoStyles} />}
     >
       <StyledTitle text={t("account.you-commissioned-projets")} />
-      <StyledButton
+      <AddButton
         text={t("account.new-project")}
         onPress={() => router.push("/main/(forms)/newProject")}
-        style={styles.button}
-        icon="plus"
       />
     </ScrollViewWrapper>
   );

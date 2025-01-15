@@ -14,6 +14,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { Theme } from "@react-navigation/native";
+import useThemedStyles from "../theme/getThemedStylesheet";
 
 const additionalTopInset = 10;
 
@@ -21,6 +23,7 @@ export type ScrollViewWrapperProps = KeyboardAwareScrollViewProps & {
   children: ReactNode;
   header?: ReactNode;
   showBackgroundColor?: boolean;
+  disableTopInset?: boolean;
   keyboardShouldPersistTaps?: "always" | "never" | "handled";
 };
 
@@ -29,9 +32,13 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
   header,
   contentContainerStyle,
   showBackgroundColor,
+  disableTopInset = false,
   keyboardShouldPersistTaps = "never",
   ...props
 }) => {
+  const styles = useThemedStyles((theme: Theme) =>
+    getStyles(theme, disableTopInset)
+  );
   const { top } = useSafeAreaInsets();
 
   const scrollY = useSharedValue(0);
@@ -60,12 +67,14 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
   return (
     <>
       {showBackgroundColor && <StyledBackgroundAnimation />}
-      <View
-        style={{
-          height: top + additionalTopInset,
-          ...styles.topInset,
-        }}
-      />
+      {!disableTopInset && (
+        <View
+          style={{
+            height: top + additionalTopInset,
+            ...styles.topInset,
+          }}
+        />
+      )}
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -88,17 +97,18 @@ export const ScrollViewWrapper: FC<ScrollViewWrapperProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: additionalTopInset,
-    paddingHorizontal: "1.5%",
-    backgroundColor: "transparent",
-  },
-  topInset: {
-    position: "absolute",
-    backgroundColor: "lightgrey",
-    width: "100%",
-    zIndex: 1000,
-    top: 0,
-  },
-});
+const getStyles = (theme: Theme, disableTopInset?: boolean) =>
+  StyleSheet.create({
+     container: {
+      paddingTop: disableTopInset ? 0 : additionalTopInset,
+      paddingHorizontal: "2%",
+      backgroundColor: "transparent",
+    },
+    topInset: {
+      position: "absolute",
+      backgroundColor: theme.colors.backgroundColor,
+      width: "100%",
+      zIndex: 1000,
+      top: 0,
+    },
+  });
