@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { ProjectForm } from "@/components/Main/Forms/NewProject/ProjectForm";
 import { ProjectRoleForms } from "@/components/Main/Forms/NewProject/ProjectRoleForms";
 import { useFormContext } from "react-hook-form";
-import { ProjectCreateDTO, ProjectUpdateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { SubmitAndReturn } from "@/components/Main/Forms/NewProject/SubmitAndReturn";

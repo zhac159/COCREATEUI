@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { ProjectRoleForm } from "./ProjectRoleForm";
 import { AddButton } from "@/common/components/AddButton";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ type ProjectRoleFormsProps = {};
 export const ProjectRoleForms: FC<ProjectRoleFormsProps> = ({}) => {
   const { t } = useTranslation();
   const { defaultRole } = useGetNewProjectDefaultValues();
-  const { control } = useFormContext<ProjectCreateDTO>();
+  const { control } = useFormContext<ProjectUpdateDTO>();
   return (
     <View style={styles.container}>
       <StyledText text={t("new-project.roles")} style={styles.roles} />

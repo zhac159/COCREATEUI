@@ -4,6 +4,7 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { LocationDTO } from './locationDTO';
 import type { MediaDTO } from './mediaDTO';
 import type { UserInformationDTO } from './userInformationDTO';
 import type { ProjectRoleDTO } from './projectRoleDTO';
@@ -13,6 +14,8 @@ export interface ProjectDTO {
   id: number;
   /** @minLength 1 */
   name: string;
+  date: string;
+  location: LocationDTO;
   /** @minLength 1 */
   description: string;
   completed: boolean;

@@ -7,6 +7,7 @@ type ManageProjectsProps = {};
 
 export const ManageProjects: FC<ManageProjectsProps> = ({}) => {
   const projectsInfos = useAuthStore((state) => state.auth.projectsManaging);
+  
   return (
     <View>
       {projectsInfos.map((projectInfo) => (

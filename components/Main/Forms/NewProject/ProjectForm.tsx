@@ -1,4 +1,4 @@
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { ModalFormRedirectButton } from "@/common/components/Form/ModalFormRedirectButton";
 import { ImageFormField } from "@/common/components/Form/ImageFormField";
 import { StyledTextInput } from "@/common/components/StyledComponents/StyledTextInput";
@@ -8,12 +8,11 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
 import { StyledDivider } from "@/common/components/StyledComponents/StyledDivider";
-import { InformationMessage } from "@/common/components/InformationMessage";
 
 type ProjectFormProps = {};
 
 export const ProjectForm: FC<ProjectFormProps> = ({}) => {
-  const form = useFormContext<ProjectCreateDTO>();
+  const form = useFormContext<ProjectUpdateDTO>();
   const { t } = useTranslation();
 
   return (

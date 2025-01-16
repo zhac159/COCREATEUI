@@ -1,11 +1,11 @@
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { LocationFormField } from "@/common/components/Form/LocationFormField";
 import { ModalFormFieldWrapper } from "@/common/components/Form/ModalFormFieldWrapper";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 export default function Location() {
-  const form = useFormContext<ProjectCreateDTO>();
+  const form = useFormContext<ProjectUpdateDTO>();
   const { t } = useTranslation();
   return (
     <ModalFormFieldWrapper

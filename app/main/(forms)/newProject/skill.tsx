@@ -1,4 +1,4 @@
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { ModalFormFieldWrapper } from "@/common/components/Form/ModalFormFieldWrapper";
 import { SkillFormField } from "@/common/components/Form/SkillFormField";
 import { SkillFormType } from "@/common/hooks/skills/useSkillForm";
@@ -16,7 +16,7 @@ export default function Skill() {
   const params = useLocalSearchParams<SkillRouteParams>();
   const roleIndex = parseInt(params.roleIndex, 10);
 
-  const form = useFormContext<ProjectCreateDTO>();
+  const form = useFormContext<ProjectUpdateDTO>();
 
   return (
     <ModalFormFieldWrapper

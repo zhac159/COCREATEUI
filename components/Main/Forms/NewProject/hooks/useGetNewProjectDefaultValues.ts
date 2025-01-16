@@ -1,14 +1,14 @@
-import { ProjectCreateDTO, ProjectRoleCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO, ProjectRoleUpdateDTO } from "@/api/model";
 
 export const useGetNewProjectDefaultValues = () => {
-  const defaultRole: ProjectRoleCreateDTO = {
+  const defaultRole: ProjectRoleUpdateDTO = {
     cost: 0,
     description: "",
     name: "",
     remote: false,
     skillType: 1,
   };
-  const defaultProject: ProjectCreateDTO = {
+  const defaultProject: ProjectUpdateDTO = {
     date: new Date().toISOString(),
     description: "",
     location: {

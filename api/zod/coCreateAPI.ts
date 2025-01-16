@@ -185,6 +185,12 @@ export const postApiEnquiryConfirmResponse = zod.object({
   "data": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -423,6 +429,12 @@ export const postApiExperienceResponse = zod.object({
   "assignedProjects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -537,6 +549,12 @@ export const postApiExperienceResponse = zod.object({
   "projects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -733,6 +751,12 @@ export const postApiExperienceResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -1033,6 +1057,12 @@ export const postApiProjectResponse = zod.object({
   "data": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -1156,6 +1186,12 @@ export const postApiProjectUpdateResponse = zod.object({
   "data": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -1355,6 +1391,12 @@ export const getApiProjectGetByRoleResponse = zod.object({
   "data": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -1457,6 +1499,12 @@ export const getApiProjectProjectIdResponse = zod.object({
   "data": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -1825,6 +1873,12 @@ export const getApiUserUserIdResponse = zod.object({
   "assignedProjects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -1939,6 +1993,12 @@ export const getApiUserUserIdResponse = zod.object({
   "projects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -2108,6 +2168,12 @@ export const getApiUserUserIdResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -2284,6 +2350,12 @@ export const putApiUserResponse = zod.object({
   "assignedProjects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -2398,6 +2470,12 @@ export const putApiUserResponse = zod.object({
   "projects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -2567,6 +2645,12 @@ export const putApiUserResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -2744,6 +2828,12 @@ export const postApiUserMatchingProjectsResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -2965,6 +3055,12 @@ export const postApiUserProfilesResponse = zod.object({
   "assignedProjects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -3079,6 +3175,12 @@ export const postApiUserProfilesResponse = zod.object({
   "projects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -3275,6 +3377,12 @@ export const postApiUserProfilesResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -3451,6 +3559,12 @@ export const getApiUserGetProfileResponse = zod.object({
   "assignedProjects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -3565,6 +3679,12 @@ export const getApiUserGetProfileResponse = zod.object({
   "projects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -3761,6 +3881,12 @@ export const getApiUserGetProfileResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -3934,6 +4060,12 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "assignedProjects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -4048,6 +4180,12 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "projects": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({
@@ -4217,6 +4355,12 @@ export const postApiUserAuthenticateTokenResponse = zod.object({
   "project": zod.object({
   "id": zod.number(),
   "name": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
   "description": zod.string().min(1),
   "completed": zod.boolean(),
   "medias": zod.array(zod.object({

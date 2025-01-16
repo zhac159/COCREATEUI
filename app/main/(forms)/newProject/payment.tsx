@@ -1,4 +1,4 @@
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { ModalFormFieldWrapper } from "@/common/components/Form/ModalFormFieldWrapper";
 import { StyledTextInput } from "@/common/components/StyledComponents/StyledTextInput";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
@@ -19,7 +19,7 @@ export default function Payment() {
   const params = useLocalSearchParams<PaymentRouteParams>();
   const roleIndex = parseInt(params.roleIndex, 10);
 
-  const form = useFormContext<ProjectCreateDTO>();
+  const form = useFormContext<ProjectUpdateDTO>();
 
   return (
     <ModalFormFieldWrapper

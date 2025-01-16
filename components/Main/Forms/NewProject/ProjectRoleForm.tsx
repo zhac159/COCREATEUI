@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { Controller, useFormContext } from "react-hook-form";
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { StyledTextInput } from "@/common/components/StyledComponents/StyledTextInput";
 import { useTranslation } from "react-i18next";
 import { ModalFormRedirectButton } from "@/common/components/Form/ModalFormRedirectButton";
@@ -18,7 +18,7 @@ type ProjectRoleFormProps = {
 export const ProjectRoleForm: FC<ProjectRoleFormProps> = ({ index }) => {
   const styles = useThemedStyles(getStyles);
   const { t } = useTranslation();
-  const { control } = useFormContext<ProjectCreateDTO>();
+  const { control } = useFormContext<ProjectUpdateDTO>();
   return (
     <View style={styles.container}>
       <Controller

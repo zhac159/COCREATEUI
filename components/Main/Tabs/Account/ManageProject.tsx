@@ -27,7 +27,12 @@ export const ManageProject: FC<ManageProjectProps> = ({ projectInfo }) => {
         text={t("account.manage-project")}
         style={styles.button}
         icon="pen"
-        onPress={() => router.push("/main/(forms)/newProject")}
+        onPress={() =>
+          router.push({
+            pathname: "/main/(forms)/newProject",
+            params: { projectId: projectInfo.id },
+          })
+        }
       />
     </View>
   );

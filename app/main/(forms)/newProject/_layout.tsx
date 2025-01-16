@@ -1,4 +1,4 @@
-import { ProjectCreateDTO } from "@/api/model";
+import { ProjectUpdateDTO } from "@/api/model";
 import { JsStack } from "@/common/contexts/JsStackContext";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { useGetNewProjectDefaultValues } from "@/components/Main/Forms/NewProject/hooks/useGetNewProjectDefaultValues";
@@ -8,18 +8,39 @@ import { FormProvider, useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetCreateProjectFormSchema } from "@/components/Main/Forms/NewProject/hooks/useGetCreateProjectFormSchema";
+import { useLocalSearchParams } from "expo-router";
+import { useGetApiProjectProjectId } from "@/api/endpoints/cocreateApi";
+import { useEffect, useMemo } from "react";
+
+type NewProjectParams = {
+  projectId: string;
+};
 
 export default function NewProjectLayout() {
   const styles = useThemedStyles(getStyles);
 
-  const { createProjectFormSchema } = useGetCreateProjectFormSchema();
+  const params = useLocalSearchParams<NewProjectParams>();
+  const projectId = parseInt(params.projectId, 10);
 
+  const { data, isFetching } = useGetApiProjectProjectId(projectId);
   const { defaultProject } = useGetNewProjectDefaultValues();
 
-  const form = useForm<ProjectCreateDTO>({
+  const { createProjectFormSchema } = useGetCreateProjectFormSchema();
+
+  const form = useForm<ProjectUpdateDTO>({
     defaultValues: defaultProject,
     resolver: zodResolver(createProjectFormSchema),
   });
+
+  useEffect(() => {
+    if (data) {
+      form.reset(data);
+    }
+  }, [data]);
+
+  if (isFetching) {
+    return null;
+  }
 
   return (
     <FormProvider {...form}>
