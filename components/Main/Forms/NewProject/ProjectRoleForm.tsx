@@ -10,6 +10,7 @@ import { ModalFormRedirectButton } from "@/common/components/Form/ModalFormRedir
 import { StackPositions } from "@/common/constants/stackPostitions";
 import { StyledDivider } from "@/common/components/StyledComponents/StyledDivider";
 import { DeleteButton } from "@/common/components/DeleteButton";
+import { generalPadding } from "@/common/constants/generalPadding";
 
 type ProjectRoleFormProps = {
   index: number;
@@ -105,7 +106,7 @@ export const ProjectRoleForm: FC<ProjectRoleFormProps> = ({ index }) => {
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: "3%",
+      paddingHorizontal: generalPadding,
       backgroundColor: theme.colors.white,
       elevation: 2,
       gap: 26,

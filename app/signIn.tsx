@@ -10,6 +10,7 @@ import { usePostApiLogin } from "@/api/endpoints/cocreateApi";
 import { useEncryption } from "@/common/hooks/encryption/useEncryption";
 import { router } from "expo-router";
 import { useOnUserLogIn } from "@/components/SignIn/hooks/useOnUserLogIn";
+import { generalPadding } from "@/common/constants/generalPadding";
 
 export default function Index() {
   const { t } = useTranslation();
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: "20%",
-    paddingHorizontal: "3%",
+    paddingHorizontal: generalPadding,
     height: "100%",
     backgroundColor: "transparent",
   },

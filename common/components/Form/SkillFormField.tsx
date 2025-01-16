@@ -33,6 +33,7 @@ export const SkillFormField: FC<SkillFormFieldProps> = ({
   const {
     selectedSkills,
     selectSkill,
+    selectedGroup,
     setSelectedSkill,
     selectableSkills,
     skillGroups,
@@ -61,9 +62,15 @@ export const SkillFormField: FC<SkillFormFieldProps> = ({
         {skillGroups.map((group, index) => (
           <StyledButton
             key={index}
-            style={styles.groupButton}
+            style={[
+              styles.groupButton,
+              selectedGroup === group && styles.selectedGroup,
+            ]}
             text={t(`skill-groups.${group}`)}
-            textStyle={styles.groupButtonText}
+            textStyle={[
+              styles.groupButtonText,
+              selectedGroup === group && styles.selectedGroupText,
+            ]}
             onPress={() => setSelectedGroup(group)}
           />
         ))}
@@ -91,21 +98,30 @@ const getStyles = (theme: Theme) =>
       justifyContent: "space-between",
       flex: 1,
     },
+    selectedGroup: {
+      backgroundColor: theme.colors.primary,
+    },
     groupButton: {
       alignSelf: "flex-start",
+      backgroundColor: theme.colors.backgroundColor,
       paddingHorizontal: 15,
       paddingVertical: 5,
       margin: 5,
+      elevation: 8
     },
     groupButtonText: {
+      color: theme.colors.black,
       alignSelf: "flex-start",
       textAlign: "left",
+    },
+    selectedGroupText: {
+      color: theme.colors.white,
     },
     skill: {
       alignSelf: "flex-end",
       width: "100%",
     },
-    skillText:{
+    skillText: {
       flexWrap: "wrap",
       width: "70%",
     },

@@ -53,6 +53,7 @@ const getStyles = (theme: Theme, groupColor: string, selected?: boolean) =>
       paddingLeft: 12,
       paddingRight: 12,
       minWidth: 180,
+      elevation: 5,
     },
     textStyles: {
       color: selected ? theme.colors.white : theme.colors.black,
