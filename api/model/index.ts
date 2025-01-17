@@ -20,6 +20,8 @@ export * from './assetSearchResultDTOAPIResponse';
 export * from './assetType';
 export * from './assetUpdateDTO';
 export * from './booleanAPIResponse';
+export * from './chatDTO';
+export * from './chatMemberDTO';
 export * from './chatType';
 export * from './coordinate';
 export * from './coordinateEqualityComparer';

@@ -4,15 +4,17 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { ChatType } from './chatType';
 
 export interface EncryptedKeyExchangeCreateDTO {
-  /** @nullable */
-  nonce?: string | null;
-  /** @nullable */
-  publicKey?: string | null;
-  /** @nullable */
-  encryptedSymmetricKey?: string | null;
-  targetId?: number;
-  /** @nullable */
-  chatId?: string | null;
+  /** @minLength 1 */
+  nonce: string;
+  /** @minLength 1 */
+  publicKey: string;
+  /** @minLength 1 */
+  encryptedSymmetricKey: string;
+  targetId: number;
+  chatType: ChatType;
+  /** @minLength 1 */
+  chatId: string;
 }

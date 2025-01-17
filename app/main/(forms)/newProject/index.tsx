@@ -32,7 +32,7 @@ export default function Index() {
         data.id ? updateProject({ data }) : createProject({ data });
         router.navigate("/main/(tabs)/account");
       },
-      () => {
+      (errors) => {
         setError(true);
       }
     )();

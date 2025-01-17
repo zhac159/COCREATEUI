@@ -2552,6 +2552,58 @@
         },
         "additionalProperties": false
       },
+      "ChatDTO": {
+        "required": [
+          "chatIdType",
+          "chatMembers",
+          "chatType"
+        ],
+        "type": "object",
+        "properties": {
+          "chatType": {
+            "$ref": "#/components/schemas/ChatType"
+          },
+          "chatIdType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chatMembers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMemberDTO"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChatMemberDTO": {
+        "required": [
+          "profilePicture",
+          "publicKey",
+          "userId",
+          "userName"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicKey": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "profilePicture": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "ChatType": {
         "enum": [
           0,
@@ -2609,27 +2661,38 @@
         "format": "int32"
       },
       "EncryptedKeyExchangeCreateDTO": {
+        "required": [
+          "chatId",
+          "chatType",
+          "encryptedSymmetricKey",
+          "nonce",
+          "publicKey",
+          "targetId"
+        ],
         "type": "object",
         "properties": {
           "nonce": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "publicKey": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "encryptedSymmetricKey": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "targetId": {
             "type": "integer",
             "format": "int32"
           },
+          "chatType": {
+            "$ref": "#/components/schemas/ChatType"
+          },
           "chatId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -4497,21 +4560,27 @@
       "UserLoginResponseDTO": {
         "required": [
           "bannerPictureSrc",
+          "chats",
           "coins",
           "email",
           "projectsManaging",
+          "publicKey",
           "userId",
           "username"
         ],
         "type": "object",
         "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "username": {
             "minLength": 1,
             "type": "string"
           },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
+          "publicKey": {
+            "minLength": 1,
+            "type": "string"
           },
           "email": {
             "minLength": 1,
@@ -4524,6 +4593,12 @@
           "coins": {
             "type": "integer",
             "format": "int32"
+          },
+          "chats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatDTO"
+            }
           },
           "projectsManaging": {
             "type": "array",

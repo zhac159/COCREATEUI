@@ -8,7 +8,7 @@ export const useGetCreateProjectFormSchema = () => {
   //TODO
   // const coins = useAuthStore((state) => state.auth.coins);
 
-  const coins = 0;
+  const coins = 20000;
 
   const { isDateTodayOrInFuture } = useFormValidators();
 

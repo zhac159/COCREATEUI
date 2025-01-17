@@ -8,13 +8,13 @@ export enum SkillFormType {
   Multiple,
 }
 
-export const useSkillForm = (skilLFormType: SkillFormType) => {
+export const useSkillForm = (skillFormType: SkillFormType) => {
   const [selectedSkills, setSelectedSkill] = useState<Skills[]>([]);
   const [selectableSkills, setSelectableSkills] = useState<Skills[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<SkillGroups>(0);
 
   const selectSkill = (skill: Skills) => {
-    if (skilLFormType === SkillFormType.Single) {
+    if (skillFormType === SkillFormType.Single) {
       setSelectedSkill([skill]);
     } else {
       setSelectedSkill((prev) => {

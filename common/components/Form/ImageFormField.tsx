@@ -37,27 +37,29 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
               loadingStyle={style.loading}
             />
           )}
-          <StyledIconButton
-            iconName="image"
-            onPress={async () => {
-              const result = await pickImage();
-              if (result) {
-                onChange({
-                  ...value,
-                  uri: result.uri,
-                  mediaType: result.type,
-                });
-              }
-            }}
-          />
-          {!value && (
-            <>
-              <StyledText text={t("new-project.project-image")} />
-              {description && (
-                <StyledText text={description} style={style.description} />
-              )}
-            </>
-          )}
+          <View style={style.nonImageContainer}>
+            <StyledIconButton
+              iconName="image"
+              onPress={async () => {
+                const result = await pickImage();
+                if (result) {
+                  onChange({
+                    ...value,
+                    uri: result.uri,
+                    mediaType: result.type,
+                  });
+                }
+              }}
+            />
+            {!value && (
+              <View style={style.textContainer}>
+                <StyledText text={t("new-project.project-image")} />
+                {description && (
+                  <StyledText text={description} style={style.description} />
+                )}
+              </View>
+            )}
+          </View>
         </View>
       )}
     />
@@ -66,13 +68,22 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      alignItems: "center",
       justifyContent: "center",
       gap: 10,
       height: 328,
       borderColor: theme.colors.black,
       borderWidth: 1,
       borderRadius: 15,
+    },
+    nonImageContainer: {
+      alignSelf: "center",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textContainer: {
+      position: "absolute",
+      alignItems: "center",
+      top: 50,
     },
     description: {
       color: theme.colors.grayer,

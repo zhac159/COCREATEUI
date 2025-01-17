@@ -358,11 +358,12 @@ export const postApiEnquirySendMessageReactionResponse = zod.object({
 
 
 export const postApiEnquirySendMessa2geBody = zod.object({
-  "nonce": zod.string().nullish(),
-  "publicKey": zod.string().nullish(),
-  "encryptedSymmetricKey": zod.string().nullish(),
-  "targetId": zod.number().optional(),
-  "chatId": zod.string().nullish()
+  "nonce": zod.string().min(1),
+  "publicKey": zod.string().min(1),
+  "encryptedSymmetricKey": zod.string().min(1),
+  "targetId": zod.number(),
+  "chatType": zod.number(),
+  "chatId": zod.string().min(1)
 })
 
 export const postApiEnquirySendMessa2geResponse = zod.object({
@@ -859,11 +860,22 @@ export const postApiLoginResponse = zod.object({
   "data": zod.object({
   "token": zod.string().min(1),
   "user": zod.object({
-  "username": zod.string().min(1),
   "userId": zod.number(),
+  "username": zod.string().min(1),
+  "publicKey": zod.string().min(1),
   "email": zod.string().min(1),
   "bannerPictureSrc": zod.string().min(1),
   "coins": zod.number(),
+  "chats": zod.array(zod.object({
+  "chatType": zod.number(),
+  "chatIdType": zod.number(),
+  "chatMembers": zod.array(zod.object({
+  "userId": zod.number(),
+  "userName": zod.string().min(1),
+  "publicKey": zod.string().min(1),
+  "profilePicture": zod.string().min(1)
+}))
+})),
   "projectsManaging": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1)
@@ -885,11 +897,22 @@ export const postApiLoginRegisterResponse = zod.object({
   "data": zod.object({
   "token": zod.string().min(1),
   "user": zod.object({
-  "username": zod.string().min(1),
   "userId": zod.number(),
+  "username": zod.string().min(1),
+  "publicKey": zod.string().min(1),
   "email": zod.string().min(1),
   "bannerPictureSrc": zod.string().min(1),
   "coins": zod.number(),
+  "chats": zod.array(zod.object({
+  "chatType": zod.number(),
+  "chatIdType": zod.number(),
+  "chatMembers": zod.array(zod.object({
+  "userId": zod.number(),
+  "userName": zod.string().min(1),
+  "publicKey": zod.string().min(1),
+  "profilePicture": zod.string().min(1)
+}))
+})),
   "projectsManaging": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1)
@@ -909,11 +932,22 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "data": zod.object({
   "token": zod.string().min(1),
   "user": zod.object({
-  "username": zod.string().min(1),
   "userId": zod.number(),
+  "username": zod.string().min(1),
+  "publicKey": zod.string().min(1),
   "email": zod.string().min(1),
   "bannerPictureSrc": zod.string().min(1),
   "coins": zod.number(),
+  "chats": zod.array(zod.object({
+  "chatType": zod.number(),
+  "chatIdType": zod.number(),
+  "chatMembers": zod.array(zod.object({
+  "userId": zod.number(),
+  "userName": zod.string().min(1),
+  "publicKey": zod.string().min(1),
+  "profilePicture": zod.string().min(1)
+}))
+})),
   "projectsManaging": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string().min(1)

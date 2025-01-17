@@ -13,6 +13,9 @@ type ManageProjectsProps = {};
 export const ManageProjects: FC<ManageProjectsProps> = ({}) => {
   const projectsInfos = useAuthStore((state) => state.auth.projectsManaging);
   const styles = useThemedStyles(getStyles);
+
+  if (projectsInfos?.length === 0) return null;
+
   return (
     <View style={styles.container}>
       {projectsInfos.map((projectInfo) => (

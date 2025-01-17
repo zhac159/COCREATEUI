@@ -2,6 +2,7 @@ import { Coins } from "@/common/components/Coins";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { StyledImage } from "@/common/components/StyledComponents/StyledImage";
 import StyledText from "@/common/components/StyledComponents/StyledText";
+import { useAuthStore } from "@/common/stores/authStore";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, ViewProps } from "react-native";
@@ -13,6 +14,8 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
   ...props
 }) => {
   const { t } = useTranslation();
+
+  const userName = useAuthStore((state) => state.auth.username);
 
   return (
     <View style={[styles.editAccountAndInfo, style]} {...props}>

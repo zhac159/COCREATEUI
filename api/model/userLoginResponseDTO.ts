@@ -4,16 +4,20 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { ChatDTO } from './chatDTO';
 import type { ProjectInfoDTO } from './projectInfoDTO';
 
 export interface UserLoginResponseDTO {
+  userId: number;
   /** @minLength 1 */
   username: string;
-  userId: number;
+  /** @minLength 1 */
+  publicKey: string;
   /** @minLength 1 */
   email: string;
   /** @minLength 1 */
   bannerPictureSrc: string;
   coins: number;
+  chats: ChatDTO[];
   projectsManaging: ProjectInfoDTO[];
 }

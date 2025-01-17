@@ -2,26 +2,27 @@ import { LoginResponseDTO } from "@/api/model";
 import SecureStoreKeys from "@/common/constants/secureStoreKeys";
 import { useSecureStorage } from "@/common/hooks/useSecureStorage";
 import { useAuthStore } from "@/common/stores/authStore";
-import {
-  createConnection,
-  useConnectionContext,
-} from "@/common/webSockets/ConnectionProvider";
+import { useConnectionContext } from "@/common/webSockets/ConnectionProvider";
 import { router } from "expo-router";
 import { useCallback } from "react";
 
 export const useOnUserLogIn = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+
   const { setSecureValue } = useSecureStorage();
-  const { setConnection } = useConnectionContext();
+  const { createAndSetConnection } = useConnectionContext();
 
   const onUserLogIn = useCallback(
     async (data: LoginResponseDTO) => {
       setAuth(data.user);
-      setSecureValue(SecureStoreKeys.USER_TOKEN, data.token);
-      setConnection(createConnection(data.token));
+      await setSecureValue(SecureStoreKeys.USER_TOKEN, data.token, {
+        nonUserSpecific: true,
+      });
+      createAndSetConnection(data.token);
+
       router.replace("/main/(tabs)/account");
     },
-    [setAuth, setSecureValue, setConnection]
+    [setSecureValue, createAndSetConnection]
   );
 
   return { onUserLogIn };

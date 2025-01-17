@@ -1,26 +1,22 @@
 import { createContext, useContext, useState } from "react";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import {
+  WebSocketInvocations,
+  WebSocketMessage,
+} from "../constants/webSocketInvocations";
 
 type ConnectionContextType = {
   connection: HubConnection | null;
   setConnection: (connection: HubConnection) => void;
-}
+  createAndSetConnection: (token: string) => Promise<void>;
+  sendWebSocketMessage: <T extends WebSocketInvocations>(invocation: T, data: WebSocketMessage[T]) => Promise<void>
+};
 
 const ConnectionContext = createContext<ConnectionContextType | undefined>(
   undefined
 );
 
 const chatPath = "/chatHub";
-
-export const createConnection = (token: string) => {
-  const connection = new HubConnectionBuilder()
-    .withUrl(process.env.EXPO_PUBLIC_API_URL + chatPath, {
-      accessTokenFactory: () => token,
-    })
-    .withAutomaticReconnect()
-    .build();
-  return connection;
-};
 
 export function useConnection() {
   const context = useContext(ConnectionContext);
@@ -47,8 +43,31 @@ type ConnectionProviderProps = {
 export function ConnectionProvider({ children }: ConnectionProviderProps) {
   const [connection, setConnection] = useState<HubConnection | null>(null);
 
+  const createAndSetConnection = async (token: string) => {
+    const newConnection = new HubConnectionBuilder()
+      .withUrl(process.env.EXPO_PUBLIC_API_URL + chatPath, {
+        accessTokenFactory: () => token,
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    await newConnection.start();
+    setConnection(newConnection);
+  };
+
+  const sendWebSocketMessage = async <T extends WebSocketInvocations>(
+    invocation: T,
+    data: WebSocketMessage[T]
+  ) => {
+    if (connection) {
+      await connection.invoke(invocation, data);
+    }
+  };
+
   return (
-    <ConnectionContext.Provider value={{ connection, setConnection }}>
+    <ConnectionContext.Provider
+      value={{ connection, setConnection, createAndSetConnection, sendWebSocketMessage }}
+    >
       {children}
     </ConnectionContext.Provider>
   );
