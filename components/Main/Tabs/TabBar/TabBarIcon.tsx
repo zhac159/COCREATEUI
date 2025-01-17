@@ -17,8 +17,8 @@ const TabBarIcon: FC<TabBarIconProps> = ({ routeName, focused }) => {
     switch (routeName) {
       case "discovery":
         return "compass";
-      case "work":
-        return "bolt";
+      case "chats":
+        return "message";
       case "project":
         return "lightbulb";
       case "account":
@@ -37,16 +37,6 @@ const TabBarIcon: FC<TabBarIconProps> = ({ routeName, focused }) => {
 };
 
 export default TabBarIcon;
-
-const styles = StyleSheet.create({
-  tabBarIcon: {
-    alignItems: "center",
-    gap: 6,
-  },
-  text: {
-    color: "red",
-  },
-});
 
 const getStyles = (theme: Theme, focused?: boolean) =>
   StyleSheet.create({

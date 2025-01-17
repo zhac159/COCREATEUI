@@ -1,6 +1,5 @@
 import { createContext } from "react";
 import {
-  useConnection,
   useConnectionContext,
 } from "../webSockets/ConnectionProvider";
 import { useAuthStore } from "../stores/authStore";

@@ -11,4 +11,6 @@ export const defaultAuth: UserLoginResponseDTO = {
   username: "",
   coins: 0,
   projectsManaging: [],
+  chats: [],
+  publicKey: "",
 };

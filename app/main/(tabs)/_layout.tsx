@@ -1,4 +1,3 @@
-import { FontAwesome6 } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import TabBar from "@/components/Main/Tabs/TabBar/TabBar";
 
@@ -21,18 +20,18 @@ export default function MainTabsLayout() {
         name="project"
         options={{
           tabBarShowLabel: true,
-          tabBarIcon: ({ color }) => (
-            <FontAwesome6 name="compass" size={24} color={color} solid />
-          ),
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
           tabBarShowLabel: true,
-          tabBarIcon: ({ color }) => (
-            <FontAwesome6 name="dragon" size={24} color={color} solid />
-          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chats"
+        options={{
+          tabBarShowLabel: true,
         }}
       />
     </Tabs>

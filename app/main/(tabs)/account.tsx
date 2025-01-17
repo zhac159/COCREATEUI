@@ -1,6 +1,7 @@
 import {
   usePostApiEnquiryConfirm,
   usePostApiEnquiryCreate,
+  usePutApiEnquiryShortlistEnquiry,
 } from "@/api/endpoints/cocreateApi";
 import { AddButton } from "@/common/components/AddButton";
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
@@ -22,6 +23,7 @@ export default function Account() {
 
   const { mutate: createEnquiry } = usePostApiEnquiryCreate();
   const { mutate: acceptEnquiry } = usePostApiEnquiryConfirm();
+  const { mutate: shortlistEnquiry } = usePutApiEnquiryShortlistEnquiry();
 
   return (
     <ScrollViewWrapper
@@ -34,14 +36,13 @@ export default function Account() {
         text={t("account.new-project")}
         onPress={() => router.push("/main/(forms)/newProject")}
       />
-      <StyledButton text="ShortList" onPress={() => {}} />
       <StyledButton text="logout" onPress={logOut} />
       <StyledButton
         text="send Inquiry"
         onPress={() => {
           createEnquiry({
             data: {
-              projectRoleId: 15,
+              projectRoleId: 17,
               enquiryMessage: "Hello",
             },
           });
@@ -50,10 +51,8 @@ export default function Account() {
       <StyledButton
         text="accept Inquiry"
         onPress={() => {
-          acceptEnquiry({
-            data: {
-              enquiryId: 6,
-            },
+          shortlistEnquiry({
+            params: { enquiryId: 7 },
           });
         }}
       />

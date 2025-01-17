@@ -15,14 +15,23 @@ import {
   usePostApiProjectUpdate,
 } from "@/api/endpoints/cocreateApi";
 import { router } from "expo-router";
+import { useAuthStore } from "@/common/stores/authStore";
 
 export default function Index() {
   const { t } = useTranslation();
+  const addProject = useAuthStore((state) => state.addProject);
 
   const styles = useThemedStyles(getStyles);
   const [error, setError] = useState(false);
 
-  const { mutate: createProject } = usePostApiProject();
+  const { mutate: createProject } = usePostApiProject({
+    mutation: {
+      onSuccess: (data) => {
+        addProject(data);
+      },
+    },
+  });
+
   const { mutate: updateProject } = usePostApiProjectUpdate();
   const { handleSubmit } = useFormContext<ProjectUpdateDTO>();
 
@@ -32,7 +41,7 @@ export default function Index() {
         data.id ? updateProject({ data }) : createProject({ data });
         router.navigate("/main/(tabs)/account");
       },
-      (errors) => {
+      () => {
         setError(true);
       }
     )();
