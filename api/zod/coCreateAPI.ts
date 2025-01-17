@@ -868,7 +868,8 @@ export const postApiLoginResponse = zod.object({
   "coins": zod.number(),
   "chats": zod.array(zod.object({
   "chatType": zod.number(),
-  "chatIdType": zod.number(),
+  "chatTypeId": zod.number(),
+  "chatName": zod.string().min(1),
   "chatMembers": zod.array(zod.object({
   "userId": zod.number(),
   "userName": zod.string().min(1),
@@ -905,7 +906,8 @@ export const postApiLoginRegisterResponse = zod.object({
   "coins": zod.number(),
   "chats": zod.array(zod.object({
   "chatType": zod.number(),
-  "chatIdType": zod.number(),
+  "chatTypeId": zod.number(),
+  "chatName": zod.string().min(1),
   "chatMembers": zod.array(zod.object({
   "userId": zod.number(),
   "userName": zod.string().min(1),
@@ -940,7 +942,8 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "coins": zod.number(),
   "chats": zod.array(zod.object({
   "chatType": zod.number(),
-  "chatIdType": zod.number(),
+  "chatTypeId": zod.number(),
+  "chatName": zod.string().min(1),
   "chatMembers": zod.array(zod.object({
   "userId": zod.number(),
   "userName": zod.string().min(1),

@@ -1,33 +1,14 @@
 import { createContext } from "react";
-import {
-  useConnectionContext,
-} from "../webSockets/ConnectionProvider";
+import { useConnectionContext } from "../webSockets/ConnectionProvider";
 import { useAuthStore } from "../stores/authStore";
-import { ChatType } from "../constants/skill/chatType";
 import { useAsymmetricKey } from "./AsymmetricKeyProvider";
 import { useEncryption } from "../hooks/encryption/useEncryption";
 import { WebSocketInvocations } from "../constants/webSocketInvocations";
-
-type ChatMember = {
-  userId: number;
-  publicKey: string;
-};
-
-type CreateKeyExchange = {
-  chatTypeId: number;
-} & (
-  | {
-      chatType: ChatType.Project;
-      recipients: ChatMember[];
-    }
-  | {
-      chatType: Exclude<ChatType, ChatType.Project>;
-      recipient: ChatMember;
-    }
-);
+import { ChatDTO } from "@/api/model";
+import { getChatId } from "../functions/getChatId";
 
 type SymmetricContextType = {
-  createAndExchangeKey: (createKeyExchange: CreateKeyExchange) => void;
+  createAndExchangeKey: (createKeyExchange: ChatDTO) => void;
 };
 
 const SymmetricKeyContext = createContext<SymmetricContextType | null>(null);
@@ -43,29 +24,14 @@ export function SymmetricKeyProvider({
   const { generateAndStoreSymmetricKey } = useEncryption();
   const { encryptMessageAsymmetric, publicKey } = useAsymmetricKey();
 
-  const createChatId = (createKeyExchange: CreateKeyExchange) => {
-    if (createKeyExchange.chatType === ChatType.Project) {
-      return `${createKeyExchange.chatType}-${createKeyExchange.chatTypeId}`;
-    }
-    if (userId < createKeyExchange.recipient.userId) {
-      return `${createKeyExchange.chatType}-${createKeyExchange.chatTypeId}-${userId}-${createKeyExchange.recipient.userId}`;
-    }
-    return `${createKeyExchange.chatType}-${createKeyExchange.chatTypeId}-${createKeyExchange.recipient.userId}-${userId}`;
-  };
-
-  const createAndExchangeKey = async (createKeyExchange: CreateKeyExchange) => {
-    const chatId = createChatId(createKeyExchange);
+  const createAndExchangeKey = async (createKeyExchange: ChatDTO) => {
+    const chatId = getChatId(createKeyExchange);
     const symmetricKey = await generateAndStoreSymmetricKey(chatId);
 
-    const recipients =
-      createKeyExchange.chatType === ChatType.Project
-        ? createKeyExchange.recipients
-        : [createKeyExchange.recipient];
-
-    recipients.forEach(async (recipientId) => {
+    createKeyExchange.chatMembers.forEach(async (member) => {
       const { message, nonce } = await encryptMessageAsymmetric(
         symmetricKey,
-        recipientId.publicKey
+        member.publicKey
       );
 
       sendWebSocketMessage(WebSocketInvocations.ExchangeKey, {
@@ -74,7 +40,7 @@ export function SymmetricKeyProvider({
         encryptedSymmetricKey: message,
         nonce: nonce,
         publicKey: publicKey,
-        targetId: recipientId.userId,
+        targetId: member.userId,
       });
     });
   };

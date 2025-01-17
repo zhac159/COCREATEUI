@@ -9,6 +9,8 @@ import type { ChatMemberDTO } from './chatMemberDTO';
 
 export interface ChatDTO {
   chatType: ChatType;
-  chatIdType: number;
+  chatTypeId: number;
+  /** @minLength 1 */
+  chatName: string;
   chatMembers: ChatMemberDTO[];
 }

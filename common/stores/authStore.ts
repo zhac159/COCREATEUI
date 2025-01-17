@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { AuthSlice, createAuthSlice } from "./authSlice";
-import { createProjectSlice, ProjectSlice } from "./projectActions";
+import { createProjectSlice, ProjectSlice } from "./projectSlice";
 import { AuthState } from "./authTypes";
 import { devtools } from "zustand/middleware";
 

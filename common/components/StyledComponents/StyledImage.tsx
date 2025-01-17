@@ -33,7 +33,6 @@ export const StyledImage: FC<StyledImageProps> = ({
     <Image
       source={image}
       style={[
-        { width: image.width / 2, height: image.height / 2 },
         styles.image,
         style,
       ]}

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "strict": true,
-    "typeRoots": ["./node_modules/@types", "types/theme"],
+    "typeRoots": ["./node_modules/@types", "types/theme", "./common/types"],
     "paths": {
       "@/*": [
         "./*"

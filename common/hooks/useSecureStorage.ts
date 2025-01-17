@@ -16,8 +16,6 @@ export const useSecureStorage = () => {
     const prefix = nonUserSpecific ? "" : `${userId}_`;
     const suffix =
       keyAdditions.length > 0 ? `_${keyAdditions.map(String).join("_")}` : "";
-
-    console.log(`${prefix}${key}${suffix}`);
       
     return `${prefix}${key}${suffix}`;
   };

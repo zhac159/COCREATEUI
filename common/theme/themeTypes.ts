@@ -66,6 +66,7 @@ export type CustomTheme = Theme & {
     grayer: string;
     lightGray: string;
     lightestGray: string;
+    greyText: string;
     green: string;
     red: string;
     lightBlue: string;

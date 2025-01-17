@@ -32,7 +32,12 @@ const StyledText: FC<StyledTextProps> = ({
   const styles = useThemedStyles((theme) => getStyles(theme, secondary));
 
   return (
-    <Text style={[styles.text, style]} {...props}>
+    <Text
+      style={[styles.text, style]}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      {...props}
+    >
       {text}
     </Text>
   );

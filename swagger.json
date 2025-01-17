@@ -2554,18 +2554,23 @@
       },
       "ChatDTO": {
         "required": [
-          "chatIdType",
           "chatMembers",
-          "chatType"
+          "chatName",
+          "chatType",
+          "chatTypeId"
         ],
         "type": "object",
         "properties": {
           "chatType": {
             "$ref": "#/components/schemas/ChatType"
           },
-          "chatIdType": {
+          "chatTypeId": {
             "type": "integer",
             "format": "int32"
+          },
+          "chatName": {
+            "minLength": 1,
+            "type": "string"
           },
           "chatMembers": {
             "type": "array",

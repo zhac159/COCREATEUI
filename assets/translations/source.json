@@ -217,6 +217,9 @@
       "no-applications-description": "You don't have any applications yet. Wait longer or offer more credits to make your project more appealing."
     }
   },
+  "chats":{
+    "title": "Chats"
+  },
   "account": {
     "edit-profile": "Edit Profile",
     "you-commissioned-projets": "You Commissioned Projects",

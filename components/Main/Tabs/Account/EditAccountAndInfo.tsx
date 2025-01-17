@@ -1,6 +1,6 @@
 import { Coins } from "@/common/components/Coins";
+import { ProfilePicture } from "@/common/components/ProfilePicture";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
-import { StyledImage } from "@/common/components/StyledComponents/StyledImage";
 import StyledText from "@/common/components/StyledComponents/StyledText";
 import { useAuthStore } from "@/common/stores/authStore";
 import { FC } from "react";
@@ -19,10 +19,6 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
 
   return (
     <View style={[styles.editAccountAndInfo, style]} {...props}>
-      <StyledImage
-        source={{ uri: "https://picsum.photos/200/300" }}
-        style={styles.profilePicture}
-      />
       <View style={styles.nameButtonContainer}>
         <StyledText text={"auth.username"} style={styles.name} secondary />
         <StyledButton
@@ -35,6 +31,10 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
       <View>
         <Coins value={500} style={styles.coins} />
       </View>
+      <ProfilePicture
+        source={{ uri: "https://picsum.photos/200/300" }}
+        style={styles.profilePicture}
+      />
     </View>
   );
 };
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   },
   editAccountAndInfo: {
     flexDirection: "row",
-    gap: 20,
     paddingTop: 10,
+    gap: 20,
   },
   nameButtonContainer: {
     gap: 10,
@@ -60,10 +60,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   profilePicture: {
-    borderRadius: 50,
-    height: 85,
-    width: 85,
     position: "absolute",
-    right: 25,
+    right: 10,
+    zIndex: -1,
   },
 });
