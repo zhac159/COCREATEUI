@@ -1,6 +1,7 @@
 import { DefaultTheme } from "react-native-paper";
 
 type Theme = typeof DefaultTheme;
+
 type FontWeight =
   | "700"
   | "500"

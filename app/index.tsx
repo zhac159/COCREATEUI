@@ -28,9 +28,13 @@ import { useSetCurrentUserState } from "@/components/RecoilStates/profileState";
 import LoadingBackdrop from "@/components/Common/LoadingBackdrop";
 
 const LoginPage = () => {
+
   const theme = useTheme();
+
   const setCurrentUser = useSetCurrentUserState();
+
   const { t } = useTranslation();
+  
   const { mutate: setPublicKey } = usePutApiUserPublicKey();
 
   const { mutate: authenticate, isLoading } = usePostApiLoginTokenLogin({

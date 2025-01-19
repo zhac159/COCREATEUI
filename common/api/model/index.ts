@@ -148,6 +148,7 @@ export * from './userLocationDTO';
 export * from './userLocationDTOAPIResponse';
 export * from './userLocationUpdateDTO';
 export * from './userLoginDTO';
+export * from './userLoginResponseDTO';
 export * from './userPortofolioDTO';
 export * from './userPortofolioDTOAPIResponse';
 export * from './userPortofolioDTOListAPIResponse';

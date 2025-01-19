@@ -845,451 +845,10 @@ export const postApiLoginResponse = zod.object({
   "data": zod.object({
   "token": zod.string().min(1),
   "user": zod.object({
-  "userId": zod.number(),
   "username": zod.string().min(1),
+  "userId": zod.number(),
   "email": zod.string().min(1),
-  "address": zod.string().nullish(),
-  "latitude": zod.number().optional(),
-  "longitude": zod.number().optional(),
-  "aboutYou": zod.string().nullish(),
-  "coins": zod.number(),
-  "profilePictureSrc": zod.string().nullish(),
-  "bannerPictureSrc": zod.string().nullish(),
-  "publicKey": zod.string().nullish(),
-  "rating": zod.number(),
-  "totalReviews": zod.number(),
-  "skills": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "skillType": zod.number().optional(),
-  "skillGroupType": zod.number().optional(),
-  "description": zod.string().nullish(),
-  "level": zod.number().optional(),
-  "keywords": zod.array(zod.string()).nullish()
-})),
-  "portofolioContents": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "description": zod.string().nullish(),
-  "skillType": zod.number().optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})).nullish()
-})),
-  "assignedProjects": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})),
-  "reviewsReceived": zod.array(zod.object({
-  "description": zod.string().min(1),
-  "rating": zod.number(),
-  "createdAt": zod.string().datetime(),
-  "reviewerUser": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-})),
-  "assets": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-}))
-})),
-  "projects": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})),
-  "experiences": zod.array(zod.object({
-  "id": zod.number(),
-  "description": zod.string().min(1),
-  "userId": zod.number(),
-  "user": zod.any(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "experienceType": zod.number(),
-  "projectRoleId": zod.number(),
-  "projectRole": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-}),
-  "projectId": zod.number(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
+  "bannerPictureSrc": zod.string().min(1)
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -1307,451 +866,10 @@ export const postApiLoginRegisterResponse = zod.object({
   "data": zod.object({
   "token": zod.string().min(1),
   "user": zod.object({
-  "userId": zod.number(),
   "username": zod.string().min(1),
+  "userId": zod.number(),
   "email": zod.string().min(1),
-  "address": zod.string().nullish(),
-  "latitude": zod.number().optional(),
-  "longitude": zod.number().optional(),
-  "aboutYou": zod.string().nullish(),
-  "coins": zod.number(),
-  "profilePictureSrc": zod.string().nullish(),
-  "bannerPictureSrc": zod.string().nullish(),
-  "publicKey": zod.string().nullish(),
-  "rating": zod.number(),
-  "totalReviews": zod.number(),
-  "skills": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "skillType": zod.number().optional(),
-  "skillGroupType": zod.number().optional(),
-  "description": zod.string().nullish(),
-  "level": zod.number().optional(),
-  "keywords": zod.array(zod.string()).nullish()
-})),
-  "portofolioContents": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "description": zod.string().nullish(),
-  "skillType": zod.number().optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})).nullish()
-})),
-  "assignedProjects": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})),
-  "reviewsReceived": zod.array(zod.object({
-  "description": zod.string().min(1),
-  "rating": zod.number(),
-  "createdAt": zod.string().datetime(),
-  "reviewerUser": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-})),
-  "assets": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-}))
-})),
-  "projects": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})),
-  "experiences": zod.array(zod.object({
-  "id": zod.number(),
-  "description": zod.string().min(1),
-  "userId": zod.number(),
-  "user": zod.any(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "experienceType": zod.number(),
-  "projectRoleId": zod.number(),
-  "projectRole": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-}),
-  "projectId": zod.number(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
+  "bannerPictureSrc": zod.string().min(1)
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -1767,451 +885,10 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "data": zod.object({
   "token": zod.string().min(1),
   "user": zod.object({
-  "userId": zod.number(),
   "username": zod.string().min(1),
+  "userId": zod.number(),
   "email": zod.string().min(1),
-  "address": zod.string().nullish(),
-  "latitude": zod.number().optional(),
-  "longitude": zod.number().optional(),
-  "aboutYou": zod.string().nullish(),
-  "coins": zod.number(),
-  "profilePictureSrc": zod.string().nullish(),
-  "bannerPictureSrc": zod.string().nullish(),
-  "publicKey": zod.string().nullish(),
-  "rating": zod.number(),
-  "totalReviews": zod.number(),
-  "skills": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "skillType": zod.number().optional(),
-  "skillGroupType": zod.number().optional(),
-  "description": zod.string().nullish(),
-  "level": zod.number().optional(),
-  "keywords": zod.array(zod.string()).nullish()
-})),
-  "portofolioContents": zod.array(zod.object({
-  "id": zod.number().optional(),
-  "description": zod.string().nullish(),
-  "skillType": zod.number().optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})).nullish()
-})),
-  "assignedProjects": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})),
-  "reviewsReceived": zod.array(zod.object({
-  "description": zod.string().min(1),
-  "rating": zod.number(),
-  "createdAt": zod.string().datetime(),
-  "reviewerUser": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-})),
-  "assets": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-}))
-})),
-  "projects": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})),
-  "experiences": zod.array(zod.object({
-  "id": zod.number(),
-  "description": zod.string().min(1),
-  "userId": zod.number(),
-  "user": zod.any(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "experienceType": zod.number(),
-  "projectRoleId": zod.number(),
-  "projectRole": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-}),
-  "projectId": zod.number(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "completed": zod.boolean(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}),
-  "projectRoles": zod.array(zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "cost": zod.number(),
-  "effort": zod.number(),
-  "startDate": zod.string().datetime(),
-  "endDate": zod.string().datetime(),
-  "skillType": zod.number(),
-  "longitude": zod.number(),
-  "latitude": zod.number(),
-  "address": zod.string().min(1),
-  "projectId": zod.number(),
-  "keywords": zod.array(zod.string()),
-  "remote": zod.boolean().optional(),
-  "completed": zod.boolean().optional(),
-  "assignee": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "medias": zod.array(zod.object({
-  "id": zod.number(),
-  "uri": zod.string().min(1),
-  "mediaType": zod.number()
-})),
-  "enquiries": zod.array(zod.object({
-  "id": zod.number(),
-  "projectRoleId": zod.number(),
-  "enquirer": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-}).optional(),
-  "projectId": zod.number().nullish(),
-  "enquiryMessage": zod.string().min(1),
-  "shortlisted": zod.boolean()
-})).nullish()
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
-})
-})),
-  "assetOffers": zod.array(zod.object({
-  "id": zod.number(),
-  "offerValue": zod.number(),
-  "assetUsageStartTime": zod.string().datetime(),
-  "assetUsageEndTime": zod.string().datetime(),
-  "duration": zod.number(),
-  "description": zod.string().min(1),
-  "asset": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "description": zod.string().min(1),
-  "assetType": zod.number(),
-  "owner": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional(),
-  "project": zod.object({
-  "id": zod.number(),
-  "name": zod.string().min(1),
-  "projectManager": zod.object({
-  "userId": zod.number(),
-  "username": zod.string().min(1),
-  "rating": zod.number().nullish(),
-  "publicKey": zod.string().nullish()
-})
-}).optional()
-}))
+  "bannerPictureSrc": zod.string().min(1)
 })
 }).optional(),
   "error": zod.string().nullish()
@@ -2327,6 +1004,327 @@ export const postApiPrepareResponse = zod.object({
 export const postApiProjectBody = zod.object({
   "name": zod.string().min(1),
   "description": zod.string().min(1),
+  "date": zod.string().datetime(),
+  "location": zod.object({
+  "factory": zod.object({
+  "precisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional(),
+  "coordinateSequenceFactory": zod.object({
+  "ordinates": zod.number().optional()
+}).optional(),
+  "srid": zod.number().optional(),
+  "geometryServices": zod.object({
+  "geometryOverlay": zod.object({
+
+}).optional(),
+  "coordinateEqualityComparer": zod.object({
+
+}).optional(),
+  "defaultSRID": zod.number().optional(),
+  "defaultCoordinateSequenceFactory": zod.object({
+  "ordinates": zod.number().optional()
+}).optional(),
+  "defaultPrecisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional()
+}).optional()
+}).optional(),
+  "userData": zod.any().nullish(),
+  "srid": zod.number().optional(),
+  "precisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional(),
+  "numGeometries": zod.number().optional(),
+  "isSimple": zod.boolean().optional(),
+  "isValid": zod.boolean().optional(),
+  "area": zod.number().optional(),
+  "length": zod.number().optional(),
+  "centroid": zod.any().optional(),
+  "interiorPoint": zod.any().optional(),
+  "pointOnSurface": zod.any().optional(),
+  "envelope": zod.object({
+  "factory": zod.object({
+  "precisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional(),
+  "coordinateSequenceFactory": zod.object({
+  "ordinates": zod.number().optional()
+}).optional(),
+  "srid": zod.number().optional(),
+  "geometryServices": zod.object({
+  "geometryOverlay": zod.object({
+
+}).optional(),
+  "coordinateEqualityComparer": zod.object({
+
+}).optional(),
+  "defaultSRID": zod.number().optional(),
+  "defaultCoordinateSequenceFactory": zod.object({
+  "ordinates": zod.number().optional()
+}).optional(),
+  "defaultPrecisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional()
+}).optional()
+}).optional(),
+  "userData": zod.any().nullish(),
+  "srid": zod.number().optional(),
+  "geometryType": zod.string().nullish(),
+  "ogcGeometryType": zod.number().optional(),
+  "precisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional(),
+  "coordinate": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional(),
+  "coordinates": zod.array(zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+})).nullish(),
+  "numPoints": zod.number().optional(),
+  "numGeometries": zod.number().optional(),
+  "isSimple": zod.boolean().optional(),
+  "isValid": zod.boolean().optional(),
+  "isEmpty": zod.boolean().optional(),
+  "area": zod.number().optional(),
+  "length": zod.number().optional(),
+  "centroid": zod.any().optional(),
+  "interiorPoint": zod.any().optional(),
+  "pointOnSurface": zod.any().optional(),
+  "dimension": zod.number().optional(),
+  "boundary": zod.any().optional(),
+  "boundaryDimension": zod.number().optional(),
+  "envelope": zod.any().optional(),
+  "envelopeInternal": zod.object({
+  "isNull": zod.boolean().optional(),
+  "width": zod.number().optional(),
+  "height": zod.number().optional(),
+  "diameter": zod.number().optional(),
+  "minX": zod.number().optional(),
+  "maxX": zod.number().optional(),
+  "minY": zod.number().optional(),
+  "maxY": zod.number().optional(),
+  "area": zod.number().optional(),
+  "minExtent": zod.number().optional(),
+  "maxExtent": zod.number().optional(),
+  "centre": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional()
+}).optional(),
+  "isRectangle": zod.boolean().optional()
+}).optional(),
+  "envelopeInternal": zod.object({
+  "isNull": zod.boolean().optional(),
+  "width": zod.number().optional(),
+  "height": zod.number().optional(),
+  "diameter": zod.number().optional(),
+  "minX": zod.number().optional(),
+  "maxX": zod.number().optional(),
+  "minY": zod.number().optional(),
+  "maxY": zod.number().optional(),
+  "area": zod.number().optional(),
+  "minExtent": zod.number().optional(),
+  "maxExtent": zod.number().optional(),
+  "centre": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional()
+}).optional(),
+  "isRectangle": zod.boolean().optional(),
+  "coordinateSequence": zod.object({
+  "dimension": zod.number().optional(),
+  "measures": zod.number().optional(),
+  "spatial": zod.number().optional(),
+  "ordinates": zod.number().optional(),
+  "hasZ": zod.boolean().optional(),
+  "hasM": zod.boolean().optional(),
+  "zOrdinateIndex": zod.number().optional(),
+  "mOrdinateIndex": zod.number().optional(),
+  "first": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional(),
+  "last": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional(),
+  "count": zod.number().optional()
+}).optional(),
+  "coordinates": zod.array(zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+})).nullish(),
+  "numPoints": zod.number().optional(),
+  "isEmpty": zod.boolean().optional(),
+  "dimension": zod.number().optional(),
+  "boundaryDimension": zod.number().optional(),
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "coordinate": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional(),
+  "geometryType": zod.string().nullish(),
+  "ogcGeometryType": zod.number().optional(),
+  "boundary": zod.object({
+  "factory": zod.object({
+  "precisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional(),
+  "coordinateSequenceFactory": zod.object({
+  "ordinates": zod.number().optional()
+}).optional(),
+  "srid": zod.number().optional(),
+  "geometryServices": zod.object({
+  "geometryOverlay": zod.object({
+
+}).optional(),
+  "coordinateEqualityComparer": zod.object({
+
+}).optional(),
+  "defaultSRID": zod.number().optional(),
+  "defaultCoordinateSequenceFactory": zod.object({
+  "ordinates": zod.number().optional()
+}).optional(),
+  "defaultPrecisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional()
+}).optional()
+}).optional(),
+  "userData": zod.any().nullish(),
+  "srid": zod.number().optional(),
+  "geometryType": zod.string().nullish(),
+  "ogcGeometryType": zod.number().optional(),
+  "precisionModel": zod.object({
+  "isFloating": zod.boolean().optional(),
+  "maximumSignificantDigits": zod.number().optional(),
+  "scale": zod.number().optional(),
+  "gridSize": zod.number().optional(),
+  "precisionModelType": zod.number().optional()
+}).optional(),
+  "coordinate": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional(),
+  "coordinates": zod.array(zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+})).nullish(),
+  "numPoints": zod.number().optional(),
+  "numGeometries": zod.number().optional(),
+  "isSimple": zod.boolean().optional(),
+  "isValid": zod.boolean().optional(),
+  "isEmpty": zod.boolean().optional(),
+  "area": zod.number().optional(),
+  "length": zod.number().optional(),
+  "centroid": zod.any().optional(),
+  "interiorPoint": zod.any().optional(),
+  "pointOnSurface": zod.any().optional(),
+  "dimension": zod.number().optional(),
+  "boundary": zod.any().optional(),
+  "boundaryDimension": zod.number().optional(),
+  "envelope": zod.any().optional(),
+  "envelopeInternal": zod.object({
+  "isNull": zod.boolean().optional(),
+  "width": zod.number().optional(),
+  "height": zod.number().optional(),
+  "diameter": zod.number().optional(),
+  "minX": zod.number().optional(),
+  "maxX": zod.number().optional(),
+  "minY": zod.number().optional(),
+  "maxY": zod.number().optional(),
+  "area": zod.number().optional(),
+  "minExtent": zod.number().optional(),
+  "maxExtent": zod.number().optional(),
+  "centre": zod.object({
+  "x": zod.number().optional(),
+  "y": zod.number().optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional(),
+  "coordinateValue": zod.any().optional(),
+  "isValid": zod.boolean().optional()
+}).optional()
+}).optional(),
+  "isRectangle": zod.boolean().optional()
+}).optional(),
+  "z": zod.number().optional(),
+  "m": zod.number().optional()
+}),
   "medias": zod.array(zod.object({
   "uri": zod.string().min(1),
   "mediaType": zod.number()

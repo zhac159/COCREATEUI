@@ -32,7 +32,7 @@ import {
   decryptMessageAES,
 } from "../encryption/encryptionHelper";
 import * as SecureStore from "expo-secure-store";
-import { ChatMember, ChatTypeIdPair } from "@/components/Chats/chatHelper";
+import { ChatMember } from "@/components/Chats/chatHelper";
 import { downloadFile, usePrepareAndUpload } from "../media/mediaHooks";
 import { EntityType } from "@/components/Account/Common/Media/EntityType";
 import Message from "@/components/Common/Messages/Message";

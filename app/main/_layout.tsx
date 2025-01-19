@@ -114,6 +114,8 @@ export default function HelperScreenNav() {
         );
       }
     );
+
+    
   }, [connection, database]);
 
   useEffect(() => {

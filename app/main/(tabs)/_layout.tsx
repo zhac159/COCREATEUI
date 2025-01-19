@@ -19,7 +19,7 @@ export default function TabLayout() {
       tabBar={(props) => (
         <TabBar BottomTabBarProps={props}  />
       )}
-      sceneContainerStyle={{ backgroundColor: "transparent" }}
+      // sceneContainerStyle={{ backgroundColor: "transparent" }}
     >
       <Tabs.Screen
         name="discovery"

@@ -49,7 +49,6 @@ export default function LocationForm() {
             placeholder="Enter Location"
             minLength={2}
             fetchDetails={true}
-            
             onPress={(data, details = null) => {
               if (details == null) {
                 return;

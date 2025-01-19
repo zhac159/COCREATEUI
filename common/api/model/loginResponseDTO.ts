@@ -4,10 +4,10 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { UserDTO } from './userDTO';
+import type { UserLoginResponseDTO } from './userLoginResponseDTO';
 
 export interface LoginResponseDTO {
   /** @minLength 1 */
   token: string;
-  user: UserDTO;
+  user: UserLoginResponseDTO;
 }

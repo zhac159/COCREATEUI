@@ -62,11 +62,10 @@ export async function getDatabasKey(): Promise<string | null> {
 export async function generateKeyPair(
   userId: number
 ): Promise<nacl.BoxKeyPair | null> {
+  
   const existingPrivateKey = await SecureStore.getItemAsync(
     getAsymmetricKeyName(SecureStoreKeys.PRIVATE_KEY, userId)
   );
-
-  console.log("existingPrivateKey", existingPrivateKey);
 
   if (existingPrivateKey != null) {
     return null;
