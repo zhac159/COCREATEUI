@@ -3,7 +3,7 @@ import { useSecureStorage } from "../useSecureStorage";
 import SecureStoreKeys from "@/common/constants/secureStoreKeys";
 
 export const useEncryption = () => {
-  const { setSecureValue } = useSecureStorage();
+  const { setSecureValue, getSecureValue } = useSecureStorage();
 
   const hashPassword = async (password: string): Promise<string> => {
     return await Crypto.digestStringAsync(
@@ -20,7 +20,7 @@ export const useEncryption = () => {
     return symmetricKey;
   };
 
-  const generateAndStoreSymmetricKey = async (chatId: string) => {
+  const generateAndStoreSymmetricKey = async (chatId: number) => {
     const symmetricKey = await generateSymmetricKey();
     await setSecureValue(SecureStoreKeys.SYMMETRIC_KEY, symmetricKey, {
       keyAdditions: [chatId],
@@ -28,8 +28,22 @@ export const useEncryption = () => {
     return symmetricKey;
   };
 
+  const storeSymmetricKey = async (symmetricKey: string, chatId: number) => {
+    await setSecureValue(SecureStoreKeys.SYMMETRIC_KEY, symmetricKey, {
+      keyAdditions: [chatId],
+    });
+  };
+
+  const getSymmetricKey = async (chatId: number) => {
+    return await getSecureValue(SecureStoreKeys.SYMMETRIC_KEY, {
+      keyAdditions: [chatId],
+    });
+  };
+
   return {
     hashPassword,
     generateAndStoreSymmetricKey,
+    storeSymmetricKey,
+    getSymmetricKey,
   };
 };

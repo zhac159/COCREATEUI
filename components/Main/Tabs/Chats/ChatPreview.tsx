@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { ChatPreviewInfo } from "@/common/types/ChatPreviewInfo";
@@ -7,6 +7,7 @@ import StyledText from "@/common/components/StyledComponents/StyledText";
 import { ProfilePicture } from "@/common/components/ProfilePicture";
 import { generalPadding } from "@/common/constants/generalPadding";
 import { StyledTouchableOpacity } from "@/common/components/StyledComponents/StyledTouchableOpacity";
+import { useSymmetricKey } from "@/common/contexts/SymmetricKeyProvider";
 
 type ChatPreviewProps = ViewProps & {
   chat: ChatPreviewInfo;
@@ -17,14 +18,19 @@ export const ChatPreview: FC<ChatPreviewProps> = ({
   style,
   ...props
 }) => {
+  const { navigateToChat } = useSymmetricKey();
   const styles = useThemedStyles(getStyles);
   const profilePicture = "https://i.pravatar.cc/300";
-  
+
   return (
-    <StyledTouchableOpacity style={[styles.container, style]} {...props}>
+    <StyledTouchableOpacity
+      style={[styles.container, style]}
+      onPress={() => navigateToChat(chat)}
+      {...props}
+    >
       <ProfilePicture source={profilePicture} style={styles.profilePicture} />
       <View style={styles.nameAndMessage}>
-        <StyledText text={chat.chatName} secondary style={styles.name} />
+        <StyledText text={"chat.groupChatName"} secondary style={styles.name} />
         <StyledText
           text={chat.lastMessage}
           style={styles.message}

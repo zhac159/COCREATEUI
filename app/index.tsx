@@ -3,7 +3,7 @@ import { StyledImageBackground } from "@/common/components/StyledComponents/Styl
 import StyledText from "@/common/components/StyledComponents/StyledText";
 import { generalPadding } from "@/common/constants/generalPadding";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
-import { Theme, useTheme } from "@react-navigation/native";
+import { Theme } from "@react-navigation/native";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
@@ -18,7 +18,11 @@ export default function Index() {
       source={require("../assets/images/backdrops/home-page-background.png")}
       style={styles.container}
     >
-      <StyledText text={t("welcome-page.title")} style={styles.title} />
+      <StyledText
+        text={t("welcome-page.title")}
+        style={styles.title}
+        numberOfLines={3}
+      />
       <View style={styles.buttonsContainer}>
         <StyledButton
           text={t("sign-in.sign-in")}
@@ -43,8 +47,6 @@ export default function Index() {
   );
 }
 
-const styles = StyleSheet.create({});
-
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
@@ -65,6 +67,7 @@ const getStyles = (theme: Theme) =>
     },
     title: {
       fontSize: 50,
+      flexWrap: "wrap",
       color: theme.colors.orange,
     },
   });

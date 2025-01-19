@@ -8,9 +8,10 @@ import type { ChatType } from './chatType';
 import type { ChatMemberDTO } from './chatMemberDTO';
 
 export interface ChatDTO {
+  id: number;
   chatType: ChatType;
   chatTypeId: number;
   /** @minLength 1 */
-  chatName: string;
+  groupChatName: string;
   chatMembers: ChatMemberDTO[];
 }

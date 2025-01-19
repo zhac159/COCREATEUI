@@ -361,9 +361,8 @@ export const postApiEnquirySendMessa2geBody = zod.object({
   "nonce": zod.string().min(1),
   "publicKey": zod.string().min(1),
   "encryptedSymmetricKey": zod.string().min(1),
-  "targetId": zod.number(),
-  "chatType": zod.number(),
-  "chatId": zod.string().min(1)
+  "targetUserId": zod.number(),
+  "chatId": zod.number()
 })
 
 export const postApiEnquirySendMessa2geResponse = zod.object({
@@ -373,9 +372,7 @@ export const postApiEnquirySendMessa2geResponse = zod.object({
   "nonce": zod.string().min(1),
   "publicKey": zod.string().min(1),
   "encryptedSymmetricKey": zod.string().min(1),
-  "targetId": zod.number(),
-  "chatId": zod.string().min(1),
-  "senderId": zod.number()
+  "chatId": zod.number()
 }).optional(),
   "error": zod.string().nullish()
 })
@@ -867,9 +864,10 @@ export const postApiLoginResponse = zod.object({
   "bannerPictureSrc": zod.string().min(1),
   "coins": zod.number(),
   "chats": zod.array(zod.object({
+  "id": zod.number(),
   "chatType": zod.number(),
   "chatTypeId": zod.number(),
-  "chatName": zod.string().min(1),
+  "groupChatName": zod.string().min(1),
   "chatMembers": zod.array(zod.object({
   "userId": zod.number(),
   "userName": zod.string().min(1),
@@ -905,9 +903,10 @@ export const postApiLoginRegisterResponse = zod.object({
   "bannerPictureSrc": zod.string().min(1),
   "coins": zod.number(),
   "chats": zod.array(zod.object({
+  "id": zod.number(),
   "chatType": zod.number(),
   "chatTypeId": zod.number(),
-  "chatName": zod.string().min(1),
+  "groupChatName": zod.string().min(1),
   "chatMembers": zod.array(zod.object({
   "userId": zod.number(),
   "userName": zod.string().min(1),
@@ -941,9 +940,10 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "bannerPictureSrc": zod.string().min(1),
   "coins": zod.number(),
   "chats": zod.array(zod.object({
+  "id": zod.number(),
   "chatType": zod.number(),
   "chatTypeId": zod.number(),
-  "chatName": zod.string().min(1),
+  "groupChatName": zod.string().min(1),
   "chatMembers": zod.array(zod.object({
   "userId": zod.number(),
   "userName": zod.string().min(1),

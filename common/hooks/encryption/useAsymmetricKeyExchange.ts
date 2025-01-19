@@ -27,9 +27,13 @@ export const useAsymmetricKeyExchange = () => {
 
   const doesPublicKeyMatch = useCallback(async () => {
     const storedPublicKey = await getSecureValue(SecureStoreKeys.PUBLIC_KEY);
-    if (!publicKey) {
+    const storedPrivateKey = await getSecureValue(SecureStoreKeys.PRIVATE_KEY);
+    if (!publicKey || !storedPublicKey || !storedPrivateKey) {
       return false;
     }
+    setLocalPrivateKey(storedPrivateKey);
+    setLocalPublicKey(storedPublicKey);
+
     return storedPublicKey === publicKey;
   }, [userId, publicKey]);
 
@@ -55,6 +59,7 @@ export const useAsymmetricKeyExchange = () => {
   const verifyKeyPair = useCallback(async () => {
     if (!(await doesPublicKeyMatch())) {
       await generateaAndStoreKeyPair();
+    } else {
     }
   }, [doesPublicKeyMatch, generateaAndStoreKeyPair]);
 
@@ -81,6 +86,21 @@ export const useAsymmetricKeyExchange = () => {
     };
   };
 
+  const decryptMessageAsymmetric = async (
+    message: string,
+    nonce: string,
+    senderPublicKey: string
+  ) => {
+      const decrypted = nacl.box.open(
+        fromBase64(message),
+        fromBase64(nonce),
+        fromBase64(senderPublicKey),
+        fromBase64(localPrivateKey)
+      );
+    if (!decrypted) throw new Error("Decryption failed");
+    return Buffer.from(decrypted).toString();
+  };
+
   return {
     generateaAndStoreKeyPair,
     doesPublicKeyMatch,
@@ -88,5 +108,6 @@ export const useAsymmetricKeyExchange = () => {
     localPublicKey,
     localPrivateKey,
     encryptMessageAsymmetric,
+    decryptMessageAsymmetric,
   };
 };

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { StatusBar } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ConnectionProvider } from "@/common/webSockets/ConnectionProvider";
+import { ConnectionProvider } from "@/common/contexts/ConnectionProvider";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "react-native-reanimated";

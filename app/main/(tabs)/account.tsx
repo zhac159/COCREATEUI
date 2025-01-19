@@ -42,17 +42,17 @@ export default function Account() {
         onPress={() => {
           createEnquiry({
             data: {
-              projectRoleId: 17,
+              projectRoleId: 22,
               enquiryMessage: "Hello",
             },
           });
         }}
       />
       <StyledButton
-        text="accept Inquiry"
+        text="shortlist Inquiry"
         onPress={() => {
           shortlistEnquiry({
-            params: { enquiryId: 7 },
+            params: { enquiryId: 10 },
           });
         }}
       />

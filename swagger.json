@@ -2555,12 +2555,17 @@
       "ChatDTO": {
         "required": [
           "chatMembers",
-          "chatName",
           "chatType",
-          "chatTypeId"
+          "chatTypeId",
+          "groupChatName",
+          "id"
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "chatType": {
             "$ref": "#/components/schemas/ChatType"
           },
@@ -2568,7 +2573,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "chatName": {
+          "groupChatName": {
             "minLength": 1,
             "type": "string"
           },
@@ -2668,11 +2673,10 @@
       "EncryptedKeyExchangeCreateDTO": {
         "required": [
           "chatId",
-          "chatType",
           "encryptedSymmetricKey",
           "nonce",
           "publicKey",
-          "targetId"
+          "targetUserId"
         ],
         "type": "object",
         "properties": {
@@ -2688,16 +2692,13 @@
             "minLength": 1,
             "type": "string"
           },
-          "targetId": {
+          "targetUserId": {
             "type": "integer",
             "format": "int32"
           },
-          "chatType": {
-            "$ref": "#/components/schemas/ChatType"
-          },
           "chatId": {
-            "minLength": 1,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -2708,9 +2709,7 @@
           "encryptedSymmetricKey",
           "id",
           "nonce",
-          "publicKey",
-          "senderId",
-          "targetId"
+          "publicKey"
         ],
         "type": "object",
         "properties": {
@@ -2730,15 +2729,7 @@
             "minLength": 1,
             "type": "string"
           },
-          "targetId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "chatId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "senderId": {
             "type": "integer",
             "format": "int32"
           }

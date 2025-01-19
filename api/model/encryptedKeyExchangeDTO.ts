@@ -13,8 +13,5 @@ export interface EncryptedKeyExchangeDTO {
   publicKey: string;
   /** @minLength 1 */
   encryptedSymmetricKey: string;
-  targetId: number;
-  /** @minLength 1 */
-  chatId: string;
-  senderId: number;
+  chatId: number;
 }

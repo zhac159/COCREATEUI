@@ -11,6 +11,11 @@ type AsymmetricKeyContextType = {
     message: string;
     nonce: string;
   }>;
+  decryptMessageAsymmetric: (
+    message: string,
+    nonce: string,
+    senderPublicKey: string
+  ) => Promise<string>;
 };
 
 export const AsymmetricKeyContext =
@@ -36,6 +41,7 @@ export function AsymmetricKeyProvider({
     localPrivateKey,
     localPublicKey,
     encryptMessageAsymmetric,
+    decryptMessageAsymmetric,
   } = useAsymmetricKeyExchange();
 
   useEffect(() => {
@@ -44,12 +50,17 @@ export function AsymmetricKeyProvider({
     })();
   }, [verifyKeyPair]);
 
+  if (localPrivateKey === null || localPublicKey === null) {
+    return null;
+  }
+
   return (
     <AsymmetricKeyContext.Provider
       value={{
         publicKey: localPublicKey,
         privateKey: localPrivateKey,
         encryptMessageAsymmetric,
+        decryptMessageAsymmetric,
       }}
     >
       {children}
