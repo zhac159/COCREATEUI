@@ -1,43 +1,59 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { generalPadding } from "@/common/constants/generalPadding";
-import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSendMessage } from "./hooks/useSendMessage";
+import StyledIconButton from "@/common/components/StyledComponents/StyledIconButton";
 
 type ChatInputProps = {};
 
 export const ChatInput: FC<ChatInputProps> = ({}) => {
-  const styles = useThemedStyles(getStyles);
+  const { bottom } = useSafeAreaInsets();
+  const styles = useThemedStyles((theme) => getStyles(theme, bottom));
 
-  const { height } = useReanimatedKeyboardAnimation();
+  const [message, setMessage] = useState("");
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      paddingBottom: height.value,
-    };
-  });
+  const sendMessage = useSendMessage();
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <TextInput style={styles.textInput} />
-    </Animated.View>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Type a message..."
+        value={message}
+        onChangeText={setMessage}
+        onSubmitEditing={() => {
+          sendMessage(message);
+          setMessage("");
+        }}
+      />
+      <StyledIconButton
+        iconName="arrow-right"
+        onPress={() => {
+          sendMessage(message);
+          setMessage("");
+        }}
+      />
+    </View>
   );
 };
 
-const getStyles = (theme: Theme) =>
+const getStyles = (theme: Theme, bottomAreaSafePadding: number) =>
   StyleSheet.create({
     container: {
-      paddingBottom: 50,
-      paddingTop: 20,
       flexDirection: "row",
       justifyContent: "space-between",
-      borderTopWidth: 0.3,
-      paddingHorizontal: 16,
       backgroundColor: "white",
+      alignItems: "center",
+      paddingTop: 10,
+      paddingBottom: bottomAreaSafePadding + 10,
+      borderTopWidth: 0.3,
+      paddingHorizontal: generalPadding,
     },
     textInput: {
+      ...theme.customFonts.primary,
       width: "90%",
       paddingHorizontal: generalPadding,
       backgroundColor: theme.colors.backgroundColor,

@@ -308,29 +308,26 @@ export const putApiEnquiryRejectEnquiryResponse = zod.object({
 
 export const postApiEnquirySendMessageBody = zod.object({
   "id": zod.string().uuid(),
-  "targetId": zod.number(),
-  "chatType": zod.number(),
+  "salt": zod.string().min(1),
+  "chatId": zod.number(),
+  "targetUserIds": zod.array(zod.number()),
   "content": zod.string().nullish(),
   "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional(),
   "date": zod.string().datetime(),
-  "replyMessageId": zod.string().uuid().nullish(),
-  "chatId": zod.string().min(1)
+  "replyMessageId": zod.string().uuid().nullish()
 })
 
 export const postApiEnquirySendMessageResponse = zod.object({
   "success": zod.boolean().optional(),
   "data": zod.object({
-  "id": zod.string().uuid(),
-  "senderId": zod.number(),
-  "targetId": zod.number(),
-  "chatType": zod.number(),
+  "id": zod.string().uuid().optional(),
+  "salt": zod.string().nullish(),
+  "chatId": zod.number().optional(),
+  "senderId": zod.number().optional(),
   "content": zod.string().nullish(),
   "uri": zod.string().nullish(),
-  "mediaType": zod.number().optional(),
-  "date": zod.string().datetime(),
-  "replyMessageId": zod.string().uuid().nullish(),
-  "chatId": zod.string().min(1)
+  "date": zod.string().datetime().optional(),
+  "replyMessageId": zod.string().uuid().nullish()
 }).optional(),
   "error": zod.string().nullish()
 })

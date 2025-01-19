@@ -52,6 +52,7 @@
     "react-hook-form": "^7.54.2",
     "react-i18next": "^15.4.0",
     "react-native": "0.76.6",
+    "react-native-aes-crypto": "^3.2.1",
     "react-native-avoid-softinput": "^7.0.0",
     "react-native-date-picker": "git+https://github.com/badrey/react-native-date-picker.git#new-arc-fix",
     "react-native-gesture-handler": "~2.20.2",

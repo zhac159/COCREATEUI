@@ -4,22 +4,18 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { ChatType } from './chatType';
-import type { MediaType } from './mediaType';
 
 export interface MessageDTO {
-  id: string;
-  senderId: number;
-  targetId: number;
-  chatType: ChatType;
+  id?: string;
+  /** @nullable */
+  salt?: string | null;
+  chatId?: number;
+  senderId?: number;
   /** @nullable */
   content?: string | null;
   /** @nullable */
   uri?: string | null;
-  mediaType?: MediaType;
-  date: string;
+  date?: string;
   /** @nullable */
   replyMessageId?: string | null;
-  /** @minLength 1 */
-  chatId: string;
 }

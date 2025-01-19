@@ -52,6 +52,7 @@ const getStyles = (theme: Theme) =>
       justifyContent: "center",
     },
     icon: {
+      fontSize: 17,
       color: theme.colors.white,
     },
   });

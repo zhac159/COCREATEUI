@@ -1,5 +1,8 @@
 import { ChatDTO } from "@/api/model";
 import { createContext, useContext } from "react";
+import { useConnectionContext } from "./ConnectionProvider";
+import { useEncryption } from "../hooks/encryption/useEncryption";
+import { WebSocketInvocations } from "../constants/webSocketInvocations";
 
 type ChatProviderContextType = {
   chat: ChatDTO;
@@ -22,8 +25,11 @@ type ChatProviderProps = {
   chat: ChatDTO;
 };
 
-export function ChatProvider({ children, chat, symmetricKey }: ChatProviderProps) {
-
+export function ChatProvider({
+  children,
+  chat,
+  symmetricKey,
+}: ChatProviderProps) {
   return (
     <ChatContext.Provider value={{ chat, symmetricKey: symmetricKey }}>
       {children}

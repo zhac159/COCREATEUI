@@ -3069,10 +3069,10 @@
       "MessageCreateDTO": {
         "required": [
           "chatId",
-          "chatType",
           "date",
           "id",
-          "targetId"
+          "salt",
+          "targetUserIds"
         ],
         "type": "object",
         "properties": {
@@ -3080,12 +3080,20 @@
             "type": "string",
             "format": "uuid"
           },
-          "targetId": {
+          "salt": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "chatId": {
             "type": "integer",
             "format": "int32"
           },
-          "chatType": {
-            "$ref": "#/components/schemas/ChatType"
+          "targetUserIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           },
           "content": {
             "type": "string",
@@ -3095,9 +3103,6 @@
             "type": "string",
             "nullable": true
           },
-          "mediaType": {
-            "$ref": "#/components/schemas/MediaType"
-          },
           "date": {
             "type": "string",
             "format": "date-time"
@@ -3106,39 +3111,28 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
-          },
-          "chatId": {
-            "minLength": 1,
-            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "MessageDTO": {
-        "required": [
-          "chatId",
-          "chatType",
-          "date",
-          "id",
-          "senderId",
-          "targetId"
-        ],
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid"
           },
+          "salt": {
+            "type": "string",
+            "nullable": true
+          },
+          "chatId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "senderId": {
             "type": "integer",
             "format": "int32"
-          },
-          "targetId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "chatType": {
-            "$ref": "#/components/schemas/ChatType"
           },
           "content": {
             "type": "string",
@@ -3148,9 +3142,6 @@
             "type": "string",
             "nullable": true
           },
-          "mediaType": {
-            "$ref": "#/components/schemas/MediaType"
-          },
           "date": {
             "type": "string",
             "format": "date-time"
@@ -3159,10 +3150,6 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
-          },
-          "chatId": {
-            "minLength": 1,
-            "type": "string"
           }
         },
         "additionalProperties": false

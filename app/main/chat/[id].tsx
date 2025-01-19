@@ -1,42 +1,40 @@
-import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import { useChat } from "@/common/contexts/ChatProvider";
 import { ChatInput } from "@/components/Chat/ChatInput";
-import { Theme } from "@react-navigation/native";
-import { StyleSheet, TextInput } from "react-native";
+import {
+  chatAnimatedStyles,
+  useChatAnimatedStyles,
+} from "@/components/Chat/hooks/useChatAnimatedStyles";
 import { View } from "react-native";
+import Animated from "react-native-reanimated";
 
 export default function Index() {
   const { chat, symmetricKey } = useChat();
-
+  const { fakeView, scrollViewStyle, textInputStyle } = useChatAnimatedStyles();
+  
   return (
-    <ScrollViewWrapper contentContainerStyle={styles.container}>
-      <ChatInput />
-    </ScrollViewWrapper>
+    <View style={chatAnimatedStyles.container}>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        style={scrollViewStyle}
+      >
+        <View style={chatAnimatedStyles.inverted}>
+          <Animated.View style={fakeView} />
+          {[...Array(100).keys()].map((i) => (
+            <View
+              key={i}
+              style={{
+                height: 50,
+                marginVertical: 10,
+                width: "90%",
+                backgroundColor: i % 2 === 0 ? "red" : "blue",
+              }}
+            />
+          ))}
+        </View>
+      </Animated.ScrollView>
+      <Animated.View style={textInputStyle}>
+        <ChatInput />
+      </Animated.View>
+    </View>
   );
 }
-
-const getStyles = (theme: Theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "transparent",
-    },
-  });
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "red",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    // justifyContent: "flex-end",
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-  row: {
-    flexDirection: "row",
-  },
-});
