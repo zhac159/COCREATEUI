@@ -50,7 +50,7 @@ export function AsymmetricKeyProvider({
     })();
   }, [verifyKeyPair]);
 
-  if (localPrivateKey === null || localPublicKey === null) {
+  if (!localPrivateKey || !localPublicKey) {
     return null;
   }
 

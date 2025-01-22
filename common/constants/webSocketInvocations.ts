@@ -5,6 +5,8 @@ export enum WebSocketInvocations {
   GetEncryptedKeyExchangesAsync = "GetEncryptedKeyExchangesAsync",
   AknowledgeEncryptedKeyExchangeAsync = "AknowledgeEncryptedKeyExchangeAsync",
   SendMessageAsync = "SendMessageAsync",
+  GetMessagesAsync = "GetMessagesAsync",
+  AknowledgeMessagesAsync = "AknowledgeMessagesAsync",
 }
 
 export type WebSocketMessage = {
@@ -12,4 +14,6 @@ export type WebSocketMessage = {
   [WebSocketInvocations.GetEncryptedKeyExchangesAsync]: null;
   [WebSocketInvocations.AknowledgeEncryptedKeyExchangeAsync]: string[];
   [WebSocketInvocations.SendMessageAsync]: MessageCreateDTO;
+  [WebSocketInvocations.GetMessagesAsync]: null;
+  [WebSocketInvocations.AknowledgeMessagesAsync]: string[];
 };

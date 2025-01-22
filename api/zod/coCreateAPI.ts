@@ -320,13 +320,13 @@ export const postApiEnquirySendMessageBody = zod.object({
 export const postApiEnquirySendMessageResponse = zod.object({
   "success": zod.boolean().optional(),
   "data": zod.object({
-  "id": zod.string().uuid().optional(),
-  "salt": zod.string().nullish(),
-  "chatId": zod.number().optional(),
-  "senderId": zod.number().optional(),
+  "id": zod.string().uuid(),
+  "salt": zod.string().min(1),
+  "chatId": zod.number(),
+  "senderId": zod.number(),
   "content": zod.string().nullish(),
   "uri": zod.string().nullish(),
-  "date": zod.string().datetime().optional(),
+  "date": zod.string().datetime(),
   "replyMessageId": zod.string().uuid().nullish()
 }).optional(),
   "error": zod.string().nullish()

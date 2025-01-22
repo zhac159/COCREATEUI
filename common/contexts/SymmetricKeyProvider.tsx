@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, FC, useContext } from "react";
 import { useConnectionContext } from "./ConnectionProvider";
 import { useAsymmetricKey } from "./AsymmetricKeyProvider";
 import { useEncryption } from "../hooks/encryption/useEncryption";
@@ -24,11 +24,13 @@ export const useSymmetricKey = () => {
   return context;
 };
 
-export function SymmetricKeyProvider({
-  children,
-}: {
+type SymmetricKeyProviderProps = {
   children: React.ReactNode;
-}) {
+};
+
+export const SymmetricKeyProvider: FC<SymmetricKeyProviderProps> = ({
+  children,
+}) => {
   const { sendWebSocketMessage, setupWebSocketConnection } =
     useConnectionContext();
   const { generateAndStoreSymmetricKey, storeSymmetricKey, getSymmetricKey } =
@@ -55,6 +57,7 @@ export function SymmetricKeyProvider({
         WebSocketInvocations.AknowledgeEncryptedKeyExchangeAsync,
         receivedKeys
       );
+      await sendWebSocketMessage(WebSocketInvocations.GetMessagesAsync, null);
     }
   );
 
@@ -111,4 +114,4 @@ export function SymmetricKeyProvider({
       {children}
     </SymmetricKeyContext.Provider>
   );
-}
+};

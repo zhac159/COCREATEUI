@@ -2,7 +2,7 @@ import { Coins } from "@/common/components/Coins";
 import { ProfilePicture } from "@/common/components/ProfilePicture";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import StyledText from "@/common/components/StyledComponents/StyledText";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, ViewProps } from "react-native";

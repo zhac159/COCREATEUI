@@ -1,6 +1,6 @@
 import { ChatDTO } from "@/api/model";
 import { ChatType } from "../constants/skill/chatType";
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from "../stores/authStore/authStore";
 
   export const filterMemebers = (createKeyExchange: ChatDTO) => {
 

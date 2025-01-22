@@ -2,18 +2,18 @@ import { SQLiteDatabase } from "expo-sqlite";
 
 const migration1 = `
   CREATE TABLE IF NOT EXISTS messages (
+    userId INTEGER NOT NULL,
     id TEXT PRIMARY KEY NOT NULL,
-    chatId TEXT NOT NULL,
-    date TEXT NOT NULL,
+    chatId INTEGER NOT NULL,
     senderId INTEGER NOT NULL,
+    date TEXT NOT NULL,
     content TEXT,
     uri TEXT,
-    mediaType INTEGER,
     replyMessageId TEXT
   );
 
-  CREATE INDEX IF NOT EXISTS idx_messages_chatId ON messages (chatId);
-  CREATE INDEX IF NOT EXISTS idx_messages_date ON messages (date DESC);
+  CREATE INDEX IF NOT EXISTS idx_messages_chat_user ON messages (chatId, userId);
+  CREATE INDEX IF NOT EXISTS idx_messages_date_user ON messages (date DESC, userId);
 
   CREATE TABLE IF NOT EXISTS messageReactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

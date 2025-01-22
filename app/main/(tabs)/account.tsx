@@ -7,7 +7,7 @@ import { AddButton } from "@/common/components/AddButton";
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { StyledTitle } from "@/common/components/StyledComponents/StyledTitle";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { EditAccountAndInfo } from "@/components/Main/Tabs/Account/EditAccountAndInfo";
 import { ManageProjects } from "@/components/Main/Tabs/Account/ManageProjects";

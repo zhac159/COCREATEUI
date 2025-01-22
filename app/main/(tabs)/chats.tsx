@@ -1,6 +1,6 @@
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import { StyledTitle } from "@/common/components/StyledComponents/StyledTitle";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { ChatPreviewInfo } from "@/common/types/ChatPreviewInfo";
 import { ChatPreview } from "@/components/Main/Tabs/Chats/ChatPreview";

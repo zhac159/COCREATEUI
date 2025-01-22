@@ -1,7 +1,7 @@
 import { LoginResponseDTO } from "@/api/model";
 import SecureStoreKeys from "@/common/constants/secureStoreKeys";
 import { useSecureStorage } from "@/common/hooks/useSecureStorage";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import { useConnectionContext } from "@/common/contexts/ConnectionProvider";
 import { router } from "expo-router";
 import { useCallback } from "react";

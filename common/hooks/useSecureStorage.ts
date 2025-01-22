@@ -1,6 +1,6 @@
 import SecureStoreKeys from "@/common/constants/secureStoreKeys";
 import * as SecureStore from "expo-secure-store";
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from "../stores/authStore/authStore";
 
 type KeyOptions = {
   keyAdditions?: (string | number)[];

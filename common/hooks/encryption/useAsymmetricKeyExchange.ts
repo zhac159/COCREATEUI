@@ -4,19 +4,19 @@ import * as Crypto from "expo-crypto";
 import { Buffer } from "buffer";
 import SecureStoreKeys from "@/common/constants/secureStoreKeys";
 import { usePutApiUserPublicKey } from "@/api/endpoints/cocreateApi";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import { useCallback, useState } from "react";
 
 export const useAsymmetricKeyExchange = () => {
-  const { setSecureValue, getSecureValue } = useSecureStorage();
-
-  const [localPublicKey, setLocalPublicKey] = useState<string>("");
-  const [localPrivateKey, setLocalPrivateKey] = useState<string>("");
-
   const { mutate: setServerPublicKey } = usePutApiUserPublicKey();
 
   const userId = useAuthStore((state) => state.auth.userId);
   const publicKey = useAuthStore((state) => state.auth.publicKey);
+
+  const { setSecureValue, getSecureValue } = useSecureStorage();
+
+  const [localPublicKey, setLocalPublicKey] = useState<string>("");
+  const [localPrivateKey, setLocalPrivateKey] = useState<string>("");
 
   const toBase64 = (arr: Uint8Array) => {
     return Buffer.from(arr).toString("base64");
@@ -91,12 +91,12 @@ export const useAsymmetricKeyExchange = () => {
     nonce: string,
     senderPublicKey: string
   ) => {
-      const decrypted = nacl.box.open(
-        fromBase64(message),
-        fromBase64(nonce),
-        fromBase64(senderPublicKey),
-        fromBase64(localPrivateKey)
-      );
+    const decrypted = nacl.box.open(
+      fromBase64(message),
+      fromBase64(nonce),
+      fromBase64(senderPublicKey),
+      fromBase64(localPrivateKey)
+    );
     if (!decrypted) throw new Error("Decryption failed");
     return Buffer.from(decrypted).toString();
   };

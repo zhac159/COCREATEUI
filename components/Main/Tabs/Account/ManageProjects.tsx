@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View } from "react-native";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import { ManageProject } from "./ManageProject";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";

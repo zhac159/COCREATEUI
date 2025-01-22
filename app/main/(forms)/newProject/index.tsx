@@ -15,7 +15,7 @@ import {
   usePostApiProjectUpdate,
 } from "@/api/endpoints/cocreateApi";
 import { router } from "expo-router";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 
 export default function Index() {
   const { t } = useTranslation();

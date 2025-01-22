@@ -1,4 +1,5 @@
 import { useChat } from "@/common/contexts/ChatProvider";
+import { useMessagesStore } from "@/common/stores/messagesStore";
 import { ChatInput } from "@/components/Chat/ChatInput";
 import {
   chatAnimatedStyles,
@@ -10,6 +11,9 @@ import Animated from "react-native-reanimated";
 export default function Index() {
   const { chat, symmetricKey } = useChat();
   const { fakeView, scrollViewStyle, textInputStyle } = useChatAnimatedStyles();
+  const messages = useMessagesStore((state) => state.messages);
+
+  console.log(messages);
   
   return (
     <View style={chatAnimatedStyles.container}>

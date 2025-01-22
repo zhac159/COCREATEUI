@@ -17,12 +17,12 @@ export const useSendMessage = () => {
     );
     sendWebSocketMessage(WebSocketInvocations.SendMessageAsync, {
       chatId: chat.id,
-      content: cipher,
       date: new Date().toISOString(),
       id: await getRandomUUID(),
       replyMessageId: null,
       salt: salt,
       targetUserIds: memberIds,
+      content: cipher,
       uri: null,
     });
   };

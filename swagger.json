@@ -3116,6 +3116,13 @@
         "additionalProperties": false
       },
       "MessageDTO": {
+        "required": [
+          "chatId",
+          "date",
+          "id",
+          "salt",
+          "senderId"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -3123,8 +3130,8 @@
             "format": "uuid"
           },
           "salt": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "chatId": {
             "type": "integer",

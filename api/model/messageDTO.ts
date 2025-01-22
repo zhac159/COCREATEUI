@@ -6,16 +6,16 @@
  */
 
 export interface MessageDTO {
-  id?: string;
-  /** @nullable */
-  salt?: string | null;
-  chatId?: number;
-  senderId?: number;
+  id: string;
+  /** @minLength 1 */
+  salt: string;
+  chatId: number;
+  senderId: number;
   /** @nullable */
   content?: string | null;
   /** @nullable */
   uri?: string | null;
-  date?: string;
+  date: string;
   /** @nullable */
   replyMessageId?: string | null;
 }

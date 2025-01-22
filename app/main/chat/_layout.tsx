@@ -1,5 +1,5 @@
 import { ChatProvider } from "@/common/contexts/ChatProvider";
-import { useAuthStore } from "@/common/stores/authStore";
+import { useAuthStore } from "@/common/stores/authStore/authStore";
 import { useTheme } from "@react-navigation/native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useShallow } from "zustand/shallow";
