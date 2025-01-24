@@ -66,6 +66,7 @@ export const useEncryption = () => {
       chatId: messageDto.chatId,
       senderId: messageDto.senderId,
       date: messageDto.date,
+      replyMessageId: messageDto.replyMessageId || undefined,
     };
 
     const symmetricKey = await getSymmetricKey(message.chatId);

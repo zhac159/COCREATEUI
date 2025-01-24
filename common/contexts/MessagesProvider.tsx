@@ -1,4 +1,11 @@
-import { createContext, FC, ReactNode, useContext, useEffect } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useConnectionContext } from "./ConnectionProvider";
 import { WebSocketConnections } from "../constants/webSocketConnections";
 import { WebSocketInvocations } from "../constants/webSocketInvocations";
@@ -26,36 +33,24 @@ export const MessagesProvider: FC<MessagesProviderProps> = ({ children }) => {
   const addInitialMessages = useMessagesStore(
     (state) => state.addInitialMessages
   );
-  const { addDbMessages, getDbMessages } = useDatabase();
-  const { decryptChatMessage } = useEncryption();
-  const { setupWebSocketConnection, sendWebSocketMessage } =
-    useConnectionContext();
+
+  const [isLoadingInitialMessages, setIsLoadingInitialMessages] =
+    useState(true);
+
+  const { getDbMessagesByChat } = useDatabase();
 
   useEffect(() => {
     const getInitialMessages = async () => {
-      const message = await getDbMessages("dsa");
-      console.log(message);
+      const message = await getDbMessagesByChat();
       addInitialMessages(message);
+      setIsLoadingInitialMessages(false);
     };
     getInitialMessages();
   }, []);
 
-  setupWebSocketConnection(
-    WebSocketConnections.ReceiveMessages,
-    async (data) => {
-      const messages = await Promise.all(
-        data.map(async (messageDto) => {
-          const message = await decryptChatMessage(messageDto);
-          return message;
-        })
-      );
-      addDbMessages(messages);
-      sendWebSocketMessage(
-        WebSocketInvocations.AknowledgeMessagesAsync,
-        messages.map((message) => message.id)
-      );
-    }
-  );
+  if (isLoadingInitialMessages) {
+    return null;
+  }
 
   return (
     <MessagesContext.Provider value={{}}>{children}</MessagesContext.Provider>

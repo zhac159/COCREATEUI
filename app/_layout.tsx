@@ -14,6 +14,7 @@ import "react-native-reanimated";
 import "react-native-get-random-values";
 import "./../i18n";
 import { FontAwesome } from "@expo/vector-icons";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,27 +41,29 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ConnectionProvider>
         <QueryClientProvider client={queryClient}>
-          <KeyboardProvider navigationBarTranslucent statusBarTranslucent>
-            <ThemeProvider value={LightTheme}>
-              <StatusBar backgroundColor={"transparent"} translucent />
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  statusBarTranslucent: true,
-                  statusBarBackgroundColor: "transparent",
-                  navigationBarTranslucent: true,
-                  navigationBarColor: "transparent",
-                  contentStyle: {
-                    touchAction: "none",
-                    backgroundColor: "transparent",
-                  },
-                }}
-              >
-                <Stack.Screen name="index" />
-                <Stack.Screen name="signIn" />
-              </Stack>
-            </ThemeProvider>
-          </KeyboardProvider>
+          <GestureHandlerRootView>
+            <KeyboardProvider navigationBarTranslucent statusBarTranslucent>
+              <ThemeProvider value={LightTheme}>
+                <StatusBar backgroundColor={"transparent"} translucent />
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    statusBarTranslucent: true,
+                    statusBarBackgroundColor: "transparent",
+                    navigationBarTranslucent: true,
+                    navigationBarColor: "transparent",
+                    contentStyle: {
+                      touchAction: "none",
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  <Stack.Screen name="index" />
+                  <Stack.Screen name="signIn" />
+                </Stack>
+              </ThemeProvider>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
         </QueryClientProvider>
       </ConnectionProvider>
     </SafeAreaProvider>

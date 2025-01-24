@@ -2,7 +2,6 @@ import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
 import { StyledTitle } from "@/common/components/StyledComponents/StyledTitle";
 import { useAuthStore } from "@/common/stores/authStore/authStore";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
-import { ChatPreviewInfo } from "@/common/types/ChatPreviewInfo";
 import { ChatPreview } from "@/components/Main/Tabs/Chats/ChatPreview";
 import { Theme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
@@ -14,18 +13,12 @@ export default function Chats() {
 
   const chats = useAuthStore((state) => state.auth.chats);
 
-  const firstChat: ChatPreviewInfo = {
-    ...chats[0],
-    lastMessage:
-      "loren ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    lastMessageDate:
-      "loren ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-  };
-
   return (
     <ScrollViewWrapper contentContainerStyle={styles.container}>
       <StyledTitle text={t("chats.title")} />
-      <ChatPreview chat={firstChat} />
+      {chats.map((chat) => (
+        <ChatPreview key={chat.id} chat={chat} />
+      ))}
     </ScrollViewWrapper>
   );
 }

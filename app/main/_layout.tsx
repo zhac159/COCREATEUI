@@ -1,4 +1,5 @@
 import { AsymmetricKeyProvider } from "@/common/contexts/AsymmetricKeyProvider";
+import { MessageConnectionProvider } from "@/common/contexts/MessageConnectionProvider";
 import { MessagesProvider } from "@/common/contexts/MessagesProvider";
 import { SymmetricKeyProvider } from "@/common/contexts/SymmetricKeyProvider";
 import { migrateDbIfNeeded } from "@/common/database/migrations";
@@ -13,23 +14,25 @@ export default function MainLayout() {
       <AsymmetricKeyProvider>
         <SymmetricKeyProvider>
           <MessagesProvider>
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                statusBarTranslucent: true,
-                statusBarBackgroundColor: "transparent",
-                navigationBarTranslucent: true,
-                navigationBarColor: "transparent",
-                contentStyle: {
-                  touchAction: "none",
-                  backgroundColor: theme.colors.backgroundColor,
-                },
-              }}
-            >
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="(forms)" />
-              <Stack.Screen name="chat" />
-            </Stack>
+            <MessageConnectionProvider>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  statusBarTranslucent: true,
+                  statusBarBackgroundColor: "transparent",
+                  navigationBarTranslucent: true,
+                  navigationBarColor: "transparent",
+                  contentStyle: {
+                    touchAction: "none",
+                    backgroundColor: theme.colors.backgroundColor,
+                  },
+                }}
+              >
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="(forms)" />
+                <Stack.Screen name="chat" />
+              </Stack>
+            </MessageConnectionProvider>
           </MessagesProvider>
         </SymmetricKeyProvider>
       </AsymmetricKeyProvider>

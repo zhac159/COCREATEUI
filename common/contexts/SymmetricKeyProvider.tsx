@@ -52,11 +52,11 @@ export const SymmetricKeyProvider: FC<SymmetricKeyProviderProps> = ({
           return keyExchange.id;
         })
       );
-
       await sendWebSocketMessage(
         WebSocketInvocations.AknowledgeEncryptedKeyExchangeAsync,
         receivedKeys
       );
+
       await sendWebSocketMessage(WebSocketInvocations.GetMessagesAsync, null);
     }
   );

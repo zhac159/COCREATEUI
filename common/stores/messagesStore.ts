@@ -3,21 +3,42 @@ import { Message } from "../types/Message";
 
 type MessagesState = {
   messages: Map<number, Message[]>;
-  addInitialMessages: (messages: Message[]) => void;
+  addInitialMessages: (messages: Map<number, Message[]>) => void;
+  addMessages: (messages: Message[], before?: boolean) => void;
+  getChatMessages: (chatId: number) => Message[];
+  getLastChatMessages: (chatId: number) => Message | undefined;
 };
 
-export const useMessagesStore = create<MessagesState>((set) => ({
+export const useMessagesStore = create<MessagesState>((set, get) => ({
   messages: new Map(),
 
-  addInitialMessages: (messages) =>
-    set(() => {
-      const newMessages = new Map<number, Message[]>();
+  addInitialMessages(messages) {
+    set((state) => {
+      return {
+        messages: new Map([...state.messages, ...messages]),
+      };
+    });
+  },
+  addMessages(messages, boolean) {
+    set((state) => {
       for (const message of messages) {
-        if (!newMessages.has(message.chatId)) {
-          newMessages.set(message.chatId, []);
+        const chatMessages = state.messages.get(message.chatId) || [];
+        let newMessages = [...chatMessages, message];
+        if(boolean) {
+          newMessages = [message, ...chatMessages];
         }
-        newMessages.get(message.chatId)?.push(message);
+        state.messages.set(message.chatId, newMessages);
       }
-      return { messages: newMessages };
-    }),
+      return {
+        messages: state.messages,
+      };
+    });
+  },
+  getChatMessages(chatId) {
+    return get().messages.get(chatId) || [];
+  },
+  getLastChatMessages(chatId) {
+    const messages = get().messages.get(chatId) || [];
+    return messages[messages.length - 1] || undefined;
+  },
 }));

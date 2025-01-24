@@ -1,33 +1,34 @@
-import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
-import { useAnimatedStyle } from "react-native-reanimated";
-import { StyleSheet } from "react-native";
+import {
+  useReanimatedKeyboardAnimation,
+  useKeyboardHandler,
+} from "react-native-keyboard-controller";
+import {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  interpolate,
+  runOnJS,
+  useAnimatedScrollHandler,
+} from "react-native-reanimated";
+import { Keyboard, StyleSheet } from "react-native";
+import { generalPadding } from "@/common/constants/generalPadding";
+import { Gesture } from "react-native-gesture-handler";
+import { windowHeight } from "@/common/constants/windowDimensions";
 
 export const useChatAnimatedStyles = () => {
-  const { height: platform } = useReanimatedKeyboardAnimation();
-  const scrollViewStyle = useAnimatedStyle(
-    () => ({
-      transform: [
-        { translateY: platform.value },
-        ...chatAnimatedStyles.inverted.transform,
-      ],
-    }),
-    []
-  );
-  const textInputStyle = useAnimatedStyle(
-    () => ({
-      width: "100%",
-      transform: [{ translateY: platform.value }],
-    }),
-    []
-  );
-  const fakeView = useAnimatedStyle(
-    () => ({
-      height: Math.abs(platform.value),
-    }),
-    []
-  );
+  // Current keyboard height from react-native-keyboard-controller
+  const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
 
-  return { scrollViewStyle, textInputStyle, fakeView };
+  const scrollViewStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: keyboardHeight.value }, ...chatAnimatedStyles.inverted.transform],
+  }));
+
+  const textInputStyle = useAnimatedStyle(() => ({
+    width: "100%",
+    transform: [{ translateY: keyboardHeight.value }],
+  }));
+
+  return { scrollViewStyle, textInputStyle };
 };
 
 export const chatAnimatedStyles = StyleSheet.create({
@@ -40,10 +41,9 @@ export const chatAnimatedStyles = StyleSheet.create({
     marginRight: 12,
   },
   inverted: {
-    transform: [
-      {
-        rotate: "180deg",
-      },
-    ],
+    marginBottom: 200,
+    marginTop: 20,
+    paddingHorizontal: generalPadding,
+    transform: [{ rotate: "180deg" }],
   },
 });

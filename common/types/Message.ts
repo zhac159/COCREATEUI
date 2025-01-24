@@ -6,4 +6,5 @@ export type Message = {
   content?: string;
   uri?: string;
   replyMessageId?: string;
+  replyMessage?: Message;
 };

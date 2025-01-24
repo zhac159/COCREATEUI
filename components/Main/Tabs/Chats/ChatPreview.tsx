@@ -2,15 +2,16 @@ import { FC } from "react";
 import { StyleSheet, View, ViewProps } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
-import { ChatPreviewInfo } from "@/common/types/ChatPreviewInfo";
 import StyledText from "@/common/components/StyledComponents/StyledText";
 import { ProfilePicture } from "@/common/components/ProfilePicture";
 import { generalPadding } from "@/common/constants/generalPadding";
 import { StyledTouchableOpacity } from "@/common/components/StyledComponents/StyledTouchableOpacity";
 import { useSymmetricKey } from "@/common/contexts/SymmetricKeyProvider";
+import { useMessagesStore } from "@/common/stores/messagesStore";
+import { ChatDTO } from "@/api/model";
 
 type ChatPreviewProps = ViewProps & {
-  chat: ChatPreviewInfo;
+  chat: ChatDTO;
 };
 
 export const ChatPreview: FC<ChatPreviewProps> = ({
@@ -22,6 +23,10 @@ export const ChatPreview: FC<ChatPreviewProps> = ({
   const styles = useThemedStyles(getStyles);
   const profilePicture = "https://i.pravatar.cc/300";
 
+  const lastMessage = useMessagesStore((state) =>
+    state.getLastChatMessages(chat.id)
+  );
+
   return (
     <StyledTouchableOpacity
       style={[styles.container, style]}
@@ -31,11 +36,13 @@ export const ChatPreview: FC<ChatPreviewProps> = ({
       <ProfilePicture source={profilePicture} style={styles.profilePicture} />
       <View style={styles.nameAndMessage}>
         <StyledText text={"chat.groupChatName"} secondary style={styles.name} />
-        <StyledText
-          text={chat.lastMessage}
-          style={styles.message}
-          numberOfLines={2}
-        />
+        {lastMessage && lastMessage.content && (
+          <StyledText
+            text={lastMessage.content}
+            style={styles.message}
+            numberOfLines={2}
+          />
+        )}
       </View>
     </StyledTouchableOpacity>
   );
