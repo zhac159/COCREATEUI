@@ -1,12 +1,12 @@
-import { ChatDTO } from "@/api/model";
+import { ChatDTO, ChatMemberDTO } from "@/api/model";
+import { useDecomposeChat } from "@/components/Chat/hooks/useDecomposeChat";
 import { createContext, useContext } from "react";
-import { useConnectionContext } from "./ConnectionProvider";
-import { useEncryption } from "../hooks/encryption/useEncryption";
-import { WebSocketInvocations } from "../constants/webSocketInvocations";
 
 type ChatProviderContextType = {
   chat: ChatDTO;
   symmetricKey: string;
+  memberIds: number[];
+  userIdToMember: Map<number, ChatMemberDTO>;
 };
 
 const ChatContext = createContext<ChatProviderContextType | null>(null);
@@ -30,8 +30,12 @@ export function ChatProvider({
   chat,
   symmetricKey,
 }: ChatProviderProps) {
+  const { memberIds, userIdToMember } = useDecomposeChat(chat);
+
   return (
-    <ChatContext.Provider value={{ chat, symmetricKey: symmetricKey }}>
+    <ChatContext.Provider
+      value={{ chat, symmetricKey, memberIds, userIdToMember }}
+    >
       {children}
     </ChatContext.Provider>
   );

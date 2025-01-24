@@ -12,7 +12,7 @@ import {
 export type StyledTextProps = TextProps & {
   color?: string;
   fontSize?: number;
-  text: string;
+  text?: string;
   weight?: "900" | "700" | "500" | "400" | "300";
   secondary?: boolean;
   error?: boolean;

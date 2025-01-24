@@ -2,7 +2,7 @@ import { useAuthStore } from "@/common/stores/authStore/authStore";
 import { Message } from "@/common/types/Message";
 import { useSQLiteContext } from "expo-sqlite";
 
-const messagesPerQuery = 25;
+const messagesPerQuery = 200;
 
 export const useDatabase = () => {
   const db = useSQLiteContext();
@@ -53,14 +53,13 @@ export const useDatabase = () => {
 
       const enrinchedMessages = await enrichMessages(lastFifteen);
 
-      messagesByChat.set(chatIdRow.chatId, enrinchedMessages.reverse());
+      messagesByChat.set(chatIdRow.chatId, enrinchedMessages);
     }
 
     return messagesByChat;
   };
 
   const getDbMessagesBefore = async (chatId: number, message: Message) => {
-    console.log("chatId", chatId);
     const messages = await db.getAllAsync<Message>(
       `SELECT * FROM messages
        WHERE userId = ? AND chatId = ? AND date < ?
@@ -68,9 +67,6 @@ export const useDatabase = () => {
        LIMIT ${messagesPerQuery}`,
       [userId, chatId, message.date]
     );
-
-    console.log("messages", messages);
-
     return enrichMessages(messages);
   };
 

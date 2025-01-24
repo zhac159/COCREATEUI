@@ -15,7 +15,7 @@ export default function ChatLayout() {
   const { id, symmetricKey } = useLocalSearchParams<IndexParams>();
   const intId = parseInt(id);
   const chat = useAuthStore(
-    useShallow((state) => state.getChatWithFilteredMembersById(intId))
+    useShallow((state) => state.getChatById(intId))
   );
 
 

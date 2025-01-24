@@ -70,13 +70,19 @@ export const useEncryption = () => {
     };
 
     const symmetricKey = await getSymmetricKey(message.chatId);
+    
     if (symmetricKey && messageDto.content) {
-      const decryptedMessage = await decryptSymmetricMessage(
-        messageDto.content,
-        symmetricKey,
-        messageDto.salt
-      );
-      message.content = decryptedMessage;
+      try {
+        const decryptedMessage = await decryptSymmetricMessage(
+          messageDto.content,
+          symmetricKey,
+          messageDto.salt
+        );
+        message.content = decryptedMessage;
+        
+      } catch (error) {
+        console.log("Error decrypting message", error);
+      }
     }
     return message;
   };

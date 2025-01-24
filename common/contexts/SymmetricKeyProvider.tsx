@@ -6,6 +6,7 @@ import { WebSocketInvocations } from "../constants/webSocketInvocations";
 import { ChatDTO } from "@/api/model";
 import { WebSocketConnections } from "../constants/webSocketConnections";
 import { router } from "expo-router";
+import { useAuthStore } from "../stores/authStore/authStore";
 
 type SymmetricContextType = {
   createAndExchangeKeyIfNotExist: (chat: ChatDTO) => Promise<string>;
@@ -31,6 +32,7 @@ type SymmetricKeyProviderProps = {
 export const SymmetricKeyProvider: FC<SymmetricKeyProviderProps> = ({
   children,
 }) => {
+  const userId = useAuthStore((state) => state.auth.userId);
   const { sendWebSocketMessage, setupWebSocketConnection } =
     useConnectionContext();
   const { generateAndStoreSymmetricKey, storeSymmetricKey, getSymmetricKey } =
@@ -75,20 +77,22 @@ export const SymmetricKeyProvider: FC<SymmetricKeyProviderProps> = ({
     const symmetricKey = await generateAndStoreSymmetricKey(chat.id);
 
     const encyptedKeyExchanges = await Promise.all(
-      chat.chatMembers.map(async (member) => {
-        const { message, nonce } = await encryptMessageAsymmetric(
-          symmetricKey,
-          member.publicKey
-        );
+      chat.chatMembers
+        .filter((cm) => cm.userId !== userId)
+        .map(async (member) => {
+          const { message, nonce } = await encryptMessageAsymmetric(
+            symmetricKey,
+            member.publicKey
+          );
 
-        return {
-          chatId: chat.id,
-          encryptedSymmetricKey: message,
-          nonce: nonce,
-          publicKey: publicKey,
-          targetUserId: member.userId,
-        };
-      })
+          return {
+            chatId: chat.id,
+            encryptedSymmetricKey: message,
+            nonce: nonce,
+            publicKey: publicKey,
+            targetUserId: member.userId,
+          };
+        })
     );
 
     await sendWebSocketMessage(

@@ -23,9 +23,9 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
     set((state) => {
       for (const message of messages) {
         const chatMessages = state.messages.get(message.chatId) || [];
-        let newMessages = [...chatMessages, message];
+        let newMessages = [message, ...chatMessages];
         if(boolean) {
-          newMessages = [message, ...chatMessages];
+          newMessages = [...chatMessages, message];
         }
         state.messages.set(message.chatId, newMessages);
       }
@@ -39,6 +39,6 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
   },
   getLastChatMessages(chatId) {
     const messages = get().messages.get(chatId) || [];
-    return messages[messages.length - 1] || undefined;
+    return messages[0] || undefined;
   },
 }));

@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSendMessage } from "./hooks/useSendMessage";
 import { Message } from "@/common/types/Message";
 import { ChatInputButton } from "./ChatInputButton";
-import { MessageBubble } from "./MessageBubble";
+import MessageBubble from "./MessageBubble";
 
 type ChatInputProps = {
   replyingMessage: Message | null;

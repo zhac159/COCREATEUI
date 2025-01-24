@@ -1,19 +1,11 @@
 import {
   useReanimatedKeyboardAnimation,
-  useKeyboardHandler,
 } from "react-native-keyboard-controller";
 import {
   useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  interpolate,
-  runOnJS,
-  useAnimatedScrollHandler,
 } from "react-native-reanimated";
-import { Keyboard, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { generalPadding } from "@/common/constants/generalPadding";
-import { Gesture } from "react-native-gesture-handler";
-import { windowHeight } from "@/common/constants/windowDimensions";
 
 export const useChatAnimatedStyles = () => {
   // Current keyboard height from react-native-keyboard-controller
