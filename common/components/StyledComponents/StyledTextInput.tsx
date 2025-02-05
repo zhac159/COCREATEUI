@@ -36,6 +36,7 @@ export const StyledTextInput: FC<StyledTextInputProps> = ({
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
+      width: "100%",
       gap: 10,
     },
     textInput: {

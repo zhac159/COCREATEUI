@@ -25,7 +25,6 @@ export const MessageConnectionProvider: FC<MessageConnectionProviderProps> = ({
       const messages = await Promise.all(
         data.map(async (messageDto) => {
           const message = await decryptChatMessage(messageDto);
-          console.log(message);
           return message;
         })
       );

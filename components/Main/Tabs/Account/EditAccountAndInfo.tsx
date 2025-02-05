@@ -3,6 +3,7 @@ import { ProfilePicture } from "@/common/components/ProfilePicture";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import StyledText from "@/common/components/StyledComponents/StyledText";
 import { useAuthStore } from "@/common/stores/authStore/authStore";
+import { router } from "expo-router";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, ViewProps } from "react-native";
@@ -22,9 +23,13 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
       <View style={styles.nameButtonContainer}>
         <StyledText text={"auth.username"} style={styles.name} secondary />
         <StyledButton
-          text={t("account.edit-profile")}
+          text={t("account.edit-profile-button")}
           style={styles.editButton}
-          onPress={() => console.log("Edit Account")}
+          onPress={() =>
+            router.push({
+              pathname: "/main/(forms)/editProfile",
+            })
+          }
           icon="pen"
         />
       </View>

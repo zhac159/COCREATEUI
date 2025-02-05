@@ -70,6 +70,27 @@ export const useDatabase = () => {
     return enrichMessages(messages);
   };
 
+  const getDbMessagesFromSpecificMessage = async (
+    chatId: number,
+    message: Message
+  ) => {
+    const messages = await db.getAllAsync<Message>(
+      `SELECT * FROM messages 
+       WHERE userId = ? AND chatId = ? AND date < ?
+       ORDER BY date DESC
+       LIMIT 10
+       UNION ALL
+       SELECT * FROM messages
+       WHERE userId = ? AND chatId = ? AND date >= ?
+       ORDER BY date DESC`,
+      [
+        userId, chatId, message.date,  // For messages before
+        userId, chatId, message.date   // For messages after
+      ]
+    );
+    return enrichMessages(messages);
+  };
+
   const enrichMessages = async (messages: Message[]) => {
     const replyMessageIds = messages
       .filter((m) => m.replyMessageId)
@@ -97,5 +118,6 @@ export const useDatabase = () => {
     addDbMessages,
     getDbMessagesByChat,
     getDbMessagesBefore,
+    getDbMessagesFromSpecificMessage,
   };
 };

@@ -7,6 +7,7 @@ type MessagesState = {
   addMessages: (messages: Message[], before?: boolean) => void;
   getChatMessages: (chatId: number) => Message[];
   getLastChatMessages: (chatId: number) => Message | undefined;
+  setChatMessages: (chatId: number, messages: Message[]) => void;
 };
 
 export const useMessagesStore = create<MessagesState>((set, get) => ({
@@ -40,5 +41,13 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
   getLastChatMessages(chatId) {
     const messages = get().messages.get(chatId) || [];
     return messages[0] || undefined;
+  },
+  setChatMessages(chatId, messages) {
+    set((state) => {
+      state.messages.set(chatId, messages);
+      return {
+        messages: state.messages,
+      };
+    });
   },
 }));

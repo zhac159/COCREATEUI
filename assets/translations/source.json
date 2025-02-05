@@ -220,8 +220,18 @@
   "chats":{
     "title": "Chats"
   },
+  "edit-profile":{
+    "title": "Edit Profile",
+    "location": "Location",
+    "skills": "Skills",
+    "availablity": "Availablity",
+    "portfolio": "Portfolio",
+    "preview": "Preview",
+    "about-you-placeholder": "About You...",
+    "username-placeholder": "Username..."
+  },
   "account": {
-    "edit-profile": "Edit Profile",
+    "edit-profile-button": "Edit Profile",
     "you-commissioned-projets": "You Commissioned Projects",
     "new-project": "New Project",
     "manage-project": "Manage Project",

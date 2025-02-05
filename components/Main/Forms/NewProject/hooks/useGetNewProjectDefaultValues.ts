@@ -3,6 +3,7 @@ import { ProjectUpdateDTO, ProjectRoleUpdateDTO } from "@/api/model";
 export const useGetNewProjectDefaultValues = () => {
   const defaultRole: ProjectRoleUpdateDTO = {
     cost: 0,
+    id: 0,
     description: "",
     name: "",
     remote: false,
@@ -11,6 +12,7 @@ export const useGetNewProjectDefaultValues = () => {
   const defaultProject: ProjectUpdateDTO = {
     date: new Date().toISOString(),
     description: "",
+    id: 0,
     location: {
       address: "London, UK",
       latitude: 51.5072178,

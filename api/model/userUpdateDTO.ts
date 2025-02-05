@@ -4,15 +4,20 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
+import type { LocationDTO } from './locationDTO';
+import type { MediaCreateDTO } from './mediaCreateDTO';
 import type { SkillUpdateDTO } from './skillUpdateDTO';
+import type { MediaUpdateDTO } from './mediaUpdateDTO';
 
 export interface UserUpdateDTO {
-  /** @nullable */
-  username?: string | null;
-  /** @nullable */
-  email?: string | null;
-  /** @nullable */
-  aboutYou?: string | null;
-  /** @nullable */
-  skills?: SkillUpdateDTO[] | null;
+  /** @minLength 1 */
+  username: string;
+  /** @minLength 1 */
+  email: string;
+  /** @minLength 1 */
+  aboutYou: string;
+  location: LocationDTO;
+  profilePicture: MediaCreateDTO;
+  skills: SkillUpdateDTO[];
+  portofolioMedias: MediaUpdateDTO[];
 }

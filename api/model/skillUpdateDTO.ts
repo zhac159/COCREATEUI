@@ -10,8 +10,8 @@ import type { SkillGroupType } from './skillGroupType';
 export interface SkillUpdateDTO {
   /** @nullable */
   id?: number | null;
-  skillType?: SkillType;
-  skillGroupType?: SkillGroupType;
+  skillType: SkillType;
+  skillGroupType: SkillGroupType;
   /** @nullable */
   description?: string | null;
   level?: number;

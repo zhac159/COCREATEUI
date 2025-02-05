@@ -1,101 +1,104 @@
 import { FC } from "react";
 import { useGetMedia } from "../../hooks/useGetMedia";
 import { StyledImage } from "../StyledComponents/StyledImage";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewProps } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "../../theme/getThemedStylesheet";
 import StyledIconButton from "../StyledComponents/StyledIconButton";
 import StyledText from "../StyledComponents/StyledText";
-import { useTranslation } from "react-i18next";
-import { Control, Controller } from "react-hook-form";
+import { MediaUpdateDTO } from "@/api/model";
 
-type ImageFormFieldProps = {
+type ImageFormFieldProps = ViewProps & {
   description?: string;
-  name: string;
-  control: Control<any>;
+  title?: string;
+  value?: MediaUpdateDTO;
+  onChange: (value: MediaUpdateDTO) => void;
 };
 
 export const ImageFormField: FC<ImageFormFieldProps> = ({
   description,
-  control,
-  name,
+  title,
+  value,
+  style: containerStyle,
+  onChange,
+  ...props
 }) => {
   const style = useThemedStyles(getStyles);
   const { pickImage } = useGetMedia();
-  const { t } = useTranslation();
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field: { onChange, value } }) => (
-        <View style={style.container}>
-          {value && (
-            <StyledImage
-              source={{ uri: value.uri }}
-              style={style.styledImage}
-              loadingStyle={style.loading}
-            />
-          )}
-          <View style={style.nonImageContainer}>
-            <StyledIconButton
-              iconName="image"
-              onPress={async () => {
-                const result = await pickImage();
-                if (result) {
-                  onChange({
-                    ...value,
-                    uri: result.uri,
-                    mediaType: result.type,
-                  });
-                }
-              }}
-            />
-            {!value && (
-              <View style={style.textContainer}>
-                <StyledText text={t("new-project.project-image")} />
-                {description && (
-                  <StyledText text={description} style={style.description} />
-                )}
-              </View>
+    <View style={[style.container, containerStyle]} {...props}>
+      {value && (
+        <StyledImage
+          source={{ uri: value.uri }}
+          style={style.styledImage}
+          loadingStyle={style.loading}
+        />
+      )}
+      <View style={style.nonImageContainer}>
+        <StyledIconButton
+          iconName="image"
+          style={style.icon}
+          onPress={async () => {
+            const result = await pickImage();
+            if (result) {
+              onChange({
+                ...value,
+                uri: result.uri,
+                mediaType: result.type,
+              });
+            }
+          }}
+        />
+        {!value && (
+          <View style={style.textContainer}>
+            {title && <StyledText text={title} />}
+            {description && (
+              <StyledText text={description} style={style.description} />
             )}
           </View>
-        </View>
-      )}
-    />
+        )}
+      </View>
+    </View>
   );
 };
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      justifyContent: "center",
-      gap: 10,
-      height: 328,
       borderColor: theme.colors.black,
+      overflow: "hidden",
+      width: "100%",
+      aspectRatio: 1,
+      gap: 10,
       borderWidth: 1,
       borderRadius: 15,
+    },
+    icon: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
     },
     nonImageContainer: {
       alignSelf: "center",
       justifyContent: "center",
-      alignItems: "center",
+      position: "absolute",
+      height: "100%",
     },
     textContainer: {
-      position: "absolute",
       alignItems: "center",
+      zIndex: 100,
       top: 50,
     },
     description: {
       color: theme.colors.grayer,
-      fontSize: 13,
       width: "50%",
       textAlign: "center",
+      fontSize: 13,
     },
     loading: { borderRadius: 15 },
     styledImage: {
-      position: "absolute",
-      width: "105%",
-      height: "105%",
+      width: "100%",
+      aspectRatio: 1,
       borderRadius: 15,
     },
   });

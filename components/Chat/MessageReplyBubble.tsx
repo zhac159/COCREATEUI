@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { StyleSheet } from "react-native";
+import { FC, ForwardedRef } from "react";
+import { FlatList, StyleSheet } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { Message } from "@/common/types/Message";
@@ -9,22 +9,35 @@ import { useChat } from "@/common/contexts/ChatProvider";
 
 type MessageReplyBubbleProps = {
   replyMessage: Message;
-  scrollToMessage: (message: Message) => void;
+  chatListRef: ForwardedRef<FlatList<Message>>;
 };
 
 export const MessageReplyBubble: FC<MessageReplyBubbleProps> = ({
   replyMessage,
-  scrollToMessage,
+  chatListRef,
 }) => {
   const styles = useThemedStyles(getStyles);
 
   const { userIdToMember } = useChat();
 
+  const handlePress = () => {
+    if (chatListRef && 'current' in chatListRef && chatListRef.current) {
+      chatListRef.current.scrollToIndex({
+        index: replyMessage.chatId,
+        animated: true,
+      });
+    }
+  };
+
   return (
     <TouchableWithoutFeedback
       containerStyle={styles.container}
       style={styles.buttonStyle}
-      onPress={() => scrollToMessage(replyMessage)}
+      // onPress={() => 
+      //   chatListRef?.current.scrollToIndex(
+      //     { index: replyMessage.index, animated: true }
+      //   )
+      // }
     >
       <StyledText
         style={styles.userName}

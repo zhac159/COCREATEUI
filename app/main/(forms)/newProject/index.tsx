@@ -33,11 +33,12 @@ export default function Index() {
   });
 
   const { mutate: updateProject } = usePostApiProjectUpdate();
-  const { handleSubmit } = useFormContext<ProjectUpdateDTO>();
+  const { handleSubmit, getValues } = useFormContext<ProjectUpdateDTO>();
 
   const onSubmit = useCallback(() => {
     handleSubmit(
-      (data) => {
+      () => {
+        const data = getValues();
         data.id ? updateProject({ data }) : createProject({ data });
         router.navigate("/main/(tabs)/account");
       },

@@ -6,11 +6,16 @@ import {
   useChatAnimatedStyles,
 } from "@/components/Chat/hooks/useChatAnimatedStyles";
 import { useSendMessageReply } from "@/components/Chat/hooks/useSendMessageReply";
+import { useRef } from "react";
+import { Message } from "@/common/types/Message";
+import { FlatList } from "react-native";
 import { KeyboardGestureArea } from "react-native-keyboard-controller";
 import Animated from "react-native-reanimated";
 
 export default function ChatScreen() {
   const { scrollViewStyle, textInputStyle } = useChatAnimatedStyles();
+
+  const chatListRef = useRef<FlatList<Message>>(null);
 
   const { chatTextInputRef, selectMessageToReply, replyingMessage } =
     useSendMessageReply();
@@ -23,6 +28,7 @@ export default function ChatScreen() {
     >
       <StyledBackgroundAnimation />
       <ChatMessageList
+        ref={chatListRef}
         style={scrollViewStyle}
         selectMessageToReply={selectMessageToReply}
       />

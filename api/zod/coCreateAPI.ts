@@ -2334,17 +2334,31 @@ export const getApiUserUserIdResponse = zod.object({
 
 
 export const putApiUserBody = zod.object({
-  "username": zod.string().nullish(),
-  "email": zod.string().email().nullish(),
-  "aboutYou": zod.string().nullish(),
+  "username": zod.string().min(1),
+  "email": zod.string().email().min(1),
+  "aboutYou": zod.string().min(1),
+  "location": zod.object({
+  "longitude": zod.number(),
+  "latitude": zod.number(),
+  "address": zod.string().min(1)
+}),
+  "profilePicture": zod.object({
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
+}),
   "skills": zod.array(zod.object({
   "id": zod.number().nullish(),
-  "skillType": zod.number().optional(),
-  "skillGroupType": zod.number().optional(),
+  "skillType": zod.number(),
+  "skillGroupType": zod.number(),
   "description": zod.string().nullish(),
   "level": zod.number().optional(),
   "keywords": zod.array(zod.string()).nullish()
-})).nullish()
+})),
+  "portofolioMedias": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "uri": zod.string().min(1),
+  "mediaType": zod.number()
+}))
 })
 
 export const putApiUserResponse = zod.object({
@@ -2812,8 +2826,8 @@ export const putApiUserResponse = zod.object({
 
 export const putApiUserSkillsBodyItem = zod.object({
   "id": zod.number().nullish(),
-  "skillType": zod.number().optional(),
-  "skillGroupType": zod.number().optional(),
+  "skillType": zod.number(),
+  "skillGroupType": zod.number(),
   "description": zod.string().nullish(),
   "level": zod.number().optional(),
   "keywords": zod.array(zod.string()).nullish()

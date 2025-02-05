@@ -1,5 +1,5 @@
-import React, { FC, memo, useMemo, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { FC, memo, useMemo, useCallback, ForwardedRef } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { Message } from "@/common/types/Message";
@@ -8,20 +8,19 @@ import { format } from "date-fns";
 import { useMessageBubbleHelpers } from "./hooks/useMessageBubbleHelpers";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { MessageReplyBubble } from "./MessageReplyBubble";
-import { useChat } from "@/common/contexts/ChatProvider";
 
 type MessageBubbleProps = {
   message: Message;
   isSent: boolean;
   onClick: (message: Message) => void;
-  scrollToMessage: (message: Message) => void;
+  chatListRef: ForwardedRef<FlatList<Message>>;
 };
 
 const MessageBubbleComponent: FC<MessageBubbleProps> = ({
   message,
   isSent,
-  scrollToMessage,
   onClick,
+  chatListRef,
 }) => {
   const { shouldDateMoveDown } = useMessageBubbleHelpers();
   const moveDateDown = useMemo(() => shouldDateMoveDown(message), [message]);
@@ -40,7 +39,7 @@ const MessageBubbleComponent: FC<MessageBubbleProps> = ({
       {message.replyMessage && (
         <MessageReplyBubble
           replyMessage={message.replyMessage}
-          scrollToMessage={scrollToMessage}
+          chatListRef={chatListRef}
         />
       )}
       <TouchableWithoutFeedback

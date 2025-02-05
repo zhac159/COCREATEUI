@@ -18,16 +18,16 @@ export const StyledImage: FC<StyledImageProps> = ({
   const image = useImage(source, {});
   const styles = useThemedStyles(getStyles);
 
-  if (!image) {
-    return (
-      <Progress.Circle
-        size={100}
-        indeterminate={true}
-        thickness={50}
-        style={[styles.loading, loadingStyle]}
-      />
-    );
-  }
+  // if (!image) {
+  //   return (
+  //     <Progress.Circle
+  //       size={100}
+  //       indeterminate={true}
+  //       thickness={50}
+  //       style={[styles.loading, loadingStyle]}
+  //     />
+  //   );
+  // }
 
   return (
     <Image

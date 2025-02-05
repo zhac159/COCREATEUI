@@ -1,6 +1,5 @@
 import { ProjectUpdateDTO } from "@/api/model";
 import { ModalFormRedirectButton } from "@/common/components/Form/ModalFormRedirectButton";
-import { ImageFormField } from "@/common/components/Form/ImageFormField";
 import { StyledTextInput } from "@/common/components/StyledComponents/StyledTextInput";
 import { StackPositions } from "@/common/constants/stackPostitions";
 import { Controller, useFormContext } from "react-hook-form";
@@ -8,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
 import { StyledDivider } from "@/common/components/StyledComponents/StyledDivider";
+import { ImageFormField } from "@/common/components/Form/ImageFormField";
 
 type ProjectFormProps = {};
 
@@ -17,10 +17,16 @@ export const ProjectForm: FC<ProjectFormProps> = ({}) => {
 
   return (
     <View style={styles.container}>
-      <ImageFormField
-        description={t("new-project.project-image-placeholder")}
+      <Controller
         name="medias.0"
         control={form.control}
+        render={({ field: { value, onChange } }) => (
+          <ImageFormField
+            description={t("new-project.project-image-placeholder")}
+            value={value}
+            onChange={onChange}
+          />
+        )}
       />
       <Controller
         name="name"

@@ -1,22 +1,20 @@
-import { ProjectUpdateDTO } from "@/api/model";
+import { SkillType, SkillUpdateDTO, UserUpdateDTO } from "@/api/model";
 import { ModalFormFieldWrapper } from "@/common/components/Form/ModalFormFieldWrapper";
 import { SkillFormField } from "@/common/components/Form/SkillFormField";
 import { SkillFormType } from "@/common/hooks/skills/useSkillForm";
-import { useLocalSearchParams } from "expo-router/build/hooks";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-type SkillRouteParams = {
-  roleIndex: string;
-};
-
-export default function Skill() {
+export default function Skills() {
   const { t } = useTranslation();
+  const { control } = useFormContext<UserUpdateDTO>();
 
-  const params = useLocalSearchParams<SkillRouteParams>();
-  const roleIndex = parseInt(params.roleIndex, 10);
-
-  const { control } = useFormContext<ProjectUpdateDTO>();
+  const transformSkills = (value: SkillType[]): SkillUpdateDTO[] => {
+    return value.map((skillType) => ({
+      skillType: skillType,
+      skillGroupType: 0,
+    }));
+  };
 
   return (
     <ModalFormFieldWrapper
@@ -24,13 +22,13 @@ export default function Skill() {
       description={t("new-project.new-role.skill-placeholder")}
     >
       <Controller
-        name={`projectRoles.${roleIndex}.skillType`}
+        name={`skills`}
         control={control}
-        render={({ field }) => (
+        render={({ field: { value, onChange } }) => (
           <SkillFormField
-            skillFormType={SkillFormType.Single}
-            value={field.value}
-            onChange={field.onChange}
+            skillFormType={SkillFormType.Multiple}
+            value={value?.map((skill) => skill?.skillType) || []}
+            onChange={(skillType) => onChange(transformSkills(skillType))}
           />
         )}
       />

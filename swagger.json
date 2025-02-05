@@ -4157,6 +4157,10 @@
         "format": "int32"
       },
       "SkillUpdateDTO": {
+        "required": [
+          "skillGroupType",
+          "skillType"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -4781,27 +4785,47 @@
         "additionalProperties": false
       },
       "UserUpdateDTO": {
+        "required": [
+          "aboutYou",
+          "email",
+          "location",
+          "portofolioMedias",
+          "profilePicture",
+          "skills",
+          "username"
+        ],
         "type": "object",
         "properties": {
           "username": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "email": {
+            "minLength": 1,
             "type": "string",
-            "format": "email",
-            "nullable": true
+            "format": "email"
           },
           "aboutYou": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationDTO"
+          },
+          "profilePicture": {
+            "$ref": "#/components/schemas/MediaCreateDTO"
           },
           "skills": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SkillUpdateDTO"
-            },
-            "nullable": true
+            }
+          },
+          "portofolioMedias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaUpdateDTO"
+            }
           }
         },
         "additionalProperties": false

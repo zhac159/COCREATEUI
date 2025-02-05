@@ -1,7 +1,7 @@
 import { generalPadding } from "@/common/constants/generalPadding";
 import { Message } from "@/common/types/Message";
-import { FC, useRef } from "react";
-import { StyleProp, ViewStyle } from "react-native";
+import { forwardRef, useEffect } from "react";
+import { FlatList, StyleProp, ViewStyle } from "react-native";
 import Animated, { AnimatedStyle } from "react-native-reanimated";
 import { useChatMessageList } from "./hooks/useChatMessageList";
 
@@ -10,19 +10,32 @@ type ChatMessageListProps = {
   selectMessageToReply: (message: Message) => void;
 };
 
-export const ChatMessageList: FC<ChatMessageListProps> = ({
-  style,
-  selectMessageToReply,
-}) => {
-  const flatListRef = useRef<Animated.FlatList<Message>>(null);
+export const ChatMessageList = forwardRef<
+  FlatList<Message>,
+  ChatMessageListProps
+>(({ style, selectMessageToReply }, ref) => {
+  const { messages, handleLoadMore, renderItem } = useChatMessageList(
+    selectMessageToReply,
+    () => {}
+  );
 
-  const { messages, renderItem } =
-    useChatMessageList(selectMessageToReply, flatListRef);
+  // scroll to top
+  const scrollToTop = () => {
+    if (ref && "current" in ref) {
+      ref.current?.scrollToEnd({
+        animated: true,
+      });
+    }
+  };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   return (
     <Animated.FlatList
       inverted
-      ref={flatListRef}
+      ref={ref}
       data={messages}
       contentContainerStyle={{ paddingHorizontal: generalPadding }}
       disableVirtualization
@@ -30,18 +43,13 @@ export const ChatMessageList: FC<ChatMessageListProps> = ({
       windowSize={30}
       initialNumToRender={20}
       maxToRenderPerBatch={30}
-      getItemLayout={(data, index) => ({
-        length: 100, // Approximate height of each message
-        offset: 100 * index,
-        index,
-      })}
       updateCellsBatchingPeriod={20}
       onEndReachedThreshold={0.5}
-      // onEndReached={async () => {
-      //   await handleLoadMore();
-      // }}
+      onEndReached={async () => {
+        await handleLoadMore();
+      }}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
     />
   );
-};
+});

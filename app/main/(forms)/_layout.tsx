@@ -8,9 +8,9 @@ export default function FormsLayout() {
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: "transparent" },
-
       }}
     >
+      <JsStack.Screen name="editProfile" />
       <JsStack.Screen name="newProject" />
     </JsStack>
   );
