@@ -4,19 +4,19 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { ReviewDTO } from './reviewDTO';
+import type { LocationDTO } from './locationDTO';
+import type { MediaDTO } from './mediaDTO';
 import type { SkillDTO } from './skillDTO';
-import type { ExperienceDTO } from './experienceDTO';
 
-export interface UserProfileDTO {
-  userId: number;
+export interface UserProfileDetailsDTO {
   /** @minLength 1 */
   username: string;
   /** @minLength 1 */
+  email: string;
+  /** @minLength 1 */
   aboutYou: string;
-  rating: number;
-  totalReviews: number;
-  reviewsReceived: ReviewDTO[];
+  location: LocationDTO;
+  profilePicture: MediaDTO;
   skills: SkillDTO[];
-  experiences: ExperienceDTO[];
+  portfolioMedias: MediaDTO[];
 }

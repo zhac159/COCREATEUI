@@ -13,11 +13,15 @@ import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import useThemedStyles from "../theme/getThemedStylesheet";
 
-type PublishButtonProps = StyledButtonProps & StyledButtonProps & {};
+type PublishButtonProps = StyledButtonProps &
+  StyledButtonProps & {
+    isSubmitting?: boolean;
+  };
 
 export const PublishButton: FC<PublishButtonProps> = ({
   error,
   style,
+  isSubmitting,
   ...props
 }) => {
   const styles = useThemedStyles(getStyles);
@@ -45,7 +49,8 @@ export const PublishButton: FC<PublishButtonProps> = ({
       <StyledButton
         error={error}
         {...props}
-        icon="check"
+        icon={"check"}
+        isLoading={isSubmitting}
         style={[style, styles.container]}
         iconStyle={styles.icon}
       />

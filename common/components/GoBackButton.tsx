@@ -5,6 +5,7 @@ import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import StyledIconButton, {
   StyledIconButtonProps,
 } from "./StyledComponents/StyledIconButton";
+import { router } from "expo-router";
 
 type GoBackButtonProps = Omit<StyledIconButtonProps, "iconName"> & {
   xVariant?: boolean;
@@ -19,6 +20,7 @@ export const GoBackButton: FC<GoBackButtonProps> = ({
     <StyledIconButton
       iconStyle={styles.icon}
       style={styles.container}
+      onPress={router.back}
       {...props}
       iconName={xVariant ? "x" : "chevron-left"}
     />
@@ -34,6 +36,6 @@ const getStyles = (theme: Theme) =>
       backgroundColor: theme.colors.backgroundColor,
       height: 40,
       width: 40,
-      elevation: 8
+      elevation: 8,
     },
   });

@@ -12,20 +12,24 @@ import { useFormContext } from "react-hook-form";
 import { UserUpdateDTO } from "@/api/model";
 import { useCallback } from "react";
 import { usePutApiUser } from "@/api/endpoints/cocreateApi";
+import { useUploadMedia } from "@/common/hooks/useUploadMedia";
+import { EntityType } from "@/common/types/entityTypes";
 
 export default function Index() {
   const { t } = useTranslation();
   const styles = useThemedStyles(getStyles);
 
-  const { mutate: updateUser } = usePutApiUser();
+  const { mutate: updateUser, isPending } = usePutApiUser();
+  const { uploadMedias } = useUploadMedia(EntityType.PROJECTROLE);
 
   const { handleSubmit } = useFormContext<UserUpdateDTO>();
 
   const onSubmit = useCallback(() => {
     handleSubmit(
-      (data) => {
-        console.log(data);
-        // updateUser({ data });
+      async (data) => {
+        await uploadMedias(data.portfolioMedias);
+        await uploadMedias([data.profilePicture]);
+        updateUser({ data });
       },
       (error) => {
         console.log(error);
@@ -38,7 +42,9 @@ export default function Index() {
       disableTopInset
       contentContainerStyle={styles.container}
       header={<StyledTitle text={t("edit-profile.title")} />}
-      StickyHeaderComponent={() => <SubmitAndReturn onSubmit={onSubmit} />}
+      StickyHeaderComponent={() => (
+        <SubmitAndReturn onSubmit={onSubmit} isSubmitting={isPending} />
+      )}
     >
       <ProfilePictureUsernameDescription />
       <Portofolio />

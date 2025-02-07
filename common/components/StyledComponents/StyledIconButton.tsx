@@ -1,7 +1,6 @@
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Theme } from "@react-navigation/native";
-import { router } from "expo-router";
 import { FC } from "react";
 import {
   TextStyle,
@@ -26,7 +25,6 @@ export const StyledIconButton: FC<StyledIconButtonProps> = ({
   return (
     <TouchableOpacity
       style={[styles.container, style]}
-      onPress={router.back}
       {...props}
     >
       <FontAwesome6

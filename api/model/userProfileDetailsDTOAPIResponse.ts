@@ -4,11 +4,11 @@
  * CoCreateAPI
  * OpenAPI spec version: v1
  */
-import type { SkillDTO } from './skillDTO';
+import type { UserProfileDetailsDTO } from './userProfileDetailsDTO';
 
-export interface SkillDTOAPIResponse {
+export interface UserProfileDetailsDTOAPIResponse {
   success?: boolean;
-  data?: SkillDTO;
+  data?: UserProfileDetailsDTO;
   /** @nullable */
   error?: string | null;
 }

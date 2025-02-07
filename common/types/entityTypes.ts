@@ -1,0 +1,9 @@
+export enum EntityType {
+    ASSET,
+    PORTOFOLIOCONTENT,
+    PROJECT,
+    PROJECTROLE,
+    CHATS,
+    EXPERIENCE,
+  }
+  

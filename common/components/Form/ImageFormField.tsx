@@ -30,7 +30,8 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
     <View style={[style.container, containerStyle]} {...props}>
       {value && (
         <StyledImage
-          source={{ uri: value.uri }}
+          uri={value.uri}
+          mediaType={value.mediaType}
           style={style.styledImage}
           loadingStyle={style.loading}
         />
@@ -71,11 +72,11 @@ const getStyles = (theme: Theme) =>
       aspectRatio: 1,
       gap: 10,
       borderWidth: 1,
-      borderRadius: 15,
+      borderRadius: 8,
     },
     icon: {
-      width: 50,
-      height: 50,
+      width: 10,
+      height: 10,
       borderRadius: 25,
     },
     nonImageContainer: {
@@ -99,6 +100,6 @@ const getStyles = (theme: Theme) =>
     styledImage: {
       width: "100%",
       aspectRatio: 1,
-      borderRadius: 15,
+      borderRadius: 8,
     },
   });

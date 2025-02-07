@@ -12,11 +12,13 @@ type SubmitAndReturnProps = Omit<
   StyledButtonProps,
   "text" | "onPress" | "icon"
 > & {
+  isSubmitting?: boolean;
   onSubmit: () => void;
 };
 
 export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({
   onSubmit,
+  isSubmitting,
   style,
   error,
   textStyle,
@@ -33,6 +35,7 @@ export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({
       <GoBackButton />
       <PublishButton
         onPress={onSubmit}
+        isSubmitting={isSubmitting}
         text={t("new-project.publish")}
         style={[styles.submitButton, style]}
         error={error}

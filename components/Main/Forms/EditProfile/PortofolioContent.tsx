@@ -16,7 +16,7 @@ export const PortoflioContent: FC<PortoflioContentProps> = ({ index }) => {
 
   return (
     <Controller
-      name={`portofolioMedias.${index}`}
+      name={`portfolioMedias.${index}`}
       control={control}
       render={({ field: { value, onChange } }) => (
         <ImageFormField
@@ -32,7 +32,6 @@ export const PortoflioContent: FC<PortoflioContentProps> = ({ index }) => {
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     image: {
-      width: "30%",
-      height: "30%",
+      width: "32%",
     },
   });

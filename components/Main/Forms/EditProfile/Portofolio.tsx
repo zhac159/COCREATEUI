@@ -20,7 +20,7 @@ export const Portofolio: FC<PortofolioProps> = ({}) => {
     <View style={styles.container}>
       <StyledText text={t("edit-profile.portfolio")} style={styles.title} />
       <Controller
-        name="portofolioMedias"
+        name="portfolioMedias"
         control={control}
         render={({ field: { value, onChange } }) => (
           <View style={styles.imagesContainer}>
@@ -54,14 +54,14 @@ const getStyles = (theme: Theme) =>
       fontSize: 18,
     },
     imageFormField: {
-      width: "30%",
-      height: "30%",
+      width: "32%",
+      borderWidth: 0,
+      backgroundColor: theme.colors.white,
     },
     imagesContainer: {
       flexDirection: "row",
       width: "100%",
       flexWrap: "wrap",
       gap: 6,
-      height: 300,
     },
   });

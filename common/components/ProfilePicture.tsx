@@ -4,6 +4,7 @@ import { Theme } from "@react-navigation/native";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
 import { ImageProps } from "expo-image";
 import { StyledImage } from "./StyledComponents/StyledImage";
+import { MediaType } from "../constants/mediaTypes";
 
 type ProfilePictureProps = ImageProps & {};
 
@@ -14,7 +15,8 @@ export const ProfilePicture: FC<ProfilePictureProps> = ({
   const styles = useThemedStyles(getStyles);
   return (
     <StyledImage
-      source={{ uri: "https://picsum.photos/200/300" }}
+      uri="https://picsum.photos/200/300"
+      mediaType={MediaType.IMAGE}
       style={[styles.profilePicture, style]}
       {...props}
     />

@@ -3,54 +3,40 @@ import { Image, ImageProps, useImage } from "expo-image";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { FC } from "react";
 import useThemedStyles from "@/common/theme/getThemedStylesheet";
-import * as Progress from "react-native-progress";
+import { StyledImageLoader } from "./StyledImageLoader";
+import { MediaType } from "@/common/constants/mediaTypes";
+import { StyledVideo } from "./StyledVideo";
 
 type StyledImageProps = ImageProps & {
   loadingStyle?: StyleProp<ViewStyle>;
+  uri: string;
+  mediaType: MediaType;
 };
 
 export const StyledImage: FC<StyledImageProps> = ({
-  source,
   style,
   loadingStyle,
+  uri,
+  mediaType,
   ...props
 }) => {
-  const image = useImage(source, {});
+  const image = useImage(uri, {});
   const styles = useThemedStyles(getStyles);
 
-  // if (!image) {
-  //   return (
-  //     <Progress.Circle
-  //       size={100}
-  //       indeterminate={true}
-  //       thickness={50}
-  //       style={[styles.loading, loadingStyle]}
-  //     />
-  //   );
-  // }
+  if (mediaType === MediaType.VIDEO) {
+    return <StyledVideo uri={uri} style={style as {}} contentFit="fill" />;
+  }
 
-  return (
-    <Image
-      source={image}
-      style={[
-        styles.image,
-        style,
-      ]}
-      {...props}
-    />
-  );
+  if (!image) {
+    return <StyledImageLoader style={[styles.image, style as {}]} />;
+  }
+
+  return <Image source={image} style={[styles.image, style]} {...props} />;
 };
 
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     image: {
-      backgroundColor: theme.colors.gray,
-    },
-    loading: {
-      ...StyleSheet.absoluteFillObject,
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: -1,
       backgroundColor: theme.colors.gray,
     },
   });

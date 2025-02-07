@@ -55,6 +55,7 @@
     "react-native": "0.76.6",
     "react-native-aes-crypto": "^3.2.1",
     "react-native-avoid-softinput": "^7.0.0",
+    "react-native-background-upload": "^6.6.0",
     "react-native-date-picker": "git+https://github.com/badrey/react-native-date-picker.git#new-arc-fix",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-get-random-values": "^1.11.0",
@@ -70,7 +71,8 @@
     "tweetnacl": "^1.0.3",
     "tweetnacl-ts": "^1.0.3",
     "zod": "^3.24.1",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.3",
+    "expo-video": "~2.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

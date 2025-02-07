@@ -756,189 +756,6 @@
         }
       }
     },
-    "/api/PortofolioContent": {
-      "post": {
-        "tags": [
-          "PortofolioContent"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentCreateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentCreateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentCreateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "PortofolioContent"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/PortofolioContent/group": {
-      "put": {
-        "tags": [
-          "PortofolioContent"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentGroupUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentGroupUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PortofolioContentGroupUpdateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortofolioContentDTOAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/PortofolioContent/{id}": {
-      "delete": {
-        "tags": [
-          "PortofolioContent"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BooleanAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Prepare": {
       "post": {
         "tags": [
@@ -1779,54 +1596,6 @@
         }
       }
     },
-    "/api/User/portofolio": {
-      "put": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserPortofolioUpdateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserPortofolioUpdateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserPortofolioUpdateDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserPortofolioDTOAPIResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserPortofolioDTOAPIResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserPortofolioDTOAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/User/public-key": {
       "put": {
         "tags": [
@@ -1956,6 +1725,35 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserProfileDTOAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/profile-details": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileDetailsDTOAPIResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileDetailsDTOAPIResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileDetailsDTOAPIResponse"
                 }
               }
             }
@@ -3248,116 +3046,6 @@
         },
         "additionalProperties": false
       },
-      "PortofolioContentCreateDTO": {
-        "required": [
-          "description",
-          "medias",
-          "skillType"
-        ],
-        "type": "object",
-        "properties": {
-          "description": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "order": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "skillType": {
-            "$ref": "#/components/schemas/SkillType"
-          },
-          "medias": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaCreateDTO"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "PortofolioContentDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "skillType": {
-            "$ref": "#/components/schemas/SkillType"
-          },
-          "medias": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaDTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PortofolioContentDTOAPIResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "data": {
-            "$ref": "#/components/schemas/PortofolioContentDTO"
-          },
-          "error": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PortofolioContentGroupUpdateDTO": {
-        "type": "object",
-        "properties": {
-          "portofolioContents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PortofolioContentUpdateDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "skillType": {
-            "$ref": "#/components/schemas/SkillType"
-          },
-          "order": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "medias": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaUpdateDTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "PrepareUploadDTO": {
         "type": "object",
         "properties": {
@@ -4298,7 +3986,6 @@
           "email",
           "enquiries",
           "experiences",
-          "portofolioContents",
           "projects",
           "rating",
           "reviewsReceived",
@@ -4365,12 +4052,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SkillDTO"
-            }
-          },
-          "portofolioContents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PortofolioContentDTO"
             }
           },
           "assignedProjects": {
@@ -4603,61 +4284,10 @@
         },
         "additionalProperties": false
       },
-      "UserPortofolioDTO": {
-        "type": "object",
-        "properties": {
-          "aboutYou": {
-            "type": "string",
-            "nullable": true
-          },
-          "portofolioContents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PortofolioContentDTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserPortofolioDTOAPIResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "data": {
-            "$ref": "#/components/schemas/UserPortofolioDTO"
-          },
-          "error": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserPortofolioUpdateDTO": {
-        "type": "object",
-        "properties": {
-          "aboutYou": {
-            "type": "string",
-            "nullable": true
-          },
-          "portofolioContents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PortofolioContentUpdateDTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "UserProfileDTO": {
         "required": [
           "aboutYou",
           "experiences",
-          "portofolioContents",
           "rating",
           "reviewsReceived",
           "skills",
@@ -4699,12 +4329,6 @@
               "$ref": "#/components/schemas/SkillDTO"
             }
           },
-          "portofolioContents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PortofolioContentDTO"
-            }
-          },
           "experiences": {
             "type": "array",
             "items": {
@@ -4722,6 +4346,68 @@
           },
           "data": {
             "$ref": "#/components/schemas/UserProfileDTO"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfileDetailsDTO": {
+        "required": [
+          "aboutYou",
+          "email",
+          "location",
+          "portfolioMedias",
+          "profilePicture",
+          "skills",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "format": "email"
+          },
+          "aboutYou": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationDTO"
+          },
+          "profilePicture": {
+            "$ref": "#/components/schemas/MediaDTO"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillDTO"
+            }
+          },
+          "portfolioMedias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaDTO"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfileDetailsDTOAPIResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserProfileDetailsDTO"
           },
           "error": {
             "type": "string",
@@ -4789,7 +4475,7 @@
           "aboutYou",
           "email",
           "location",
-          "portofolioMedias",
+          "portfolioMedias",
           "profilePicture",
           "skills",
           "username"
@@ -4813,7 +4499,7 @@
             "$ref": "#/components/schemas/LocationDTO"
           },
           "profilePicture": {
-            "$ref": "#/components/schemas/MediaCreateDTO"
+            "$ref": "#/components/schemas/MediaUpdateDTO"
           },
           "skills": {
             "type": "array",
@@ -4821,7 +4507,7 @@
               "$ref": "#/components/schemas/SkillUpdateDTO"
             }
           },
-          "portofolioMedias": {
+          "portfolioMedias": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MediaUpdateDTO"

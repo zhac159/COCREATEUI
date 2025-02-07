@@ -7,7 +7,7 @@ export const useGetMedia = () => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+      mediaTypes: ["images", "videos"],
       aspect: [4, 3],
       quality: 1,
     });
