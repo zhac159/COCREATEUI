@@ -1,0 +1,50 @@
+import SkillsAddMenu from "@/components/Account/Skills/SkillsAddMenu";
+import {
+  Skills,
+  getRestOfSkills,
+} from "@/components/Account/Skills/skillHelper";
+import { useTheme } from "@/components/Themes/theme";
+import { Dispatch, FC, SetStateAction } from "react";
+import { Text, View } from "react-native";
+
+type ProjectAddRoleSkillProps = {
+  skill: Skills | undefined;
+  setSkill: Dispatch<SetStateAction<Skills | undefined>>;
+};
+
+const ProjectAddRoleSkill: FC<ProjectAddRoleSkillProps> = ({
+  skill,
+  setSkill,
+}) => {
+  const allSkills = getRestOfSkills([]);
+  const theme = useTheme();
+
+  return (
+    <View
+      style={{
+        marginBottom: "10%",
+      }}
+    >
+      <Text
+        style={{
+          ...theme.customFonts.secondary.large,
+          fontWeight: "400",
+          fontSize: 35,
+          paddingBottom: 20,
+        }}
+      >
+        What Skill Are You Looking For?
+      </Text>
+      <SkillsAddMenu
+        restOfTheSkills={allSkills}
+        show={true}
+        selectSkill={(skillDTO) => {
+          setSkill(skillDTO.skillType);
+        }}
+        selectedSkill={skill}
+      />
+    </View>
+  );
+};
+
+export default ProjectAddRoleSkill;
