@@ -5,7 +5,7 @@ export type AuthState = {
 };
 
 export const defaultAuth: UserLoginResponseDTO = {
-  bannerPictureSrc: "",
+  profilePicture: "",
   email: "",
   userId: 0,
   username: "",

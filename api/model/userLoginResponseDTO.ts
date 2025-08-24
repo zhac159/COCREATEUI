@@ -16,7 +16,7 @@ export interface UserLoginResponseDTO {
   /** @minLength 1 */
   email: string;
   /** @minLength 1 */
-  bannerPictureSrc: string;
+  profilePicture: string;
   coins: number;
   chats: ChatDTO[];
   projectsManaging: ProjectInfoDTO[];

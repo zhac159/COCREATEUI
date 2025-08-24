@@ -17,11 +17,12 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
   const { t } = useTranslation();
 
   const userName = useAuthStore((state) => state.auth.username);
+  const profilePicture = useAuthStore((state) => state.auth.profilePicture);
 
   return (
     <View style={[styles.editAccountAndInfo, style]} {...props}>
       <View style={styles.nameButtonContainer}>
-        <StyledText text={"auth.username"} style={styles.name} secondary />
+        <StyledText text={userName} style={styles.name} secondary />
         <StyledButton
           text={t("account.edit-profile-button")}
           style={styles.editButton}
@@ -36,10 +37,7 @@ export const EditAccountAndInfo: FC<EditAccountAndInfoProps> = ({
       <View>
         <Coins value={500} style={styles.coins} />
       </View>
-      <ProfilePicture
-        source={{ uri: "https://picsum.photos/200/300" }}
-        style={styles.profilePicture}
-      />
+      <ProfilePicture uri={profilePicture} style={styles.profilePicture} />
     </View>
   );
 };
@@ -48,6 +46,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 25,
     fontWeight: "400",
+    textAlign: "right",
   },
   editAccountAndInfo: {
     flexDirection: "row",

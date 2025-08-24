@@ -7,7 +7,7 @@ import { StyledImageLoader } from "./StyledImageLoader";
 import { MediaType } from "@/common/constants/mediaTypes";
 import { StyledVideo } from "./StyledVideo";
 
-type StyledImageProps = ImageProps & {
+export type StyledImageProps = ImageProps & {
   loadingStyle?: StyleProp<ViewStyle>;
   uri: string;
   mediaType: MediaType;

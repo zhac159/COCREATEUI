@@ -16,9 +16,13 @@ import {
 } from "@/api/endpoints/cocreateApi";
 import { router } from "expo-router";
 import { useAuthStore } from "@/common/stores/authStore/authStore";
+import { useUploadMedia } from "@/common/hooks/useUploadMedia";
+import { EntityType } from "@/common/types/entityTypes";
 
 export default function Index() {
   const { t } = useTranslation();
+  const { uploadMedias } = useUploadMedia(EntityType.PROJECTROLE);
+
   const addProject = useAuthStore((state) => state.addProject);
 
   const styles = useThemedStyles(getStyles);
@@ -37,8 +41,9 @@ export default function Index() {
 
   const onSubmit = useCallback(() => {
     handleSubmit(
-      () => {
+      async () => {
         const data = getValues();
+        await uploadMedias(data.medias);
         data.id ? updateProject({ data }) : createProject({ data });
         router.navigate("/main/(tabs)/account");
       },

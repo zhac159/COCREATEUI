@@ -80,6 +80,9 @@ const getStyles = (theme: Theme) =>
     },
     textField: {
       width: "69%",
+      textAlign: "center",
+      fontWeight: "700",
+      fontSize: 18,
     },
     imageContainer: {
       width: "29%",

@@ -14,6 +14,7 @@ type SubmitAndReturnProps = Omit<
 > & {
   isSubmitting?: boolean;
   onSubmit: () => void;
+  title?: string;
 };
 
 export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({
@@ -23,6 +24,7 @@ export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({
   error,
   textStyle,
   iconStyle,
+  title,
   ...props
 }) => {
   const { t } = useTranslation();
@@ -36,7 +38,7 @@ export const SubmitAndReturn: FC<SubmitAndReturnProps> = ({
       <PublishButton
         onPress={onSubmit}
         isSubmitting={isSubmitting}
-        text={t("new-project.publish")}
+        text={title ? title : t("new-project.publish")}
         style={[styles.submitButton, style]}
         error={error}
         textStyle={[styles.buttonText, textStyle]}

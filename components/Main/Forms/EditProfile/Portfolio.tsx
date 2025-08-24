@@ -6,12 +6,12 @@ import { UserUpdateDTO } from "@/api/model";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import StyledText from "@/common/components/StyledComponents/StyledText";
-import { PortoflioContent } from "./PortofolioContent";
 import { ImageFormField } from "@/common/components/Form/ImageFormField";
+import { PortfolioContent } from "./PortfolioContent";
 
-type PortofolioProps = {};
+type PortfolioProps = {};
 
-export const Portofolio: FC<PortofolioProps> = ({}) => {
+export const Portfolio: FC<PortfolioProps> = ({}) => {
   const styles = useThemedStyles(getStyles);
   const { t } = useTranslation();
 
@@ -22,22 +22,24 @@ export const Portofolio: FC<PortofolioProps> = ({}) => {
       <Controller
         name="portfolioMedias"
         control={control}
-        render={({ field: { value, onChange } }) => (
-          <View style={styles.imagesContainer}>
-            {value?.map((_, index) => (
-              <PortoflioContent key={index} index={index} />
-            ))}
-            {(!value || value.length < 9) && (
-              <ImageFormField
-                onChange={(newMedia) => {
-                  console;
-                  onChange([...(value || []), newMedia]);
-                }}
-                style={styles.imageFormField}
-              />
-            )}
-          </View>
-        )}
+        render={({ field: { value, onChange } }) => {
+          return (
+            <View style={styles.imagesContainer}>
+              {value?.map((_, index) => (
+                <PortfolioContent key={value[index].uri} index={index} />
+              ))}
+              {(!value || value.length < 9) && (
+                <ImageFormField
+                  onChange={(newMedia) => {
+                    console;
+                    onChange([...(value || []), newMedia]);
+                  }}
+                  style={styles.imageFormField}
+                />
+              )}
+            </View>
+          );
+        }}
       />
     </View>
   );
@@ -46,8 +48,7 @@ export const Portofolio: FC<PortofolioProps> = ({}) => {
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      width: "100%",
-      aspectRatio: 1,
+      marginBottom: 30,
     },
     title: {
       fontWeight: "700",
@@ -55,6 +56,8 @@ const getStyles = (theme: Theme) =>
     },
     imageFormField: {
       width: "32%",
+      height: "100%",
+      aspectRatio: 1,
       borderWidth: 0,
       backgroundColor: theme.colors.white,
     },

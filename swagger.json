@@ -4234,10 +4234,10 @@
       },
       "UserLoginResponseDTO": {
         "required": [
-          "bannerPictureSrc",
           "chats",
           "coins",
           "email",
+          "profilePicture",
           "projectsManaging",
           "publicKey",
           "userId",
@@ -4261,7 +4261,7 @@
             "minLength": 1,
             "type": "string"
           },
-          "bannerPictureSrc": {
+          "profilePicture": {
             "minLength": 1,
             "type": "string"
           },

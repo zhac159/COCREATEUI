@@ -7,13 +7,13 @@ import { SubmitAndReturn } from "@/components/Main/Forms/NewProject/SubmitAndRet
 import { Theme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
-import { Portofolio } from "@/components/Main/Forms/EditProfile/Portofolio";
 import { useFormContext } from "react-hook-form";
 import { UserUpdateDTO } from "@/api/model";
 import { useCallback } from "react";
 import { usePutApiUser } from "@/api/endpoints/cocreateApi";
 import { useUploadMedia } from "@/common/hooks/useUploadMedia";
 import { EntityType } from "@/common/types/entityTypes";
+import { Portfolio } from "@/components/Main/Forms/EditProfile/Portfolio";
 
 export default function Index() {
   const { t } = useTranslation();
@@ -43,11 +43,15 @@ export default function Index() {
       contentContainerStyle={styles.container}
       header={<StyledTitle text={t("edit-profile.title")} />}
       StickyHeaderComponent={() => (
-        <SubmitAndReturn onSubmit={onSubmit} isSubmitting={isPending} />
+        <SubmitAndReturn
+          onSubmit={onSubmit}
+          isSubmitting={isPending}
+          title={t("edit-profile.update")}
+        />
       )}
     >
       <ProfilePictureUsernameDescription />
-      <Portofolio />
+      <Portfolio />
       <SkillAvailablityLocation />
     </ScrollViewWrapper>
   );

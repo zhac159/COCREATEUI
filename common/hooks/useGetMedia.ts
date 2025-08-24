@@ -2,12 +2,20 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { MediaType } from "../constants/mediaTypes";
 
-export const useGetMedia = () => {
+export type GetMediaOptions = {
+  includeVideos?: boolean;
+};
+
+export const useGetMedia = (options?: GetMediaOptions) => {
   const [image, setImage] = useState<string | null>(null);
 
   const pickImage = async () => {
+    const mediaTypes: ImagePicker.MediaType[] = options?.includeVideos
+      ? ["images", "videos", "livePhotos"]
+      : ["images"];
+
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: mediaTypes,
       aspect: [4, 3],
       quality: 1,
     });

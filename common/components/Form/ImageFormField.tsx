@@ -23,8 +23,8 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
   onChange,
   ...props
 }) => {
-  const style = useThemedStyles(getStyles);
-  const { pickImage } = useGetMedia();
+  const style = useThemedStyles((theme) => getStyles(theme, !!value));
+  const { pickImage } = useGetMedia({ includeVideos: true });
 
   return (
     <View style={[style.container, containerStyle]} {...props}>
@@ -63,7 +63,7 @@ export const ImageFormField: FC<ImageFormFieldProps> = ({
     </View>
   );
 };
-const getStyles = (theme: Theme) =>
+const getStyles = (theme: Theme, hasImage?: boolean) =>
   StyleSheet.create({
     container: {
       borderColor: theme.colors.black,
@@ -71,7 +71,7 @@ const getStyles = (theme: Theme) =>
       width: "100%",
       aspectRatio: 1,
       gap: 10,
-      borderWidth: 1,
+      borderWidth: hasImage ? 0 : 1,
       borderRadius: 8,
     },
     icon: {

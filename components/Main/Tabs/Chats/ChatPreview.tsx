@@ -33,7 +33,7 @@ export const ChatPreview: FC<ChatPreviewProps> = ({
       onPress={() => navigateToChat(chat)}
       {...props}
     >
-      <ProfilePicture source={profilePicture} style={styles.profilePicture} />
+      <ProfilePicture uri={profilePicture} style={styles.profilePicture} />
       <View style={styles.nameAndMessage}>
         <StyledText text={"chat.groupChatName"} secondary style={styles.name} />
         {lastMessage && lastMessage.content && (

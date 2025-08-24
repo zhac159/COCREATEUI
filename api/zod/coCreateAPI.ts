@@ -848,7 +848,7 @@ export const postApiLoginResponse = zod.object({
   "username": zod.string().min(1),
   "publicKey": zod.string().min(1),
   "email": zod.string().min(1),
-  "bannerPictureSrc": zod.string().min(1),
+  "profilePicture": zod.string().min(1),
   "coins": zod.number(),
   "chats": zod.array(zod.object({
   "id": zod.number(),
@@ -887,7 +887,7 @@ export const postApiLoginRegisterResponse = zod.object({
   "username": zod.string().min(1),
   "publicKey": zod.string().min(1),
   "email": zod.string().min(1),
-  "bannerPictureSrc": zod.string().min(1),
+  "profilePicture": zod.string().min(1),
   "coins": zod.number(),
   "chats": zod.array(zod.object({
   "id": zod.number(),
@@ -924,7 +924,7 @@ export const postApiLoginTokenLoginResponse = zod.object({
   "username": zod.string().min(1),
   "publicKey": zod.string().min(1),
   "email": zod.string().min(1),
-  "bannerPictureSrc": zod.string().min(1),
+  "profilePicture": zod.string().min(1),
   "coins": zod.number(),
   "chats": zod.array(zod.object({
   "id": zod.number(),
