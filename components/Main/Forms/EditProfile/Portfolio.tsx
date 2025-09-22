@@ -16,6 +16,7 @@ export const Portfolio: FC<PortfolioProps> = ({}) => {
   const { t } = useTranslation();
 
   const { control } = useFormContext<UserUpdateDTO>();
+  
   return (
     <View style={styles.container}>
       <StyledText text={t("edit-profile.portfolio")} style={styles.title} />

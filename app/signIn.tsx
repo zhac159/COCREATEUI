@@ -5,32 +5,31 @@ import { Controller, useForm } from "react-hook-form";
 import { StyledTextInput } from "@/common/components/StyledComponents/StyledTextInput";
 import StyledButton from "@/common/components/StyledComponents/StyledButton";
 import { ScrollViewWrapper } from "@/common/components/ScrollViewWrapper";
-import { usePostApiLogin } from "@/api/endpoints/cocreateApi";
 import { useEncryption } from "@/common/hooks/encryption/useEncryption";
 import { useOnUserLogIn } from "@/components/SignIn/hooks/useOnUserLogIn";
 import { generalPadding } from "@/common/constants/generalPadding";
+import { usePostApiAuthenticationLogin } from "@/api2/endpoints/cocreateApi";
+import { LoginRequest } from "@/api2/model";
 
 export default function Index() {
   const { t } = useTranslation();
 
   const { onUserLogIn } = useOnUserLogIn();
 
-  const { mutate, error, isPending } = usePostApiLogin({
+  const { mutate, error, isPending } = usePostApiAuthenticationLogin({
     mutation: {
-      onSuccess: async (data) => {
-        await onUserLogIn(data);
-      },
+      onSuccess: onUserLogIn,
     },
   });
 
-  const { handleSubmit, control } = useForm<UserLoginDTO>();
+  const { handleSubmit, control } = useForm<LoginRequest>();
   const { hashPassword } = useEncryption();
 
-  const onSubmit = async (userLoginDTO: UserLoginDTO) => {
-    const hashedPassword = await hashPassword(userLoginDTO.password);
+  const onSubmit = async (loginRequest: LoginRequest) => {
+    const hashedPassword = await hashPassword(loginRequest.password);
     mutate({
       data: {
-        ...userLoginDTO,
+        ...loginRequest,
         password: hashedPassword,
       },
     });

@@ -11,8 +11,8 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "api": "orval --config ./orval.config.ts",
-    "clean": "powershell -Command \"(Get-Content ./api/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./api/endpoints/cocreateApi.ts\"",
-    "fetch-swagger": "curl -o ./swagger.json http://192.168.1.92:5000/swagger/v1/swagger.json",
+    "clean": "powershell -Command \"(Get-Content ./api2/endpoints/cocreateApi.ts).replace('APIResponse', '').replace('Boolean,', '') | Set-Content ./api/endpoints/cocreateApi.ts\"",
+    "fetch-swagger": "curl -o ./swagger.json http://localhost:5235/openapi/v1.json",
     "gapi": "npm run fetch-swagger && npm run api && npm run clean"
   },
   "jest": {
@@ -47,7 +47,7 @@
     "expo-system-ui": "~4.0.7",
     "expo-web-browser": "~14.0.2",
     "immer": "^10.1.1",
-    "orval": "^7.4.1",
+    "orval": "7.11.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "^7.54.2",

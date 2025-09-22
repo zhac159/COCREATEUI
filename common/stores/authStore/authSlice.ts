@@ -1,10 +1,10 @@
 import { StateCreator } from 'zustand';
-import { UserLoginResponseDTO } from "@/api/model";
 import { router } from "expo-router";
 import { AuthState, defaultAuth } from './authTypes';
+import { AuthenticatedUser } from '@/api2/model';
 
 export interface AuthSlice {
-  setAuth: (auth: UserLoginResponseDTO) => void;
+  setAuth: (auth: AuthenticatedUser) => void;
   logOut: () => void;
 }
 

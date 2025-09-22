@@ -1,16 +1,12 @@
-import { UserLoginResponseDTO } from "@/api/model";
+import { AuthenticatedUser } from "@/api2/model";
 
 export type AuthState = {
-  auth: UserLoginResponseDTO;
+  auth: AuthenticatedUser;
 };
 
-export const defaultAuth: UserLoginResponseDTO = {
-  profilePicture: "",
+export const defaultAuth: AuthenticatedUser = {
   email: "",
   userId: 0,
   username: "",
   coins: 0,
-  projectsManaging: [],
-  chats: [],
-  publicKey: "",
 };
